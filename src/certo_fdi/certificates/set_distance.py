@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import product
 
 import cvxpy as cp
 import numpy as np
@@ -93,34 +94,56 @@ def _osqp_distance(design: np.ndarray, lower: np.ndarray, upper: np.ndarray) -> 
     )
 
 
-def _clarabel_distance(
+def _enumerated_active_set_distance(
     design: np.ndarray, lower: np.ndarray, upper: np.ndarray
 ) -> SolverResult:
-    center = 0.5 * (lower + upper)
-    half_range = 0.5 * (upper - lower)
-    normalized = cp.Variable(design.shape[1])
-    variable = center + cp.multiply(half_range, normalized)
-    problem = cp.Problem(
-        cp.Minimize(cp.sum_squares(design @ variable)),
-        [normalized >= -1.0, normalized <= 1.0],
+    """Solve the small box QP by enumerating every possible active-set face.
+
+    Stage 1 detection problems have at most four variables and isolation
+    problems have at most five, so the complete 3**n enumeration is both cheap
+    and independently auditable.  Each face is solved with NumPy least squares;
+    infeasible face minimizers are discarded.
+    """
+    variable_count = design.shape[1]
+    best_parameters: np.ndarray | None = None
+    best_residual: np.ndarray | None = None
+    best_distance = np.inf
+    feasibility_tolerance = 1e-10 * max(
+        1.0, float(np.max(np.abs(lower))), float(np.max(np.abs(upper)))
     )
-    problem.solve(
-        solver=cp.CLARABEL,
-        tol_gap_abs=1e-11,
-        tol_feas=1e-11,
-        max_iter=10_000,
-        verbose=False,
-    )
-    if normalized.value is None or problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE}:
-        raise RuntimeError(f"Clarabel distance solve failed: {problem.status}")
-    parameters = center + half_range * np.asarray(normalized.value).reshape(-1)
-    residual = design @ parameters
+    for active_state in product((-1, 0, 1), repeat=variable_count):
+        free = np.asarray([state == 0 for state in active_state], dtype=bool)
+        fixed = ~free
+        parameters = np.zeros(variable_count, dtype=float)
+        for index, state in enumerate(active_state):
+            if state == -1:
+                parameters[index] = lower[index]
+            elif state == 1:
+                parameters[index] = upper[index]
+        right_hand_side = -(design[:, fixed] @ parameters[fixed])
+        if np.any(free):
+            free_solution = np.linalg.lstsq(
+                design[:, free], right_hand_side, rcond=None
+            )[0]
+            if np.any(free_solution < lower[free] - feasibility_tolerance) or np.any(
+                free_solution > upper[free] + feasibility_tolerance
+            ):
+                continue
+            parameters[free] = np.clip(free_solution, lower[free], upper[free])
+        residual = design @ parameters
+        distance = float(np.linalg.norm(residual))
+        if distance < best_distance:
+            best_distance = distance
+            best_parameters = parameters
+            best_residual = np.asarray(residual)
+    if best_parameters is None or best_residual is None:
+        raise RuntimeError("active-set enumeration found no feasible box point")
     return SolverResult(
-        distance=float(np.linalg.norm(residual)),
-        parameters=parameters,
-        residual=np.asarray(residual),
-        status=str(problem.status),
-        solver="cvxpy_clarabel_after_osqp_disagreement",
+        distance=best_distance,
+        parameters=best_parameters,
+        residual=best_residual,
+        status=f"enumerated_{3 ** variable_count}_active_sets",
+        solver="numpy_enumerated_active_set_after_osqp_disagreement",
     )
 
 
@@ -139,17 +162,21 @@ def _cross_checked(
     difference = abs(scipy_result.distance - osqp_result.distance)
     scale = max(1.0, scipy_result.distance, osqp_result.distance)
     if difference > agreement_tolerance * scale:
-        clarabel_result = _clarabel_distance(design, lower, upper)
-        clarabel_difference = abs(scipy_result.distance - clarabel_result.distance)
-        clarabel_scale = max(1.0, scipy_result.distance, clarabel_result.distance)
-        if clarabel_difference > agreement_tolerance * clarabel_scale:
+        active_set_result = _enumerated_active_set_distance(design, lower, upper)
+        active_set_difference = abs(
+            scipy_result.distance - active_set_result.distance
+        )
+        active_set_scale = max(
+            1.0, scipy_result.distance, active_set_result.distance
+        )
+        if active_set_difference > agreement_tolerance * active_set_scale:
             raise RuntimeError(
                 "independent QP solvers disagree: "
                 f"scipy={scipy_result.distance}, osqp={osqp_result.distance}, "
-                f"clarabel={clarabel_result.distance}"
+                f"enumerated_active_set={active_set_result.distance}"
             )
-        osqp_result = clarabel_result
-        difference = clarabel_difference
+        osqp_result = active_set_result
+        difference = active_set_difference
     return CrossCheckedDistance(
         # The smaller independently reproduced value is conservative for a
         # downstream separation lower bound.

@@ -21,12 +21,18 @@ def _copy_contents(source: Path, destination: Path) -> None:
     destination.mkdir(parents=True, exist_ok=True)
     if not source.exists():
         return
-    for item in source.iterdir():
-        target = destination / item.name
+    for item in source.rglob("*"):
+        target = destination / item.relative_to(source)
         if item.is_dir():
-            shutil.copytree(item, target, dirs_exist_ok=True)
-        else:
-            shutil.copy2(item, target)
+            target.mkdir(parents=True, exist_ok=True)
+        elif item.is_file():
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(item, target)
+
+
+def _copy_file(source: Path, destination: Path) -> None:
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, destination)
 
 
 def _git(repo: Path, *arguments: str) -> str:
@@ -37,7 +43,9 @@ def _git(repo: Path, *arguments: str) -> str:
 
 def _write_git_archive(repo: Path, destination: Path) -> None:
     destination.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(suffix=".tar") as temporary:
+    with tempfile.NamedTemporaryFile(suffix=".tar") as temporary, tempfile.TemporaryDirectory(
+        prefix="certo_git_archive_"
+    ) as extracted:
         subprocess.run(
             ["git", "-C", str(repo), "archive", "--format=tar", "HEAD"],
             check=True,
@@ -45,7 +53,8 @@ def _write_git_archive(repo: Path, destination: Path) -> None:
         )
         temporary.flush()
         with tarfile.open(temporary.name) as archive:
-            archive.extractall(destination, filter="data")
+            archive.extractall(extracted, filter="data")
+        _copy_contents(Path(extracted), destination)
 
 
 def _write_manifest(root: Path) -> None:
@@ -123,7 +132,7 @@ def _populate_common(root: Path, run_root: Path, repo: Path, storage_root: Path)
         + "\n```\n",
         encoding="utf-8",
     )
-    shutil.copy2(decision, root / "03_DECISION_MEMO.md")
+    _copy_file(decision, root / "03_DECISION_MEMO.md")
     (root / "04_KNOWN_ISSUES.md").write_text(
         "# Known issues\n\n- Model and healthy-set remainders are empirical grid maxima.\n"
         "- Heavy-tail calibration is marginal and empirical.\n"
@@ -138,8 +147,8 @@ def _populate_common(root: Path, run_root: Path, repo: Path, storage_root: Path)
         "4. Global fault-manifold equivalence and self-intersection audit.\n",
         encoding="utf-8",
     )
-    shutil.copy2(results / "stage1_claim_ledger.csv", root / "06_CLAIMS_LEDGER.csv")
-    shutil.copy2(results / "stage1_theorem_status.csv", root / "07_THEOREM_STATUS.csv")
+    _copy_file(results / "stage1_claim_ledger.csv", root / "06_CLAIMS_LEDGER.csv")
+    _copy_file(results / "stage1_theorem_status.csv", root / "07_THEOREM_STATUS.csv")
     for directory in (
         "11_ENVIRONMENT",
         "12_GIT_PROVENANCE",
@@ -163,7 +172,7 @@ def _populate_common(root: Path, run_root: Path, repo: Path, storage_root: Path)
     _copy_contents(run_root / "tests", root / "15_TEST_REPORTS")
     for path in sorted(results.iterdir()):
         if path.is_file() and path.suffix in {".csv", ".json", ".md"}:
-            shutil.copy2(path, root / "16_CORE_RESULTS" / path.name)
+            _copy_file(path, root / "16_CORE_RESULTS" / path.name)
     _copy_contents(run_root / "figures", root / "17_SELECTED_FIGURES")
     corrections = storage_root / "02_research_docs" / "corrections"
     _copy_contents(corrections, root / "18_DOCUMENT_DIFFS")
@@ -197,10 +206,10 @@ def _populate_full(root: Path, run_root: Path, storage_root: Path, bundle: Path)
     frozen = storage_root / "01_frozen_sources"
     for name in ("source_index.csv", "SHA256SUMS.txt"):
         if (frozen / name).is_file():
-            shutil.copy2(frozen / name, root / "22_FROZEN_SOURCE_INDEX" / name)
+            _copy_file(frozen / name, root / "22_FROZEN_SOURCE_INDEX" / name)
     archives = root / "22_FROZEN_SOURCE_INDEX" / "archives"
     _copy_contents(frozen / "archives", archives)
-    shutil.copy2(bundle, root / "23_GIT_BUNDLE" / bundle.name)
+    _copy_file(bundle, root / "23_GIT_BUNDLE" / bundle.name)
     rows = []
     for path in sorted(run_root.rglob("*")):
         if path.is_file():

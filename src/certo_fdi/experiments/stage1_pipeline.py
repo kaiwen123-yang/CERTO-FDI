@@ -598,6 +598,7 @@ def run_certificates(
                         "gaussian_oracle_noise_radius": gaussian_radius,
                         "screening_snr_d": screening_lower / (2.0 * gaussian_radius),
                         "solver_absolute_difference": distance.absolute_solver_difference,
+                        "secondary_solver": distance.osqp.solver,
                         "certificate_status": "EMPIRICAL_MODEL_ERROR_ONLY",
                     }
                 )
@@ -674,6 +675,7 @@ def run_certificates(
                         "gaussian_oracle_noise_radius": gaussian_radius,
                         "screening_snr_iota": screening_lower / (2.0 * gaussian_radius),
                         "solver_absolute_difference": distance.absolute_solver_difference,
+                        "secondary_solver": distance.osqp.solver,
                         "certificate_status": "EMPIRICAL_MODEL_ERROR_ONLY",
                     }
                 )

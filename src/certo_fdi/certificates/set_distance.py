@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import cvxpy as cp
 import numpy as np
 from scipy.optimize import lsq_linear
+import warnings
 
 
 @dataclass(frozen=True)
@@ -49,29 +50,46 @@ def _scipy_distance(design: np.ndarray, lower: np.ndarray, upper: np.ndarray) ->
 
 
 def _osqp_distance(design: np.ndarray, lower: np.ndarray, upper: np.ndarray) -> SolverResult:
-    variable = cp.Variable(design.shape[1])
+    center = 0.5 * (lower + upper)
+    half_range = 0.5 * (upper - lower)
+    if np.any(half_range <= 0.0):
+        raise ValueError("strictly positive variable ranges are required")
+    normalized = cp.Variable(design.shape[1])
+    variable = center + cp.multiply(half_range, normalized)
     problem = cp.Problem(
         cp.Minimize(cp.sum_squares(design @ variable)),
-        [variable >= lower, variable <= upper],
+        [normalized >= -1.0, normalized <= 1.0],
     )
-    problem.solve(
-        solver=cp.OSQP,
-        eps_abs=1e-10,
-        eps_rel=1e-10,
-        max_iter=100_000,
-        polishing=True,
-        verbose=False,
-    )
-    if variable.value is None or problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE}:
-        raise RuntimeError(f"OSQP distance solve failed: {problem.status}")
-    parameters = np.asarray(variable.value).reshape(-1)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        problem.solve(
+            solver=cp.OSQP,
+            eps_abs=1e-10,
+            eps_rel=1e-10,
+            max_iter=100_000,
+            polishing=True,
+            verbose=False,
+        )
+    solver_name = "cvxpy_osqp"
+    if normalized.value is None or problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE}:
+        problem.solve(
+            solver=cp.CLARABEL,
+            tol_gap_abs=1e-10,
+            tol_feas=1e-10,
+            max_iter=10_000,
+            verbose=False,
+        )
+        solver_name = "cvxpy_clarabel_fallback"
+    if normalized.value is None or problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE}:
+        raise RuntimeError(f"CVXPY distance solve failed: {problem.status}")
+    parameters = center + half_range * np.asarray(normalized.value).reshape(-1)
     residual = design @ parameters
     return SolverResult(
         distance=float(np.linalg.norm(residual)),
         parameters=parameters,
         residual=np.asarray(residual),
         status=str(problem.status),
-        solver="cvxpy_osqp",
+        solver=solver_name,
     )
 
 

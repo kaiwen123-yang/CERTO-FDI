@@ -47,3 +47,18 @@ def test_near_zero_solver_differences_use_explicit_absolute_tolerance():
     result = detection_distance(signature, 0.2, 0.4, healthy, np.array([0.1]))
     assert result.absolute_solver_difference <= 1e-6
     assert result.distance == min(result.scipy.distance, result.osqp.distance)
+
+
+def test_badly_scaled_joint_qp_is_normalized_before_secondary_solve():
+    signature = np.array([1e6, 1e-6, 1.0])
+    healthy = np.array([[1e6, -1e6], [2e-6, 1e-6], [0.5, -0.25]])
+    result = detection_distance(
+        signature,
+        1e-3,
+        2e-3,
+        healthy,
+        np.array([1e-3, 1e-3]),
+        agreement_tolerance=1e-5,
+    )
+    assert np.isfinite(result.distance)
+    assert result.osqp.solver in {"cvxpy_osqp", "cvxpy_clarabel_fallback"}

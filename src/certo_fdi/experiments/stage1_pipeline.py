@@ -3,12 +3,14 @@ from __future__ import annotations
 import itertools
 import json
 import math
+import gc
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
+import jax
 
 from certo_fdi.certificates.bounds import detection_lower_bound, isolation_lower_bound
 from certo_fdi.certificates.noise_radius import empirical_norm_radius, gaussian_oracle_radius
@@ -56,6 +58,8 @@ def _controller_runs(config: dict[str, Any], base_params: Any) -> list[Controlle
         params = base_params._replace(controller=base_params.controller._replace(kind=mapping[name]))
         times, states, residuals, linearizations = prepare_nominal(config, params)
         output.append(ControllerRun(name, params, times, states, residuals, linearizations))
+        jax.clear_caches()
+        gc.collect()
     return output
 
 
@@ -293,6 +297,8 @@ def run_model_error(
                 "bound_status": "LOCAL_HESSIAN_DIAGNOSTIC_ONLY",
             }
         )
+        jax.clear_caches()
+        gc.collect()
     write_csv_with_schema(hessian_rows, output_dir / "stage1_hessian_bounds.csv")
     (output_dir / "stage1_model_error_report.md").write_text(
         "# Absolute closed-loop model error\n\n"

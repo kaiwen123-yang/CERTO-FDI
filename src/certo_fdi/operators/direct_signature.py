@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import numpy as np
 
-import jax
 import jax.numpy as jnp
 
 from certo_fdi.closed_loop.model import controller_command
@@ -87,12 +86,17 @@ def direct_raw_torque_sequence(
         elif mode_name.startswith("encoder_bias"):
             return None
         elif mode_name == "command_delay":
-            derivative = jax.jacfwd(
-                lambda time: controller_command(
-                    jnp.asarray(q), jnp.asarray(v), time, params
-                )
-            )(jnp.asarray(float(t)))
-            force = -np.asarray(derivative)
+            # This archived comparator is not part of the AD certificate graph.
+            # A centered time difference avoids creating one XLA derivative
+            # executable per sample while retaining the provisional comparison.
+            h = 1e-5
+            plus = np.asarray(
+                controller_command(jnp.asarray(q), jnp.asarray(v), float(t) + h, params)
+            )
+            minus = np.asarray(
+                controller_command(jnp.asarray(q), jnp.asarray(v), float(t) - h, params)
+            )
+            force = -(plus - minus) / (2.0 * h)
         else:
             raise KeyError(mode_name)
         result.append(force)

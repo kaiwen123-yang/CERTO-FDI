@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from certo_fdi.certificates import set_distance
 from certo_fdi.certificates.set_distance import detection_distance, isolation_distance
 from certo_fdi.sets.tube import scalar_fault_to_healthy_difference_distance
 
@@ -61,4 +62,42 @@ def test_badly_scaled_joint_qp_is_normalized_before_secondary_solve():
         agreement_tolerance=1e-5,
     )
     assert np.isfinite(result.distance)
-    assert result.osqp.solver in {"cvxpy_osqp", "cvxpy_clarabel_fallback"}
+    assert result.osqp.solver in {
+        "cvxpy_osqp",
+        "cvxpy_clarabel_fallback",
+        "cvxpy_clarabel_after_osqp_disagreement",
+    }
+
+
+def test_clarabel_arbitrates_osqp_disagreement(monkeypatch):
+    def disagreeing_osqp(design, lower, upper):
+        reference = set_distance._scipy_distance(design, lower, upper)
+        return set_distance.SolverResult(
+            distance=reference.distance + 1e-3,
+            parameters=reference.parameters,
+            residual=reference.residual,
+            status="synthetic_disagreement",
+            solver="synthetic_osqp",
+        )
+
+    def agreeing_clarabel(design, lower, upper):
+        reference = set_distance._scipy_distance(design, lower, upper)
+        return set_distance.SolverResult(
+            distance=reference.distance,
+            parameters=reference.parameters,
+            residual=reference.residual,
+            status="synthetic_agreement",
+            solver="cvxpy_clarabel_after_osqp_disagreement",
+        )
+
+    monkeypatch.setattr(set_distance, "_osqp_distance", disagreeing_osqp)
+    monkeypatch.setattr(set_distance, "_clarabel_distance", agreeing_clarabel)
+    result = detection_distance(
+        np.array([1.0, 0.0]),
+        0.8,
+        1.0,
+        np.array([[0.8, 0.8], [0.6, -0.6]]),
+        np.array([0.2, 0.2]),
+    )
+    assert result.osqp.solver == "cvxpy_clarabel_after_osqp_disagreement"
+    assert result.absolute_solver_difference == 0.0

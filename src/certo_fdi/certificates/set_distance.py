@@ -93,6 +93,37 @@ def _osqp_distance(design: np.ndarray, lower: np.ndarray, upper: np.ndarray) -> 
     )
 
 
+def _clarabel_distance(
+    design: np.ndarray, lower: np.ndarray, upper: np.ndarray
+) -> SolverResult:
+    center = 0.5 * (lower + upper)
+    half_range = 0.5 * (upper - lower)
+    normalized = cp.Variable(design.shape[1])
+    variable = center + cp.multiply(half_range, normalized)
+    problem = cp.Problem(
+        cp.Minimize(cp.sum_squares(design @ variable)),
+        [normalized >= -1.0, normalized <= 1.0],
+    )
+    problem.solve(
+        solver=cp.CLARABEL,
+        tol_gap_abs=1e-11,
+        tol_feas=1e-11,
+        max_iter=10_000,
+        verbose=False,
+    )
+    if normalized.value is None or problem.status not in {cp.OPTIMAL, cp.OPTIMAL_INACCURATE}:
+        raise RuntimeError(f"Clarabel distance solve failed: {problem.status}")
+    parameters = center + half_range * np.asarray(normalized.value).reshape(-1)
+    residual = design @ parameters
+    return SolverResult(
+        distance=float(np.linalg.norm(residual)),
+        parameters=parameters,
+        residual=np.asarray(residual),
+        status=str(problem.status),
+        solver="cvxpy_clarabel_after_osqp_disagreement",
+    )
+
+
 def _cross_checked(
     design: np.ndarray,
     lower: np.ndarray,
@@ -108,10 +139,17 @@ def _cross_checked(
     difference = abs(scipy_result.distance - osqp_result.distance)
     scale = max(1.0, scipy_result.distance, osqp_result.distance)
     if difference > agreement_tolerance * scale:
-        raise RuntimeError(
-            f"independent QP solvers disagree: scipy={scipy_result.distance}, "
-            f"osqp={osqp_result.distance}"
-        )
+        clarabel_result = _clarabel_distance(design, lower, upper)
+        clarabel_difference = abs(scipy_result.distance - clarabel_result.distance)
+        clarabel_scale = max(1.0, scipy_result.distance, clarabel_result.distance)
+        if clarabel_difference > agreement_tolerance * clarabel_scale:
+            raise RuntimeError(
+                "independent QP solvers disagree: "
+                f"scipy={scipy_result.distance}, osqp={osqp_result.distance}, "
+                f"clarabel={clarabel_result.distance}"
+            )
+        osqp_result = clarabel_result
+        difference = clarabel_difference
     return CrossCheckedDistance(
         # The smaller independently reproduced value is conservative for a
         # downstream separation lower bound.

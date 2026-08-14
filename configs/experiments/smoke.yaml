@@ -1,10 +1,12 @@
 experiment_name: stage1_2r_smoke
 seed: 260809
 dt: 0.01
-horizon_steps: 180
-window_length: 30
-window_stride: 30
-run_kind: smoke
+horizon_steps: 360
+window_length: 50
+window_stride: 50
+representative_window_start: 300
+run_kind: stage1_cpu
+controllers: [computed_torque, pd_gravity]
 
 plant:
   gravity: 9.81
@@ -33,6 +35,13 @@ healthy_tube:
   half_widths: [0.05, 0.05, 0.10]
   basis_error: 0.0
   note: "Known design box for stage-one screening; not inferred from sample extrema."
+
+noise:
+  sigma: 0.05
+  alpha: 0.05
+  calibration_count: 1000
+  test_count: 2000
+  seeds: [7, 11, 260809]
 
 fault_sweeps:
   actuator_gain_j1: [0.02, 0.05, 0.10, 0.15, 0.20]

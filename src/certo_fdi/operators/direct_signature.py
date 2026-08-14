@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import numpy as np
 
-from certo_fdi.control.computed_torque import (
-    computed_torque_command,
-    nominal_command_derivative,
-)
+import jax
+import jax.numpy as jnp
+
+from certo_fdi.closed_loop.model import controller_command
 from certo_fdi.dynamics.two_link import ee_jacobian, link1_jacobian, payload_torque_per_kg
 from certo_fdi.faults.layout import SCALAR_MODES
 from certo_fdi.types import ClosedLoopParams
@@ -42,7 +42,9 @@ def direct_raw_torque_sequence(
         q = np.asarray(x[0:2], dtype=float)
         v = np.asarray(x[2:4], dtype=float)
         tau_cmd = np.asarray(
-            computed_torque_command(q, v, float(t), params.plant, params.controller)
+            controller_command(
+                jnp.asarray(q), jnp.asarray(v), float(t), params
+            )
         )
         if mode_name == "actuator_gain_j1":
             force = np.array([-tau_cmd[0], 0.0])
@@ -85,9 +87,12 @@ def direct_raw_torque_sequence(
         elif mode_name.startswith("encoder_bias"):
             return None
         elif mode_name == "command_delay":
-            force = -np.asarray(
-                nominal_command_derivative(float(t), params.plant, params.controller)
-            )
+            derivative = jax.jacfwd(
+                lambda time: controller_command(
+                    jnp.asarray(q), jnp.asarray(v), time, params
+                )
+            )(jnp.asarray(float(t)))
+            force = -np.asarray(derivative)
         else:
             raise KeyError(mode_name)
         result.append(force)

@@ -56,6 +56,8 @@ def rnea_2r(
     qd: np.ndarray,
     qdd: np.ndarray,
     p: TwoLinkParams,
+    *,
+    mutate_ad_star_sign: bool = False,
 ) -> np.ndarray:
     """Full 6D spatial RNEA for the planar 2R robot.
 
@@ -94,7 +96,8 @@ def rnea_2r(
         vj = s * qd[i]
         vi = xup[i] @ v_parent + vj
         ai = xup[i] @ a_parent + s * qdd[i] + ad_motion(vi) @ vj
-        fi = inertias[i] @ ai + ad_force(vi) @ (inertias[i] @ vi)
+        force_cross = ad_motion(vi).T if mutate_ad_star_sign else ad_force(vi)
+        fi = inertias[i] @ ai + force_cross @ (inertias[i] @ vi)
         velocities.append(vi)
         accelerations.append(ai)
         forces.append(fi)

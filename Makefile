@@ -1,7 +1,7 @@
 PYTHON ?= python3
 VENV ?= .venv
 
-.PHONY: venv install test test-fast hygiene stage1 review-packages
+.PHONY: venv install test test-fast hygiene stage1 reproduce review-packages
 
 venv:
 	$(PYTHON) -m venv $(VENV)
@@ -20,7 +20,10 @@ hygiene:
 	bash scripts/check_repo_hygiene.sh
 
 stage1:
-	bash scripts/run_stage1.sh --clean
+	bash scripts/run_stage1.sh --clean --storage-root "$${CERTO_STORAGE_ROOT}"
+
+reproduce:
+	bash scripts/reproduce_clean.sh --storage-root "$${CERTO_STORAGE_ROOT}"
 
 review-packages:
-	bash scripts/build_review_packages.sh
+	bash scripts/build_review_packages.sh --run-root "$${CERTO_RUN_ROOT}"

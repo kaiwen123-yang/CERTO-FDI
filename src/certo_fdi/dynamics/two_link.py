@@ -42,6 +42,13 @@ def ee_jacobian(q: jnp.ndarray, p: TwoLinkParams) -> jnp.ndarray:
     )
 
 
+def link1_jacobian(q: jnp.ndarray, p: TwoLinkParams) -> jnp.ndarray:
+    q1 = q[0]
+    return jnp.array(
+        [[-p.l1 * jnp.sin(q1), 0.0], [p.l1 * jnp.cos(q1), 0.0]]
+    )
+
+
 def ee_jacobian_dot(q: jnp.ndarray, v: jnp.ndarray, p: TwoLinkParams) -> jnp.ndarray:
     q1, q2 = q
     v1, v2 = v
@@ -117,10 +124,19 @@ def friction_torque(
     v: jnp.ndarray,
     p: TwoLinkParams,
     viscous_delta: jnp.ndarray | None = None,
+    coulomb_delta: jnp.ndarray | None = None,
+    shape_delta: jnp.ndarray | None = None,
 ) -> jnp.ndarray:
     if viscous_delta is None:
         viscous_delta = jnp.zeros(2, dtype=v.dtype)
-    return (p.viscous + viscous_delta) * v + p.coulomb * jnp.tanh(v / p.friction_eps)
+    if coulomb_delta is None:
+        coulomb_delta = jnp.zeros(2, dtype=v.dtype)
+    if shape_delta is None:
+        shape_delta = jnp.zeros(2, dtype=v.dtype)
+    smoothing = jnp.maximum(p.friction_eps + shape_delta, 0.005)
+    return (p.viscous + viscous_delta) * v + (p.coulomb + coulomb_delta) * jnp.tanh(
+        v / smoothing
+    )
 
 
 def mass_matrix_dot(
@@ -170,16 +186,24 @@ def plant_acceleration(
     p: TwoLinkParams,
     payload_mass: float = 0.0,
     viscous_delta: jnp.ndarray | None = None,
+    coulomb_delta: jnp.ndarray | None = None,
+    shape_delta: jnp.ndarray | None = None,
+    link1_contact_force: jnp.ndarray | None = None,
     contact_force: jnp.ndarray | None = None,
 ) -> jnp.ndarray:
     if contact_force is None:
         contact_force = jnp.zeros(2, dtype=q.dtype)
-    tau_ext = ee_jacobian(q, p).T @ contact_force
+    if link1_contact_force is None:
+        link1_contact_force = jnp.zeros(2, dtype=q.dtype)
+    tau_ext = (
+        ee_jacobian(q, p).T @ contact_force
+        + link1_jacobian(q, p).T @ link1_contact_force
+    )
     m = mass_matrix(q, p, payload_mass)
     h = (
         coriolis_matrix(q, v, p, payload_mass) @ v
         + gravity_vector(q, p, payload_mass)
-        + friction_torque(v, p, viscous_delta)
+        + friction_torque(v, p, viscous_delta, coulomb_delta, shape_delta)
     )
     return jnp.linalg.solve(m, tau_applied + tau_ext - h)
 

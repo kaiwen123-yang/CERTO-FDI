@@ -6,7 +6,7 @@ from certo_fdi.control.computed_torque import (
     computed_torque_command,
     nominal_command_derivative,
 )
-from certo_fdi.dynamics.two_link import ee_jacobian, payload_torque_per_kg
+from certo_fdi.dynamics.two_link import ee_jacobian, link1_jacobian, payload_torque_per_kg
 from certo_fdi.faults.layout import SCALAR_MODES
 from certo_fdi.types import ClosedLoopParams
 
@@ -52,6 +52,21 @@ def direct_raw_torque_sequence(
             force = np.array([-v[0], 0.0])
         elif mode_name == "viscous_j2":
             force = np.array([0.0, -v[1]])
+        elif mode_name == "coulomb_j1":
+            force = np.array([-np.tanh(v[0] / params.plant.friction_eps), 0.0])
+        elif mode_name == "coulomb_j2":
+            force = np.array([0.0, -np.tanh(v[1] / params.plant.friction_eps)])
+        elif mode_name.startswith("friction_shape"):
+            joint = 0 if mode_name.endswith("j1") else 1
+            z = v[joint] / params.plant.friction_eps
+            derivative = (
+                params.plant.coulomb[joint]
+                * v[joint]
+                / params.plant.friction_eps**2
+                / np.cosh(z) ** 2
+            )
+            force = np.zeros(2)
+            force[joint] = derivative
         elif mode_name == "payload_mass":
             # A positive physical payload appears on the nominal-model RHS as -Y_L dm.
             # Desired acceleration is used for the archived pre-specified-trajectory comparator.
@@ -63,6 +78,10 @@ def direct_raw_torque_sequence(
             force = np.asarray(ee_jacobian(q, params.plant).T @ np.array([1.0, 0.0]))
         elif mode_name == "contact_fy":
             force = np.asarray(ee_jacobian(q, params.plant).T @ np.array([0.0, 1.0]))
+        elif mode_name == "link1_contact_fx":
+            force = np.asarray(link1_jacobian(q, params.plant).T @ np.array([1.0, 0.0]))
+        elif mode_name == "link1_contact_fy":
+            force = np.asarray(link1_jacobian(q, params.plant).T @ np.array([0.0, 1.0]))
         elif mode_name.startswith("encoder_bias"):
             return None
         elif mode_name == "command_delay":

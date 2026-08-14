@@ -23,6 +23,7 @@ class TwoLinkParams(NamedTuple):
 class ControllerParams(NamedTuple):
     kp: jnp.ndarray
     kd: jnp.ndarray
+    kind: int
 
 
 class ObserverParams(NamedTuple):

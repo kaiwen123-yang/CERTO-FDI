@@ -38,6 +38,7 @@ def build_closed_loop_params(config: dict[str, Any]) -> ClosedLoopParams:
     controller = ControllerParams(
         kp=jnp.asarray(c["kp"], dtype=jnp.float64),
         kd=jnp.asarray(c["kd"], dtype=jnp.float64),
+        kind={"computed_torque": 0, "pd_gravity": 1}[c.get("type", "computed_torque")],
     )
     observer = ObserverParams(ko=jnp.asarray(o["ko"], dtype=jnp.float64))
     return ClosedLoopParams(

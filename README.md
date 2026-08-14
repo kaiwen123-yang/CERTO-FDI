@@ -24,6 +24,26 @@
 Experiment outputs are always written to an external `CERTO_RUN_ROOT` (see
 `configs/paths.example.env`); the repository hygiene check rejects committed results.
 
+## Execution
+
+From a prepared checkout:
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -e '.[dev]'
+bash scripts/run_stage1.sh --clean --storage-root /mnt/g/CERTO-FDI
+```
+
+Every clean execution creates a new immutable run. Review packages are built with:
+
+```bash
+bash scripts/build_review_packages.sh --run-root /absolute/path/to/run
+```
+
+The only public step implementation is `closed_loop_step`; fault and healthy-window
+operators use the same RK4 graph. Strict, empirical, and provisional result statuses are
+separate columns and must never be pooled.
+
 ## Stage 1 scientific question
 
 For a fixed-base 2R serial arm in an explicit closed loop (arm + sensor + controller +

@@ -1,0 +1,19 @@
+{
+  "required_common_columns": [
+    "run_id",
+    "seed",
+    "git_sha",
+    "config_sha256",
+    "strict_certificate",
+    "empirical_screening",
+    "provisional"
+  ],
+  "required_outputs": [
+    "stage1_closedloop_operators.csv",
+    "stage1_epsA_sweep.csv",
+    "stage1_certificates.csv",
+    "stage1_coverage_t3.csv",
+    "stage1_decision_memo.md"
+  ],
+  "status_rule": "empirical_screening rows must not be counted as strict_certificate rows"
+}

@@ -195,7 +195,14 @@ def _populate_common(root: Path, run_root: Path, repo: Path, storage_root: Path)
         "PY\n",
         encoding="utf-8",
     )
-    reproduce.chmod(reproduce.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+    try:
+        reproduce.chmod(
+            reproduce.stat().st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
+        )
+    except PermissionError:
+        # WSL drvfs can expose every file as executable while rejecting chmod.
+        # Zip metadata is set explicitly by _zip_tree, so byte content remains authoritative.
+        pass
 
 
 def _populate_full(root: Path, run_root: Path, storage_root: Path, bundle: Path) -> None:

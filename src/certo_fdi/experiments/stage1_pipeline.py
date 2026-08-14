@@ -598,7 +598,12 @@ def run_certificates(
                         "gaussian_oracle_noise_radius": gaussian_radius,
                         "screening_snr_d": screening_lower / (2.0 * gaussian_radius),
                         "solver_absolute_difference": distance.absolute_solver_difference,
-                        "secondary_solver": distance.osqp.solver,
+                        "raw_scipy_osqp_difference": distance.raw_scipy_osqp_difference,
+                        "primary_solver": distance.accepted_solvers[0],
+                        "secondary_solver": distance.accepted_solvers[1],
+                        "arbitration_solver": (
+                            distance.arbitrator.solver if distance.arbitrator else "NOT_USED"
+                        ),
                         "certificate_status": "EMPIRICAL_MODEL_ERROR_ONLY",
                     }
                 )
@@ -675,7 +680,12 @@ def run_certificates(
                         "gaussian_oracle_noise_radius": gaussian_radius,
                         "screening_snr_iota": screening_lower / (2.0 * gaussian_radius),
                         "solver_absolute_difference": distance.absolute_solver_difference,
-                        "secondary_solver": distance.osqp.solver,
+                        "raw_scipy_osqp_difference": distance.raw_scipy_osqp_difference,
+                        "primary_solver": distance.accepted_solvers[0],
+                        "secondary_solver": distance.accepted_solvers[1],
+                        "arbitration_solver": (
+                            distance.arbitrator.solver if distance.arbitrator else "NOT_USED"
+                        ),
                         "certificate_status": "EMPIRICAL_MODEL_ERROR_ONLY",
                     }
                 )

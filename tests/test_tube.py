@@ -62,10 +62,14 @@ def test_badly_scaled_joint_qp_is_normalized_before_secondary_solve():
         agreement_tolerance=1e-5,
     )
     assert np.isfinite(result.distance)
-    assert result.osqp.solver in {
+    assert result.accepted_solvers[0] in {
+        "scipy_lsq_linear",
+        "numpy_enumerated_active_set_after_osqp_disagreement",
+    }
+    assert result.accepted_solvers[1] in {
         "cvxpy_osqp",
         "cvxpy_clarabel_fallback",
-        "numpy_enumerated_active_set_after_osqp_disagreement",
+        "scipy_lsq_linear",
     }
 
 
@@ -101,5 +105,51 @@ def test_enumerated_active_sets_arbitrate_osqp_disagreement(monkeypatch):
         np.array([[0.8, 0.8], [0.6, -0.6]]),
         np.array([0.2, 0.2]),
     )
-    assert result.osqp.solver == "numpy_enumerated_active_set_after_osqp_disagreement"
+    assert result.osqp.solver == "synthetic_osqp"
+    assert result.accepted_solvers == (
+        "numpy_enumerated_active_set_after_osqp_disagreement",
+        "scipy_lsq_linear",
+    )
+    assert result.absolute_solver_difference == 0.0
+
+
+def test_enumerated_active_sets_can_confirm_osqp_when_scipy_disagrees(monkeypatch):
+    def disagreeing_scipy(design, lower, upper):
+        reference = set_distance._enumerated_active_set_distance(
+            design, lower, upper
+        )
+        return set_distance.SolverResult(
+            distance=reference.distance + 1e-3,
+            parameters=reference.parameters,
+            residual=reference.residual,
+            status="synthetic_disagreement",
+            solver="synthetic_scipy",
+        )
+
+    def agreeing_osqp(design, lower, upper):
+        reference = set_distance._enumerated_active_set_distance(
+            design, lower, upper
+        )
+        return set_distance.SolverResult(
+            distance=reference.distance,
+            parameters=reference.parameters,
+            residual=reference.residual,
+            status="synthetic_agreement",
+            solver="synthetic_osqp",
+        )
+
+    monkeypatch.setattr(set_distance, "_scipy_distance", disagreeing_scipy)
+    monkeypatch.setattr(set_distance, "_osqp_distance", agreeing_osqp)
+    result = detection_distance(
+        np.array([1.0, 0.0]),
+        0.8,
+        1.0,
+        np.array([[0.8, 0.8], [0.6, -0.6]]),
+        np.array([0.2, 0.2]),
+    )
+    assert result.scipy.solver == "synthetic_scipy"
+    assert result.accepted_solvers == (
+        "numpy_enumerated_active_set_after_osqp_disagreement",
+        "synthetic_osqp",
+    )
     assert result.absolute_solver_difference == 0.0

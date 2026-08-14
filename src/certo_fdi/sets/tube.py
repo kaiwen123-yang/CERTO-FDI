@@ -42,7 +42,7 @@ def scalar_fault_to_healthy_difference_distance(
         raise ValueError("fault interval must satisfy 0 <= min <= max")
 
     checked = detection_distance(s, a_min, a_max, g, b)
-    solution = checked.scipy
+    solution = checked.solution
     vector = solution.residual
     return ScalarFaultDistanceResult(
         distance=float(np.linalg.norm(vector)),

@@ -21,9 +21,13 @@ class SolverResult:
 @dataclass(frozen=True)
 class CrossCheckedDistance:
     distance: float
+    solution: SolverResult
     scipy: SolverResult
     osqp: SolverResult
     absolute_solver_difference: float
+    raw_scipy_osqp_difference: float
+    accepted_solvers: tuple[str, str]
+    arbitrator: SolverResult | None
 
 
 def _validate_bounds(lower: np.ndarray, upper: np.ndarray) -> None:
@@ -159,31 +163,44 @@ def _cross_checked(
     _validate_bounds(lower, upper)
     scipy_result = _scipy_distance(design, lower, upper)
     osqp_result = _osqp_distance(design, lower, upper)
-    difference = abs(scipy_result.distance - osqp_result.distance)
+    raw_difference = abs(scipy_result.distance - osqp_result.distance)
     scale = max(1.0, scipy_result.distance, osqp_result.distance)
-    if difference > agreement_tolerance * scale:
+    selected_primary = scipy_result
+    selected_secondary = osqp_result
+    arbitrator = None
+    difference = raw_difference
+    if raw_difference > agreement_tolerance * scale:
         active_set_result = _enumerated_active_set_distance(design, lower, upper)
-        active_set_difference = abs(
-            scipy_result.distance - active_set_result.distance
-        )
-        active_set_scale = max(
-            1.0, scipy_result.distance, active_set_result.distance
-        )
-        if active_set_difference > agreement_tolerance * active_set_scale:
+        arbitrator = active_set_result
+        candidates = []
+        for result in (scipy_result, osqp_result):
+            candidate_difference = abs(result.distance - active_set_result.distance)
+            candidate_scale = max(1.0, result.distance, active_set_result.distance)
+            if candidate_difference <= agreement_tolerance * candidate_scale:
+                candidates.append((candidate_difference, result))
+        if not candidates:
             raise RuntimeError(
                 "independent QP solvers disagree: "
                 f"scipy={scipy_result.distance}, osqp={osqp_result.distance}, "
                 f"enumerated_active_set={active_set_result.distance}"
             )
-        osqp_result = active_set_result
-        difference = active_set_difference
+        difference, agreeing_result = min(candidates, key=lambda item: item[0])
+        selected_primary = active_set_result
+        selected_secondary = agreeing_result
+    accepted_solution = min(
+        (selected_primary, selected_secondary), key=lambda result: result.distance
+    )
     return CrossCheckedDistance(
         # The smaller independently reproduced value is conservative for a
         # downstream separation lower bound.
-        distance=min(scipy_result.distance, osqp_result.distance),
+        distance=accepted_solution.distance,
+        solution=accepted_solution,
         scipy=scipy_result,
         osqp=osqp_result,
         absolute_solver_difference=difference,
+        raw_scipy_osqp_difference=raw_difference,
+        accepted_solvers=(selected_primary.solver, selected_secondary.solver),
+        arbitrator=arbitrator,
     )
 
 

@@ -30,7 +30,18 @@ export CERTO_STORAGE_ROOT="$STORAGE_ROOT"
 export CERTO_RUN_ROOT="$RUN_ROOT"
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 printf 'CERTO_RUN_ROOT=%s\n' "$CERTO_RUN_ROOT"
+CONFIG_FILE="$REPO_ROOT/configs/experiments/smoke.yaml"
+cp "$CONFIG_FILE" "$CERTO_RUN_ROOT/config/smoke.yaml"
+capture_environment() {
+  "$REPO_ROOT/.venv/bin/python" "$REPO_ROOT/scripts/capture_environment.py" \
+    --run-root "$CERTO_RUN_ROOT" --storage-root "$CERTO_STORAGE_ROOT" \
+    --repo-root "$REPO_ROOT" --seed 260809 --phase "$1"
+}
+capture_environment start
+trap 'capture_environment final' EXIT
 "$REPO_ROOT/.venv/bin/python" -m pytest -q -m "not slow" \
   | tee "$CERTO_RUN_ROOT/tests/pytest.txt"
 "$REPO_ROOT/.venv/bin/python" -m certo_fdi.experiments.run_stage1 \
-  --config "$REPO_ROOT/configs/experiments/smoke.yaml"
+  --config "$CONFIG_FILE" | tee "$CERTO_RUN_ROOT/logs/stage1_pipeline.log"
+trap - EXIT
+capture_environment final

@@ -897,7 +897,27 @@ def run_decision_and_ledgers(
     gaussian_coverage = float(gaussian.coverage.mean())
     t3_only = t3[t3.distribution == "t3"]
     t3_coverage = float(t3_only.coverage.mean())
-    decision = "PIVOT"
+    comparable_detection = detections.d_hat > 0.0
+    remainder_dominates = comparable_detection & (
+        detections.e_A_abs_empirical > 0.5 * detections.d_hat
+    )
+    noise_usable_isolation = (
+        isolations.screening_iota_lower
+        > 2.0 * isolations.gaussian_oracle_noise_radius
+    )
+    operator_validation = pd.read_csv(output_dir / "stage1_operator_validation.csv")
+    operator_passes = int(operator_validation.passed.sum())
+    operator_total = len(operator_validation)
+    no_go_reasons = []
+    if bool(remainder_dominates.any()):
+        no_go_reasons.append(
+            "the empirical absolute model error exceeds 0.5*d_hat in target rows"
+        )
+    if not bool(noise_usable_isolation.any()):
+        no_go_reasons.append(
+            "no empirical isolation lower bound exceeds twice the Gaussian oracle radius"
+        )
+    decision = "NO-GO" if no_go_reasons else "PIVOT"
     memo = (
         "# CERTO-FDI Stage 1 decision memo\n\n"
         f"**Decision: {decision}.** The GO gate is not passed.\n\n"
@@ -910,11 +930,17 @@ def run_decision_and_ledgers(
         f"4. Mean Gaussian marginal coverage: {gaussian_coverage:.3f}; mean independently "
         f"calibrated t3 marginal coverage: {t3_coverage:.3f}. Heavy-tail calibration is empirical.\n"
         "5. Closed-loop remainders were measured, but no support-wide validated upper bound was proved.\n"
-        "6. Strict rows cannot be formed solely from deployment-computable quantities yet.\n"
-        "7. Literature novelty remains a proof obligation relative to set-based MDF.\n\n"
+        f"6. Empirical e_A_abs exceeded 0.5*d_hat in {int(remainder_dominates.sum())}/"
+        f"{int(comparable_detection.sum())} comparable detection rows. This triggers NO-GO.\n"
+        f"7. Isolation rows above 2*r_alpha even under empirical screening: "
+        f"{int(noise_usable_isolation.sum())}/{len(isolations)}. This triggers NO-GO.\n"
+        f"8. Nonlinear small-signal operator checks passed {operator_passes}/{operator_total}; "
+        "failed rows remain empirical exceptions, not hidden passes.\n"
+        "9. Strict rows cannot be formed solely from deployment-computable quantities yet.\n"
+        "10. Literature novelty remains a proof obligation relative to set-based MDF.\n\n"
         "## Consequence\n\n"
-        "This matches the PIVOT condition: geometric/empirical detection can survive in some "
-        "windows, while strict isolation and heavy-tail coverage remain unavailable. Do not "
+        f"The pre-registered NO-GO conditions take precedence over PIVOT: {'; '.join(no_go_reasons)}. "
+        "The few positive screening rows are not strict certificates. Do not "
         "enter 7DoF, neural training, public-data training, or real-robot fault injection.\n"
     )
     (decision_dir / "stage1_decision_memo.md").write_text(memo, encoding="utf-8")
@@ -924,8 +950,8 @@ def run_decision_and_ledgers(
         {
             **_base(meta),
             "claim_id": "CLOSED_LOOP_OPERATOR",
-            "claim": "AD interval-end closed-loop operators match small-signal nonlinear response",
-            "status": "TESTED_LOCAL",
+            "claim": "AD interval-end closed-loop operators were checked against small-signal nonlinear response",
+            "status": "TESTED_LOCAL_WITH_EXCEPTIONS",
             "evidence": "stage1_operator_validation.csv",
         },
         {
@@ -955,8 +981,8 @@ def run_decision_and_ledgers(
             **_base(meta),
             "theorem_id": "T2",
             "statement": "local interval-end window linearization",
-            "status": "PROVED_LOCAL_AND_TESTED",
-            "proof_obligation": "global remainder bound",
+            "status": "PROVED_LOCAL_WITH_NUMERICAL_EXCEPTIONS",
+            "proof_obligation": "six failed finite-amplitude checks and global remainder bound",
         },
         {
             **_base(meta),

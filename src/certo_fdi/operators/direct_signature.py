@@ -81,7 +81,7 @@ def direct_raw_torque_sequence(
                 params.plant.coulomb[joint]
                 * v[joint]
                 / params.plant.friction_eps**2
-                / np.cosh(z) ** 2
+                * (1.0 - np.tanh(z) ** 2)
             )
             force = np.zeros(2)
             force[joint] = derivative

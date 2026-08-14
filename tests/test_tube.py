@@ -39,3 +39,11 @@ def test_isolation_distance_uses_joint_difference_set():
     result = isolation_distance(sj, 0.5, 0.8, sk, 0.5, 0.8, healthy, np.array([0.1]))
     assert result.distance > 0.5
     assert result.absolute_solver_difference < 1e-7
+
+
+def test_near_zero_solver_differences_use_explicit_absolute_tolerance():
+    signature = np.array([1e-6, 0.0])
+    healthy = np.array([[1e-6], [1e-6]])
+    result = detection_distance(signature, 0.2, 0.4, healthy, np.array([0.1]))
+    assert result.absolute_solver_difference <= 1e-6
+    assert result.distance == min(result.scipy.distance, result.osqp.distance)

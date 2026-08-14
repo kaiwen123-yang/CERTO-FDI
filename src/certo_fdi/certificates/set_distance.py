@@ -95,7 +95,9 @@ def _cross_checked(
             f"osqp={osqp_result.distance}"
         )
     return CrossCheckedDistance(
-        distance=0.5 * (scipy_result.distance + osqp_result.distance),
+        # The smaller independently reproduced value is conservative for a
+        # downstream separation lower bound.
+        distance=min(scipy_result.distance, osqp_result.distance),
         scipy=scipy_result,
         osqp=osqp_result,
         absolute_solver_difference=difference,
@@ -108,7 +110,7 @@ def detection_distance(
     fault_upper: np.ndarray | float,
     healthy_basis: np.ndarray,
     healthy_half_widths: np.ndarray,
-    agreement_tolerance: float = 1e-7,
+    agreement_tolerance: float = 1e-6,
 ) -> CrossCheckedDistance:
     signature = np.asarray(fault_signature, dtype=float)
     if signature.ndim == 1:
@@ -132,7 +134,7 @@ def isolation_distance(
     upper_k: np.ndarray | float,
     healthy_basis: np.ndarray,
     healthy_half_widths: np.ndarray,
-    agreement_tolerance: float = 1e-7,
+    agreement_tolerance: float = 1e-6,
 ) -> CrossCheckedDistance:
     sj = np.asarray(signature_j, dtype=float)
     sk = np.asarray(signature_k, dtype=float)

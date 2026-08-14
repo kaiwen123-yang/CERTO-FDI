@@ -3,7 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.optimize import lsq_linear
+
+from certo_fdi.certificates.set_distance import detection_distance
 
 
 @dataclass(frozen=True)
@@ -40,16 +41,16 @@ def scalar_fault_to_healthy_difference_distance(
     if not (0.0 <= a_min <= a_max):
         raise ValueError("fault interval must satisfy 0 <= min <= max")
 
-    design = np.concatenate([s, g], axis=1)
-    lower = np.concatenate([[a_min], -2.0 * b])
-    upper = np.concatenate([[a_max], 2.0 * b])
-    solution = lsq_linear(design, np.zeros(design.shape[0]), bounds=(lower, upper), lsmr_tol="auto")
-    vector = design @ solution.x
+    checked = detection_distance(s, a_min, a_max, g, b)
+    solution = checked.scipy
+    vector = solution.residual
     return ScalarFaultDistanceResult(
         distance=float(np.linalg.norm(vector)),
-        fault_parameter=float(solution.x[0]),
-        healthy_difference=np.asarray(solution.x[1:]),
+        fault_parameter=float(solution.parameters[0]),
+        healthy_difference=np.asarray(solution.parameters[1:]),
         residual_vector=np.asarray(vector),
-        solver_status=int(solution.status),
-        solver_message=str(solution.message),
+        solver_status=1,
+        solver_message=(
+            f"{solution.status}; cross_solver_diff={checked.absolute_solver_difference:.3e}"
+        ),
     )

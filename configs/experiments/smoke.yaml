@@ -1,0 +1,46 @@
+experiment_name: stage1_2r_smoke
+seed: 260809
+dt: 0.01
+horizon_steps: 180
+window_length: 30
+window_stride: 30
+output_dir: results/generated
+
+plant:
+  gravity: 9.81
+  m1: 1.0
+  m2: 1.0
+  l1: 1.0
+  l2: 1.0
+  lc1: 0.5
+  lc2: 0.5
+  I1: 0.08333333333333333
+  I2: 0.08333333333333333
+  viscous: [0.05, 0.05]
+  coulomb: [0.08, 0.08]
+  friction_eps: 0.04
+
+controller:
+  kp: [100.0, 100.0]
+  kd: [20.0, 20.0]
+
+observer:
+  ko: [20.0, 20.0]
+
+healthy_tube:
+  basis_modes: [viscous_j1, viscous_j2, payload_mass]
+  half_widths: [0.05, 0.05, 0.10]
+  basis_error: 0.0
+  note: "Known design box for stage-one screening; not inferred from sample extrema."
+
+fault_sweeps:
+  actuator_gain_j1: [0.02, 0.05, 0.10, 0.15, 0.20]
+  actuator_gain_j2: [0.02, 0.05, 0.10, 0.15, 0.20]
+  viscous_j1: [0.05, 0.10, 0.20, 0.30, 0.40]
+  viscous_j2: [0.05, 0.10, 0.20, 0.30, 0.40]
+  payload_mass: [0.10, 0.25, 0.50, 0.75, 1.00]
+  contact_fx: [0.5, 1.0, 2.0, 3.0, 4.0]
+  contact_fy: [0.5, 1.0, 2.0, 3.0, 4.0]
+  encoder_bias_j1: [0.001, 0.003, 0.005, 0.010, 0.020]
+  encoder_bias_j2: [0.001, 0.003, 0.005, 0.010, 0.020]
+  command_delay: [0.001, 0.003, 0.005, 0.010, 0.020]

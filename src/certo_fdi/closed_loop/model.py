@@ -239,3 +239,29 @@ def simulate_constant_fault(
         residuals.append(np.asarray(residual_next))
         times.append(t)
     return np.asarray(times), np.asarray(states), np.asarray(residuals)
+
+
+def simulate_fault_sequence(
+    params: ClosedLoopParams,
+    fault_sequence: np.ndarray | jnp.ndarray,
+    x0: np.ndarray | jnp.ndarray | None = None,
+    start_time: float = 0.0,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    sequence = jnp.asarray(fault_sequence, dtype=jnp.float64)
+    if sequence.ndim != 2 or sequence.shape[1] != FAULT_DIM:
+        raise ValueError(f"fault_sequence must have shape (steps, {FAULT_DIM})")
+    state = nominal_initial_state(params) if x0 is None else jnp.asarray(x0, dtype=jnp.float64)
+    states = [np.asarray(state)]
+    residuals = []
+    times = [float(start_time)]
+    t = float(start_time)
+    healthy = jnp.zeros(HEALTHY_DIM, dtype=jnp.float64)
+    for fault in sequence:
+        state, residual_next = _STEP_WITH_OUTPUT_JIT(
+            state, jnp.asarray(t, dtype=jnp.float64), fault, params, healthy
+        )
+        t += params.dt
+        states.append(np.asarray(state))
+        residuals.append(np.asarray(residual_next))
+        times.append(t)
+    return np.asarray(times), np.asarray(states), np.asarray(residuals)

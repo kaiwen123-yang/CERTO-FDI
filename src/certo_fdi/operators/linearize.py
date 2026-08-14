@@ -7,7 +7,12 @@ from jax import config
 import jax.numpy as jnp
 import numpy as np
 
-from certo_fdi.closed_loop.model import NX, NY, combined_step_output
+from certo_fdi.closed_loop.model import (
+    HEALTHY_DIM,
+    NX,
+    NY,
+    combined_step_output_with_healthy,
+)
 from certo_fdi.faults.layout import FAULT_DIM, zeros
 from certo_fdi.types import ClosedLoopParams
 
@@ -20,6 +25,8 @@ class StepLinearization:
     e: np.ndarray
     c_bar: np.ndarray
     d_bar: np.ndarray
+    g: np.ndarray | None = None
+    h_bar: np.ndarray | None = None
 
 
 def linearize_step(
@@ -31,11 +38,17 @@ def linearize_step(
     theta0 = zeros()
     t_jax = jnp.asarray(t, dtype=jnp.float64)
 
-    fn = lambda state, fault: combined_step_output(state, t_jax, fault, params)
-    jac_x, jac_theta = jax.jacfwd(fn, argnums=(0, 1))(x, theta0)
+    healthy0 = jnp.zeros(HEALTHY_DIM, dtype=jnp.float64)
+    fn = lambda state, fault, healthy: combined_step_output_with_healthy(
+        state, t_jax, fault, healthy, params
+    )
+    jac_x, jac_theta, jac_healthy = jax.jacfwd(fn, argnums=(0, 1, 2))(
+        x, theta0, healthy0
+    )
 
     jac_x_np = np.asarray(jac_x)
     jac_theta_np = np.asarray(jac_theta)
+    jac_healthy_np = np.asarray(jac_healthy)
     if jac_x_np.shape != (NX + NY, NX):
         raise RuntimeError(f"unexpected state Jacobian shape {jac_x_np.shape}")
     if jac_theta_np.shape != (NX + NY, FAULT_DIM):
@@ -46,6 +59,8 @@ def linearize_step(
         e=jac_theta_np[:NX, :],
         c_bar=jac_x_np[NX:, :],
         d_bar=jac_theta_np[NX:, :],
+        g=jac_healthy_np[:NX, :],
+        h_bar=jac_healthy_np[NX:, :],
     )
 
 
@@ -59,26 +74,31 @@ def linearize_nominal_trajectory(
     if len(states) < 2:
         raise ValueError("at least two states are required")
 
-    def fn(state, time, fault):
-        return combined_step_output(state, time, fault, params)
+    def fn(state, time, fault, healthy):
+        return combined_step_output_with_healthy(state, time, fault, healthy, params)
 
-    jacobian_fn = jax.jit(jax.jacfwd(fn, argnums=(0, 2)))
+    jacobian_fn = jax.jit(jax.jacfwd(fn, argnums=(0, 2, 3)))
     theta0 = zeros()
+    healthy0 = jnp.zeros(HEALTHY_DIM, dtype=jnp.float64)
     output: list[StepLinearization] = []
     for k in range(len(states) - 1):
-        jac_x, jac_theta = jacobian_fn(
+        jac_x, jac_theta, jac_healthy = jacobian_fn(
             jnp.asarray(states[k], dtype=jnp.float64),
             jnp.asarray(times[k], dtype=jnp.float64),
             theta0,
+            healthy0,
         )
         jac_x_np = np.asarray(jac_x)
         jac_theta_np = np.asarray(jac_theta)
+        jac_healthy_np = np.asarray(jac_healthy)
         output.append(
             StepLinearization(
                 a=jac_x_np[:NX, :],
                 e=jac_theta_np[:NX, :],
                 c_bar=jac_x_np[NX:, :],
                 d_bar=jac_theta_np[NX:, :],
+                g=jac_healthy_np[:NX, :],
+                h_bar=jac_healthy_np[NX:, :],
             )
         )
     return output

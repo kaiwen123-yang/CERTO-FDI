@@ -15,11 +15,30 @@ def assemble_window_operator(
     fault applied on interval ``[k0+b, k0+b+1]``.
     """
 
+    return _assemble_input_operator(linearizations, column_indices, "e", "d_bar")
+
+
+def assemble_healthy_window_operator(
+    linearizations: list[StepLinearization],
+    column_indices: tuple[int, ...] | list[int],
+) -> np.ndarray:
+    return _assemble_input_operator(linearizations, column_indices, "g", "h_bar")
+
+
+def _assemble_input_operator(
+    linearizations: list[StepLinearization],
+    column_indices: tuple[int, ...] | list[int],
+    state_field: str,
+    output_field: str,
+) -> np.ndarray:
     w = len(linearizations)
     if w == 0:
         raise ValueError("window must contain at least one step")
     cols = list(column_indices)
-    ny = linearizations[0].d_bar.shape[0]
+    first_output = getattr(linearizations[0], output_field)
+    if first_output is None:
+        raise ValueError(f"linearization does not contain {output_field}")
+    ny = first_output.shape[0]
     nx = linearizations[0].a.shape[0]
     p = len(cols)
     operator = np.zeros((ny * w, p * w), dtype=float)
@@ -27,9 +46,13 @@ def assemble_window_operator(
     for b in range(w):
         row_b = slice(b * ny, (b + 1) * ny)
         col_b = slice(b * p, (b + 1) * p)
-        operator[row_b, col_b] = linearizations[b].d_bar[:, cols]
+        direct = getattr(linearizations[b], output_field)
+        state_input = getattr(linearizations[b], state_field)
+        if direct is None or state_input is None:
+            raise ValueError(f"linearization lacks {state_field}/{output_field}")
+        operator[row_b, col_b] = direct[:, cols]
 
-        state_effect = linearizations[b].e[:, cols]
+        state_effect = state_input[:, cols]
         for a in range(b + 1, w):
             row_a = slice(a * ny, (a + 1) * ny)
             operator[row_a, col_b] = linearizations[a].c_bar @ state_effect

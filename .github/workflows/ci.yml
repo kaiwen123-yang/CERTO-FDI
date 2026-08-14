@@ -26,4 +26,12 @@ jobs:
         run: bash scripts/check_repo_hygiene.sh
 
       - name: Unit tests (CPU, no slow marks, no external storage)
+        env:
+          JAX_PLATFORMS: cpu
+          PYTEST_DISABLE_PLUGIN_AUTOLOAD: "1"
         run: python -m pytest -q -m "not slow"
+
+      - name: Closed-loop CPU smoke
+        env:
+          JAX_PLATFORMS: cpu
+        run: python scripts/ci_smoke.py

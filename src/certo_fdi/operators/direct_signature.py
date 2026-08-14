@@ -4,10 +4,31 @@ import numpy as np
 
 import jax.numpy as jnp
 
-from certo_fdi.closed_loop.model import controller_command
+from certo_fdi.control.computed_torque import computed_torque_command
+from certo_fdi.control.pd_gravity import pd_gravity_command
 from certo_fdi.dynamics.two_link import ee_jacobian, link1_jacobian, payload_torque_per_kg
 from certo_fdi.faults.layout import SCALAR_MODES
 from certo_fdi.types import ClosedLoopParams
+
+
+def _direct_controller_command(
+    q: np.ndarray,
+    velocity: np.ndarray,
+    time: float,
+    params: ClosedLoopParams,
+) -> np.ndarray:
+    # This comparator executes outside the differentiated closed-loop graph.
+    # Python dispatch prevents lax.cond from compiling a fresh executable in
+    # every sample of the archived direct-signature loop.
+    if int(params.controller.kind) == 0:
+        value = computed_torque_command(
+            jnp.asarray(q), jnp.asarray(velocity), time, params.plant, params.controller
+        )
+    else:
+        value = pd_gravity_command(
+            jnp.asarray(q), jnp.asarray(velocity), time, params.plant, params.controller
+        )
+    return np.asarray(value)
 
 
 def observer_filter(force_sequence: np.ndarray, params: ClosedLoopParams) -> np.ndarray:
@@ -40,11 +61,7 @@ def direct_raw_torque_sequence(
     for x, t in zip(states, times):
         q = np.asarray(x[0:2], dtype=float)
         v = np.asarray(x[2:4], dtype=float)
-        tau_cmd = np.asarray(
-            controller_command(
-                jnp.asarray(q), jnp.asarray(v), float(t), params
-            )
-        )
+        tau_cmd = _direct_controller_command(q, v, float(t), params)
         if mode_name == "actuator_gain_j1":
             force = np.array([-tau_cmd[0], 0.0])
         elif mode_name == "actuator_gain_j2":
@@ -90,12 +107,8 @@ def direct_raw_torque_sequence(
             # A centered time difference avoids creating one XLA derivative
             # executable per sample while retaining the provisional comparison.
             h = 1e-5
-            plus = np.asarray(
-                controller_command(jnp.asarray(q), jnp.asarray(v), float(t) + h, params)
-            )
-            minus = np.asarray(
-                controller_command(jnp.asarray(q), jnp.asarray(v), float(t) - h, params)
-            )
+            plus = _direct_controller_command(q, v, float(t) + h, params)
+            minus = _direct_controller_command(q, v, float(t) - h, params)
             force = -(plus - minus) / (2.0 * h)
         else:
             raise KeyError(mode_name)

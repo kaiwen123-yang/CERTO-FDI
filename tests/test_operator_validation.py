@@ -9,6 +9,7 @@ from certo_fdi.operators.hessian_bounds import (
     constant_fault_window_response,
     window_response_derivatives,
 )
+from certo_fdi.operators.direct_signature import direct_filtered_signature
 from certo_fdi.operators.linearize import linearize_nominal_trajectory
 from certo_fdi.operators.window import (
     assemble_healthy_window_operator,
@@ -83,3 +84,15 @@ def test_interval_end_operator_has_direct_diagonal_and_zero_upper_triangle(param
         )
         if row + 1 < 4:
             np.testing.assert_allclose(operator[2 * row : 2 * row + 2, row + 1 :], 0.0)
+
+
+def test_archived_delay_comparator_dispatches_both_controllers_without_lax_loop(params):
+    for kind in (0, 1):
+        configured = params._replace(controller=params.controller._replace(kind=kind))
+        times, states, _ = simulate_constant_fault(configured, np.asarray(zeros()), 5)
+        signature = direct_filtered_signature(
+            "command_delay", states[:-1], times[:-1], configured
+        )
+        assert signature is not None
+        assert signature.shape == (10,)
+        assert np.isfinite(signature).all()

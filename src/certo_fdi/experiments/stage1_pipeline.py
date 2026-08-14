@@ -55,9 +55,11 @@ def _controller_runs(config: dict[str, Any], base_params: Any) -> list[Controlle
     output = []
     mapping = {"computed_torque": 0, "pd_gravity": 1}
     for name in config.get("controllers", ["computed_torque"]):
+        print(f"STAGE=nominal_linearization CONTROLLER={name} STATUS=START", flush=True)
         params = base_params._replace(controller=base_params.controller._replace(kind=mapping[name]))
         times, states, residuals, linearizations = prepare_nominal(config, params)
         output.append(ControllerRun(name, params, times, states, residuals, linearizations))
+        print(f"STAGE=nominal_linearization CONTROLLER={name} STATUS=COMPLETE", flush=True)
         jax.clear_caches()
         gc.collect()
     return output
@@ -89,6 +91,10 @@ def run_operators(
     validation_rows: list[dict[str, Any]] = []
     for run in runs:
         for start in window_starts(config):
+            print(
+                f"STAGE=operators CONTROLLER={run.name} WINDOW={start} STATUS=START",
+                flush=True,
+            )
             end = start + window_length
             linearizations = run.linearizations[start:end]
             for mode, (index, provisional) in SCALAR_MODES.items():
@@ -172,6 +178,10 @@ def run_operators(
                         "passed": nonlinear_relative < 5e-3,
                     }
                 )
+            print(
+                f"STAGE=operators CONTROLLER={run.name} WINDOW={start} STATUS=COMPLETE",
+                flush=True,
+            )
     csv_path = output_dir / "stage1_closedloop_operators.csv"
     write_csv_with_schema(
         rows,

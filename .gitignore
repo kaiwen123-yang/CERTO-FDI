@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+.hypothesis/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Results and data must live on the external storage root, never in git
+results/
+runs/
+data/
+audit/
+*.npz
+*.parquet
+*.pkl
+*.h5
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Secrets / local env
+.env
+*.env
+!configs/paths.example.env
+*.pem
+id_rsa*
+id_ed25519*
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

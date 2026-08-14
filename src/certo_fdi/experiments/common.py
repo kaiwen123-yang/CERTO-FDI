@@ -15,6 +15,7 @@ from certo_fdi.closed_loop.model import simulate_constant_fault
 from certo_fdi.config import build_closed_loop_params, load_yaml
 from certo_fdi.faults.layout import zeros
 from certo_fdi.operators.linearize import linearize_nominal_trajectory
+from certo_fdi.paths import require_external_run_root
 
 
 def load_experiment(config_path: str | Path):
@@ -42,7 +43,7 @@ def window_starts(config: dict[str, Any]) -> list[int]:
 
 
 def ensure_output_dir(config: dict[str, Any]) -> Path:
-    output_dir = Path(config["output_dir"])
+    output_dir = require_external_run_root() / "results"
     output_dir.mkdir(parents=True, exist_ok=True)
     return output_dir
 

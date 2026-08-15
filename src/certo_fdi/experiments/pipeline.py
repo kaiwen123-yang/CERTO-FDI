@@ -274,9 +274,15 @@ def extract_features(model, ws: WindowSet, tc: TorchChain, device: str, batch_si
         ep.append(batch["episode_index"].numpy())
         start.append(batch["start"].numpy())
     keep_names = [nme for nme in names if nme != "post_residual"]
+
+    def _fin(a: list[np.ndarray]) -> np.ndarray:
+        # float64 and finite: overflowing float32 statistics (e.g. squared messages on
+        # extreme fault windows) are clipped to +-1e15 so downstream heads never see inf/nan
+        return np.nan_to_num(np.concatenate(a).astype(np.float64), nan=0.0, posinf=1e15, neginf=-1e15).clip(-1e15, 1e15)
+
     return WindowFeatures(
-        z_resid=np.concatenate(z_resid), z_rep=np.concatenate(z_rep), z_gmo=np.concatenate(z_gmo), ctx=np.concatenate(ctx),
-        resid_ms=np.concatenate(resid_ms), pre_ms=np.concatenate(pre_ms), delta_pool=np.concatenate(delta_pool),
+        z_resid=_fin(z_resid), z_rep=_fin(z_rep), z_gmo=_fin(z_gmo), ctx=np.concatenate(ctx),
+        resid_ms=_fin(resid_ms), pre_ms=_fin(pre_ms), delta_pool=_fin(delta_pool),
         label=np.concatenate(label), family=np.concatenate(family), target=np.concatenate(target), episode=np.concatenate(ep), start=np.concatenate(start),
         rep_names=keep_names, n_links=n, n_rep_feats=len(keep_names),
     )

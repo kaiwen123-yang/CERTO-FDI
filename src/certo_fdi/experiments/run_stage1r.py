@@ -102,6 +102,7 @@ def main(argv=None) -> int:
     ap.add_argument("--skip-ablations", action="store_true")
     ap.add_argument("--only-aggregate", action="store_true")
     ap.add_argument("--reevaluate", action="store_true", help="re-run evaluation from existing checkpoints (overwrites per-run JSON)")
+    ap.add_argument("--redo-failed", action="store_true", help="only (re)evaluate jobs without a result JSON, from checkpoints when available")
     args = ap.parse_args(argv)
 
     cfg, cfg_sha = load_config(args.config)
@@ -150,12 +151,14 @@ def main(argv=None) -> int:
         out_json = runs_dir / f"{tag}.json"
         if args.only_aggregate or (out_json.exists() and not args.reevaluate):
             continue
+        if args.redo_failed and out_json.exists():
+            continue
         t0 = time.time()
         try:
             seed_everything(seed)
             train_ids = training_subset(bundle, frac, seed)
             ckpt_path = ckpt_dir / f"{name}_seed{seed}_frac{len(train_ids)}ep.pt"
-            if args.reevaluate and ckpt_path.exists():
+            if (args.reevaluate or args.redo_failed) and ckpt_path.exists():
                 info = load_checkpoint(name, ckpt_path, bundle, cfg, args.device)
                 _log(layout, log_lines, f"[{j + 1}/{len(jobs)}] loaded checkpoint {tag}")
             else:

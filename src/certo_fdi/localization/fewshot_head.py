@@ -22,10 +22,13 @@ def expected_calibration_error(prob: np.ndarray, y: np.ndarray, bins: int = 10) 
 
 
 def fewshot_attribution(train_x: np.ndarray, train_y: np.ndarray, test_x: np.ndarray, test_y: np.ndarray, test_group: np.ndarray, seed: int = 0) -> dict[str, float]:
+    train_x = np.nan_to_num(np.asarray(train_x, dtype=np.float64), nan=0.0, posinf=1e15, neginf=-1e15)
+    test_x = np.nan_to_num(np.asarray(test_x, dtype=np.float64), nan=0.0, posinf=1e15, neginf=-1e15)
     scaler = StandardScaler().fit(train_x)
+    clip = lambda a: np.clip(scaler.transform(a), -50.0, 50.0)  # heavy-tailed fault windows: bounded z-scores
     clf = LogisticRegression(max_iter=2000, C=0.5, random_state=seed)
-    clf.fit(scaler.transform(train_x), train_y)
-    prob = clf.predict_proba(scaler.transform(test_x))
+    clf.fit(clip(train_x), train_y)
+    prob = clf.predict_proba(clip(test_x))
     classes = clf.classes_
     pred = classes[prob.argmax(1)]
     # episode-level majority vote

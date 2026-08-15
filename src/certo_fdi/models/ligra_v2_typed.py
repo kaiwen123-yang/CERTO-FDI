@@ -5,8 +5,12 @@ Inputs per link (identical physical information to ``chain_gnn_aug``, see
 wrenches ``F_body, F, I V, I A``; declared context; invariant link descriptors. The typed
 inputs are processed by type (never compressed to a few hand-picked scalars): the encoder keeps
 twist- and wrench-typed hidden channels; the head emits an invariant coefficient per hidden
-wrench channel, ``dF_local = sum_k alpha_k h_k^(F)``, followed by the exact backward recursion
-``dF_i = dF_i^local + sum_c X_{c<-i}^T dF_c`` and ``d tau_i = S_i^T dF_i``.
+wrench channel, ``dF_local = sum_k alpha_k h_k^(F)``, followed by the backward recursion
+``dF_i = dF_i^local + (1 + g_i) sum_c X_{c<-i}^T dF_c`` (exact coadjoint transport; ``g_i`` is an
+invariant child-message gain — the same head freedom the PR #2 chain models have) and
+``d tau_i = S_i^T dF_i``. The gain was added as the single pre-registered numerical/optimization fix
+of Stage 1R-B after healthy-validation-only diagnostics (see the known-issues document); it does not
+change any typed transformation law.
 
 Anomaly representation: primary = residual only (identical head to the baseline); the reported
 per-link features are invariants of the messages (no coefficient energy). Internal messages are
@@ -52,6 +56,10 @@ class LiGRAv2Typed(nn.Module):
         nn.init.zeros_(self.head.bias)
         with torch.no_grad():
             self.head.weight.mul_(0.1)
+        self.gain = nn.Linear(d_s, 1)  # invariant child-message gain g_i (as in the PR #2 chain models)
+        nn.init.zeros_(self.gain.bias)
+        with torch.no_grad():
+            self.gain.weight.mul_(0.1)
         self.register_buffer("tau_scale", torch.ones(self.n))
 
     # ------------------------------------------------------------------ manifest / audit
@@ -102,10 +110,11 @@ class LiGRAv2Typed(nn.Module):
         tb, enc = self.encode(batch, tc)
         alpha = self.head(enc["h2"])  # (B,T,n,d_f) invariant coefficients
         local = torch.einsum("btnk,btnki->btni", alpha, enc["hF"]).reshape(b * t, n, 6) * self.tau_scale.mean()
-        dF = backward_recursion(tc, tb.X, local)  # exact coadjoint transport, no learned gain
+        child_gain = self.gain(enc["h2"]).reshape(b * t, n)  # invariant scalar per link
+        dF = backward_recursion(tc, tb.X, local, child_gain)  # exact coadjoint transport with invariant child gain
         delta_tau = (tb.S * dF).sum(-1)
         feats, names = typed_link_features(tb, dF, local, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
-        return ModelOutput(delta_tau=delta_tau.reshape(b, t, n), link_features=feats.reshape(b, t, n, -1), link_feature_names=names, messages=dF.reshape(b, t, n, 6), coeffs=alpha, hidden=enc["h2"], local=local.reshape(b, t, n, 6))
+        return ModelOutput(delta_tau=delta_tau.reshape(b, t, n), link_features=feats.reshape(b, t, n, -1), link_feature_names=names, messages=dF.reshape(b, t, n, 6), coeffs=alpha, hidden=enc["h2"], local=local.reshape(b, t, n, 6), child_gain=child_gain.reshape(b, t, n))
 
 
 def build_ligra_v2(tc: TorchChain, ctx_dim: int, cfg_model: dict) -> LiGRAv2Typed:

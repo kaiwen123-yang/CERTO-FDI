@@ -40,7 +40,8 @@ plant_mismatch:
     q_std_rad: 0.0002
     qd_std_rad_s: 0.004
     tau_std_nm: 0.05
-  acceleration_estimator: causal_savgol   # causal second-difference smoothing on measured q
+  acceleration_estimator: causal_savgol   # causal quadratic Savitzky-Golay derivative of qd_meas
+  acceleration_window_samples: 21         # 42 ms at 500 Hz
 
 pilot:
   healthy_episodes: 96

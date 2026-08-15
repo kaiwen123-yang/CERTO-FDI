@@ -344,8 +344,27 @@ class MujocoPlant:
         self.model.body_ipos[b] = c
         self.model.body_inertia[b] = w
         self.model.body_iquat[b] = quat
-        mujoco.mj_setConst(self.model, self.data)
+        self.recompute_constants()
         self.chain = chain_from_mujoco(self.model)
+
+    def recompute_constants(self) -> None:
+        """Recompute derived model constants without disturbing the simulation state.
+
+        ``mj_setConst`` evaluates the model at ``qpos0`` using ``data`` as scratch space and
+        would otherwise reset the state mid-episode.
+        """
+        d = self.data
+        saved = (d.time, d.qpos.copy(), d.qvel.copy(), d.qacc.copy(), d.qfrc_applied.copy(), d.xfrc_applied.copy(), d.act.copy() if d.act.size else None)
+        self._mujoco.mj_setConst(self.model, d)
+        d.time = saved[0]
+        d.qpos[:] = saved[1]
+        d.qvel[:] = saved[2]
+        d.qacc[:] = saved[3]
+        d.qfrc_applied[:] = saved[4]
+        d.xfrc_applied[:] = saved[5]
+        if saved[6] is not None:
+            d.act[:] = saved[6]
+        self._mujoco.mj_forward(self.model, d)
 
 
 def write_audit(audit: dict, path: Path) -> None:

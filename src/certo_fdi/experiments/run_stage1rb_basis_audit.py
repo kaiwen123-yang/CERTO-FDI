@@ -326,21 +326,34 @@ def main(argv=None) -> int:
     grid_rows = []
     curves: dict[str, list[dict]] = {"basis12": [], "free6": [], "basis11_no_Fbody": []}
     _log(layout, lines, f"oracle lambda selection on {nwv} healthy VAL windows ({len(val_ids)} episodes), grid {len(lam1_grid)}x{len(lam2_grid)}")
+    grid_chunk = int(ba.get("oracle_grid_chunk_windows", 184))
+    chunks = [slice(c0, min(c0 + grid_chunk, nwv)) for c0 in range(0, nwv, grid_chunk)]
     for name, key in (("basis12", "Mb"), ("free6", "Mf"), ("basis11_no_Fbody", "Mr")):
         M = ops_val[key]
         for l1 in lam1_grid:
             for l2 in lam2_grid:
                 tt = time.time()
-                o_m = solve_regularized(M, ops_val["e"], l1, l2, row_mask=mask, want_edf=False)
-                r_held = (ops_val["e"] - o_m["pred"])[held].reshape(nwv, -1, n)
-                held_rmse_w = float((r_held**2).mean().sqrt())
-                held_rmse_nm = float(((r_held * sigma_j) ** 2).mean().sqrt())
-                o_f = solve_regularized(M, ops_val["e"], l1, l2, want_edf=True)
-                rr = rmse_rows(o_f["pred"], ops_val["e"])
-                row = base(model=f"oracle_{name}", split="VAL", **{"lambda_tikhonov": l1, "lambda_smoothness": l2, "heldout_rmse_weighted": held_rmse_w, "heldout_rmse_nm": held_rmse_nm, "insample_rmse_weighted": float((rr["rmse_w"] ** 2).mean().sqrt()), "insample_rmse_nm": float((rr["rmse_nm"] ** 2).mean().sqrt()), "pre_rmse_nm": float((rr["pre_rmse_nm"] ** 2).mean().sqrt()), "edf_mean_per_window": float(o_f["edf"].mean()), "edf_per_observation": float(o_f["edf"].mean() / (W * n)), "n_windows": int(nwv), "phase": "lambda_grid", "solve_seconds": time.time() - tt})
+                acc = {"held_w": 0.0, "held_nm": 0.0, "n_held": 0, "in_w": 0.0, "in_nm": 0.0, "pre_nm": 0.0, "n_in": 0, "edf": 0.0}
+                for sl in chunks:
+                    e_c = ops_val["e"][sl]
+                    o_m = solve_regularized(M[sl], e_c, l1, l2, row_mask=mask[sl], want_edf=False)
+                    r_held = (e_c - o_m["pred"])[held[sl]].reshape(-1, n)
+                    acc["held_w"] += float((r_held**2).sum())
+                    acc["held_nm"] += float(((r_held * sigma_j) ** 2).sum())
+                    acc["n_held"] += int(r_held.numel())
+                    o_f = solve_regularized(M[sl], e_c, l1, l2, want_edf=True)
+                    rr = rmse_rows(o_f["pred"], e_c)
+                    nw_c = int(e_c.shape[0])
+                    acc["in_w"] += float((rr["rmse_w"] ** 2).sum()) * W * n
+                    acc["in_nm"] += float((rr["rmse_nm"] ** 2).sum()) * W * n
+                    acc["pre_nm"] += float((rr["pre_rmse_nm"] ** 2).sum()) * W * n
+                    acc["n_in"] += nw_c * W * n
+                    acc["edf"] += float(o_f["edf"].sum())
+                    del o_m, o_f
+                row = base(model=f"oracle_{name}", split="VAL", **{"lambda_tikhonov": l1, "lambda_smoothness": l2, "heldout_rmse_weighted": (acc["held_w"] / max(acc["n_held"], 1)) ** 0.5, "heldout_rmse_nm": (acc["held_nm"] / max(acc["n_held"], 1)) ** 0.5, "insample_rmse_weighted": (acc["in_w"] / acc["n_in"]) ** 0.5, "insample_rmse_nm": (acc["in_nm"] / acc["n_in"]) ** 0.5, "pre_rmse_nm": (acc["pre_nm"] / acc["n_in"]) ** 0.5, "edf_mean_per_window": acc["edf"] / nwv, "edf_per_observation": acc["edf"] / nwv / (W * n), "n_windows": int(nwv), "phase": "lambda_grid", "solve_seconds": time.time() - tt})
                 grid_rows.append(row)
                 curves[name].append(row)
-                del o_m, o_f
+                _log(layout, lines, f"grid {name} l1={l1} l2={l2}: heldout {row['heldout_rmse_nm']:.4f} insample {row['insample_rmse_nm']:.4f} edf/obs {row['edf_per_observation']:.3f} ({row['solve_seconds']:.0f}s)")
         torch.cuda.empty_cache() if dev.startswith("cuda") else None
     chosen = {}
     heldout_best = {}
@@ -368,7 +381,7 @@ def main(argv=None) -> int:
     final_rows = []
     per_window_rows = []
     zero_rank_stats = {"basis12": [99, -1], "free6": [99, -1]}
-    chunk_eps = 8
+    chunk_eps = 4
     for part, ids in healthy_ids.items():
         ids = ids[:max_eps] if max_eps else ids
         for c0 in range(0, len(ids), chunk_eps):

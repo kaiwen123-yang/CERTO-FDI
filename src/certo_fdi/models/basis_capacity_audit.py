@@ -198,14 +198,20 @@ def solve_regularized(M: torch.Tensor, e: torch.Tensor, lam1: float, lam2: float
     D = MtM + (lam1 + lam2 * c)[None, :, None, None] * eye  # (W,T,d,d)
     lam2sq = lam2 * lam2
     # forward sweep: F_t = D_t - lam2^2 F_{t-1}^{-1};  y_t = r_t + lam2 F_{t-1}^{-1} y_{t-1}   (E = -lam2 I)
+    def spd_inv(A: torch.Tensor) -> torch.Tensor:  # symmetric positive definite blocks (Cholesky)
+        L, info = torch.linalg.cholesky_ex(A)
+        if bool((info != 0).any()):
+            return torch.linalg.inv(A)
+        return torch.cholesky_inverse(L)
+
     F_inv = torch.empty_like(D)
     y = torch.empty_like(r)
-    Fi = torch.linalg.inv(D[:, 0])
+    Fi = spd_inv(D[:, 0])
     F_inv[:, 0] = Fi
     y[:, 0] = r[:, 0]
     for t in range(1, Tn):
         Ft = D[:, t] - lam2sq * Fi
-        Fi = torch.linalg.inv(Ft)
+        Fi = spd_inv(Ft)
         F_inv[:, t] = Fi
         y[:, t] = r[:, t] + lam2 * (F_inv[:, t - 1] @ y[:, t - 1][..., None])[..., 0]
     # back substitution: x_t = F_t^{-1} (y_t + lam2 x_{t+1})
@@ -221,9 +227,9 @@ def solve_regularized(M: torch.Tensor, e: torch.Tensor, lam1: float, lam2: float
         Gi = None
         for t in range(Tn - 1, -1, -1):
             Gt = D[:, t] if Gi is None else D[:, t] - lam2sq * Gi
-            Ainv_tt = torch.linalg.inv(Gt if t == 0 else Gt - lam2sq * F_inv[:, t - 1])
+            Ainv_tt = spd_inv(Gt if t == 0 else Gt - lam2sq * F_inv[:, t - 1])
             edf = edf + torch.einsum("wij,wji->w", Ainv_tt, MtM[:, t])
-            Gi = torch.linalg.inv(Gt)
+            Gi = spd_inv(Gt)
         out["edf"] = edf
     return out
 

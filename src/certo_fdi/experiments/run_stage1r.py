@@ -183,6 +183,21 @@ def main(argv=None) -> int:
         for k in RESULT_TABLES:
             tables[k] += res.get(k, [])
         train_infos += res.get("train_info", [])
+    # model-free physics baselines (GMO fixed / dynamic thresholds), healthy-val calibrated
+    try:
+        from certo_fdi.experiments.physics_baselines import gmo_baseline_rows
+
+        pb_json = runs_dir / "physics_baselines.gmo.json"
+        if not pb_json.exists() or args.reevaluate:
+            brow = base_row(layout, repo_root, cfg_sha, seed=seeds[0], split="", model="gmo")
+            brow["training_fraction"] = 1.0
+            det, ood = gmo_baseline_rows(bundle, cfg, brow, quantile, "cpu")
+            write_json(pb_json, {"event_detection": det, "ood_detection": ood})
+        pb = json.loads(pb_json.read_text())
+        tables["event_detection"] += pb["event_detection"]
+        tables["ood_detection"] += pb["ood_detection"]
+    except Exception as e:  # pragma: no cover
+        _log(layout, log_lines, f"physics baselines failed: {type(e).__name__}: {e}")
     results = layout.results
     write_csv(results / "stage1r_healthy_prediction.csv", tables["healthy_prediction"])
     write_csv(results / "stage1r_event_detection.csv", tables["event_detection"])

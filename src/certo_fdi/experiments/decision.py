@@ -98,7 +98,7 @@ def build_summary_tables(tables: dict[str, list[dict]], layout, repo_root: Path,
     # ---- per-model seed-mean metrics used by the decision
     metrics: dict[str, dict[str, Any]] = {}
     if not det.empty:
-        d = det[(det.density_variant == PRIMARY_VARIANT) & (det.family == "ALL") & (det.severity == "ALL")]
+        d = det[((det.density_variant == PRIMARY_VARIANT) | (det.model.isin(["gmo_fixed", "gmo_dynamic"]))) & (det.family == "ALL") & (det.severity == "ALL")]
         for model, g in d.groupby("model"):
             mm: dict[str, Any] = {}
             g1 = g[g.training_fraction >= 1.0]
@@ -115,7 +115,7 @@ def build_summary_tables(tables: dict[str, list[dict]], layout, repo_root: Path,
                 mm[f"auroc_OOD_frac{frac:.2f}"] = float(gf["auroc"].mean()) if len(gf) else float("nan")
             metrics[model] = mm
         # per family OOD (for the >=2 families / >=2 seeds criterion)
-        dfam = det[(det.density_variant == PRIMARY_VARIANT) & (det.severity == "ALL") & (det.split == "OOD") & (det.training_fraction >= 1.0)]
+        dfam = det[((det.density_variant == PRIMARY_VARIANT) | (det.model.isin(["gmo_fixed", "gmo_dynamic"]))) & (det.severity == "ALL") & (det.split == "OOD") & (det.training_fraction >= 1.0)]
         for model, g in dfam.groupby("model"):
             metrics.setdefault(model, {})["auroc_OOD_by_family_seed"] = {fam: {int(s): float(v) for s, v in zip(gg["seed"], gg["auroc"])} for fam, gg in g.groupby("family")}
     if not loc.empty:
@@ -350,7 +350,7 @@ def decide_and_write_memo(summary: dict, tables: dict[str, list[dict]], layout, 
         "| model | params | AUROC S0 | AUROC S1 | AUROC S2 | AUROC S3 | AUROC S4 | AUROC OOD | event AUROC ALL | FPR@TPR90 ALL | top-1 loc ALL (pattern / argmax) | RMSE ratio S0 | RMSE ratio OOD | frame drift (median rel.) |",
         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
-    for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only", "ligra_free_output", "ligra_mlp_encoder", "ligra_unshared", "gru_no_rnea"]:
+    for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only", "gmo_fixed", "gmo_dynamic", "ligra_free_output", "ligra_mlp_encoder", "ligra_unshared", "gru_no_rnea"]:
         m = metrics.get(model)
         if not m:
             continue
@@ -382,7 +382,7 @@ def decide_and_write_memo(summary: dict, tables: dict[str, list[dict]], layout, 
     if fams:
         lines.append("| model | " + " | ".join(fams) + " |")
         lines.append("|---|" + "---|" * len(fams))
-        for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only"]:
+        for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only", "gmo_fixed", "gmo_dynamic"]:
             m = metrics.get(model, {}).get("auroc_OOD_by_family_seed", {})
             if m:
                 lines.append(f"| {model} | " + " | ".join(f3(float(np.mean(list(m.get(f, {0: float('nan')}).values())))) for f in fams) + " |")

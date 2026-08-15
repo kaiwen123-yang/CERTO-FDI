@@ -12,14 +12,15 @@ import torch
 from certo_fdi.dynamics.rnea_torch import TorchChain, TypedBatch
 from certo_fdi.geometry import torch_ops as T
 
+# NOTE: measured/commanded torque is deliberately NOT an input of the healthy correction
+# (its target is tau_meas - tau_nom; including tau_meas would let the network copy the
+# residual and explain faults away). Torque measurements enter only the anomaly stage.
 INVARIANT_FEATURES: list[tuple[str, str]] = [
     # (name, unit) — all transform as SCALAR
     ("q", "rad"),
     ("qd", "rad/s"),
     ("qdd_est", "rad/s^2"),
-    ("tau_meas", "N m"),
     ("tau_nom", "N m"),
-    ("e_tau", "N m"),
     ("V_I_V", "J (2x kinetic energy)"),
     ("A_I_A", "kg m^2/s^4"),
     ("V_I_A", "W"),
@@ -93,14 +94,14 @@ def link_physical_features(tc: TorchChain) -> torch.Tensor:
     return torch.stack([mass, eig[:, 0], eig[:, 1], eig[:, 2], s_i_s, dist, tc.armature, tc.link_length], -1)
 
 
-def invariant_features(tc: TorchChain, tb: TypedBatch, tau_meas: torch.Tensor, tau_nom: torch.Tensor) -> torch.Tensor:
-    """(B, n, len(INVARIANT_FEATURES)) invariant scalars."""
+def invariant_features(tc: TorchChain, tb: TypedBatch, tau_nom: torch.Tensor) -> torch.Tensor:
+    """(B, n, len(INVARIANT_FEATURES)) invariant scalars (no measured torque; see note above)."""
     I = tb.inertia
     I_inv = torch.linalg.inv(I)
     Vp = parent_twists(tc, tb)
     g = base_gravity_twist(tc, tb.X)
     feats = [
-        tb.q, tb.qd, tb.qdd, tau_meas, tau_nom, tau_meas - tau_nom,
+        tb.q, tb.qd, tb.qdd, tau_nom,
         _quad(tb.V, I, tb.V), _quad(tb.A, I, tb.A), _quad(tb.V, I, tb.A), _quad(tb.S, I, tb.S),
         (tb.S * tb.F_body).sum(-1), (tb.S * tb.F).sum(-1), (tb.V * tb.F).sum(-1), _quad(tb.F, I_inv, tb.F),
         (tb.V[..., :3] ** 2).sum(-1), (tb.A[..., :3] ** 2).sum(-1), (tb.F[..., 3:] ** 2).sum(-1), (tb.F_body[..., 3:] ** 2).sum(-1),
@@ -109,10 +110,10 @@ def invariant_features(tc: TorchChain, tb: TypedBatch, tau_meas: torch.Tensor, t
     return torch.stack(feats, -1)
 
 
-RAW_FEATURE_DIM = 6 * 6 + 5  # V,A,F_body,momentum,S,g (6 each) + q,qd,qdd,tau_meas,tau_nom
+RAW_FEATURE_DIM = 6 * 6 + 4  # V,A,F_body,momentum,S,g (6 each) + q,qd,qdd,tau_nom (no measured torque)
 
 
-def raw_features(tc: TorchChain, tb: TypedBatch, tau_meas: torch.Tensor, tau_nom: torch.Tensor) -> torch.Tensor:
+def raw_features(tc: TorchChain, tb: TypedBatch, tau_nom: torch.Tensor) -> torch.Tensor:
     """(B, n, RAW_FEATURE_DIM) raw components in the current link frames (NOT invariant)."""
     g = base_gravity_twist(tc, tb.X)
-    return torch.cat([tb.V, tb.A, tb.F_body, tb.momentum, tb.S, g, tb.q[..., None], tb.qd[..., None], tb.qdd[..., None], tau_meas[..., None], tau_nom[..., None]], -1)
+    return torch.cat([tb.V, tb.A, tb.F_body, tb.momentum, tb.S, g, tb.q[..., None], tb.qd[..., None], tb.qdd[..., None], tau_nom[..., None]], -1)

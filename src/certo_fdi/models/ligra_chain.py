@@ -118,7 +118,7 @@ class LiGRA(nn.Module):
 
     def features(self, tc: TorchChain, batch: dict, tb: TypedBatch) -> torch.Tensor:
         b, t, n = batch["q"].shape
-        f = invariant_features(tc, tb, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        f = invariant_features(tc, tb, batch["tau_nom"].reshape(b * t, n))
         return f.reshape(b, t, n, -1)
 
     @torch.no_grad()
@@ -193,7 +193,7 @@ class ChainGNN(nn.Module):
 
     def features(self, tc: TorchChain, batch: dict, tb: TypedBatch) -> torch.Tensor:
         b, t, n = batch["q"].shape
-        return raw_features(tc, tb, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n)).reshape(b, t, n, -1)
+        return raw_features(tc, tb, batch["tau_nom"].reshape(b * t, n)).reshape(b, t, n, -1)
 
     @torch.no_grad()
     def fit_normalizers(self, tc: TorchChain, batches: list[dict]) -> None:

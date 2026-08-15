@@ -100,7 +100,7 @@ def test_covariant_basis_columns_transform_as_wrenches(rng):
             pred = transform_typed(SpatialType.FORCE, B0[:, i, :, k], adjoints[i])
             np.testing.assert_allclose(B1[:, i, :, k], pred, atol=1e-9, err_msg=BASIS_NAMES[k])
     tau = torch.as_tensor(rng.normal(size=(5, n)))
-    f0, f1 = invariant_features(tc0, tb0, tau, tau).numpy(), invariant_features(tc1, tb1, tau, tau).numpy()
+    f0, f1 = invariant_features(tc0, tb0, tau).numpy(), invariant_features(tc1, tb1, tau).numpy()
     np.testing.assert_allclose(f0, f1, atol=1e-9)
     assert f0.shape[-1] == len(INVARIANT_FEATURES)
     p0, p1 = link_physical_features(tc0).numpy(), link_physical_features(tc1).numpy()

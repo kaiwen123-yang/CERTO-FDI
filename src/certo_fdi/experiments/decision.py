@@ -355,6 +355,23 @@ def decide_and_write_memo(summary: dict, tables: dict[str, list[dict]], layout, 
         if not m:
             continue
         lines.append(f"| {model} | {m.get('n_params', '')} | {f3(m.get('auroc_S0'))} | {f3(m.get('auroc_S1'))} | {f3(m.get('auroc_S2'))} | {f3(m.get('auroc_S3'))} | {f3(m.get('auroc_S4'))} | {f3(m.get('auroc_OOD'))} | {f3(m.get('event_auroc_ALL'))} | {f3(m.get('fpr90_ALL'))} | {f3(m.get('loc_top1_ALL'))} / {f3(m.get('loc_top1_ALL_argmax'))} | {f3(m.get('rmse_ratio_S0'))} | {f3(m.get('rmse_ratio_OOD'))} | {f3(m.get('frame_drift_median'))} |")
+    # supplementary: LiGRA vs every baseline (structured and generic) per axis
+    lines += ["", "## Supplementary: LiGRA minus each baseline (AUROC points; top-1 points; positive = LiGRA better)", "", "| baseline | S1 | S2 | S3 | S4 | OOD | ALL | top-1 loc (pattern) | top-1 loc (argmax) | RMSE ratio S0 (baseline − LiGRA) |", "|---|---|---|---|---|---|---|---|---|---|"]
+    for bmodel in ALL_BASELINE_POOL + ["rnea_only", "ligra_free_output", "ligra_mlp_encoder", "ligra_unshared", "gru_no_rnea"]:
+        bm_ = metrics.get(bmodel)
+        if not bm_:
+            continue
+        cells = []
+        for s_ in ("S1", "S2", "S3", "S4", "OOD", "ALL"):
+            a, b = L.get(f"auroc_{s_}", float("nan")), bm_.get(f"auroc_{s_}", float("nan"))
+            cells.append(f"{100 * (a - b):+.1f}" if (a == a and b == b) else "n/a")
+        a, b = L.get("loc_top1_ALL", float("nan")), bm_.get("loc_top1_ALL", float("nan"))
+        cells.append(f"{100 * (a - b):+.1f}" if (a == a and b == b) else "n/a")
+        a, b = L.get("loc_top1_ALL_argmax", float("nan")), bm_.get("loc_top1_ALL_argmax", float("nan"))
+        cells.append(f"{100 * (a - b):+.1f}" if (a == a and b == b) else "n/a")
+        a, b = L.get("rmse_ratio_S0", float("nan")), bm_.get("rmse_ratio_S0", float("nan"))
+        cells.append(f"{(b - a):+.3f}" if (a == a and b == b) else "n/a")
+        lines.append(f"| {bmodel} | " + " | ".join(cells) + " |")
     lines += ["", "## Sample-efficiency curves (window AUROC ALL by healthy training fraction)", "", "| model | 10% | 25% | 50% | 100% |", "|---|---|---|---|---|"]
     for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp"]:
         m = metrics.get(model, {})
@@ -369,6 +386,17 @@ def decide_and_write_memo(summary: dict, tables: dict[str, list[dict]], layout, 
             m = metrics.get(model, {}).get("auroc_OOD_by_family_seed", {})
             if m:
                 lines.append(f"| {model} | " + " | ".join(f3(float(np.mean(list(m.get(f, {0: float('nan')}).values())))) for f in fams) + " |")
+    loc_df = _df(tables["localization"])
+    if not loc_df.empty:
+        lp = loc_df[(loc_df.density_variant == PRIMARY_VARIANT) & (loc_df.split == "ALL") & (loc_df.training_fraction >= 1.0)]
+        fams_l = ["ALL", "F1_actuator", "F2_friction", "F3_payload", "F4_contact", "F5_encoder"]
+        for rule in ("pattern", "argmax", "distal"):
+            lines += ["", f"## Localization top-1 by family (rule = {rule}, all splits, fraction 1.0, seed means)", "", "| model | " + " | ".join(fams_l) + " |", "|---|" + "---|" * len(fams_l)]
+            for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only", "ligra_free_output", "ligra_mlp_encoder", "ligra_unshared"]:
+                g = lp[(lp.model == model) & (lp.rule == rule)]
+                if g.empty:
+                    continue
+                lines.append(f"| {model} | " + " | ".join(f3(float(g[g.family == f]["top1"].mean())) if (g.family == f).any() else "n/a" for f in fams_l) + " |")
     lines += [
         "",
         "## Interpretation limits and prohibited claims (kept)",

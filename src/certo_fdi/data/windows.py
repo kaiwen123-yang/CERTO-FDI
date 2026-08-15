@@ -16,7 +16,10 @@ from certo_fdi.data.schema import FAULT_FAMILIES, TOOLS
 from certo_fdi.data.splits import window_index
 from certo_fdi.dynamics.chain_model import ChainModel
 
-SIGNAL_KEYS = ("q_meas", "qd_meas", "qdd_est", "tau_meas", "tau_nominal", "r_gmo")
+SIGNAL_KEYS = ("q_meas", "qd_meas", "qdd_est", "tau_meas", "tau_nominal", "r_gmo", "qdd_true")
+# ``qdd_true`` is loaded ONLY for the Stage 1R-B oracle acceleration diagnostic (WindowSet(acceleration_source=
+# "qdd_true")); the official model input is the causal estimate ``qdd_est`` and no encoder ever reads a
+# ``qdd_true`` batch field (tests/test_stage1rb_no_leakage.py).
 # Declared *physical* context given to models and density heads: controller id, speed scale,
 # tool mass, tool CoM z, temperature proxy, noise level. Configuration-region and
 # trajectory-family ids are deliberately excluded: unseen configurations must be handled by
@@ -81,14 +84,18 @@ def load_episode_arrays(row: dict[str, Any], base_chain: ChainModel) -> EpisodeA
 class WindowSet:
     """A collection of windows over a list of episodes; yields tensors for the models."""
 
-    def __init__(self, episodes: list[EpisodeArrays], window: int, stride: int, device: str = "cpu", *, min_start: int = 0):
+    def __init__(self, episodes: list[EpisodeArrays], window: int, stride: int, device: str = "cpu", *, min_start: int = 0, acceleration_source: str = "qdd_est"):
         """``min_start``: first admissible window start sample (settle period after the episode
-        starts from rest; used for evaluation windows)."""
+        starts from rest; used for evaluation windows). ``acceleration_source``: which stored
+        acceleration fills ``batch["qdd"]`` — ``qdd_est`` (official) or ``qdd_true`` (diagnostic only)."""
+        if acceleration_source not in ("qdd_est", "qdd_true"):
+            raise ValueError(acceleration_source)
         self.episodes = episodes
         self.window = window
         self.stride = stride
         self.device = device
         self.min_start = int(min_start)
+        self.acceleration_source = acceleration_source
         self.index: list[tuple[int, int]] = []
         for e_i, ep in enumerate(episodes):
             for s in window_index(ep.n_samples, window, stride):
@@ -98,7 +105,7 @@ class WindowSet:
 
     def _stack(self) -> None:
         # Pre-stack per-episode arrays into torch tensors for fast slicing.
-        self._sig = {k: [torch.as_tensor(ep.signals[k]) for ep in self.episodes] for k in SIGNAL_KEYS}
+        self._sig = {k: [torch.as_tensor(ep.signals[k]) for ep in self.episodes] for k in SIGNAL_KEYS if all(k in ep.signals for ep in self.episodes)}
         self._ctx = torch.stack([torch.as_tensor(ep.ctx[list(MODEL_CONTEXT_INDICES)]) for ep in self.episodes])
         self._inertia = torch.stack([torch.as_tensor(ep.inertia) for ep in self.episodes])
         self._active = [torch.as_tensor(ep.labels["fault_active"].astype(np.float32)) for ep in self.episodes]
@@ -118,7 +125,7 @@ class WindowSet:
             e, s = self.index[i]
             out["q"].append(self._sig["q_meas"][e][s : s + W])
             out["qd"].append(self._sig["qd_meas"][e][s : s + W])
-            out["qdd"].append(self._sig["qdd_est"][e][s : s + W])
+            out["qdd"].append(self._sig[self.acceleration_source][e][s : s + W])
             out["tau_meas"].append(self._sig["tau_meas"][e][s : s + W])
             out["tau_nom"].append(self._sig["tau_nominal"][e][s : s + W])
             out["r_gmo"].append(self._sig["r_gmo"][e][s : s + W])

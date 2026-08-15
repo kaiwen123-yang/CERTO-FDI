@@ -29,6 +29,8 @@ class ModelOutput:
     messages: torch.Tensor | None = None  # (B,T,n,6) wrench-like messages
     coeffs: torch.Tensor | None = None  # (B,T,n,K)
     hidden: torch.Tensor | None = None  # (B,T,n,H)
+    local: torch.Tensor | None = None  # (B,T,n,6) local (pre-aggregation) wrench-like messages, for counterfactual masking
+    child_gain: torch.Tensor | None = None  # (B,T,n) learned child-message gain of the PR #2 chain models (None = exact recursion)
 
 
 def run_front_end(tc: TorchChain, batch: dict) -> TypedBatch:
@@ -80,6 +82,23 @@ def message_link_features(tb: TypedBatch, dF: torch.Tensor, dF_local: torch.Tens
     a6 = _quad(dF_local, I_inv, dF_local)
     resid = tau_meas - tau_nom - a1
     return torch.stack([a1, a2, a3, a4, a5, a6, resid], -1), ["a1_S_dF", "a2_V_dF", "a3_dF_Iinv_dF", "a4_coeff_energy", "a5_S_dFlocal", "a6_dFlocal_Iinv_dFlocal", "post_residual"]
+
+
+def typed_link_features(tb: TypedBatch, dF: torch.Tensor, dF_local: torch.Tensor, tau_meas: torch.Tensor, tau_nom: torch.Tensor) -> tuple[torch.Tensor, list[str]]:
+    """Stage 1R-B per-link features (identical for every chain model): invariants of the transmitted
+    and local wrench-like messages — ``S^T dF``, ``V^T dF``, ``dF^T I^{-1} dF``, ``S^T dF_local``,
+    ``V^T dF_local``, ``dF_local^T I^{-1} dF_local`` — and the post-correction residual. No coefficient
+    energy (contract 04 §8). The primary anomaly head uses the residual only; the message
+    invariants form the secondary "representation" variant and are never read as physical wrenches."""
+    I_inv = torch.linalg.inv(tb.inertia)
+    a1 = (tb.S * dF).sum(-1)
+    a2 = (tb.V * dF).sum(-1)
+    a3 = _quad(dF, I_inv, dF)
+    a5 = (tb.S * dF_local).sum(-1)
+    a7 = (tb.V * dF_local).sum(-1)
+    a6 = _quad(dF_local, I_inv, dF_local)
+    resid = tau_meas - tau_nom - a1
+    return torch.stack([a1, a2, a3, a5, a7, a6, resid], -1), ["a1_S_dF", "a2_V_dF", "a3_dF_Iinv_dF", "a5_S_dFlocal", "a7_V_dFlocal", "a6_dFlocal_Iinv_dFlocal", "post_residual"]
 
 
 class LiGRA(nn.Module):
@@ -155,7 +174,10 @@ class LiGRA(nn.Module):
             child_gain = out[..., ANALYTIC_BASIS_DIM].reshape(b * t, n)
         dF = backward_recursion(tc, tb.X, local, child_gain)
         delta_tau = (tb.S * dF).sum(-1)
-        feats, names = message_link_features(tb, dF, local, coeffs, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        if self.variant == "free_output":
+            feats, names = typed_link_features(tb, dF, local, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        else:  # LiGRA-v1 (historical; not retrained in Stage 1R-B)
+            feats, names = message_link_features(tb, dF, local, coeffs, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
         return ModelOutput(
             delta_tau=delta_tau.reshape(b, t, n),
             link_features=feats.reshape(b, t, n, -1),
@@ -163,6 +185,8 @@ class LiGRA(nn.Module):
             messages=dF.reshape(b, t, n, 6),
             coeffs=None if coeffs is None else coeffs.reshape(b, t, n, -1),
             hidden=h,
+            local=local.reshape(b, t, n, 6),
+            child_gain=child_gain.reshape(b, t, n),
         )
 
 
@@ -218,8 +242,14 @@ class ChainGNN(nn.Module):
         child_gain = out[..., 6].reshape(b * t, n)
         dF = backward_recursion(tc, tb.X, local, child_gain)
         delta_tau = (tb.S * dF).sum(-1)
-        feats, names = message_link_features(tb, dF, local, None, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
-        return ModelOutput(delta_tau.reshape(b, t, n), feats.reshape(b, t, n, -1), names, dF.reshape(b, t, n, 6), None, h)
+        feats, names = typed_link_features(tb, dF, local, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        return ModelOutput(delta_tau.reshape(b, t, n), feats.reshape(b, t, n, -1), names, dF.reshape(b, t, n, 6), None, h, local=local.reshape(b, t, n, 6), child_gain=child_gain.reshape(b, t, n))
+
+    @staticmethod
+    def input_field_manifest() -> dict[str, list[str]]:
+        from certo_fdi.models.features import raw_input_field_manifest
+
+        return raw_input_field_manifest()
 
 
 class JointSpaceCorrection(nn.Module):
@@ -310,6 +340,10 @@ def build_model(name: str, tc: TorchChain, ctx_dim: int, cfg_model: dict) -> nn.
         return ChainGNN(tc, ctx_dim, hidden, layers)
     if name == "chain_gnn_aug":
         return ChainGNN(tc, ctx_dim, hidden, layers, augmented=True)
+    if name == "ligra_v2_typed":
+        from certo_fdi.models.ligra_v2_typed import build_ligra_v2
+
+        return build_ligra_v2(tc, ctx_dim, cfg_model)
     if name == "rnea_gru":
         return JointSpaceCorrection(tc, ctx_dim, int(cfg_model.get("baseline_gru_hidden", 80)), layers, kind="gru")
     if name == "rnea_mlp":

@@ -179,6 +179,17 @@ def train_model(
     return {"model": model, "name": model.name, "n_params": n_params, "epochs_run": len(history), "best_val_loss": best, "train_seconds": time.time() - t0, "checkpoint": str(ckpt_path), "checkpoint_sha256": sha256_file(ckpt_path), "n_train_windows": len(train_ws), "history": history}
 
 
+def load_checkpoint(name: str, ckpt_path: Path, bundle: DataBundle, cfg: dict, device: str) -> dict[str, Any]:
+    """Rebuild a trained model from a checkpoint (for re-evaluation without retraining)."""
+    tc = TorchChain.from_chain(bundle.base_chain, dtype=torch.float32, device=device)
+    model = build_model(name, tc, bundle.ctx_dim, cfg["model"]).to(device)
+    ck = torch.load(ckpt_path, map_location=device, weights_only=False)
+    model.load_state_dict(ck["state_dict"])
+    model.eval()
+    n_params = int(sum(p.numel() for p in model.parameters() if p.requires_grad))
+    return {"model": model, "name": model.name, "n_params": n_params, "epochs_run": len(ck.get("history", [])), "best_val_loss": min((h["val_loss"] for h in ck.get("history", [])), default=float("nan")), "train_seconds": float("nan"), "checkpoint": str(ckpt_path), "checkpoint_sha256": sha256_file(ckpt_path), "n_train_windows": -1, "history": ck.get("history", []), "train_ids": ck.get("train_ids", [])}
+
+
 # ---------------------------------------------------------------------- feature extraction
 def _pool(x: torch.Tensor) -> torch.Tensor:
     """(B,T,...) -> (B, prod(...)*3): mean, std, absmax over T."""

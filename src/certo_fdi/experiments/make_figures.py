@@ -170,6 +170,8 @@ def fig_localization(results: Path, out: Path) -> None:
         return
     d = pd.read_csv(p)
     d = d[(d.density_variant == "representation") & (d.split == "ALL") & (d.training_fraction >= 1.0)]
+    if "rule" in d:
+        d = d[d.rule == "pattern"]
     if d.empty:
         return
     fams = ["ALL", "F1_actuator", "F2_friction", "F3_payload", "F4_contact", "F5_encoder"]

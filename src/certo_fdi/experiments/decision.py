@@ -15,6 +15,7 @@ from certo_fdi.paths import git_sha
 STRUCTURED_POOL = ["chain_gnn", "chain_gnn_aug"]
 ALL_BASELINE_POOL = ["chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp"]
 PRIMARY_VARIANT = "representation"
+PRIMARY_LOC_RULE = "pattern"  # unsupervised load-path/peak pattern rule (same for all models); argmax/distal also reported
 
 
 def _df(rows: list[dict]) -> pd.DataFrame:
@@ -60,7 +61,7 @@ def build_summary_tables(tables: dict[str, list[dict]], layout, repo_root: Path,
         for (model, variant, split), g in d.groupby(["model", "density_variant", "split"]):
             row = {**base_row(layout, repo_root, cfg_sha, model=model, split=split, seed="mean"), "density_variant": variant, "window_auroc": float(g["auroc"].mean()), "auroc_std": float(g["auroc"].std() if len(g) > 1 else 0.0), "event_auroc": float(g["episode_auroc"].mean()), "fpr_at_tpr90": float(g["fpr_at_tpr90"].mean()), "n_seeds": int(len(g))}
             if not loc.empty:
-                l = loc[(loc.model == model) & (loc.density_variant == variant) & (loc.family == "ALL") & (loc.split == ("ALL" if split == "ALL" else split if split in ("S0", "OOD") else "ALL")) & (loc.training_fraction >= 1.0)]
+                l = loc[(loc.model == model) & (loc.density_variant == variant) & (loc.rule == PRIMARY_LOC_RULE) & (loc.family == "ALL") & (loc.split == ("ALL" if split == "ALL" else split if split in ("S0", "OOD") else "ALL")) & (loc.training_fraction >= 1.0)]
                 row["localization_top1"] = float(l["top1"].mean()) if len(l) else float("nan")
                 row["localization_chain_distance"] = float(l["mean_chain_distance"].mean()) if len(l) else float("nan")
             if not hp.empty:
@@ -118,13 +119,16 @@ def build_summary_tables(tables: dict[str, list[dict]], layout, repo_root: Path,
         for model, g in dfam.groupby("model"):
             metrics.setdefault(model, {})["auroc_OOD_by_family_seed"] = {fam: {int(s): float(v) for s, v in zip(gg["seed"], gg["auroc"])} for fam, gg in g.groupby("family")}
     if not loc.empty:
-        l = loc[(loc.density_variant == PRIMARY_VARIANT) & (loc.family == "ALL") & (loc.training_fraction >= 1.0)]
-        for model, g in l.groupby("model"):
-            for split in ("S0", "OOD", "ALL"):
-                gs = g[g.split == split]
-                metrics.setdefault(model, {})[f"loc_top1_{split}"] = float(gs["top1"].mean()) if len(gs) else float("nan")
-                metrics.setdefault(model, {})[f"loc_dist_{split}"] = float(gs["mean_chain_distance"].mean()) if len(gs) else float("nan")
-                metrics.setdefault(model, {})[f"loc_top1_{split}_by_seed"] = {int(s): float(v) for s, v in zip(gs["seed"], gs["top1"])}
+        for rule in ("pattern", "argmax", "distal"):
+            l = loc[(loc.density_variant == PRIMARY_VARIANT) & (loc.rule == rule) & (loc.family == "ALL") & (loc.training_fraction >= 1.0)]
+            for model, g in l.groupby("model"):
+                for split in ("S0", "OOD", "ALL"):
+                    gs = g[g.split == split]
+                    suffix = "" if rule == PRIMARY_LOC_RULE else f"_{rule}"
+                    metrics.setdefault(model, {})[f"loc_top1_{split}{suffix}"] = float(gs["top1"].mean()) if len(gs) else float("nan")
+                    metrics.setdefault(model, {})[f"loc_dist_{split}{suffix}"] = float(gs["mean_chain_distance"].mean()) if len(gs) else float("nan")
+                    if rule == PRIMARY_LOC_RULE:
+                        metrics.setdefault(model, {})[f"loc_top1_{split}_by_seed"] = {int(s): float(v) for s, v in zip(gs["seed"], gs["top1"])}
     if not fr.empty:
         for model, g in fr.groupby("model"):
             metrics.setdefault(model, {})["frame_drift_median"] = float(g["delta_tau_relative_drift"].median())
@@ -343,14 +347,14 @@ def decide_and_write_memo(summary: dict, tables: dict[str, list[dict]], layout, 
         "",
         "## Per-model summary (fraction 1.0, seed means; density variant = representation)",
         "",
-        "| model | params | AUROC S0 | AUROC S1 | AUROC S2 | AUROC S3 | AUROC S4 | AUROC OOD | event AUROC ALL | FPR@TPR90 ALL | top-1 loc ALL | RMSE ratio S0 | RMSE ratio OOD | frame drift (median rel.) |",
+        "| model | params | AUROC S0 | AUROC S1 | AUROC S2 | AUROC S3 | AUROC S4 | AUROC OOD | event AUROC ALL | FPR@TPR90 ALL | top-1 loc ALL (pattern / argmax) | RMSE ratio S0 | RMSE ratio OOD | frame drift (median rel.) |",
         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp", "rnea_only", "ligra_free_output", "ligra_mlp_encoder", "ligra_unshared", "gru_no_rnea"]:
         m = metrics.get(model)
         if not m:
             continue
-        lines.append(f"| {model} | {m.get('n_params', '')} | {f3(m.get('auroc_S0'))} | {f3(m.get('auroc_S1'))} | {f3(m.get('auroc_S2'))} | {f3(m.get('auroc_S3'))} | {f3(m.get('auroc_S4'))} | {f3(m.get('auroc_OOD'))} | {f3(m.get('event_auroc_ALL'))} | {f3(m.get('fpr90_ALL'))} | {f3(m.get('loc_top1_ALL'))} | {f3(m.get('rmse_ratio_S0'))} | {f3(m.get('rmse_ratio_OOD'))} | {f3(m.get('frame_drift_median'))} |")
+        lines.append(f"| {model} | {m.get('n_params', '')} | {f3(m.get('auroc_S0'))} | {f3(m.get('auroc_S1'))} | {f3(m.get('auroc_S2'))} | {f3(m.get('auroc_S3'))} | {f3(m.get('auroc_S4'))} | {f3(m.get('auroc_OOD'))} | {f3(m.get('event_auroc_ALL'))} | {f3(m.get('fpr90_ALL'))} | {f3(m.get('loc_top1_ALL'))} / {f3(m.get('loc_top1_ALL_argmax'))} | {f3(m.get('rmse_ratio_S0'))} | {f3(m.get('rmse_ratio_OOD'))} | {f3(m.get('frame_drift_median'))} |")
     lines += ["", "## Sample-efficiency curves (window AUROC ALL by healthy training fraction)", "", "| model | 10% | 25% | 50% | 100% |", "|---|---|---|---|---|"]
     for model in ["ligra", "chain_gnn", "chain_gnn_aug", "rnea_gru", "rnea_mlp"]:
         m = metrics.get(model, {})

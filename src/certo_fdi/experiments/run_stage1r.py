@@ -18,7 +18,7 @@ from certo_fdi.data.windows import WindowSet
 from certo_fdi.dynamics.rnea_torch import TorchChain
 from certo_fdi.experiments.common import base_row, capture_environment, load_config, seed_everything, utc_now, write_csv, write_json
 from certo_fdi.experiments.evaluation import evaluate_run
-from certo_fdi.experiments.pipeline import load_bundle, train_model, training_subset
+from certo_fdi.experiments.pipeline import load_bundle, load_checkpoint, train_model, training_subset
 from certo_fdi.experiments.r0_model_covariance import model_covariance_trial
 from certo_fdi.models.ligra_chain import build_model
 from certo_fdi.paths import create_or_resume_run, git_sha
@@ -101,6 +101,7 @@ def main(argv=None) -> int:
     ap.add_argument("--fractions", default=None)
     ap.add_argument("--skip-ablations", action="store_true")
     ap.add_argument("--only-aggregate", action="store_true")
+    ap.add_argument("--reevaluate", action="store_true", help="re-run evaluation from existing checkpoints (overwrites per-run JSON)")
     args = ap.parse_args(argv)
 
     cfg, cfg_sha = load_config(args.config)
@@ -147,14 +148,19 @@ def main(argv=None) -> int:
     for j, (name, frac, seed) in enumerate(jobs):
         tag = f"{name}_frac{frac:.2f}_seed{seed}"
         out_json = runs_dir / f"{tag}.json"
-        if out_json.exists() or args.only_aggregate:
+        if args.only_aggregate or (out_json.exists() and not args.reevaluate):
             continue
         t0 = time.time()
         try:
             seed_everything(seed)
             train_ids = training_subset(bundle, frac, seed)
-            info = train_model(name, seed, train_ids, bundle, cfg, ckpt_dir, args.device, epochs=epochs, log=log_lines)
-            _log(layout, log_lines, f"[{j + 1}/{len(jobs)}] trained {tag}: params={info['n_params']} epochs={info['epochs_run']} val={info['best_val_loss']:.4f} ({info['train_seconds']:.0f}s)")
+            ckpt_path = ckpt_dir / f"{name}_seed{seed}_frac{len(train_ids)}ep.pt"
+            if args.reevaluate and ckpt_path.exists():
+                info = load_checkpoint(name, ckpt_path, bundle, cfg, args.device)
+                _log(layout, log_lines, f"[{j + 1}/{len(jobs)}] loaded checkpoint {tag}")
+            else:
+                info = train_model(name, seed, train_ids, bundle, cfg, ckpt_dir, args.device, epochs=epochs, log=log_lines)
+                _log(layout, log_lines, f"[{j + 1}/{len(jobs)}] trained {tag}: params={info['n_params']} epochs={info['epochs_run']} val={info['best_val_loss']:.4f} ({info['train_seconds']:.0f}s)")
             brow = base_row(layout, repo_root, cfg_sha, seed=seed, split="", model=info["name"], checkpoint_sha256=info["checkpoint_sha256"])
             brow["training_fraction"] = frac
             res = evaluate_run(info["model"], info, train_ids, bundle, cfg, brow, args.device, full=(frac >= 1.0), frame_manifest=frame_manifest, shots=shots, seed=seed, quantile=quantile, log=log_lines)
@@ -191,6 +197,12 @@ def main(argv=None) -> int:
 
     summary = build_summary_tables(tables, layout, repo_root, cfg_sha, cfg)
     decision = decide_and_write_memo(summary, tables, layout, repo_root, cfg, cfg_sha, args.profile, data_root)
+    try:
+        from certo_fdi.experiments.make_figures import make_all
+
+        make_all(layout.run_root)
+    except Exception as e:  # pragma: no cover
+        _log(layout, log_lines, f"figure generation failed: {type(e).__name__}: {e}")
     manifest = {
         "run_id": layout.run_id, "git_sha": git_sha(repo_root), "config_sha256": cfg_sha, "profile": args.profile, "timestamp_utc": utc_now(),
         "data_root": str(data_root), "n_jobs": len(jobs), "models": models, "seeds": seeds, "fractions": fractions, "epochs": epochs, "device": args.device,

@@ -19,9 +19,62 @@ from certo_fdi.experiments.pipeline import DataBundle, WindowFeatures, density_i
 from certo_fdi.experiments.r0_model_covariance import tool_chain
 from certo_fdi.geometry.se3 import SE3
 from certo_fdi.localization.fewshot_head import fewshot_attribution
-from certo_fdi.localization.link_scores import localization_metrics, rank_links
+from certo_fdi.localization.link_scores import decode_localization, localization_metrics, rank_links
 
 SPLITS = ("S0", "S1", "S2", "S3", "S4")
+HEAD_CANDIDATES = (
+    {"conditional": True, "covariance": "lowrank", "rank": 8},
+    {"conditional": False, "covariance": "lowrank", "rank": 8},
+    {"conditional": True, "covariance": "lowrank", "rank": 3},
+    {"conditional": False, "covariance": "lowrank", "rank": 3},
+    {"conditional": True, "covariance": "diag", "rank": 0},
+    {"conditional": False, "covariance": "diag", "rank": 0},
+)
+LOCALIZATION_RULES = ("argmax", "distal", "pattern")
+
+
+def fit_head_loo(z: np.ndarray, c: np.ndarray, episode: np.ndarray, slices: dict[str, slice], candidates=HEAD_CANDIDATES) -> tuple[ConditionalGaussian, dict, np.ndarray, dict[str, np.ndarray]]:
+    """Healthy-only density-head protocol.
+
+    The head is fitted on healthy *validation* windows (held out from correction-model training,
+    so post-correction residuals are not optimistically small). Among ``candidates`` the
+    configuration with the lowest leave-one-episode-out (LOO) validation NLL is selected; the
+    threshold and the localization references are taken from the LOO scores (out-of-sample
+    healthy scores). No fault data is involved anywhere.
+    """
+    eps = np.unique(episode)
+    if len(eps) < 3:  # smoke-sized validation sets: no LOO possible; fit in-sample (pipeline check only)
+        cand = dict(candidates[-1])
+        head = ConditionalGaussian(**cand).fit(z, c, slices)
+        loo = head.nll(z, c)
+        info = {**cand, "loo_val_nll_mean": float(loo.mean()), "in_sample_val_nll_mean": float(loo.mean()), "n_val_episodes": int(len(eps)), "note": "IN-SAMPLE (fewer than 3 val episodes)"}
+        return head, info, loo, head.block_nll(z, c)
+    best = None
+    for cand in candidates:
+        loo = np.zeros(len(z))
+        loo_blocks = {k: np.zeros(len(z)) for k in slices}
+        ok = True
+        for e in eps:
+            m = episode == e
+            try:
+                h = ConditionalGaussian(**cand).fit(z[~m], c[~m], slices)
+                loo[m] = h.nll(z[m], c[m])
+                for k, v in h.block_nll(z[m], c[m]).items():
+                    loo_blocks[k][m] = v
+            except np.linalg.LinAlgError:
+                ok = False
+                break
+        if not ok or not np.all(np.isfinite(loo)):
+            continue
+        score = float(loo.mean())
+        if best is None or score < best[0]:
+            best = (score, cand, loo, loo_blocks)
+    if best is None:
+        raise RuntimeError("no density head candidate could be fitted")
+    _, cand, loo, loo_blocks = best
+    head = ConditionalGaussian(**cand).fit(z, c, slices)
+    info = {**cand, "loo_val_nll_mean": float(loo.mean()), "in_sample_val_nll_mean": float(head.nll(z, c).mean()), "n_val_episodes": int(len(eps))}
+    return head, info, loo, loo_blocks
 LOCALIZABLE = ("F1_actuator", "F2_friction", "F3_payload", "F4_contact", "F5_encoder")
 DENSITY_VARIANTS = ("residual_only", "representation", "residual_plus_gmo")
 
@@ -103,39 +156,38 @@ def _detection_rows(base: dict, model_name: str, variant: str, head: Conditional
     return rows, ood_rows
 
 
-def _localization_rows(base: dict, model_name: str, variant: str, head: ConditionalGaussian, z_val: np.ndarray, c_val: np.ndarray, ws_test: WindowSet, f_test: WindowFeatures, z_test: np.ndarray) -> list[dict]:
+def _localization_rows(base: dict, model_name: str, variant: str, head: ConditionalGaussian, loo_blocks: dict[str, np.ndarray], ws_test: WindowSet, f_test: WindowFeatures, z_test: np.ndarray) -> list[dict]:
     n = f_test.n_links
-    ref = head.block_nll(z_val, c_val)
-    ref_mu = np.array([ref[f"link{i}"].mean() for i in range(n)])
-    ref_sd = np.array([max(ref[f"link{i}"].std(), 1e-9) for i in range(n)])
+    ref_mu = np.array([loo_blocks[f"link{i}"].mean() for i in range(n)])
+    ref_sd = np.array([max(loo_blocks[f"link{i}"].std(), 1e-9) for i in range(n)])
     test_blocks = head.block_nll(z_test, f_test.ctx)
     excess_all = np.stack([(test_blocks[f"link{i}"] - ref_mu[i]) / ref_sd[i] for i in range(n)], 1)  # (N,n)
-    meta = _episode_meta(ws_test, f_test)
     rows = []
-    for split_tag in ("S0", "OOD", "ALL"):
-        for fam in ("ALL",) + LOCALIZABLE:
-            preds, targets = [], []
-            for e in np.unique(f_test.episode):
-                ep = ws_test.episodes[int(e)]
-                if ep.kind != "fault" or ep.family not in LOCALIZABLE or (fam != "ALL" and ep.family != fam):
+    for rule in LOCALIZATION_RULES:
+        for split_tag in ("S0", "OOD", "ALL"):
+            for fam in ("ALL",) + LOCALIZABLE:
+                preds, targets = [], []
+                for e in np.unique(f_test.episode):
+                    ep = ws_test.episodes[int(e)]
+                    if ep.kind != "fault" or ep.family not in LOCALIZABLE or (fam != "ALL" and ep.family != fam):
+                        continue
+                    if split_tag == "S0" and ep.split != "S0":
+                        continue
+                    if split_tag == "OOD" and ep.split == "S0":
+                        continue
+                    m = (f_test.episode == e) & (f_test.label == 1)
+                    if m.sum() == 0:
+                        continue
+                    target = int(ep.fault.get("target", -1))
+                    if target < 0:
+                        continue
+                    exc = excess_all[m].mean(0)
+                    preds.append(decode_localization(exc, rule))
+                    targets.append(target)
+                if not targets:
                     continue
-                if split_tag == "S0" and ep.split != "S0":
-                    continue
-                if split_tag == "OOD" and ep.split == "S0":
-                    continue
-                m = (f_test.episode == e) & (f_test.label == 1)
-                if m.sum() == 0:
-                    continue
-                target = int(ep.fault.get("target", -1))
-                if target < 0:
-                    continue
-                exc = excess_all[m].mean(0)
-                preds.append(rank_links(exc[None])[0])
-                targets.append(target)
-            if not targets:
-                continue
-            met = localization_metrics(np.stack(preds), np.asarray(targets), n, k=2)
-            rows.append({**base, "model": model_name, "density_variant": variant, "split": split_tag, "family": fam, "top1": met["top1"], "top2": met["top2"], "mean_chain_distance": met["mean_chain_distance"], "n_episodes": met["n"], "confusion": str(met["confusion"]), "units": "top-k accuracy; chain distance in links"})
+                met = localization_metrics(np.stack(preds), np.asarray(targets), n, k=2)
+                rows.append({**base, "model": model_name, "density_variant": variant, "rule": rule, "split": split_tag, "family": fam, "top1": met["top1"], "top2": met["top2"], "mean_chain_distance": met["mean_chain_distance"], "n_episodes": met["n"], "confusion": str(met["confusion"]), "units": "top-k accuracy; chain distance in links"})
     return rows
 
 
@@ -263,28 +315,25 @@ def evaluate_run(model, run_info: dict, train_ids: list[str], bundle: DataBundle
     val_m = np.ones(len(f_val.label), dtype=bool)
     out["healthy_prediction"].append({**base, "model": model_name, "split": "VAL", "n_windows": int(val_m.sum()), "torque_rmse_post_nm": float(np.sqrt(f_val.resid_ms.mean())), "torque_rmse_pre_nm": float(np.sqrt(f_val.pre_ms.mean())), "rmse_ratio_post_over_pre": float(np.sqrt(f_val.resid_ms.mean()) / max(np.sqrt(f_val.pre_ms.mean()), 1e-9)), "units": "N m"})
 
-    # ---- R2/R3 heads
+    # ---- R2/R3 heads (fitted on healthy VAL windows; LOO-selected; thresholds from LOO scores)
     heads: dict[str, ConditionalGaussian] = {}
     scores_by_variant: dict[str, np.ndarray] = {}
     variants = list(DENSITY_VARIANTS) + (["gmo_only"] if model_name == "rnea_only" else [])
     for variant in variants:
-        z_tr, slices = density_input(f_train, variant)
-        z_va, _ = density_input(f_val, variant)
+        z_va, slices = density_input(f_val, variant)
         z_te, _ = density_input(f_test, variant)
-        for conditional in ((True, False) if variant == "representation" else (True,)):
-            head = ConditionalGaussian(conditional=conditional, covariance="lowrank", rank=8).fit(z_tr, f_train.ctx, slices)
-            s_va = head.nll(z_va, f_val.ctx)
-            s_te = head.nll(z_te, f_test.ctx)
-            thr = healthy_quantile_threshold(s_va, quantile)
-            vname = variant if conditional else variant + "_unconditional"
-            heads[vname] = head
-            scores_by_variant[vname] = s_te
-            out["heads"].append({**base, "model": model_name, "density_variant": vname, "z_dim": int(z_tr.shape[1]), "threshold": thr, "val_nll_mean": float(s_va.mean()), "train_nll_mean": float(head.nll(z_tr, f_train.ctx).mean()), "n_train_windows": int(len(z_tr))})
-            det, ood = _detection_rows(base, model_name, vname, head, thr, ws_test, f_test, s_te, dt, s_va)
-            out["event_detection"] += det
-            out["ood_detection"] += ood
-            if conditional and variant in ("residual_only", "representation"):
-                out["localization"] += _localization_rows(base, model_name, vname, head, z_va, f_val.ctx, ws_test, f_test, z_te)
+        z_tr, _ = density_input(f_train, variant)
+        head, hinfo, loo, loo_blocks = fit_head_loo(z_va, f_val.ctx, f_val.episode, slices)
+        s_te = head.nll(z_te, f_test.ctx)
+        thr = healthy_quantile_threshold(loo, quantile)
+        heads[variant] = head
+        scores_by_variant[variant] = s_te
+        out["heads"].append({**base, "model": model_name, "density_variant": variant, "z_dim": int(z_va.shape[1]), "threshold": thr, "val_loo_nll_mean": hinfo["loo_val_nll_mean"], "val_insample_nll_mean": hinfo["in_sample_val_nll_mean"], "train_nll_mean": float(head.nll(z_tr, f_train.ctx).mean()), "n_val_windows": int(len(z_va)), "n_val_episodes": hinfo["n_val_episodes"], "chosen_conditional": hinfo["conditional"], "chosen_covariance": hinfo["covariance"], "chosen_rank": hinfo["rank"], "protocol": "head fitted on healthy val; candidate chosen by LOO val NLL; threshold = LOO 0.995 quantile"})
+        det, ood = _detection_rows(base, model_name, variant, head, thr, ws_test, f_test, s_te, dt, loo)
+        out["event_detection"] += det
+        out["ood_detection"] += ood
+        if variant in ("residual_only", "representation"):
+            out["localization"] += _localization_rows(base, model_name, variant, head, loo_blocks, ws_test, f_test, z_te)
     if log is not None:
         log.append(f"  heads/detection/localization done ({time.time() - t0:.0f}s)")
     if full:

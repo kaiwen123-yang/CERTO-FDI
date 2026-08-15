@@ -65,16 +65,21 @@ def _quad(v, m, w):
     return (v[..., None, :] @ m @ w[..., :, None])[..., 0, 0]
 
 
-def message_link_features(tb: TypedBatch, dF: torch.Tensor, coeffs: torch.Tensor | None, tau_meas: torch.Tensor, tau_nom: torch.Tensor) -> tuple[torch.Tensor, list[str]]:
-    """Per-link anomaly features from a wrench-like message: a1=S^T dF, a2=V^T dF, a3=dF^T I^{-1} dF,
-    a4=|coeffs|^2 (or |dF|^2 for free-output models), post-correction residual."""
+def message_link_features(tb: TypedBatch, dF: torch.Tensor, dF_local: torch.Tensor, coeffs: torch.Tensor | None, tau_meas: torch.Tensor, tau_nom: torch.Tensor) -> tuple[torch.Tensor, list[str]]:
+    """Per-link anomaly features from wrench-like messages (all invariant when the messages are covariant):
+    a1=S^T dF, a2=V^T dF, a3=dF^T I^{-1} dF (transmitted message through joint i),
+    a4=|coeffs|^2 (or |dF_local|^2 for free-output models),
+    a5=S^T dF_local, a6=dF_local^T I^{-1} dF_local (local message of link i before child aggregation),
+    post-correction residual."""
     I_inv = torch.linalg.inv(tb.inertia)
     a1 = (tb.S * dF).sum(-1)
     a2 = (tb.V * dF).sum(-1)
     a3 = _quad(dF, I_inv, dF)
-    a4 = (coeffs**2).sum(-1) if coeffs is not None else (dF**2).sum(-1)
+    a4 = (coeffs**2).sum(-1) if coeffs is not None else (dF_local**2).sum(-1)
+    a5 = (tb.S * dF_local).sum(-1)
+    a6 = _quad(dF_local, I_inv, dF_local)
     resid = tau_meas - tau_nom - a1
-    return torch.stack([a1, a2, a3, a4, resid], -1), ["a1_S_dF", "a2_V_dF", "a3_dF_Iinv_dF", "a4_coeff_energy", "post_residual"]
+    return torch.stack([a1, a2, a3, a4, a5, a6, resid], -1), ["a1_S_dF", "a2_V_dF", "a3_dF_Iinv_dF", "a4_coeff_energy", "a5_S_dFlocal", "a6_dFlocal_Iinv_dFlocal", "post_residual"]
 
 
 class LiGRA(nn.Module):
@@ -150,7 +155,7 @@ class LiGRA(nn.Module):
             child_gain = out[..., ANALYTIC_BASIS_DIM].reshape(b * t, n)
         dF = backward_recursion(tc, tb.X, local, child_gain)
         delta_tau = (tb.S * dF).sum(-1)
-        feats, names = message_link_features(tb, dF, coeffs, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        feats, names = message_link_features(tb, dF, local, coeffs, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
         return ModelOutput(
             delta_tau=delta_tau.reshape(b, t, n),
             link_features=feats.reshape(b, t, n, -1),
@@ -213,7 +218,7 @@ class ChainGNN(nn.Module):
         child_gain = out[..., 6].reshape(b * t, n)
         dF = backward_recursion(tc, tb.X, local, child_gain)
         delta_tau = (tb.S * dF).sum(-1)
-        feats, names = message_link_features(tb, dF, None, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
+        feats, names = message_link_features(tb, dF, local, None, batch["tau_meas"].reshape(b * t, n), batch["tau_nom"].reshape(b * t, n))
         return ModelOutput(delta_tau.reshape(b, t, n), feats.reshape(b, t, n, -1), names, dF.reshape(b, t, n, 6), None, h)
 
 

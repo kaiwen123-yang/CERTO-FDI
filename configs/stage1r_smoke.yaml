@@ -26,6 +26,8 @@ simulation:
   episode_duration_s: 12
   window_samples: 128
   window_stride: 32
+  window_stride_eval: 16
+  eval_settle_s: 1.0        # evaluation windows start after the rest->motion blend-in
 
 # Documented, intentional truth-vs-nominal mismatch (healthy residual the correction must learn).
 plant_mismatch:

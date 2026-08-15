@@ -233,7 +233,7 @@ def _frame_invariance_rows(base: dict, model, model_name: str, bundle: DataBundl
         if eid not in bundle.episodes:
             continue
         ep = bundle.episodes[eid]
-        ws = WindowSet([ep], bundle.window, bundle.stride_train, device)
+        ws = WindowSet([ep], bundle.window, bundle.stride_train, device, min_start=bundle.eval_min_start)
         chain = tool_chain(bundle.base_chain, ep.tool_id)
         tc0 = TorchChain.from_chain(chain, dtype=dtype, device=device)
         f0 = extract_features(model, ws, tc0, device, inertia_override=tc0.inertia)
@@ -290,8 +290,8 @@ def evaluate_run(model, run_info: dict, train_ids: list[str], bundle: DataBundle
     tc = TorchChain.from_chain(bundle.base_chain, dtype=torch.float32, device=device)
     model.eval()
     ws_train = WindowSet(bundle.subset(train_ids), bundle.window, bundle.stride_train, device)
-    ws_val = WindowSet(bundle.subset(bundle.val_ids), bundle.window, bundle.stride_train, device)
-    ws_test = WindowSet(bundle.subset(bundle.test_ids), bundle.window, bundle.stride_eval, device)
+    ws_val = WindowSet(bundle.subset(bundle.val_ids), bundle.window, bundle.stride_train, device, min_start=bundle.eval_min_start)
+    ws_test = WindowSet(bundle.subset(bundle.test_ids), bundle.window, bundle.stride_eval, device, min_start=bundle.eval_min_start)
     t0 = time.time()
     f_train = extract_features(model, ws_train, tc, device)
     f_val = extract_features(model, ws_val, tc, device)
@@ -337,7 +337,7 @@ def evaluate_run(model, run_info: dict, train_ids: list[str], bundle: DataBundle
     if log is not None:
         log.append(f"  heads/detection/localization done ({time.time() - t0:.0f}s)")
     if full:
-        ws_calib = WindowSet(bundle.subset(bundle.calib_ids), bundle.window, bundle.stride_train, device)
+        ws_calib = WindowSet(bundle.subset(bundle.calib_ids), bundle.window, bundle.stride_train, device, min_start=bundle.eval_min_start)
         f_calib = extract_features(model, ws_calib, tc, device)
         out["fewshot"] += _fewshot_rows(base, model_name, ws_calib, f_calib, ws_test, f_test, shots, seed)
         if frame_manifest is not None:

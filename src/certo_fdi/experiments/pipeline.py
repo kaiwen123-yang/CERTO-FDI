@@ -36,6 +36,7 @@ class DataBundle:
     stride_eval: int
     ctx_dim: int
     n_links: int
+    eval_min_start: int = 0  # settle period (samples) excluded from evaluation windows
 
     def subset(self, ids: list[str]) -> list[EpisodeArrays]:
         return [self.episodes[i] for i in ids]
@@ -68,6 +69,7 @@ def load_bundle(cfg: dict, data_root: Path, *, max_episodes: int | None = None) 
         stride_eval=int(sim.get("window_stride_eval", 16)),
         ctx_dim=len(MODEL_CONTEXT_INDICES),
         n_links=base.n_links,
+        eval_min_start=int(round(float(sim.get("eval_settle_s", 1.0)) / float(sim["control_dt_s"]))),
     )
 
 

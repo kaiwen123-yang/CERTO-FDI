@@ -40,8 +40,8 @@ class _F:
 
 def gmo_baseline_rows(bundle: DataBundle, cfg: dict, base: dict, quantile: float, device: str = "cpu") -> tuple[list[dict], list[dict]]:
     dt = float(cfg["simulation"]["control_dt_s"])
-    ws_val = WindowSet(bundle.subset(bundle.val_ids), bundle.window, bundle.stride_train, device)
-    ws_test = WindowSet(bundle.subset(bundle.test_ids), bundle.window, bundle.stride_eval, device)
+    ws_val = WindowSet(bundle.subset(bundle.val_ids), bundle.window, bundle.stride_train, device, min_start=bundle.eval_min_start)
+    ws_test = WindowSet(bundle.subset(bundle.test_ids), bundle.window, bundle.stride_eval, device, min_start=bundle.eval_min_start)
     va, te = _window_arrays(ws_val, device), _window_arrays(ws_test, device)
     n = va["r_max"].shape[1]
     det_rows, ood_rows = [], []

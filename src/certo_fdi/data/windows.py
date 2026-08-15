@@ -81,15 +81,19 @@ def load_episode_arrays(row: dict[str, Any], base_chain: ChainModel) -> EpisodeA
 class WindowSet:
     """A collection of windows over a list of episodes; yields tensors for the models."""
 
-    def __init__(self, episodes: list[EpisodeArrays], window: int, stride: int, device: str = "cpu"):
+    def __init__(self, episodes: list[EpisodeArrays], window: int, stride: int, device: str = "cpu", *, min_start: int = 0):
+        """``min_start``: first admissible window start sample (settle period after the episode
+        starts from rest; used for evaluation windows)."""
         self.episodes = episodes
         self.window = window
         self.stride = stride
         self.device = device
+        self.min_start = int(min_start)
         self.index: list[tuple[int, int]] = []
         for e_i, ep in enumerate(episodes):
             for s in window_index(ep.n_samples, window, stride):
-                self.index.append((e_i, int(s)))
+                if s >= self.min_start:
+                    self.index.append((e_i, int(s)))
         self._stack()
 
     def _stack(self) -> None:

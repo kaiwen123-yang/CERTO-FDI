@@ -110,10 +110,23 @@ def invariant_features(tc: TorchChain, tb: TypedBatch, tau_nom: torch.Tensor) ->
     return torch.stack(feats, -1)
 
 
-RAW_FEATURE_DIM = 6 * 6 + 4  # V,A,F_body,momentum,S,g (6 each) + q,qd,qdd,tau_nom (no measured torque)
+# Stage 1R-B matched-input manifest (contract 04 §1 / master B1): the non-equivariant chain GNN and
+# LiGRA-v2 receive exactly the same physical fields — the GNN as raw components, LiGRA-v2 by type.
+RAW_TWIST_FIELDS = ("V", "A", "S", "g")
+RAW_WRENCH_FIELDS = ("F_body", "F", "I_V", "I_A")
+RAW_SCALAR_FIELDS = ("q", "qd", "qdd_est", "tau_nom")
+RAW_FEATURE_DIM = 6 * (len(RAW_TWIST_FIELDS) + len(RAW_WRENCH_FIELDS)) + len(RAW_SCALAR_FIELDS)  # 52 (no measured torque)
 
 
 def raw_features(tc: TorchChain, tb: TypedBatch, tau_nom: torch.Tensor) -> torch.Tensor:
-    """(B, n, RAW_FEATURE_DIM) raw components in the current link frames (NOT invariant)."""
+    """(B, n, RAW_FEATURE_DIM) raw components in the current link frames (NOT invariant):
+    twists V, A, S, g; wrenches F_body, F, I V, I A; scalars q, qd, qdd_est, tau_nom."""
     g = base_gravity_twist(tc, tb.X)
-    return torch.cat([tb.V, tb.A, tb.F_body, tb.momentum, tb.S, g, tb.q[..., None], tb.qd[..., None], tb.qdd[..., None], tau_nom[..., None]], -1)
+    IA = (tb.inertia @ tb.A[..., None])[..., 0]
+    return torch.cat([tb.V, tb.A, tb.S, g, tb.F_body, tb.F, tb.momentum, IA, tb.q[..., None], tb.qd[..., None], tb.qdd[..., None], tau_nom[..., None]], -1)
+
+
+def raw_input_field_manifest() -> dict[str, list[str]]:
+    from certo_fdi.data.windows import MODEL_CONTEXT_NAMES
+
+    return {"scalars": list(RAW_SCALAR_FIELDS), "twists": list(RAW_TWIST_FIELDS), "wrenches": list(RAW_WRENCH_FIELDS), "context": list(MODEL_CONTEXT_NAMES), "link_descriptors": [n for n, _ in LINK_PHYSICAL_FEATURES], "processing": "raw components in the current link frames (non-equivariant)"}

@@ -78,7 +78,7 @@ def _scan_secrets(root: Path) -> None:
                 raise RuntimeError(f"secret-like pattern in {path.relative_to(root)}")
 
 
-def validate_zip(path: str | Path) -> dict[str, object]:
+def validate_zip(path: str | Path, required_files: tuple[str, ...] = REQUIRED_FILES, required_directories: tuple[str, ...] = REQUIRED_DIRECTORIES) -> dict[str, object]:
     archive = Path(path).resolve()
     with zipfile.ZipFile(archive) as handle:
         bad_member = handle.testzip()
@@ -87,10 +87,10 @@ def validate_zip(path: str | Path) -> dict[str, object]:
         with tempfile.TemporaryDirectory(prefix="certo_review_validate_") as temporary:
             root = Path(temporary)
             handle.extractall(root)
-            for relative in REQUIRED_FILES:
+            for relative in required_files:
                 if not (root / relative).is_file():
                     raise RuntimeError(f"required file missing: {relative}")
-            for relative in REQUIRED_DIRECTORIES:
+            for relative in required_directories:
                 if not (root / relative).is_dir():
                     raise RuntimeError(f"required directory missing: {relative}")
             _verify_checksums(root)

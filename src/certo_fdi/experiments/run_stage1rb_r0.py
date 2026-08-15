@@ -75,7 +75,7 @@ def main(argv=None) -> int:
     if not args.skip_analytic:
         from certo_fdi.experiments.run_r0_geometry import main as r0_main
 
-        rc = r0_main(["--config", args.config, "--storage-root", args.storage_root, "--run-id", args.run_id, "--repo-root", str(st.repo_root), "--stage", cfg["stage"], "--skip-pytest"])
+        rc = r0_main(["--config", args.config, "--storage-root", args.storage_root, "--run-id", args.run_id, "--repo-root", str(st.repo_root), "--stage", cfg["stage"]] + (["--skip-pytest"] if args.skip_pytest else []))
         an = json.loads((layout.results / "stage1r_r0_geometry_tests.json").read_text())
         results["items"]["1_analytic_rnea_mujoco_pinocchio_tests"] = {"pass": rc == 0 and an["decision"] == "PASS", "checks": an["checks"]}
         results["items"]["2_wrong_ad_star_mutation_detected"] = {"pass": bool(an["checks"].get("C3_wrong_ad_star_mutation_detected", False))}

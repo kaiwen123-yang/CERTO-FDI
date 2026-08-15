@@ -108,9 +108,12 @@ def train_model(
     epochs: int = 30,
     batch_size: int = 64,
     lr: float = 2e-3,
-    patience: int = 6,
+    patience: int = 10,
+    min_epochs: int = 15,
     log: list[str] | None = None,
 ) -> dict[str, Any]:
+    """Healthy-only training with early stopping on healthy validation loss (identical schedule,
+    patience and minimum epoch count for every model)."""
     torch.manual_seed(seed)
     np.random.seed(seed % (2**32 - 1))
     rng = np.random.default_rng(seed)
@@ -172,7 +175,7 @@ def train_model(
             best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
         else:
             bad += 1
-            if bad >= patience:
+            if bad >= patience and epoch + 1 >= min_epochs:
                 break
     if best_state is not None:
         model.load_state_dict(best_state)

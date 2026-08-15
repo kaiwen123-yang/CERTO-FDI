@@ -149,3 +149,18 @@ def test_localization_metrics():
     pred = rank_links(np.array([[0.1, 0.9, 0.3], [0.8, 0.1, 0.2]]))
     m = localization_metrics(pred, np.array([1, 2]), 3, k=2)
     assert m["top1"] == 0.5 and m["top2"] == 1.0 and m["mean_chain_distance"] == 1.0
+
+
+def test_localization_decoders():
+    from certo_fdi.localization.link_scores import decode_localization
+
+    # cumulative load-path pattern (contact on link 4 -> joints 0..4 loaded): distal/pattern -> 4, argmax -> 1
+    e = np.array([6.0, 8.0, 5.0, 4.5, 3.0, 0.2, 0.1])
+    assert decode_localization(e, "argmax")[0] == 1
+    assert decode_localization(e, "distal")[0] == 4
+    assert decode_localization(e, "pattern")[0] == 4
+    # peaked pattern (joint-local fault on joint 3): all rules -> 3 except distal if a distal link is significant
+    e2 = np.array([0.5, 0.8, 1.0, 9.0, 1.2, 0.4, 0.3])
+    assert decode_localization(e2, "argmax")[0] == 3
+    assert decode_localization(e2, "pattern")[0] == 3
+    assert decode_localization(e2, "distal")[0] == 3

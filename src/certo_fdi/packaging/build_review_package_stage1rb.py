@@ -151,6 +151,7 @@ def _populate_full(root: Path, run_root: Path, storage_root: Path, bundle: Path,
     _copy_contents(run_root / "r0_geometry", root / "25_R0_GEOMETRY_AND_AUDIT")
     _copy_contents(run_root / "c2_tuning", root / "26_PER_RUN_RESULTS" / "c2_tuning")
     _copy_contents(run_root / "c3_final", root / "26_PER_RUN_RESULTS" / "c3_final")
+    _copy_contents(run_root / "diagnostics", root / "26_PER_RUN_RESULTS" / "diagnostics")
     _copy_file(bundle, root / "23_GIT_BUNDLE" / bundle.name)
     _write_git_archive(repo, root / "28_CODE_SNAPSHOT")
     # training curves (per-epoch train/val loss and lr) exported from the per-run JSONs

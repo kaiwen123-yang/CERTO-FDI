@@ -50,9 +50,13 @@ def make_base_chain(cfg: dict) -> ChainModel:
     return ch
 
 
-def load_bundle(cfg: dict, data_root: Path, *, max_episodes: int | None = None) -> DataBundle:
+def load_bundle(cfg: dict, data_root: Path, *, max_episodes: int | None = None, only_kinds: tuple[str, ...] | None = None) -> DataBundle:
+    """``only_kinds``: optionally restrict the loaded episodes by ``kind`` (e.g. ("healthy",) for
+    healthy-only audits); the split bookkeeping is unchanged."""
     base = make_base_chain(cfg)
     rows = load_index(data_root)
+    if only_kinds is not None:
+        rows = [r for r in rows if r["kind"] in only_kinds]
     if max_episodes:
         rows = rows[:max_episodes]
     episodes = {r["episode_id"]: load_episode_arrays(r, base) for r in rows}

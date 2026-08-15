@@ -117,14 +117,17 @@ def rnea_batch(
     qdd: torch.Tensor,
     f_ext: torch.Tensor | None = None,
     *,
+    inertia: torch.Tensor | None = None,
     mutate_ad_star_sign: bool = False,
     include_joint_terms: bool = True,
 ) -> TypedBatch:
+    """Batched typed RNEA. ``inertia`` (B,n,6,6) optionally overrides the chain inertias
+    (used when a batch mixes episodes with different declared tools)."""
     b, n = q.shape
     dtype, device = q.dtype, q.device
     X = motion_transforms(tc, q)
     S = tc.S.to(dtype).expand(b, n, 6)
-    inertia = tc.inertia.to(dtype).expand(b, n, 6, 6)
+    inertia = tc.inertia.to(dtype).expand(b, n, 6, 6) if inertia is None else inertia.to(dtype)
     a_base = torch.cat([torch.zeros(3, dtype=dtype, device=device), -tc.gravity.to(dtype)]).expand(b, 6)
     v_list, a_list, h_list, fb_list = [], [], [], []
     for i in range(n):

@@ -13,14 +13,19 @@ htmlcov/
 .ruff_cache/
 
 # Results and data must live on the external storage root, never in git
-results/
-runs/
-data/
-audit/
+/results/
+/runs/
+/data/
+/audit/
+/checkpoints/
 *.npz
 *.parquet
 *.pkl
 *.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
 
 # Archives
 *.zip

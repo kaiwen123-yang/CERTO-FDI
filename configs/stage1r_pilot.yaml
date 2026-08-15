@@ -1,0 +1,97 @@
+# CERTO-FDI Stage 1R pilot configuration (derived from the frozen 11_PILOT_CONFIG.yaml).
+project: CERTO-FDI
+stage: stage1r_ligra
+profile: pilot
+method_codename: LiGRA-FDI
+seed_list: [260815, 260816, 260817]
+
+paths:
+  persistent_root: "/mnt/g/CERTO-FDI"
+  data_root: "/mnt/g/CERTO-FDI/03_data/stage1r"
+  run_root: "/mnt/g/CERTO-FDI/04_runs/stage1r_ligra"
+  mjcf_path: "/mnt/g/CERTO-FDI/01_frozen_sources/extracted/mujoco_menagerie_franka_emika_panda_da76818/franka_emika_panda/panda_nohand.xml"
+  menagerie_commit: "da76818e269b82289eba39808e2fb91d679d6994"
+
+robot:
+  name: franka_emika_panda
+  dof: 7
+  truth_backend: mujoco
+  analytic_backend: pinocchio
+  fixed_base: true
+
+simulation:
+  physics_dt_s: 0.001
+  control_dt_s: 0.002
+  log_rate_hz: 500
+  episode_duration_s: 12
+  window_samples: 128
+  window_stride: 32
+  window_stride_eval: 16
+  eval_settle_s: 1.0        # evaluation windows start after the rest->motion blend-in
+
+# Documented, intentional truth-vs-nominal mismatch (healthy residual the correction must learn).
+plant_mismatch:
+  inertial_param_relative_perturbation: 0.05   # truth = nominal * (1 + U(-0.05, 0.05)) per mass/CoM/inertia
+  nominal_viscous_nms: [0.8, 0.8, 0.6, 0.6, 0.4, 0.3, 0.3]
+  nominal_coulomb_nm:  [0.9, 0.9, 0.7, 0.7, 0.4, 0.3, 0.3]
+  truth_viscous_scale_range: [0.85, 1.15]
+  truth_coulomb_scale_range: [0.85, 1.15]
+  truth_stribeck_nm: [0.6, 0.6, 0.5, 0.5, 0.3, 0.2, 0.2]
+  truth_stribeck_velocity: 0.15
+  measurement_noise:
+    q_std_rad: 0.0002
+    qd_std_rad_s: 0.004
+    tau_std_nm: 0.05
+  acceleration_estimator: causal_savgol   # causal quadratic Savitzky-Golay derivative of qd_meas
+  acceleration_window_samples: 21         # 42 ms at 500 Hz
+
+pilot:
+  healthy_episodes: 96
+  fault_episodes_per_family: 24
+  attribution_calibration_episodes_per_family: 50
+  controllers: [computed_torque, pd_gravity]
+  training_fractions: [0.10, 0.25, 0.50, 1.00]
+  fewshot_counts: [5, 20, 50]
+
+smoke:
+  healthy_episodes: 8
+  fault_episodes_per_family: 2
+  attribution_calibration_episodes_per_family: 2
+  controllers: [computed_torque]
+  training_fractions: [1.00]
+  fewshot_counts: [2]
+
+model:
+  scalar_encoder: gru
+  scalar_hidden_dim: 64
+  scalar_layers: 2
+  wrench_basis_dim: 12
+  anomaly_head: conditional_gaussian
+  flow_head_enabled: false
+
+faults:
+  actuator_efficiency: [0.05, 0.10, 0.20, 0.30]
+  viscous_scale: [0.20, 0.50, 1.00]
+  coulomb_scale: [0.20, 0.50, 1.00]
+  payload_mass_kg: [0.25, 0.50, 1.00]
+  encoder_bias_rad: [0.002, 0.005, 0.010]
+  command_delay_s: [0.002, 0.005, 0.010, 0.020]
+  contact_force_n: [2.0, 5.0, 10.0]
+  contact_links: [1, 3, 5, 6]        # 0-based link indices = links 2/4/6/7
+
+frame_trials:
+  variants_per_episode: 8
+  rotation_angle_max_deg: 180
+  translation_fraction_of_link_length: 0.25
+  tolerance_float64_relative: 1.0e-9
+  tolerance_float32_relative: 1.0e-4
+
+calibration:
+  use_faults_for_threshold: false
+  healthy_quantile: 0.995
+
+execution:
+  start_with_smoke: true
+  require_r0_pass_before_training: true
+  keep_pr_draft: true
+  auto_merge: false

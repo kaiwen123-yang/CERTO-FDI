@@ -50,13 +50,16 @@ def make_base_chain(cfg: dict) -> ChainModel:
     return ch
 
 
-def load_bundle(cfg: dict, data_root: Path, *, max_episodes: int | None = None, only_kinds: tuple[str, ...] | None = None) -> DataBundle:
+def load_bundle(cfg: dict, data_root: Path, *, max_episodes: int | None = None, only_kinds: tuple[str, ...] | None = None, row_filter=None) -> DataBundle:
     """``only_kinds``: optionally restrict the loaded episodes by ``kind`` (e.g. ("healthy",) for
-    healthy-only audits); the split bookkeeping is unchanged."""
+    healthy-only audits); ``row_filter``: optional predicate on index rows (debug subsets); the split
+    bookkeeping is unchanged."""
     base = make_base_chain(cfg)
     rows = load_index(data_root)
     if only_kinds is not None:
         rows = [r for r in rows if r["kind"] in only_kinds]
+    if row_filter is not None:
+        rows = [r for r in rows if row_filter(r)]
     if max_episodes:
         rows = rows[:max_episodes]
     episodes = {r["episode_id"]: load_episode_arrays(r, base) for r in rows}
@@ -115,9 +118,16 @@ def train_model(
     patience: int = 10,
     min_epochs: int = 15,
     log: list[str] | None = None,
+    scheduler: str = "onecycle",
+    weight_decay: float = 1e-6,
+    grad_clip: float = 1.0,
+    tag: str = "",
 ) -> dict[str, Any]:
     """Healthy-only training with early stopping on healthy validation loss (identical schedule,
-    patience and minimum epoch count for every model)."""
+    patience and minimum epoch count for every model).
+
+    ``scheduler``: ``onecycle`` (PR #2 protocol), ``cosine`` (per-step cosine annealing to 0 over
+    ``epochs``) or ``reduce_on_plateau`` (factor 0.5, patience 3, on the healthy validation loss)."""
     torch.manual_seed(seed)
     np.random.seed(seed % (2**32 - 1))
     rng = np.random.default_rng(seed)
@@ -127,15 +137,23 @@ def train_model(
     val_ws = WindowSet(bundle.subset(bundle.val_ids), bundle.window, bundle.stride_train, device)
     t0 = time.time()
     n_params = int(sum(p.numel() for p in model.parameters() if p.requires_grad))
-    ckpt_path = ckpt_dir / f"{name}_seed{seed}_frac{len(train_ids)}ep.pt"
+    ckpt_path = ckpt_dir / f"{name}{('_' + tag) if tag else ''}_seed{seed}_frac{len(train_ids)}ep.pt"
     if n_params == 0:  # rnea_only
         torch.save({"state_dict": model.state_dict(), "name": name, "seed": seed, "train_ids": train_ids}, ckpt_path)
         return {"model": model, "name": model.name, "n_params": 0, "epochs_run": 0, "best_val_loss": float("nan"), "train_seconds": 0.0, "checkpoint": str(ckpt_path), "checkpoint_sha256": sha256_file(ckpt_path), "n_train_windows": len(train_ws), "history": []}
     fit_batches = [train_ws.batch(list(range(i, min(i + 256, len(train_ws))))) for i in range(0, min(len(train_ws), 1024), 256)]
     model.fit_normalizers(tc, fit_batches)
-    opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-6)
+    opt = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     steps_per_epoch = math.ceil(len(train_ws) / batch_size)
-    sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=max(1, epochs * steps_per_epoch), pct_start=0.15, final_div_factor=20.0)
+    if scheduler == "onecycle":
+        sched = torch.optim.lr_scheduler.OneCycleLR(opt, max_lr=lr, total_steps=max(1, epochs * steps_per_epoch), pct_start=0.15, final_div_factor=20.0)
+    elif scheduler == "cosine":
+        sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=max(1, epochs * steps_per_epoch), eta_min=0.0)
+    elif scheduler == "reduce_on_plateau":
+        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, mode="min", factor=0.5, patience=3, min_lr=lr * 1e-3)
+    else:
+        raise ValueError(scheduler)
+    step_wise = scheduler in ("onecycle", "cosine")
     augmented = getattr(model, "name", "") == "chain_gnn_aug"
     tau_scale = model.tau_scale.to(device) if hasattr(model, "tau_scale") else torch.ones(bundle.n_links, device=device)
     best, best_state, bad, history = float("inf"), None, 0, []
@@ -156,12 +174,13 @@ def train_model(
             loss = loss_fn(out.delta_tau, batch)
             opt.zero_grad(set_to_none=True)
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), grad_clip)
             opt.step()
-            try:
-                sched.step()
-            except ValueError:
-                pass
+            if step_wise:
+                try:
+                    sched.step()
+                except ValueError:
+                    pass
             tr_loss += loss.item()
             nb += 1
         model.eval()
@@ -171,7 +190,9 @@ def train_model(
                 va_loss += float(loss_fn(model(batch).delta_tau, batch))
                 vb += 1
         va_loss /= max(vb, 1)
-        history.append({"epoch": epoch, "train_loss": tr_loss / max(nb, 1), "val_loss": va_loss, "elapsed_s": time.time() - t0})
+        if not step_wise:
+            sched.step(va_loss)
+        history.append({"epoch": epoch, "train_loss": tr_loss / max(nb, 1), "val_loss": va_loss, "elapsed_s": time.time() - t0, "lr": float(opt.param_groups[0]["lr"])})
         if log is not None:
             log.append(f"[{name} seed={seed} n_train_ep={len(train_ids)}] epoch {epoch} train {tr_loss / max(nb, 1):.4f} val {va_loss:.4f} ({time.time() - t0:.0f}s)")
         if va_loss < best - 1e-5:
@@ -184,8 +205,8 @@ def train_model(
     if best_state is not None:
         model.load_state_dict(best_state)
     model.eval()
-    torch.save({"state_dict": model.state_dict(), "name": name, "seed": seed, "train_ids": train_ids, "history": history, "n_params": n_params}, ckpt_path)
-    return {"model": model, "name": model.name, "n_params": n_params, "epochs_run": len(history), "best_val_loss": best, "train_seconds": time.time() - t0, "checkpoint": str(ckpt_path), "checkpoint_sha256": sha256_file(ckpt_path), "n_train_windows": len(train_ws), "history": history}
+    torch.save({"state_dict": model.state_dict(), "name": name, "seed": seed, "train_ids": train_ids, "history": history, "n_params": n_params, "lr": lr, "scheduler": scheduler, "tag": tag}, ckpt_path)
+    return {"model": model, "name": model.name, "n_params": n_params, "epochs_run": len(history), "best_val_loss": best, "train_seconds": time.time() - t0, "checkpoint": str(ckpt_path), "checkpoint_sha256": sha256_file(ckpt_path), "n_train_windows": len(train_ws), "history": history, "lr": lr, "scheduler": scheduler, "tag": tag}
 
 
 def load_checkpoint(name: str, ckpt_path: Path, bundle: DataBundle, cfg: dict, device: str) -> dict[str, Any]:

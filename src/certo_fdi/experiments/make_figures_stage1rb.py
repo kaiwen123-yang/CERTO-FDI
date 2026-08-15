@@ -65,7 +65,7 @@ def fig_four_axes(M: dict, ev: dict, out: Path) -> None:
     ax.set_ylim(0, 1)
     ax.set_ylabel("metric value (seed mean; dots = seeds)")
     ax.set_title(f"Four value axes — axes won by ligra_v2_typed: {len(ev.get('axes_won', []))}/4 (residual-only head, qdd_est)")
-    ax.legend(frameon=False, loc="upper right")
+    ax.legend(frameon=False, loc="upper left", ncol=2)
     _save(fig, out, pd.DataFrame({"axis": labels, "ligra_v2_typed": cand, "chain_gnn_aug": base}))
     plt.close(fig)
 

@@ -1,12 +1,9 @@
 # Documentation pointer
 
-Full research documentation (mathematical contracts, claim ledgers, decision memos,
-literature matrices, corrections) is **not** stored in this repository.
+Research documents are **not** committed. They live on the external storage root:
 
-Authoritative document root: `G:/CERTO-FDI/02_research_docs/` (WSL: `/mnt/g/CERTO-FDI/02_research_docs/`).
+- Kickoff package (frozen, hashed): `G:/CERTO-FDI/01_frozen_sources/extracted/CERTO_FDI_STAGE1R_LIGRA_KICKOFF_20260815_23ea2828/`
+- Working copies: `G:/CERTO-FDI/02_research_docs/stage1r/kickoff_package/`
+- Run outputs and decision memos: `G:/CERTO-FDI/04_runs/stage1r_ligra/<RUN_ID>/`
 
-Run outputs: `G:/CERTO-FDI/04_runs/stage1_2r_closedloop_certificate/<RUN_ID>/`.
-Review packages: `G:/CERTO-FDI/06_review_exchange/to_review/`.
-
-Only code-usage documentation (interfaces, short math symbol tables needed to read the
-code) may live in the repository.
+`PORT_PROVENANCE.md` records which files were ported from the Stage 1 branch.

@@ -373,15 +373,22 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
 
 
 # ---------------------------------------------------------------- claim ledger
-def _claim_ledger(ev: dict, cfg: dict, lit: dict) -> list[dict]:
+def _claim_ledger(ev: dict, cfg: dict, lit: dict, prov: dict | None = None) -> list[dict]:
     e = ev["evidence"]
     d, l, s, lp, h = e["detection"], e["localization"], e["selective"], e["loadpath"], e["healthy_expansion"]
     thr = cfg["decision"]["go"]
 
+    prov = prov or {}
+
     def row(cid, claim, status, evidence, strength, limits, novelty="n/a"):
-        return {"claim_id": cid, "claim": claim, "status": status, "evidence": evidence,
+        return {"run_id": prov.get("run_id", ""), "git_sha": prov.get("git_sha", ""),
+                "config_sha": prov.get("config_sha", ""),
+                "dataset_manifest_sha": prov.get("dataset_manifest_sha", ""),
+                "claim_id": cid, "claim": claim, "status": status, "evidence": evidence,
                 "strength": strength, "limits": limits, "novelty_status": novelty,
-                "unit_of_independence": "episode", "partition": "F4_TEST unless stated"}
+                "unit_of_independence": "episode", "partition": "F4_TEST unless stated",
+                "decision_state": ev.get("decision", ""),
+                "provisional": ev.get("decision") == "BLOCKED"}
 
     rows = [
         row("C1", "A rank-matched, geometry-free serial-chain support control does not reproduce the contact "
@@ -594,7 +601,9 @@ def main() -> int:
 
     (res / "stage2b_decision_memo.md").write_text(_memo(ev, cfg, st.layout.run_id, extra), encoding="utf-8")
     (res / "stage2b_known_issues.md").write_text(_known_issues(ev, cfg), encoding="utf-8")
-    write_csv(res / "stage2b_claim_ledger.csv", _claim_ledger(ev, cfg, lit))
+    write_csv(res / "stage2b_claim_ledger.csv", _claim_ledger(
+        ev, cfg, lit, {"run_id": st.layout.run_id, "git_sha": extra["git_sha"],
+                       "config_sha": st.cfg_sha, "dataset_manifest_sha": st.manifest_sha}))
     st.log(f"memo, known issues and claim ledger written ({len(figs)} figures)")
 
     # ---- run manifest: every artefact with its hash

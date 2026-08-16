@@ -24,6 +24,20 @@ THIN_TOPOLOGY = ["00_READ_ME_FIRST.md", "01_INDEPENDENT_REVIEW_PROMPT.md", "02_E
                  "15_REPRODUCE_REVIEW.sh"]
 
 
+LEDGER_HEADER = ("run_id,git_sha,config_sha,dataset_manifest_sha,claim_id,claim,status,evidence,"
+                 "limits,novelty_status,unit_of_independence\n")
+
+
+def _write_ledger(core: Path) -> None:
+    """A minimal but schema-valid narrative claim ledger for the negative-control fixtures."""
+    (core / "stage2b_claim_ledger.csv").write_text(LEDGER_HEADER + "r,g,c,d,C1,a claim,SUPPORTED,e,l,n/a,episode\n")
+
+
+def _write_gates(core: Path, encoder: str = "PASS", contact: str = "PASS") -> None:
+    (core / "stage2b_reproduction_gate.json").write_text(json.dumps({"encoder": {"gate": encoder}}))
+    (core / "stage2b_contact_reproduction_gate.json").write_text(json.dumps({"gate": contact}))
+
+
 def test_thin_topology_is_the_contract_topology():
     declared = list(B.REQUIRED_FILES) + list(B.REQUIRED_DIRECTORIES)
     for entry in THIN_TOPOLOGY:
@@ -98,15 +112,16 @@ def test_the_smoke_script_rejects_a_decision_outside_the_vocabulary(tmp_path):
                  "stage2b_loadpath_controls.csv", "stage2b_rank_audit.csv", "stage2b_localizer_selection.csv",
                  "stage2b_localization_metrics.csv", "stage2b_selective_risk.csv",
                  "stage2b_context_calibration.csv", "stage2b_event_metrics.csv",
-                 "stage2b_healthy_learning_curve.csv", "stage2b_episode_bootstrap.csv",
-                 "stage2b_claim_ledger.csv"]:
+                 "stage2b_healthy_learning_curve.csv", "stage2b_episode_bootstrap.csv"]:
         (core / name).write_text(header + row)
+    _write_ledger(core)
     (core / "stage2b_sequential_metrics.csv").write_text(
         header.replace(",partition,", ",partition,").replace("F4_CAL", "healthy_val")
         + row.replace("F4_CAL", "healthy_val"))
     (core / "stage2b_input_freeze.json").write_text(json.dumps(
         {"gate": "PASS", "stage2a_git_sha": "abc", "dataset_content_manifest_sha256": "x",
          "dataset_content_manifest_expected": "x", "historical_branch_heads": []}))
+    _write_gates(core)
     (core / "stage2b_decision_evidence.json").write_text(json.dumps({"decision": "GO_EVERYTHING_IS_FINE"}))
     (core / "stage2b_decision_memo.md").write_text("# whatever\n")
     (core / "stage2b_known_issues.md").write_text("# issues\n")
@@ -130,9 +145,9 @@ def test_the_smoke_script_rejects_selection_on_the_final_test_partition(tmp_path
                  "stage2b_loadpath_controls.csv", "stage2b_rank_audit.csv",
                  "stage2b_localization_metrics.csv", "stage2b_selective_risk.csv",
                  "stage2b_context_calibration.csv", "stage2b_event_metrics.csv",
-                 "stage2b_healthy_learning_curve.csv", "stage2b_episode_bootstrap.csv",
-                 "stage2b_claim_ledger.csv"]:
+                 "stage2b_healthy_learning_curve.csv", "stage2b_episode_bootstrap.csv"]:
         (core / name).write_text(header + "r,g,c,d,F4_TEST,ALL,1,m,F4_contact,OK,False,False,True\n")
+    _write_ledger(core)
     # the offending file: the localizer was selected on the final test set
     (core / "stage2b_localizer_selection.csv").write_text(
         header + "r,g,c,d,F4_TEST,ALL,1,m,F4_contact,OK,False,False,True\n")
@@ -141,6 +156,7 @@ def test_the_smoke_script_rejects_selection_on_the_final_test_partition(tmp_path
     (core / "stage2b_input_freeze.json").write_text(json.dumps(
         {"gate": "PASS", "stage2a_git_sha": "abc", "dataset_content_manifest_sha256": "x",
          "dataset_content_manifest_expected": "x", "historical_branch_heads": []}))
+    _write_gates(core)
     (core / "stage2b_decision_evidence.json").write_text(json.dumps({"decision": "NO_GO_CONTACT_PRODUCT"}))
     (core / "stage2b_decision_memo.md").write_text("# Stage 2B decision memo — NO_GO_CONTACT_PRODUCT\n")
     (core / "stage2b_known_issues.md").write_text("# issues\n")
@@ -151,6 +167,49 @@ def test_the_smoke_script_rejects_selection_on_the_final_test_partition(tmp_path
     p = subprocess.run(["bash", str(script), "--smoke"], cwd=pkg, capture_output=True, text=True)
     assert p.returncode != 0
     assert "forbidden partition" in (p.stdout + p.stderr)
+
+
+def test_the_smoke_script_requires_a_failed_reproduction_gate_to_produce_blocked(tmp_path):
+    """A package may ship a failed gate — but only with BLOCKED as the decision."""
+    pkg = tmp_path / "pkg"
+    core = pkg / "13_CORE_RESULTS"
+    core.mkdir(parents=True)
+    (pkg / "07_MANIFEST.json").write_text("{}")
+    header = ("run_id,git_sha,config_sha,dataset_manifest_sha,partition,split,seed,method,fault_family,"
+              "status,provisional,strict,empirical\n")
+    for name in ["stage2b_baseline_reproduction.csv", "stage2b_contact_calibration_manifest.csv",
+                 "stage2b_loadpath_controls.csv", "stage2b_rank_audit.csv", "stage2b_localizer_selection.csv",
+                 "stage2b_localization_metrics.csv", "stage2b_selective_risk.csv",
+                 "stage2b_context_calibration.csv", "stage2b_event_metrics.csv",
+                 "stage2b_healthy_learning_curve.csv", "stage2b_episode_bootstrap.csv"]:
+        (core / name).write_text(header + "r,g,c,d,F4_CAL,ALL,1,m,F4_contact,OK,False,False,True\n")
+    (core / "stage2b_sequential_metrics.csv").write_text(
+        header + "r,g,c,d,healthy_val,ALL,1,m,,OK,False,False,True\n")
+    _write_ledger(core)
+    _write_gates(core, encoder="PASS", contact="FAIL")
+    (core / "stage2b_input_freeze.json").write_text(json.dumps(
+        {"gate": "PASS", "stage2a_git_sha": "abc", "dataset_content_manifest_sha256": "x",
+         "dataset_content_manifest_expected": "x", "historical_branch_heads": []}))
+    (core / "stage2b_known_issues.md").write_text("# issues\n")
+    (core / "stage2b_literature_verification.md").write_text("# lit\n")
+    script = pkg / "15_REPRODUCE_REVIEW.sh"
+    script.write_text(B.REPRODUCE_SCRIPT)
+
+    # a failed gate with a non-BLOCKED decision must be rejected
+    (core / "stage2b_decision_evidence.json").write_text(json.dumps({"decision": "NO_GO_CONTACT_PRODUCT"}))
+    (core / "stage2b_decision_memo.md").write_text("# memo — NO_GO_CONTACT_PRODUCT\n")
+    (core / "stage2b_run_manifest.json").write_text(json.dumps({"decision": "NO_GO_CONTACT_PRODUCT"}))
+    p = subprocess.run(["bash", str(script), "--smoke"], cwd=pkg, capture_output=True, text=True)
+    assert p.returncode != 0
+    assert "not BLOCKED" in (p.stdout + p.stderr)
+
+    # the same package with BLOCKED validates
+    (core / "stage2b_decision_evidence.json").write_text(json.dumps({"decision": "BLOCKED"}))
+    (core / "stage2b_decision_memo.md").write_text("# Stage 2B decision memo — BLOCKED\n")
+    (core / "stage2b_run_manifest.json").write_text(json.dumps({"decision": "BLOCKED"}))
+    p = subprocess.run(["bash", str(script), "--smoke"], cwd=pkg, capture_output=True, text=True)
+    assert p.returncode == 0, p.stdout + p.stderr
+    assert "REVIEW_SMOKE=PASS decision=BLOCKED" in p.stdout
 
 
 def test_the_builder_refuses_a_decision_outside_the_vocabulary(tmp_path, monkeypatch):

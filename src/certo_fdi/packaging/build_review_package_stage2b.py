@@ -34,6 +34,7 @@ REQUIRED_DIRECTORIES = ("09_GIT_PROVENANCE", "10_CONFIGS", "11_CODE_SNAPSHOT", "
 #: the kickoff §13 hard result files, plus the tables the decision reads
 CORE_RESULTS = (
     "stage2b_input_freeze.json", "stage2b_baseline_reproduction.csv", "stage2b_reproduction_gate.json",
+    "stage2b_contact_reproduction_gate.json",
     "stage2b_contact_calibration_manifest.csv", "stage2b_loadpath_controls.csv", "stage2b_rank_audit.csv",
     "stage2b_localizer_selection.csv", "stage2b_localizer_selection.json", "stage2b_localization_metrics.csv",
     "stage2b_selective_risk.csv", "stage2b_context_calibration.csv", "stage2b_sequential_metrics.csv",
@@ -67,6 +68,11 @@ required = ['stage2b_input_freeze.json', 'stage2b_baseline_reproduction.csv',
             'stage2b_decision_memo.md', 'stage2b_known_issues.md', 'stage2b_run_manifest.json']
 common = {'run_id', 'git_sha', 'config_sha', 'dataset_manifest_sha', 'partition', 'split', 'seed',
           'method', 'fault_family', 'status', 'provisional', 'strict', 'empirical'}
+# the claim ledger is a narrative table: one row per claim, so it carries provenance and a status
+# but has no seed or fault family to report
+narrative = {'stage2b_claim_ledger.csv': {'run_id', 'git_sha', 'config_sha', 'dataset_manifest_sha',
+                                          'claim_id', 'claim', 'status', 'evidence', 'limits',
+                                          'novelty_status', 'unit_of_independence'}}
 for name in required:
     p = core / name
     if not p.is_file():
@@ -75,8 +81,9 @@ for name in required:
         with p.open(newline='', encoding='utf-8') as h:
             rd = csv.DictReader(h)
             fields = set(rd.fieldnames or [])
-            if not common <= fields:
-                fail(f'bad schema {name}: missing {sorted(common - fields)}')
+            want = narrative.get(name, common)
+            if not want <= fields:
+                fail(f'bad schema {name}: missing {sorted(want - fields)}')
 
 # ---- 2. input hashes
 fr = json.loads((core / 'stage2b_input_freeze.json').read_text())
@@ -88,12 +95,20 @@ for key in ('stage2a_git_sha', 'dataset_content_manifest_sha256'):
 if fr.get('dataset_content_manifest_sha256') != fr.get('dataset_content_manifest_expected'):
     fail('dataset content manifest does not match the frozen expectation')
 
-# ---- 3. baseline reproduction gate
+# ---- 3. reproduction gates are recorded, and a failed gate forces BLOCKED
+gates = {}
 rg = core / 'stage2b_reproduction_gate.json'
 if rg.is_file():
     g = json.loads(rg.read_text())
-    if g.get('gate') != 'PASS':
-        fail(f"baseline reproduction gate is {g.get('gate')!r}")
+    gates['encoder'] = (g.get('encoder') or {}).get('gate', g.get('gate'))
+cg = core / 'stage2b_contact_reproduction_gate.json'
+if cg.is_file():
+    gates['contact_localizer'] = json.loads(cg.read_text()).get('gate')
+if not gates:
+    fail('no reproduction gate was recorded')
+for k, v in gates.items():
+    if v not in ('PASS', 'FAIL', 'MISSING'):
+        fail(f'reproduction gate {k} has an unknown state {v!r}')
 
 # ---- 4. selection happened on the declared partitions only
 with (core / 'stage2b_localizer_selection.csv').open(newline='', encoding='utf-8') as h:
@@ -118,6 +133,9 @@ if ev['decision'] not in memo.splitlines()[0]:
 man = json.loads((core / 'stage2b_run_manifest.json').read_text())
 if man.get('decision') != ev.get('decision'):
     fail('run manifest and decision evidence disagree')
+# a failed reproduction gate is an integrity failure and must have produced BLOCKED
+if any(v != 'PASS' for v in gates.values()) and ev.get('decision') != 'BLOCKED':
+    fail(f"reproduction gates {gates} did not pass but the decision is {ev.get('decision')!r}, not BLOCKED")
 
 # ---- 6. historical PR heads were not changed
 for h_ in fr.get('historical_branch_heads', []):

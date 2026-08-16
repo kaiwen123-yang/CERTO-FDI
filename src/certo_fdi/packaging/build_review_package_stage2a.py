@@ -354,7 +354,7 @@ def build(run_root: str | Path, repo_root: str | Path, milestone: str = "AUDIT")
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default=None)
-    ap.add_argument("--storage-root", default="/mnt/g/CERTO-FDI")
+    ap.add_argument("--storage-root", default=os.environ.get("CERTO_STORAGE_ROOT", ""), required=not os.environ.get("CERTO_STORAGE_ROOT"))
     ap.add_argument("--run-id", required=True)
     ap.add_argument("--repo-root", required=True)
     ap.add_argument("--milestone", default="AUDIT")

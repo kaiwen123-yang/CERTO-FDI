@@ -2,7 +2,7 @@
 
 Verifies -- and refuses to guess about -- everything the rest of the stage depends on:
 
-* ``/mnt/g`` is a real mount with free space;
+* the storage root (``CERTO_STORAGE_ROOT`` / ``--storage-root``) is a real mount with free space;
 * the frozen 590-episode dataset is present, complete and content-hashed (the ``sha256``
   column of ``episode_index.csv`` is STALE by construction: ``precompute_gmo`` appended the
   ``r_gmo`` column in place after the index was written, so the *content* hashes are

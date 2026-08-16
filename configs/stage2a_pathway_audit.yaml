@@ -1,0 +1,235 @@
+# CERTO-FDI Stage 2A: chain-structured healthy residual + joint-Cartesian fault-pathway geometry audit.
+#
+# The dataset, its splits, its contexts and its fault labels are FROZEN (Stage 1R pilot,
+# 590 episodes, dataset config sha256 24e57b24...). This file only freezes the Stage 2A
+# protocol: which dictionaries are built, how they are whitened and projected, which
+# ablations run, and the pre-registered decision thresholds.
+project: CERTO-FDI
+stage: stage2a_chain_jacobian_pathway
+profile: pathway_audit
+method_codename: chain-residual + joint-Cartesian fault-pathway geometry
+seed_list: [260815, 260816, 260817]
+
+paths:
+  persistent_root: "/mnt/g/CERTO-FDI"
+  data_root: "/mnt/g/CERTO-FDI/03_data/stage1r"
+  run_root: "/mnt/g/CERTO-FDI/04_runs/stage2a_chain_jacobian_pathway"
+  frozen_stage1rb_run: "/mnt/g/CERTO-FDI/04_runs/stage1r_b_equivariant_capacity/run_20260815T143902Z_4e94370"
+  mjcf_path: "/mnt/g/CERTO-FDI/01_frozen_sources/extracted/mujoco_menagerie_franka_emika_panda_da76818/franka_emika_panda/panda_nohand.xml"
+  menagerie_commit: "da76818e269b82289eba39808e2fb91d679d6994"
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: main
+  stage_branch: stage/stage2a-chain-jacobian-pathway-audit
+  keep_pr_draft: true
+  auto_merge: false
+
+frozen_inputs:
+  dataset_profile: pilot
+  dataset_seed: 260815
+  regenerate_data: false
+  pilot_config_sha256: 24e57b244e83ddc647bccbd978f457947e9c5d632768a0d6e3780d8358ce1ea3
+  mjcf_sha256: e7090a5e2384b18a223ef532d98bf914f7f9a6b74dc8bc9f74c8291201074071
+  stage1rb_thin_zip_sha256: ""     # filled by the Phase 0 freeze step
+  stage1rb_full_zip_sha256: ""
+  stage1rb_decision: FINAL_NO_GO_LIE_MAIN_CONTRIBUTION
+
+robot:
+  name: franka_emika_panda
+  dof: 7
+  truth_backend: mujoco
+  analytic_backend: pinocchio
+  fixed_base: true
+
+# identical to the frozen pilot (data) and to the Stage 1R-B evaluation protocol
+simulation:
+  physics_dt_s: 0.001
+  control_dt_s: 0.002
+  log_rate_hz: 500
+  episode_duration_s: 12
+  window_samples: 128
+  window_stride: 32
+  window_stride_eval: 16
+  eval_settle_s: 1.0
+
+plant_mismatch:
+  inertial_param_relative_perturbation: 0.05
+  nominal_viscous_nms: [0.8, 0.8, 0.6, 0.6, 0.4, 0.3, 0.3]
+  nominal_coulomb_nm:  [0.9, 0.9, 0.7, 0.7, 0.4, 0.3, 0.3]
+  truth_viscous_scale_range: [0.85, 1.15]
+  truth_coulomb_scale_range: [0.85, 1.15]
+  truth_stribeck_nm: [0.6, 0.6, 0.5, 0.5, 0.3, 0.2, 0.2]
+  truth_stribeck_velocity: 0.15
+  measurement_noise:
+    q_std_rad: 0.0002
+    qd_std_rad_s: 0.004
+    tau_std_nm: 0.05
+  acceleration_estimator: causal_savgol
+  acceleration_window_samples: 21
+
+# ---------------------------------------------------------------- frozen baseline (Stage 1R-B)
+models:
+  primary_baseline: chain_gnn_aug
+  diagnostics: [rnea_gru, rnea_threshold]
+  scalar_hidden_dim: 64
+  scalar_layers: 2
+  baseline_gru_hidden: 80
+  frozen_best_config:
+    chain_gnn_aug: {lr: 0.002, scheduler: reduce_on_plateau, tag: "lr0.002_reduce_on_plateau"}
+    rnea_gru: {lr: 0.002, scheduler: onecycle, tag: "pr2sched"}
+  # Stage 1R-B frozen reference values that the reproduction gate compares against
+  frozen_reference:
+    chain_gnn_aug:
+      n_params: 63047
+      val_healthy_rmse_nm: 0.1676424483571157
+      healthy_rmse_S0_nm: 0.19359606957017295
+      healthy_rmse_ratio_S0: 0.32780725368174557
+      auroc_ALL: 0.7502198299349684
+      auroc_S1: 0.67368044004686
+      auroc_S2_S4: 0.8189602231572921
+      localization_top1: 0.29444444444444445
+      localization_chain_distance: 1.7861111111111112
+
+training:
+  epochs: 40
+  min_epochs: 15
+  patience: 10
+  batch_size: 64
+  weight_decay: 1.0e-6
+  grad_clip: 1.0
+  main_acceleration_input: qdd_est
+  # §6.6 data-volume diagnostic: the frozen pilot has 40 healthy train episodes, so the
+  # requested 80-episode point is NOT AVAILABLE and is recorded as such (never extrapolated).
+  learning_curve_episodes: [10, 20, 40]
+  learning_curve_requested: [10, 20, 40, 80, "all"]
+  learning_curve_models: [rnea_gru, chain_gnn_aug]
+
+frame_trials:
+  variants_per_episode: 8
+  rotation_angle_max_deg: 180
+  translation_fraction_of_link_length: 0.25
+
+# ---------------------------------------------------------------- pathway geometry
+pathway:
+  window_time_points: 8            # M: the 128-sample window is sub-sampled to M points
+  coulomb_eps_rad_s: 0.05          # nominal model's tanh smoothing (chain.coulomb_eps)
+  stribeck_velocity_rad_s: 0.15    # declared from the simulation protocol
+  encoder_delta_rad: 1.0e-4
+  encoder_delta_rad_s: 1.0e-3
+  delay_delta_s: 0.004
+  whitening:
+    ridge_mean: 1.0e-2
+    shrinkage_relative: 1.0e-6
+    context_fields: [controller_id, speed_scale, tool_mass_kg, tool_com_z_m, temperature_proxy, noise_level]
+    fit_partitions: [train, val]
+  ridge:
+    lambda_relative: 1.0e-6
+    condition_max: 1.0e6
+    rule: "lambda = max(lambda_relative * sigma_max^2, sigma_max^2 / condition_max); numerical only, no data fitting"
+  contact:
+    candidate_points: [proximal, mid, distal]
+    body_wrench_columns: 6
+    point_force_columns: 3
+    oracle_truth_point: true       # oracle upper bound only, never deployed
+    truth_contact_links: [1, 3, 5, 6]
+
+# ---------------------------------------------------------------- ablations (§5)
+ablations:
+  - rnea_threshold
+  - rnea_gru
+  - chain_gnn_aug_residual_only
+  - geometry_only
+  - chain_plus_ee_jacobian
+  - chain_plus_all_link_instantaneous_jacobian
+  - chain_plus_all_link_window_jacobian
+  - chain_plus_full_pathway_dictionary
+  - chain_plus_shuffled_jacobian_control     # capacity/permutation control (§8.1 condition 6)
+  - chain_plus_all_link_window_jacobian_oracle_point   # oracle contact point (§8.5)
+primary_geometry_head: chain_plus_all_link_window_jacobian
+primary_baseline_head: chain_gnn_aug_residual_only
+
+anomaly:
+  primary_representation: residual_only
+  head: conditional_gaussian
+  threshold_quantile: 0.995
+  use_faults_for_threshold: false
+  persistence_windows: 3
+
+localization:
+  primary: contact_projection_residual      # zero-shot; never trained on fault labels
+  secondary: counterfactual_link_masking    # frozen Stage 1R-B localizer, for comparability
+  rejection:
+    margin_quantile: 0.10        # reject when the best/second-best link margin is below the
+                                 # 10th percentile of the healthy-validation margin distribution
+    residual_quantile: 0.99      # reject when every link projection residual exceeds the 99th
+                                 # percentile of the healthy-validation residual distribution
+    fisher_quantile: 0.05        # reject when lambda_min(Fisher) is below the 5th percentile
+                                 # of the healthy-validation distribution
+    calibrated_on: healthy validation windows only
+
+coarse_classes:
+  internal_actuation_friction: [F1_actuator, F2_friction]
+  load_inertia: [F3_payload]
+  external_contact: [F4_contact]
+  sensor: [F5_encoder]
+  command_timing: [F6_command]
+
+diagnosability:
+  metrics: [contact_observability, fault_family_min_angle, link_min_angle, fisher_min_eigenvalue, predicted_ambiguity]
+  bootstrap_resamples: 2000
+  bootstrap_alpha: 0.05
+  reliability_bins: 10
+
+# ---------------------------------------------------------------- pre-registered decision (§8)
+# FROZEN BEFORE ANY STAGE 2A MODEL RESULT EXISTS. Post-hoc modification is forbidden.
+decision:
+  go:
+    f4_auroc_gain_min: 0.05              # mean over S1 and S4, primary geometry head vs baseline
+    f4_auroc_seed_agreement_min: 2       # of 3 seeds, same sign
+    f4_top1_gain_min: 0.15
+    f4_chain_distance_reduction_min: 0.50
+    false_alarm_relative_worsening_max: 0.10
+    diagnosability_abs_spearman_min: 0.40
+    diagnosability_ci_must_exclude_zero: true
+    min_contact_links_or_strata: 2
+    control_must_not_reproduce_gain: true   # shuffled-Jacobian control gain must be < half of the real gain
+  no_go:
+    f4_auroc_gain_below: 0.02
+    f4_top1_gain_below: 0.05
+    diagnosability_abs_spearman_below: 0.20
+    false_alarm_relative_worsening_above: 0.25
+  pivot_contact_geometry_only:
+    f4_auroc_gain_min: 0.02
+    f4_top1_gain_min: 0.05
+    f4_chain_distance_reduction_min: 0.25
+    other_family_min_improved: 2         # of F1,F2,F3,F5,F6 -- fewer than this => contact-only
+    other_family_auroc_gain_min: 0.02
+  pivot_coarse_equivalence_classes:
+    coarse_balanced_accuracy_min: 0.50
+    coarse_gain_over_baseline_min: 0.10
+    fine_top1_max: 0.35
+  pivot_calibration_sequential:
+    false_alarms_per_hour_min: 30.0
+    healthy_ood_alarm_ratio_min: 3.0
+  reproduction_gate_relative_tolerance: 0.02   # §6.4: stop and diagnose beyond 2 %
+
+execution:
+  max_cpu_threads: 8
+  single_gpu_process: true
+  require_clean_worktree: true
+  build_thin_full_review_packages: true
+
+claims:
+  forbidden:
+    - "first use of the Jacobian for collision detection"
+    - "first use of a GNN for manipulator anomaly detection"
+    - "first study of trajectory influence on diagnosis"
+    - "strict global fault identifiability"
+    - "exact conditional CFAR"
+    - "physical wrench uniquely recovered from network-internal messages"
+  candidate_novelty: >
+    Whether unifying a chain-learned healthy residual with explicit joint-Cartesian
+    fault-pathway geometry yields interpretable contact detection, link localization and
+    trajectory-conditioned diagnosability.
+  status_until_supported: PLAUSIBLY_OPEN / NOT_ESTABLISHED

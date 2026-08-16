@@ -95,6 +95,14 @@ training:
   grad_clip: 1.0
   main_acceleration_input: qdd_est
 
+# Frame augmentation of the FROZEN chain_gnn_aug trainer. These are the exact Stage 2A/1R-B
+# values; chain_gnn_aug is defined as the frame-augmented chain GNN, so changing them would
+# change the encoder, which this stage forbids.
+frame_trials:
+  variants_per_episode: 8
+  rotation_angle_max_deg: 180
+  translation_fraction_of_link_length: 0.25
+
 # ---------------------------------------------------------------- Phase 0 reproduction gate
 baseline:
   encoder: chain_gnn_aug
@@ -106,6 +114,10 @@ baseline:
     auroc_s2_s4: 0.8189602231572921
     healthy_rmse_s0_nm: 0.19359606957017295
 contact_reference:
+  # the frozen Stage 2A counterfactual localizer, i.e. the "neural" reference M_neural that
+  # Delta_support is measured against
+  counterfactual_top1: 0.16071428571428573
+  counterfactual_chain_distance: 2.3148148148148149
   stage2a_aligned_top1: 0.5833333333333334
   stage2a_aligned_chain_distance: 0.7777777777777777
   stage2a_shuffled_top1: 0.5416666666666666

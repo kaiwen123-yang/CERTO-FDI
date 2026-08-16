@@ -1,0 +1,343 @@
+# CERTO-FDI Stage 2B: contact load-path localization and context-calibrated sequential monitoring.
+#
+# Derived from the frozen kickoff template 12_STAGE2B_CONFIG_TEMPLATE.yaml
+# (kickoff zip sha256 c8dbf315c73511f4b62569bcee395f392fddfa7311a2f2276bb9a8c66476bb9f).
+# The Stage 1R/2A dataset, its splits, its contexts and its fault labels are FROZEN. This file
+# only freezes the Stage 2B protocol, the operating targets and the decision thresholds. It is
+# committed BEFORE any Stage 2B metric is computed and must not be edited to rescue an outcome.
+project: CERTO-FDI
+stage: stage2b_contact_loadpath_sequential
+profile: contact_monitor_pilot
+method_codename: serial-chain load-path contact monitor
+seed_list: [260815, 260816, 260817]
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: stage/stage2a-chain-jacobian-pathway-audit
+  stage_branch: stage/stage2b-contact-loadpath-sequential-calibration
+  keep_pr_draft: true
+  auto_merge: false
+
+paths:
+  persistent_root: /mnt/g/CERTO-FDI
+  data_root: /mnt/g/CERTO-FDI/03_data/stage1r          # frozen Stage 1R pilot root (never regenerated)
+  frozen_data_root: /mnt/g/CERTO-FDI/03_data/stage1r
+  stage2b_data_root: /mnt/g/CERTO-FDI/03_data/stage2b
+  run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_contact_loadpath_sequential
+  stage2a_reference_run: /mnt/g/CERTO-FDI/05_reference_results/stage2a/run_20260816T055853Z_37f81d7
+  stage2a_run_root: /mnt/g/CERTO-FDI/04_runs/stage2a_chain_jacobian_pathway/run_20260816T055853Z_37f81d7
+  mjcf_path: /mnt/g/CERTO-FDI/01_frozen_sources/extracted/mujoco_menagerie_franka_emika_panda_da76818/franka_emika_panda/panda_nohand.xml
+  menagerie_commit: da76818e269b82289eba39808e2fb91d679d6994
+
+# ---------------------------------------------------------------- mandatory input provenance
+frozen_inputs:
+  stage2a_full_zip_sha256: 0ae32ba745917d68b2b819e779f2d3430be535ce3d3e018dcde8baa446b04acc
+  stage2a_git_sha: bcf2ad5c978f58dc159636d64d0b5c81efb9e396
+  dataset_content_manifest_sha256: 8c2ba38b9262080efb981c08cfb7b5d58d2bfd037228a313edcae57f062b4100
+  stage2b_kickoff_zip_sha256: c8dbf315c73511f4b62569bcee395f392fddfa7311a2f2276bb9a8c66476bb9f
+  mjcf_sha256: e7090a5e2384b18a223ef532d98bf914f7f9a6b74dc8bc9f74c8291201074071
+  pilot_config_sha256: 24e57b244e83ddc647bccbd978f457947e9c5d632768a0d6e3780d8358ce1ea3
+  dataset_profile: pilot
+  dataset_seed: 260815
+  regenerate_frozen_data: false
+  # any mismatch => BLOCKED_INPUT_PROVENANCE (never a scientific NO-GO)
+
+robot:
+  name: franka_emika_panda
+  dof: 7
+  truth_backend: mujoco
+  analytic_backend: pinocchio
+  fixed_base: true
+
+simulation:
+  physics_dt_s: 0.001
+  control_dt_s: 0.002
+  log_rate_hz: 500
+  episode_duration_s: 12
+  window_samples: 128
+  window_stride: 32
+  window_stride_eval: 16
+  eval_settle_s: 1.0
+
+plant_mismatch:
+  inertial_param_relative_perturbation: 0.05
+  nominal_viscous_nms: [0.8, 0.8, 0.6, 0.6, 0.4, 0.3, 0.3]
+  nominal_coulomb_nm:  [0.9, 0.9, 0.7, 0.7, 0.4, 0.3, 0.3]
+  truth_viscous_scale_range: [0.85, 1.15]
+  truth_coulomb_scale_range: [0.85, 1.15]
+  truth_stribeck_nm: [0.6, 0.6, 0.5, 0.5, 0.3, 0.2, 0.2]
+  truth_stribeck_velocity: 0.15
+  measurement_noise:
+    q_std_rad: 0.0002
+    qd_std_rad_s: 0.004
+    tau_std_nm: 0.05
+  acceleration_estimator: causal_savgol
+  acceleration_window_samples: 21
+
+# ---------------------------------------------------------------- frozen encoder (no new network)
+models:
+  primary_baseline: chain_gnn_aug
+  scalar_hidden_dim: 64
+  scalar_layers: 2
+  baseline_gru_hidden: 80
+  frozen_best_config:
+    chain_gnn_aug: {lr: 0.002, scheduler: reduce_on_plateau, tag: "lr0.002_reduce_on_plateau"}
+    rnea_gru: {lr: 0.002, scheduler: onecycle, tag: "pr2sched"}
+  parameter_count: 63047
+  retune_hyperparameters: false          # HARD: no new encoder, no architecture search
+
+training:
+  epochs: 40
+  min_epochs: 15
+  patience: 10
+  batch_size: 64
+  weight_decay: 1.0e-6
+  grad_clip: 1.0
+  main_acceleration_input: qdd_est
+
+# Frame augmentation of the FROZEN chain_gnn_aug trainer. These are the exact Stage 2A/1R-B
+# values; chain_gnn_aug is defined as the frame-augmented chain GNN, so changing them would
+# change the encoder, which this stage forbids.
+frame_trials:
+  variants_per_episode: 8
+  rotation_angle_max_deg: 180
+  translation_fraction_of_link_length: 0.25
+
+# ---------------------------------------------------------------- Phase 0 reproduction gate
+baseline:
+  encoder: chain_gnn_aug
+  reproduction_tolerance_relative: 0.02
+  reference:
+    n_params: 63047
+    auroc_all: 0.7502198299349684
+    auroc_s1: 0.67368044004686
+    auroc_s2_s4: 0.8189602231572921
+    healthy_rmse_s0_nm: 0.19359606957017295
+contact_reference:
+  # the frozen Stage 2A counterfactual localizer, i.e. the "neural" reference M_neural that
+  # Delta_support is measured against
+  counterfactual_top1: 0.16071428571428573
+  counterfactual_chain_distance: 2.3148148148148149
+  stage2a_aligned_top1: 0.5833333333333334
+  stage2a_aligned_chain_distance: 0.7777777777777777
+  stage2a_shuffled_top1: 0.5416666666666666
+  stage2a_false_alarms_per_hour: 1646.5410139086725
+  stage2a_event_tpr: 0.847
+  stage2a_median_delay_s: 0.143
+
+# ---------------------------------------------------------------- pathway geometry (frozen from 2A)
+pathway:
+  window_time_points: 8                  # PRIMARY; the dense variant cannot change the decision
+  optional_dense_window_time_points: [16]
+  coulomb_eps_rad_s: 0.05
+  stribeck_velocity_rad_s: 0.15
+  encoder_delta_rad: 1.0e-4
+  encoder_delta_rad_s: 1.0e-3
+  delay_delta_s: 0.004
+  whitening:
+    ridge_mean: 1.0e-2
+    shrinkage_relative: 1.0e-6
+    context_fields: [controller_id, speed_scale, tool_mass_kg, tool_com_z_m, temperature_proxy, noise_level]
+    fit_partitions: [train, val]
+  ridge:
+    lambda_relative: 1.0e-6
+    condition_max: 1.0e6
+  contact:
+    candidate_points: [proximal, com, mid, distal, "+x", "-x", "+y", "-y", "+z", "-z"]
+    point_force_columns: 3
+    truth_contact_links: [1, 3, 5, 6]
+    oracle_truth_point: true             # oracle statistic only; never a deployed feature
+
+# ---------------------------------------------------------------- Phase 1 load-path decomposition
+loadpath_controls:
+  methods:
+    - counterfactual_stage1rb            # historical baseline (from the Stage 2A reproduction)
+    - support_prefix_rankmatched
+    - random_within_support_rankmatched
+    - fixed_reference_jacobian
+    - shuffled_time_jacobian
+    - time_aligned_jacobian
+  random_control_replicates: 16
+  random_seed_base: 262000
+  support_basis_construction: dct_type_II_orthonormal_restricted_to_prefix_support
+  rank_match_mode: exact_numerical_rank_of_aligned_dictionary
+  rank_tolerance_relative: 1.0e-8
+  fixed_reference_selection: median_healthy_train_configuration   # healthy TRAIN only
+  gain_decomposition:
+    delta_support: "M_support - M_neural"
+    delta_shape: "M_fixedJ - M_support"
+    delta_temporal_geometry: "M_alignedJ - M_fixedJ"
+  cartesian_claim_requires:
+    beats_fixed_reference: true
+    beats_shuffled_time: true
+    episode_cluster_ci_excludes_zero: true
+
+# ---------------------------------------------------------------- Phase 2 rank-aware localization
+localization:
+  score_candidates:
+    - raw_projection_residual
+    - df_normalized_residual
+    - rank_aware_glrt
+    - bic_penalized_fit
+    - minimal_consistent_link
+  selection_partition: F4_CAL            # HARD: selection never touches the final F4 test set
+  audit_control_score: raw_projection_residual   # the frozen Stage 2A score, kept as an audit control
+  primary_metrics: [episode_top1, episode_top2, mean_chain_distance]
+  truth_links: [1, 3, 5, 6]
+  minimal_consistent_link_quantile: 0.95 # healthy-validation acceptance quantile for rule 5
+  reject_features:
+    - best_second_margin
+    - subwindow_stability
+    - perturbation_stability
+    - normalized_link_evidence
+    - absolute_fit_adequacy
+  perturbation_replicates: 16
+  perturbation_seed_base: 265000
+  subwindow_splits: 2
+  selective_coverages: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+  rejection_selection_partition: F4_CAL
+
+contact_calibration:
+  enabled: true
+  partition_name: F4_CAL
+  seed_root: 263000
+  episodes_per_truth_link: 12
+  truth_links: [1, 3, 5, 6]
+  never_use_for_encoder: true
+  never_use_for_detection_threshold: true
+  disjoint_from_frozen_seeds: true
+
+# ---------------------------------------------------------------- Phase 3 calibration + sequential
+calibration:
+  context_fields: [controller_id, speed_scale, tool_mass_kg, tool_com_z_m, temperature_proxy, noise_level]
+  methods:
+    - global_quantile
+    - grouped_mondrian_backoff
+    - conditional_quantile_regression
+    - episode_blocked_conformal
+  threshold_quantile_initial: 0.995
+  target_false_alarms_per_hour: [50, 10]
+  tune_on_healthy_only: true
+  mondrian:
+    hierarchy:
+      - [controller_id, speed_band, tool_mass_band]
+      - [controller_id, speed_band]
+      - [controller_id]
+      - []
+    min_episodes_per_leaf: 3
+    speed_bands: [0.0, 0.7, 1.05, 99.0]
+    tool_mass_bands: [-0.01, 0.15, 0.45, 99.0]
+  quantile_regression:
+    model: gradient_boosting_quantile
+    max_depth: 2
+    n_estimators: 200
+    learning_rate: 0.05
+    fixed_before_fault_evaluation: true
+  conformal:
+    block_unit: episode
+    coverage_report: [marginal, grouped]
+    forbidden_language: exact_conditional_CFAR
+
+sequential:
+  methods:
+    - none
+    - persistence_3_of_3
+    - persistence_2_of_3
+    - persistence_3_of_4
+    - persistence_3_of_5
+    - hysteresis
+    - one_sided_cusum
+  persistence_grid: [[2, 3], [3, 4], [3, 5]]
+  hysteresis_high_low_ratio_grid: [0.90, 0.80, 0.70]
+  cusum_drift_grid: [0.25, 0.5, 1.0, 2.0]
+  cusum_threshold_grid: [2.0, 4.0, 8.0, 16.0, 32.0]
+  select_on: healthy_validation_episodes_only
+  target_event_tpr: 0.80
+  median_delay_max_s: 0.20
+  delay_p95_max_s: 0.50
+
+event_accounting:                        # FROZEN before any evaluation
+  window_stride_eval: 16                 # 32 ms at 500 Hz
+  alarm_onset: "first window whose (sequential-wrapped) alarm state rises from 0 to 1"
+  refractory_s: 1.0                      # no new alarm event within this cooldown
+  event_match_tolerance_s: 0.50          # an alarm counts for the fault event if it starts at or
+                                         # after onset and within the faulty segment + tolerance
+  detection_delay_origin: fault_onset_s
+  missed_event_handling: "counted as a miss with delay = NaN; never imputed"
+  episode_boundary_reset: true           # sequential state resets at every episode boundary
+  healthy_time_definition: "window end times of label==0 windows, one window_stride_eval each"
+  report_window_and_event_rates_separately: true
+
+# ---------------------------------------------------------------- Phase 4 healthy expansion
+healthy_expansion:
+  totals: [40, 80, 160]
+  nested: true
+  seed_root: 264000
+  retrain_seeds: [260815, 260816, 260817]
+  retune_hyperparameters: false
+  keep_fault_tests_frozen: true
+  design_balance_fields: [controller, speed_band, tool_id, temperature_proxy, noise_level]
+  monotonicity_requirement: "monotone, or stable in at least 2 of 3 seeds"
+  extrapolation_beyond_h160: forbidden
+
+# ---------------------------------------------------------------- statistics
+statistics:
+  independent_unit: episode              # HARD: window-level IID bootstrap is forbidden
+  bootstrap: episode_cluster
+  bootstrap_resamples: 2000
+  bootstrap_alpha: 0.05
+  report_seedwise: true
+
+# ---------------------------------------------------------------- pre-registered decision (07_)
+# FROZEN BEFORE ANY STAGE 2B RESULT EXISTS. Post-hoc modification is forbidden.
+decision:
+  go:
+    event_tpr_min: 0.80
+    false_alarms_per_hour_max: 50
+    healthy_ood_id_ratio_max: 1.5
+    median_delay_s_max: 0.20
+    p95_delay_s_max: 0.50
+    event_f1_min: 0.60
+    localization_top1_min: 0.65
+    localization_chain_distance_max: 0.75
+    min_links_recall_ge_040: 4
+    selective_coverage_min: 0.70
+    selective_top1_min: 0.75
+    selective_chain_distance_max: 0.50
+    reject_must_reduce_error: true
+    not_favored_by_rank_alone: true
+    stable_over_seeds_min: 2
+  pivot_support_only:
+    auroc_within: 0.02
+    top1_within: 0.05
+  pivot_loadpath_localization_only:
+    detector_fails_any_of: [false_alarms_per_hour_max, event_tpr_min, healthy_ood_id_ratio_max]
+  pivot_sequential_detection_only:
+    localization_top1_below: 0.55
+  pivot_context_calibration_only:
+    false_alarm_reduction_factor_min: 10.0
+    healthy_ood_id_ratio_max: 1.5
+  no_go_after_h160:
+    false_alarms_per_hour_above: 200
+    event_tpr_below: 0.70
+    localization_top1_below: 0.50
+    n_conditions_required: 2
+
+execution:
+  max_cpu_threads: 8
+  single_gpu_process: true
+  require_clean_worktree: true
+  build_thin_full_review_packages: true
+
+claims:
+  forbidden:
+    - "exact conditional CFAR"
+    - "physical wrench recovered from network-internal messages"
+    - "universal link identifiability"
+    - "first use of the Jacobian for collision isolation"
+    - "first serial-chain load-path contact localization"
+    - "unified F1-F6 attribution"
+  interpretation_rules:
+    - "if support-only explains the result, the method title must not say Cartesian geometry"
+    - "if aligned Jacobians add only a small secondary gain, report it as an ablation"
+  status_until_supported: PLAUSIBLY_OPEN / NOT_ESTABLISHED

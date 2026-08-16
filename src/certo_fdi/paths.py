@@ -13,7 +13,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-STAGE = "stage2a_chain_jacobian_pathway"
+STAGE = "stage2b_contact_loadpath_sequential"
 RUN_SUBDIRECTORIES = (
     "config",
     "logs",
@@ -28,12 +28,13 @@ RUN_SUBDIRECTORIES = (
     "provenance",
     "diagnostics",
     "input_package",
-    "p2_baseline",       # frozen chain_gnn_aug reproduction
-    "p3_dictionaries",   # F1-F6 fault-pathway dictionaries
-    "p4_tests",          # Jacobian / virtual-work / mutation test reports
-    "p5_ablations",      # geometry-only ... full-pathway ablations
-    "p6_metrics",        # detection / localization / diagnosability metrics
-    "p7_decision",       # preregistered decision evidence
+    "p0_freeze",         # input provenance + baseline/localizer reproduction
+    "p1_loadpath",       # source-of-gain controls (support / random / fixedJ / shuffled / aligned)
+    "p2_localization",   # rank-aware scores, F4_CAL selection, accept/defer
+    "p3_calibration",    # context calibration + sequential monitoring
+    "p4_healthy",        # nested H40/H80/H160 healthy expansion
+    "p5_literature",     # bounded primary-source verification
+    "p6_decision",       # preregistered decision evidence
 )
 
 
@@ -46,6 +47,14 @@ class RunLayout:
     @property
     def results(self) -> Path:
         return self.run_root / "results"
+
+    @property
+    def figures(self) -> Path:
+        return self.run_root / "figures"
+
+    @property
+    def root(self) -> Path:
+        return self.run_root
 
     def sub(self, name: str) -> Path:
         p = self.run_root / name

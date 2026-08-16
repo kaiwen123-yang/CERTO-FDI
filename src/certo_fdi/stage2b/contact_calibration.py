@@ -111,7 +111,10 @@ def design_table(cfg: dict) -> list[CalEpisodeSpec]:
     specs: list[CalEpisodeSpec] = []
     for li, link in enumerate(links):
         for k in range(per_link):
-            seed = seed_root + 1000 * li + k
+            # compact layout: seeds stay inside [seed_root, seed_root + n_links*per_link), so the
+            # partition cannot stride into the healthy-expansion seed root. The earlier
+            # 1000-per-link stride collided with it, which the disjointness guard caught.
+            seed = seed_root + li * per_link + k
             rng = np.random.default_rng(seed)
             split = SPLIT_CYCLE[k % len(SPLIT_CYCLE)]
             ctx = _context_for(split, rng)

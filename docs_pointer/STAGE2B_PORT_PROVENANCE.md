@@ -68,13 +68,16 @@ Stage 2B adds new modules rather than changing audited ones.
 
 | file | change | reason | test |
 |---|---|---|---|
-| `README.md` | stage banner and pipeline updated to Stage 2B | the repository must describe the current stage | — |
-| `Makefile`, `scripts/run_stage2a.sh` | Stage 2B phase targets added alongside the Stage 2A ones | the Stage 2A phases stay runnable for the Phase 0 reproduction | `make test` |
-| `src/certo_fdi/paths.py` | `STAGE` / `RUN_SUBDIRECTORIES` gain the Stage 2B run layout | run roots are stage-scoped | `tests/test_paths.py` |
-| `src/certo_fdi/data/windows.py` | *(only if needed)* additional signal key for F4_CAL replay | recorded here if it happens | `tests/test_stage2b_no_leakage.py` |
+| `src/certo_fdi/paths.py` | `STAGE` and `RUN_SUBDIRECTORIES` gain the Stage 2B run layout; `RunLayout` gains `figures` and `root` properties | run roots are stage-scoped, and the figure/manifest writers need the two paths by name | `tests/test_paths.py` |
 
-Where a table row says *(only if needed)*, the edit is listed as planned; if the final diff does
-not contain it, the row is removed before the review package is built.
+**That is the entire list.** `git diff --stat bcf2ad5..HEAD` shows 39 files, 38 of which are new;
+`paths.py` is the only inherited file Stage 2B touched, and its edit is additive. Three edits that
+were listed as *planned* in earlier drafts of this document did not turn out to be necessary and
+were therefore not made: the `README.md` stage banner, Stage 2B targets in `Makefile` /
+`scripts/run_stage2a.sh` (`scripts/run_stage2b.sh` is standalone), and an extra signal key in
+`src/certo_fdi/data/windows.py` (the frozen episode format already carried everything the F4_CAL
+and healthy-expansion replays need). Leaving the audited Stage 2A modules byte-identical was
+worth more than the convenience.
 
 ## 4. Verified input provenance
 

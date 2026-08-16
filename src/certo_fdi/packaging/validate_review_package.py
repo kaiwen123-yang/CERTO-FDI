@@ -1,8 +1,10 @@
-"""Validate a Stage 1R review ZIP: CRC, fresh extraction, SHA256 manifest, required topology,
-secret scan, and the embedded smoke reproduction script.
+"""Validate a review ZIP: CRC, fresh extraction, SHA256 manifest, required topology, secret scan,
+and the embedded smoke reproduction script.
 
-Ported from Stage 1 (``src/certo_fdi/packaging/validate_review_package.py``) with the
-Stage 1R required-file topology.
+Ported from Stage 1R (``src/certo_fdi/packaging/validate_review_package.py``). Stage 2A change:
+the manifest, checksum and reproduce-script *names* are parameters instead of literals, because
+the Stage 2A package topology numbers them differently (contract §12.1). The Stage 1R defaults
+are unchanged, so the ported Stage 1R validator behaves exactly as before.
 """
 
 from __future__ import annotations
@@ -58,8 +60,8 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def _verify_checksums(root: Path) -> None:
-    for line in (root / "10_SHA256SUMS.txt").read_text(encoding="utf-8").splitlines():
+def _verify_checksums(root: Path, sha_file: str = "10_SHA256SUMS.txt") -> None:
+    for line in (root / sha_file).read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
         expected, relative = line.split("  ", maxsplit=1)
@@ -78,7 +80,10 @@ def _scan_secrets(root: Path) -> None:
                 raise RuntimeError(f"secret-like pattern in {path.relative_to(root)}")
 
 
-def validate_zip(path: str | Path, required_files: tuple[str, ...] = REQUIRED_FILES, required_directories: tuple[str, ...] = REQUIRED_DIRECTORIES) -> dict[str, object]:
+def validate_zip(path: str | Path, required_files: tuple[str, ...] = REQUIRED_FILES,
+                 required_directories: tuple[str, ...] = REQUIRED_DIRECTORIES, *,
+                 sha_file: str = "10_SHA256SUMS.txt", manifest_file: str = "09_MANIFEST.json",
+                 reproduce_script: str = "19_REPRODUCE_REVIEW.sh") -> dict[str, object]:
     archive = Path(path).resolve()
     with zipfile.ZipFile(archive) as handle:
         bad_member = handle.testzip()
@@ -93,10 +98,10 @@ def validate_zip(path: str | Path, required_files: tuple[str, ...] = REQUIRED_FI
             for relative in required_directories:
                 if not (root / relative).is_dir():
                     raise RuntimeError(f"required directory missing: {relative}")
-            _verify_checksums(root)
-            subprocess.run(["bash", str(root / "19_REPRODUCE_REVIEW.sh"), "--smoke"], cwd=root, check=True, capture_output=True, text=True)
+            _verify_checksums(root, sha_file)
+            subprocess.run(["bash", str(root / reproduce_script), "--smoke"], cwd=root, check=True, capture_output=True, text=True)
             _scan_secrets(root)
-            json.loads((root / "09_MANIFEST.json").read_text(encoding="utf-8"))
+            json.loads((root / manifest_file).read_text(encoding="utf-8"))
     return {
         "archive": str(archive),
         "sha256": sha256_file(archive),

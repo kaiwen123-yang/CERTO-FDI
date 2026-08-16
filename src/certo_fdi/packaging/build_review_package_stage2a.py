@@ -274,6 +274,13 @@ def _write_manifest(root: Path) -> None:
     (root / "08_SHA256SUMS.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def _validate(zpath: Path) -> dict:
+    """Stage 2A topology: the manifest, checksum and reproduce-script names are renumbered (§12.1)."""
+    return validate_zip(zpath, REQUIRED_FILES, REQUIRED_DIRECTORIES,
+                        sha_file="08_SHA256SUMS.txt", manifest_file="07_MANIFEST.json",
+                        reproduce_script="15_REPRODUCE_REVIEW.sh")
+
+
 def _build_one(kind: str, base: str, run_root: Path, repo: Path, storage: Path, staging: Path, dest_root: Path, bundle: Path, decision: str) -> dict:
     tree = staging / f"{base}_{kind}"
     _populate_common(tree, run_root, repo, decision)
@@ -285,7 +292,7 @@ def _build_one(kind: str, base: str, run_root: Path, repo: Path, storage: Path, 
     _write_manifest(tree)
     zpath = staging / f"{base}_{kind}.zip"
     _zip_tree(tree, zpath)
-    validate_zip(zpath, REQUIRED_FILES, REQUIRED_DIRECTORIES)
+    _validate(zpath)
     status.write_text(json.dumps({"validation_status": "PASS", "decision": decision,
                                   "checks": ["zip_crc", "fresh_extract", "sha256_manifest", "required_topology", "reproduce_smoke", "secret_scan"]},
                                  indent=2, sort_keys=True), encoding="utf-8")
@@ -293,7 +300,7 @@ def _build_one(kind: str, base: str, run_root: Path, repo: Path, storage: Path, 
     _write_manifest(tree)
     zpath.unlink()
     _zip_tree(tree, zpath)
-    result = validate_zip(zpath, REQUIRED_FILES, REQUIRED_DIRECTORIES)
+    result = _validate(zpath)
     dest = dest_root / zpath.name
     dest.parent.mkdir(parents=True, exist_ok=True)
     os.replace(zpath, dest)

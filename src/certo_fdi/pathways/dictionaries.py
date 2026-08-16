@@ -35,11 +35,28 @@ Derivations (all from ``M(q) qdd + h(q,qdot) + friction = tau_applied + J^T f_ex
   point-agnostic ``-J_l(q(t))^T`` (6 columns, body wrench). The frozen simulator injects a pure
   force at a point, so the 3-D form is the matched one; the two are never mixed in one
   dictionary.
-* **F5 encoder**: symmetric finite differences of the *deployed* residual computation through
-  the controller feedback path, the RNEA nominal path and the acceleration-estimator path --
-  never a static Jacobian. Separate q-bias and qdot-bias column groups.
-* **F6 command delay**: ``D_delay(t) = d tau_cmd/dt`` (the local analytic form) plus the
-  closed-loop finite-difference form; the analytic one is used only as a control.
+* **F5 encoder**: the **closed-loop steady-state** column. A persistent bias ``b`` on joint
+  ``j`` is *absorbed* by the loop -- the controller drives ``q_meas -> q_ref``, so the truth
+  state settles at ``q_true = q_ref - b`` and the commanded torque is nearly unchanged. The
+  residual signature is therefore the nominal model evaluated at the biased measurement:
+
+      e_tau ~ RNEA_nom(q_meas - b) - RNEA_nom(q_meas)  =>  D_sensor,q = -d tau_nom / d q,
+
+  and likewise ``D_sensor,qdot = -d tau_nom / d qdot`` for a velocity bias. Both are obtained by
+  symmetric finite differences of the deployed nominal model. Measured against the frozen truth
+  simulator this agrees to **5-12 degrees** (cosine 0.98-0.996, norm ratio ~1.0), whereas the
+  naive *instantaneous* form ``d tau_cmd/d q - d tau_nom/d q`` -- dominated by the controller's
+  ``-M Kp`` feedback term -- is **52-89 degrees** away and overestimates the magnitude by 12x
+  to 125x. The instantaneous controller-path term is still computed and reported
+  (``d_sensor_q_cmd``) so the audit shows both; it is never the deployed column. This is exactly
+  what the contract's ban on "a static Jacobian instead of closed-loop propagation" is about:
+  the closed loop, not the instantaneous chain rule, decides the direction.
+* **F6 command delay**: ``D_delay(t) = d tau_cmd/dt`` (the contract's local analytic form) and an
+  explicit causal command-buffer finite difference. **Neither is validated**: against the frozen
+  simulator both sit 66-89 degrees from the closed-loop truth (best |cosine| 0.40) at every
+  delay in the protocol's grid, because a persistent delay is absorbed into the loop's tracking
+  dynamics rather than into a one-parameter residual direction. The F6 dictionary is therefore
+  reported as NOT VALIDATED and every F6 attribution result must be read as unreliable.
 
 Deployment vs oracle: everything above is a function of measured signals and the nominal
 model. The *oracle* validation (symmetric finite differences through the frozen truth
@@ -152,8 +169,10 @@ class EpisodePathways:
     #   the whitened dictionaries reach condition numbers ~1e6, where float32 storage would
     #   dominate the projection error)
     r_link: np.ndarray  # (Tg, n_links, 3, 3) link orientations (for point Jacobians)
-    d_sensor_q: np.ndarray  # (Tg, n, n) d e_tau / d q_bias
-    d_sensor_qd: np.ndarray  # (Tg, n, n) d e_tau / d qd_bias
+    d_sensor_q: np.ndarray  # (Tg, n, n) DEPLOYED d e_tau / d q_bias   (closed-loop steady state)
+    d_sensor_qd: np.ndarray  # (Tg, n, n) DEPLOYED d e_tau / d qd_bias  (closed-loop steady state)
+    d_sensor_q_cmd: np.ndarray  # (Tg, n, n) controller-path term only (reported, NOT deployed)
+    d_sensor_qd_cmd: np.ndarray  # (Tg, n, n) controller-path term only (reported, NOT deployed)
     d_delay: np.ndarray  # (Tg, n) d e_tau / d Delta (analytic dtau_cmd/dt)
     d_delay_buffer: np.ndarray  # (Tg, n) d e_tau / d Delta (explicit command-buffer finite difference)
     meta: dict = field(default_factory=dict)
@@ -165,30 +184,30 @@ def _finite_difference_sensitivities(
     q_prev: np.ndarray, qd_prev: np.ndarray,
     q_ref_prev: np.ndarray, qd_ref_prev: np.ndarray, qdd_ref_prev: np.ndarray,
     torque_limit: np.ndarray, *, delta_q: float, delta_qd: float,
-) -> tuple[np.ndarray, np.ndarray]:
-    """Symmetric finite differences of ``e_tau = tau_cmd - tau_nom`` w.r.t. encoder biases.
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Encoder-bias sensitivities: the deployed steady-state pair and the controller-path pair.
 
-    Both paths a deployed detector can evaluate are propagated:
+    **Deployed** (``d_q``, ``d_qd``): ``-d tau_nom / d q`` and ``-d tau_nom / d qdot``, the
+    closed-loop *steady-state* signature of a persistent bias (see the module docstring for the
+    derivation and the measured 5-12 degree agreement with the frozen simulator).
 
-    (i)  the **controller feedback path** ``tau_cmd = clip(controller(q_meas, qd_meas, refs))``;
-    (ii) the **RNEA nominal path** ``tau_nom = RNEA_nom(q_meas, qd_meas, qdd_est) + friction_nom``.
+    **Reported only** (``d_q_cmd``, ``d_qd_cmd``): the controller feedback path
+    ``d tau_cmd / d q_meas``, evaluated at ``k-1`` because the frozen generator logs
+    ``tau_cmd[k] = tau_cmd(k-1)`` (the command held over the interval ending at ``t_k``) while
+    ``tau_nominal[k]`` uses the measurements at ``k``. Getting that offset wrong is one of the
+    injected mutations. This term dominates the naive instantaneous column and is precisely why
+    that column points the wrong way.
 
-    **Timing.** The frozen generator logs ``tau_cmd[k] = tau_cmd(k-1)`` (the command held over
-    the interval ending at ``t_k``) while ``tau_nominal[k]`` uses the measurements at ``k``.
-    The sensitivity therefore differentiates the controller at ``k-1`` and the nominal model at
-    ``k``; getting this off by one is one of the injected mutations
-    (``tests/test_stage2a_mutations.py``).
-
-    **Acceleration-estimator path.** ``qdd_est`` is a causal Savitzky-Golay derivative of
-    ``qd_meas``: a constant position bias leaves it unchanged, and a constant velocity bias
-    also leaves it unchanged (the SG derivative weights sum to zero). Both are *measured*
-    here rather than assumed -- the qd-bias columns include the estimator term via the
-    explicit ``qdd`` argument, which is held at its observed value exactly because the
-    analytic derivative of the estimator w.r.t. a constant bias is zero.
+    The acceleration-estimator path contributes nothing to either: ``qdd_est`` is a causal
+    Savitzky-Golay derivative of ``qd_meas`` whose weights sum to zero, so a *constant* position
+    or velocity bias leaves it unchanged. That is a property of the estimator, recorded here
+    rather than assumed.
     """
     Tg, n = q_now.shape
-    dq = np.zeros((Tg, n, n))
-    dqd = np.zeros((Tg, n, n))
+    d_q = np.zeros((Tg, n, n))
+    d_qd = np.zeros((Tg, n, n))
+    d_q_cmd = np.zeros((Tg, n, n))
+    d_qd_cmd = np.zeros((Tg, n, n))
 
     def cmd(qm: np.ndarray, qdm: np.ndarray) -> np.ndarray:
         out = np.empty((Tg, n))
@@ -205,15 +224,13 @@ def _finite_difference_sensitivities(
     for j in range(n):
         ep = np.zeros(n)
         ep[j] = delta_q
-        d_cmd = (cmd(q_prev + ep, qd_prev) - cmd(q_prev - ep, qd_prev)) / (2 * delta_q)
-        d_nom = (nom(q_now + ep, qd_now, qdd_now) - nom(q_now - ep, qd_now, qdd_now)) / (2 * delta_q)
-        dq[:, :, j] = d_cmd - d_nom
+        d_q[:, :, j] = -(nom(q_now + ep, qd_now, qdd_now) - nom(q_now - ep, qd_now, qdd_now)) / (2 * delta_q)
+        d_q_cmd[:, :, j] = (cmd(q_prev + ep, qd_prev) - cmd(q_prev - ep, qd_prev)) / (2 * delta_q)
         ev = np.zeros(n)
         ev[j] = delta_qd
-        d_cmd_v = (cmd(q_prev, qd_prev + ev) - cmd(q_prev, qd_prev - ev)) / (2 * delta_qd)
-        d_nom_v = (nom(q_now, qd_now + ev, qdd_now) - nom(q_now, qd_now - ev, qdd_now)) / (2 * delta_qd)
-        dqd[:, :, j] = d_cmd_v - d_nom_v
-    return dq, dqd
+        d_qd[:, :, j] = -(nom(q_now, qd_now + ev, qdd_now) - nom(q_now, qd_now - ev, qdd_now)) / (2 * delta_qd)
+        d_qd_cmd[:, :, j] = (cmd(q_prev, qd_prev + ev) - cmd(q_prev, qd_prev - ev)) / (2 * delta_qd)
+    return d_q, d_qd, d_q_cmd, d_qd_cmd
 
 
 def build_episode_pathways(
@@ -276,7 +293,7 @@ def build_episode_pathways(
             qd_ref_f = np.gradient(q_ref_f, control_dt, axis=0)
             qdd_ref_f = np.gradient(qd_ref_f, control_dt, axis=0)
         tl = np.asarray(chain.torque_limit if torque_limit is None else torque_limit, dtype=float)
-        d_sensor_q, d_sensor_qd = _finite_difference_sensitivities(
+        d_sensor_q, d_sensor_qd, d_sensor_q_cmd, d_sensor_qd_cmd = _finite_difference_sensitivities(
             controller, nominal, q, qd, qdd, q_full[t_prev], qd_full[t_prev],
             q_ref_f[t_prev], qd_ref_f[t_prev], qdd_ref_f[t_prev], tl,
             delta_q=delta_q, delta_qd=delta_qd,
@@ -284,12 +301,15 @@ def build_episode_pathways(
     else:
         d_sensor_q = np.zeros((len(t_index), n, n))
         d_sensor_qd = np.zeros((len(t_index), n, n))
+        d_sensor_q_cmd = np.zeros((len(t_index), n, n))
+        d_sensor_qd_cmd = np.zeros((len(t_index), n, n))
 
     return EpisodePathways(
         episode_id=episode_id, t_index=t_index, n_links=n,
         d_gain=d_gain, d_viscous=d_viscous, d_coulomb=d_coulomb, d_stribeck=d_stribeck,
         y_load=y_load, j_link=j_link, r_link=kin.R_link,
-        d_sensor_q=d_sensor_q, d_sensor_qd=d_sensor_qd, d_delay=d_delay, d_delay_buffer=d_delay_buffer,
+        d_sensor_q=d_sensor_q, d_sensor_qd=d_sensor_qd, d_sensor_q_cmd=d_sensor_q_cmd, d_sensor_qd_cmd=d_sensor_qd_cmd,
+        d_delay=d_delay, d_delay_buffer=d_delay_buffer,
         meta={"coulomb_eps": coulomb_eps, "stribeck_velocity": stribeck_velocity, "delta_q_rad": delta_q,
               "delta_qd_rad_s": delta_qd, "delta_delay_s": dd, "control_dt_s": control_dt,
               "trajectory_source": "reconstructed_from_seed" if trajectory is not None else "numerical_from_q_ref"},
@@ -357,6 +377,20 @@ def family_dictionaries(ep: EpisodePathways, rows: np.ndarray) -> dict[str, np.n
     }
 
 
+def diagnostic_dictionaries(ep: EpisodePathways, rows: np.ndarray) -> dict[str, np.ndarray]:
+    """Reported-only dictionaries. NEVER part of a deployed head's feature vector.
+
+    ``F5_encoder_q_cmd`` / ``F5_encoder_qd_cmd`` are the controller-feedback-path terms; they
+    are in the audit so a reader can see why the naive instantaneous encoder column points the
+    wrong way, and they are excluded from :data:`certo_fdi.pathways.window_features.FAMILY_KEYS`.
+    """
+    return {
+        "F5_encoder_q_cmd": _stack_dense(ep.d_sensor_q_cmd[rows]),
+        "F5_encoder_qd_cmd": _stack_dense(ep.d_sensor_qd_cmd[rows]),
+        "F6_delay_analytic": _stack_dense(ep.d_delay[rows][:, :, None]),
+    }
+
+
 def dictionary_column_units() -> dict[str, list[str]]:
     """Units of every dictionary's parameter vector (recorded in the audit table)."""
     joint = [f"j{j + 1}" for j in range(7)]
@@ -370,7 +404,8 @@ def dictionary_column_units() -> dict[str, list[str]]:
         "F4_contact_wrench": ["N m", "N m", "N m", "N", "N", "N"],
         "F5_encoder_q": [f"rad[{j}]" for j in joint],
         "F5_encoder_qd": [f"rad/s[{j}]" for j in joint],
-        "F6_delay": ["s"],
+        "F5_encoder_q_cmd": [f"rad[{j}] (controller path, reported only)" for j in joint],
+        "F6_delay": ["s (NOT VALIDATED: 66-89 deg from the closed-loop truth)"],
     }
 
 

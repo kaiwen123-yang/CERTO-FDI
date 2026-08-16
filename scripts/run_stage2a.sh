@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Stage 2A phase runner.
 #   scripts/run_stage2a.sh <phase> <config> <run_id> [extra args...]
-# phases: freeze | baseline | dictionaries | ablations | metrics | decide | finalize | package
+# phases: freeze | baseline | dictionaries | ablations | metrics | tests | decide | finalize | package
 set -euo pipefail
 
 PHASE="${1:?phase required}"
@@ -19,6 +19,7 @@ case "${PHASE}" in
   dictionaries) MOD="certo_fdi.experiments.run_stage2a_dictionaries" ;;
   ablations)    MOD="certo_fdi.experiments.run_stage2a_ablations" ;;
   metrics)      MOD="certo_fdi.experiments.run_stage2a_metrics" ;;
+  tests)        MOD="certo_fdi.experiments.run_stage2a_tests" ;;
   decide)       MOD="certo_fdi.experiments.run_stage2a_decide" ;;
   finalize)     MOD="certo_fdi.experiments.run_stage2a_finalize" ;;
   package)      MOD="certo_fdi.packaging.build_review_package_stage2a" ;;

@@ -145,7 +145,9 @@ ablations:
   - chain_plus_all_link_window_jacobian
   - chain_plus_full_pathway_dictionary
   - chain_plus_shuffled_jacobian_control     # capacity/permutation control (§8.1 condition 6)
-  - chain_plus_all_link_window_jacobian_oracle_point   # oracle contact point (§8.5)
+oracle_statistics:                            # truth contact point (§8.5 trigger t4); statistics
+  - oracle_explained_at_truth_link_and_point  # only -- never a density-head input, because a
+  - oracle_localizer_truth_point_unknown_link # head is fitted on healthy windows with no contact
 primary_geometry_head: chain_plus_all_link_window_jacobian
 primary_baseline_head: chain_gnn_aug_residual_only
 

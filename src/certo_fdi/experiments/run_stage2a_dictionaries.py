@@ -37,7 +37,7 @@ from certo_fdi.experiments.stage2a_pathway_pipeline import (
     load_pathways,
     truth_contact_point,
 )
-from certo_fdi.pathways.dictionaries import contact_columns, dictionary_column_units, family_dictionaries
+from certo_fdi.pathways.dictionaries import contact_columns, diagnostic_dictionaries, dictionary_column_units, family_dictionaries
 from certo_fdi.pathways.geometry import dictionary_spectrum, fisher_information, principal_angles, subspace_overlap
 from certo_fdi.pathways.jacobians import candidate_points
 from certo_fdi.pathways.sensitivity import closed_loop_sensitivity, contact_oracle_sensitivity, direction_agreement, probes_for
@@ -45,6 +45,8 @@ from certo_fdi.pathways.sensitivity import closed_loop_sensitivity, contact_orac
 ORACLE_EPISODES = 8          # stratified replay probes
 ORACLE_CONTACT_LINKS = (1, 3, 5, 6)
 AUDIT_WINDOWS_PER_EPISODE = 6
+CONTACT_ONSET_S = 6.0        # mid-episode, well clear of the rest-to-motion blend-in
+CONTACT_ONSET_WINDOW_S = 0.10  # the instantaneous comparison window after onset
 ANGLE_EPISODES = 40
 
 
@@ -59,11 +61,11 @@ def _oracle_worker(args):
 
 
 def _oracle_contact_worker(args):
-    (eid, ctx_dict, seed, cfg_frozen, xml, truth, link, r_link, direction, force) = args
+    (eid, ctx_dict, seed, cfg_frozen, xml, truth, link, r_link, direction, force, onset) = args
     from certo_fdi.data.schema import EpisodeContext
     from certo_fdi.pathways.sensitivity import contact_oracle_sensitivity
 
-    res = contact_oracle_sensitivity(cfg_frozen, xml, truth, EpisodeContext(**ctx_dict), seed, eid, link, r_link, direction, force)
+    res = contact_oracle_sensitivity(cfg_frozen, xml, truth, EpisodeContext(**ctx_dict), seed, eid, link, r_link, direction, force, onset)
     return {"episode_id": eid, **res}
 
 
@@ -135,7 +137,7 @@ def main() -> int:
             rows_w = ew.rows[w]
             base = st.base_row(model="chain_gnn_aug", split=ea.split, fault_family=ea.family, seed=seed0,
                                controller=str(ea.context["controller"]), episode_id=eid, window_start=int(ew.starts[w]))
-            fam = family_dictionaries(pw, rows_w)
+            fam = {**family_dictionaries(pw, rows_w), **diagnostic_dictionaries(pw, rows_w)}
             for key, D in fam.items():
                 for whitened, Dm in (("raw", D), ("whitened", win_wh.whiten_dictionary(D))):
                     spec = dictionary_spectrum(Dm)
@@ -238,7 +240,7 @@ def main() -> int:
         for eid in probe_ids[:4]:
             ea = bundle.episodes[eid]
             for l in ORACLE_CONTACT_LINKS:
-                c_tasks.append((eid, dict(ea.context), seeds[eid], frozen_cfg, xml, truth, l, np.array([0.0, 0.0, 0.06]), np.array([0.3, -0.6, 0.74]), 1.0))
+                c_tasks.append((eid, dict(ea.context), seeds[eid], frozen_cfg, xml, truth, l, np.array([0.0, 0.0, 0.06]), np.array([0.3, -0.6, 0.74]), 1.0, CONTACT_ONSET_S))
         with mp.get_context("spawn").Pool(args.workers) as pool:
             c_results = list(pool.imap_unordered(_oracle_contact_worker, c_tasks, chunksize=1))
         st.log(f"contact oracle replays done ({len(c_results)})")
@@ -285,17 +287,19 @@ def main() -> int:
             Jp = J[:, 3:, :] - skew(r_world) @ J[:, :3, :]
             dep = -np.einsum("tkn,k->tn", Jp, dirn)
             oracle = np.asarray(r["sensitivity"])[t_idx]
-            early = t_idx < (t_idx[0] + 40 * 16)  # ~1.3 s of closed-loop response
+            dt_s = float(cfg["simulation"]["control_dt_s"])
+            k0 = int(round(CONTACT_ONSET_S / dt_s))
+            early = (t_idx >= k0) & (t_idx < k0 + int(round(CONTACT_ONSET_WINDOW_S / dt_s)))
             oracle_rows.append(st.base_row(model="chain_gnn_aug", seed=seeds[r["episode_id"]], fault_family="F4_contact",
                                            split=bundle.episodes[r["episode_id"]].split, controller=str(bundle.episodes[r["episode_id"]].context["controller"]),
                                            episode_id=r["episode_id"], probe=r["key"], dictionary=f"F4_contact_link{l}", column=-1,
                                            delta=r["force_n"], scheme=r["scheme"], units=r["units"], link=l,
-                                           comparison="early_window_instantaneous", **direction_agreement(oracle, dep, early)))
+                                           comparison="onset_window_instantaneous", onset_s=CONTACT_ONSET_S, **direction_agreement(oracle, dep, early)))
             oracle_rows.append(st.base_row(model="chain_gnn_aug", seed=seeds[r["episode_id"]], fault_family="F4_contact",
                                            split=bundle.episodes[r["episode_id"]].split, controller=str(bundle.episodes[r["episode_id"]].context["controller"]),
                                            episode_id=r["episode_id"], probe=r["key"], dictionary=f"F4_contact_link{l}", column=-1,
                                            delta=r["force_n"], scheme=r["scheme"], units=r["units"], link=l,
-                                           comparison="full_episode_closed_loop", **direction_agreement(oracle, dep, None)))
+                                           comparison="full_episode_closed_loop", onset_s=CONTACT_ONSET_S, **direction_agreement(oracle, dep, t_idx >= k0)))
         write_csv(st.layout.sub("p4_tests") / "stage2a_oracle_sensitivity.csv", oracle_rows)
         st.log(f"oracle vs deployed comparison: {len(oracle_rows)} rows")
 

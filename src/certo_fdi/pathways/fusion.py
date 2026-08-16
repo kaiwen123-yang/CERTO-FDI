@@ -38,8 +38,14 @@ ABLATION_BLOCKS: dict[str, tuple[str, ...]] = {
     "chain_plus_all_link_window_jacobian": ("residual", "contact_window"),
     "chain_plus_full_pathway_dictionary": ("residual", "contact_window", "families", "end_effector"),
     "chain_plus_shuffled_jacobian_control": ("residual", "contact_shuffled"),
-    "chain_plus_all_link_window_jacobian_oracle_point": ("residual", "contact_oracle"),
 }
+# The truth contact point is NOT a density-head ablation. A head is fitted on healthy
+# validation windows, where no contact exists, so an oracle feature would have a different
+# meaning at fit time and at test time and its apparent gain would be uninterpretable. The
+# oracle enters where the contract actually needs it (§8.5 trigger t4): as a *statistic* --
+# the projection at the truth link and point, and a localizer that is handed the truth point
+# but must still choose the link. Both are reported next to their deployed counterparts.
+ORACLE_STATISTICS = ("oracle_explained_at_truth_link_and_point", "oracle_localizer_truth_point_unknown_link")
 GEOMETRY_ABLATIONS = tuple(k for k, v in ABLATION_BLOCKS.items() if any(b not in ("residual", "residual_pre") for b in v))
 
 
@@ -65,19 +71,14 @@ def geometry_blocks_from(geom, *, oracle_link: int | None = None) -> dict[str, n
     """Turn a :class:`WindowGeometry` into the fixed feature blocks."""
     out: dict[str, np.ndarray] = {
         "contact_window": contact_feature_block(geom.contact_window),
-        "contact_instant": contact_feature_block(geom.contact_instant),
         "end_effector": ee_feature_block(geom.end_effector),
     }
+    if geom.contact_instant:
+        out["contact_instant"] = contact_feature_block(geom.contact_instant)
     if geom.families:
         out["families"] = family_feature_block(geom.families)
     if geom.contact_shuffled:
         out["contact_shuffled"] = contact_feature_block(geom.contact_shuffled)
-    if geom.contact_oracle:
-        o = geom.contact_oracle
-        out["contact_oracle"] = np.stack([
-            np.log1p(np.clip(o["projection_energy"], 0.0, None)), o["explained_fraction"],
-            np.log1p(np.clip(o["coefficient_norm_force"], 0.0, None)), o["projection_residual"],
-        ], 1)
     return out
 
 
@@ -85,7 +86,7 @@ def block_dimensions(n_links: int) -> dict[str, int]:
     names = feature_block_names(n_links)
     return {"contact_window": len(names["contact"]), "contact_instant": len(names["contact"]),
             "contact_shuffled": len(names["contact"]), "families": len(names["families"]),
-            "end_effector": len(names["end_effector"]), "contact_oracle": 4}
+            "end_effector": len(names["end_effector"])}
 
 
 # --------------------------------------------------------------------------- rule fuser

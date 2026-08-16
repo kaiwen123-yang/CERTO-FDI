@@ -19,7 +19,7 @@ from certo_fdi.data.schema import EpisodeContext
 from certo_fdi.pathways.dictionaries import EpisodePathways, build_episode_pathways
 from certo_fdi.pathways.whitening import ConditionalWhitener, window_time_offsets
 
-CACHE_VERSION = 3
+CACHE_VERSION = 4
 
 
 # --------------------------------------------------------------------------- window grid
@@ -53,7 +53,8 @@ class WindowGrid:
 
 
 # --------------------------------------------------------------------------- pathway cache
-_CACHE_ARRAYS = ("t_index", "d_gain", "d_viscous", "d_coulomb", "d_stribeck", "y_load", "j_link", "r_link", "d_sensor_q", "d_sensor_qd", "d_delay", "d_delay_buffer")
+_CACHE_ARRAYS = ("t_index", "d_gain", "d_viscous", "d_coulomb", "d_stribeck", "y_load", "j_link", "r_link",
+                 "d_sensor_q", "d_sensor_qd", "d_sensor_q_cmd", "d_sensor_qd_cmd", "d_delay", "d_delay_buffer")
 
 
 def cache_path(root: Path, episode_id: str) -> Path:

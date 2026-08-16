@@ -105,6 +105,7 @@ def episode_geometry(
     shuffle_rows: np.ndarray | None = None,
     with_families: bool = True,
     with_angles: bool = True,
+    with_instantaneous: bool = True,
 ) -> WindowGeometry:
     """``rows`` is ``(Nw, M)``: the pathway-cache row index of every window time point."""
     Nw = rows.shape[0]
@@ -150,7 +151,7 @@ def episode_geometry(
     last = rows[:, -1]
     Wi = whitener_instant.whitener
     inst = []
-    for l in range(n):
+    for l in range(n if with_instantaneous else 0):
         pp = []
         for _, r_link in candidate_points[l]:
             from certo_fdi.pathways.jacobians import skew
@@ -161,14 +162,26 @@ def episode_geometry(
             pp.append(_project(D, z_instant))
         blk, _ = _best_over_points(pp)
         inst.append(blk)
-    g.contact_instant = {k: np.stack([b[k] for b in inst], 1) for k in CONTACT_STATS}
-    g.contact_instant.update(_aggregates(g.contact_instant["explained_fraction"], g.contact_instant["projection_residual"]))
+    if inst:
+        g.contact_instant = {k: np.stack([b[k] for b in inst], 1) for k in CONTACT_STATS}
+        g.contact_instant.update(_aggregates(g.contact_instant["explained_fraction"], g.contact_instant["projection_residual"]))
 
-    # ---- oracle: the truth contact point (upper bound only, never deployed)
+    # ---- oracle statistics: the truth contact point (upper bound only, never a deployed input).
+    #      Two forms: the projection at the truth link AND point, and a localizer that is handed
+    #      the truth point but must still pick the link among all of them (contract §8.5 t4).
     if truth_contact is not None and truth_contact[0] >= 0:
         l_true, r_true = truth_contact
         po = _project(wh(contact_columns_batched(ep, rows, int(l_true), r_true)), z_window)
-        g.contact_oracle = {**po, "link": int(l_true)}
+        # The oracle localizer is handed the truth *point* but must still choose the link: each
+        # link is scored at the best of its own geometric candidates AND the truth point, so no
+        # link is handicapped by an offset that happens to be degenerate for its geometry.
+        resid_tp = np.stack([
+            np.minimum(_project(wh(contact_columns_batched(ep, rows, l, r_true)), z_window)["projection_residual"],
+                       g.contact_window["projection_residual"][:, l])
+            for l in range(n)], 1)
+        g.contact_oracle = {**po, "link": int(l_true),
+                            "truth_point_predicted_link": np.argmin(resid_tp, axis=1).astype(int),
+                            "truth_point_projection_residual": resid_tp}
 
     # ---- capacity/permutation control: same construction, time-permuted Jacobians
     if shuffle_rows is not None:

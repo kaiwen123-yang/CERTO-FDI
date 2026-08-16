@@ -2,7 +2,7 @@ PYTHON ?= python3
 VENV ?= .venv
 export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 
-.PHONY: venv install test test-fast hygiene freeze baseline dictionaries tests ablations metrics decide finalize review-packages
+.PHONY: venv install test test-fast hygiene freeze baseline dictionaries ablations metrics run-tests decide finalize review-packages
 
 venv:
 	$(PYTHON) -m venv $(VENV)
@@ -36,6 +36,9 @@ ablations:
 
 metrics:
 	bash scripts/run_stage2a.sh metrics $(CONFIG) $(RUN_ID)
+
+run-tests:
+	bash scripts/run_stage2a.sh tests $(CONFIG) $(RUN_ID)
 
 decide:
 	bash scripts/run_stage2a.sh decide $(CONFIG) $(RUN_ID)

@@ -90,19 +90,28 @@ def closed_loop_sensitivity(cfg_frozen: dict, xml: str, truth: dict, context: Ep
 
 def contact_oracle_sensitivity(cfg_frozen: dict, xml: str, truth: dict, context: EpisodeContext,
                                seed: int, episode_id: str, link: int, r_link: np.ndarray,
-                               direction: np.ndarray, force_n: float = 2.0) -> dict[str, Any]:
-    """``d (tau_meas - tau_nom) / d |f|`` for a constant contact force on ``link`` at ``r_link``."""
+                               direction: np.ndarray, force_n: float = 1.0, onset_s: float = 6.0) -> dict[str, Any]:
+    """``d (tau_meas - tau_nom) / d |f|`` for a constant contact force on ``link`` at ``r_link``.
+
+    The onset is placed **mid episode** on purpose. A contact deflects the arm, so the perturbed
+    and unperturbed trajectories separate over time and the deployed dictionary -- evaluated at
+    the *observed* configuration -- can only match near the onset. Starting at ``t = 0`` would
+    compare during the generator's rest-to-motion blend-in, which is the least informative
+    window of the episode. Reported agreements are therefore split into an onset window (the
+    instantaneous test) and the whole episode (which measures the closed-loop drift).
+    """
     from certo_fdi.data.franka_generator import generate_episode
 
     dirn = np.asarray(direction, dtype=float)
     dirn = dirn / np.linalg.norm(dirn)
     spec = FaultSpec(family="F4_contact", kind="soft_constant", target=int(link), severity=float(force_n),
-                     onset_s=0.0, duration_s=-1.0, profile="abrupt", ramp_s=0.0,
+                     onset_s=float(onset_s), duration_s=-1.0, profile="abrupt", ramp_s=0.0,
                      direction=dirn.tolist(), extra={"point_link": [float(v) for v in np.asarray(r_link, dtype=float)]})
     base = generate_episode(cfg_frozen, xml, truth, context, FaultSpec(), seed, f"{episode_id}__contact_0")
     plus = generate_episode(cfg_frozen, xml, truth, context, spec, seed, f"{episode_id}__contact_p")
     return {"key": f"F4_contact_link{link}", "family": "F4_contact", "link": int(link), "force_n": float(force_n),
             "direction": dirn.tolist(), "r_link": np.asarray(r_link, dtype=float).tolist(), "scheme": "forward",
+            "onset_s": float(onset_s),
             "sensitivity": (_residual(plus) - _residual(base)) / float(force_n), "units": "N m per N"}
 
 

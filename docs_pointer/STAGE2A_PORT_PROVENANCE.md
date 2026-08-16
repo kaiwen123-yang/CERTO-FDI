@@ -16,7 +16,7 @@ which is how a reviewer can check that nothing was silently edited.
 |---|---|---|---|---|---|---|---|
 | 1 | `.github/workflows/ci.yml` | `.github/workflows/ci.yml` | yes | CI runs the same offline unit tests | CI | `6b19d7c1d78b84dc` | `6b19d7c1d78b84dc` |
 | 2 | `.gitignore` | `.gitignore` | **no** | add Stage 2A artefact patterns | scripts/check_repo_hygiene.sh | `f30fd765723b2059` | `89de85ab83ac4056` |
-| 3 | `Makefile` | `Makefile` | **no** | Stage 2A targets | make test | `4eaf31678bd35d14` | `57828b1a1d007bf5` |
+| 3 | `Makefile` | `Makefile` | **no** | Stage 2A targets | make test | `4eaf31678bd35d14` | `a6db98d7ca79d8fd` |
 | 4 | `pyproject.toml` | `pyproject.toml` | **no** | package name/description unchanged, Stage 2A description | pip install -e . | `b5b3bb97915aea2e` | `9a868fe4f72be721` |
 | 5 | `scripts/check_repo_hygiene.sh` | `scripts/check_repo_hygiene.sh` | yes | same no-large-artefact policy | manual | `907aceff20b7bae5` | `907aceff20b7bae5` |
 | 6 | `configs/paths.example.env` | `configs/paths.example.env` | yes | same storage-root contract | tests/test_paths.py | `e2995a5b0955ba59` | `e2995a5b0955ba59` |

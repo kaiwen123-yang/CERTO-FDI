@@ -48,6 +48,14 @@ class RunLayout:
     def results(self) -> Path:
         return self.run_root / "results"
 
+    @property
+    def figures(self) -> Path:
+        return self.run_root / "figures"
+
+    @property
+    def root(self) -> Path:
+        return self.run_root
+
     def sub(self, name: str) -> Path:
         p = self.run_root / name
         p.mkdir(parents=True, exist_ok=True)

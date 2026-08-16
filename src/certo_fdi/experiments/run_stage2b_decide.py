@@ -35,6 +35,112 @@ from certo_fdi.stage2b import metrics_stage2b as M
 FAMILY_ORDER = ("none", "persistence_3_of_3", "persistence_2_of_3", "persistence_3_of_4",
                 "persistence_3_of_5", "hysteresis", "one_sided_cusum")
 
+#: §04.3 requires rank matching for the two *synthetic* controls only. The fixed-reference and
+#: shuffled-time controls use real Jacobians, so their numerical rank is intrinsic and is reported
+#: rather than matched -- demanding equality there would fail a control the contract never asked
+#: to be matched.
+RANK_MATCHED_METHODS = ("support_prefix_rankmatched", "random_within_support_rankmatched")
+RANK_MATCH_TARGET = "time_aligned_jacobian"
+
+
+def _reproduction_diagnosis(loc: pd.DataFrame, stage2a_run: Path, links: list[int]) -> dict:
+    """Which links account for a per-seed reproduction difference, and how many episodes each.
+
+    A difference concentrated on one link -- especially a proximal one, whose subspace is nested
+    inside every more distal hypothesis -- is a different kind of finding from a difference spread
+    across the confusion matrix, so it is localised rather than reported as a scalar.
+    """
+    src = stage2a_run / "results" / "p6_metrics" / "stage2a_link_confusion.json"
+    if not src.is_file():
+        src = stage2a_run / "p6_metrics" / "stage2a_link_confusion.json"
+    if not src.is_file() or loc.empty:
+        return {"status": "MISSING"}
+    conf = json.loads(src.read_text()).get("contact_projection_residual", {})
+    t = loc[(loc.get("partition") == "F4_TEST") & (loc.get("is_audit_control") == True)]  # noqa: E712
+    rows = []
+    for _, r in t.iterrows():
+        seed = str(int(r["seed"]))
+        M_ = conf.get(seed)
+        if M_ is None:
+            continue
+        for l in links:
+            n_ep = int(sum(M_[l]))
+            ref_correct = int(M_[l][l])
+            obs_recall = _num(r.get(f"recall_link{l}"))
+            obs_correct = int(round(obs_recall * n_ep)) if obs_recall == obs_recall and n_ep else 0
+            if obs_correct != ref_correct:
+                rows.append({"seed": int(seed), "link": l, "n_episodes_this_link": n_ep,
+                             "stage2a_correct": ref_correct, "stage2b_correct": obs_correct,
+                             "delta_episodes": obs_correct - ref_correct})
+    return {"status": "OK", "differing_cells": rows, "n_differing_cells": len(rows),
+            "note": ("rows list every (seed, truth link) cell where the reproduction differs; an empty "
+                     "list means the confusion matrices agree exactly")}
+
+
+def contact_reproduction(ctrl: pd.DataFrame, cfg: dict, stage2a_run: Path,
+                         loc: pd.DataFrame | None = None) -> dict:
+    """Kickoff §E.4: reproduce the Stage 2A contact-localizer metrics within 2 %.
+
+    Phase 1 recorded the encoder reproduction but left this one to the decide phase, so it is
+    computed here from the load-path control table -- ``time_aligned_jacobian`` under the audit
+    control score *is* the Stage 2A ``contact_projection_residual`` localizer, run through the
+    inherited Stage 2A code path.
+
+    It is evaluated **per seed as well as on the seed mean**, because episode top-1 over 24 test
+    episodes is quantised to 1/24 = 4.17 %: a 2 % relative tolerance is finer than a single
+    episode, so the seed mean alone cannot distinguish a real reproduction failure from one
+    episode's vote flipping. Both readings are reported and the stricter one drives the gate.
+    """
+    tol = float(cfg["baseline"]["reproduction_tolerance_relative"])
+    ref_mean = float(cfg["contact_reference"]["stage2a_aligned_top1"])
+    per_seed_ref: dict[int, float] = {}
+    src = stage2a_run / "results" / "stage2a_localization_metrics.csv"
+    if src.is_file():
+        s = pd.read_csv(src)
+        s = s[(s["model"] == "contact_projection_residual") & (s["fault_family"] == "F4_contact")
+              & (s["split"] == "ALL")]
+        per_seed_ref = {int(r["seed"]): float(r["top1"]) for _, r in s.iterrows()}
+    if ctrl.empty:
+        return {"gate": "MISSING", "reason": "no load-path control table"}
+    t = ctrl[(ctrl.get("partition") == "F4_TEST") & (ctrl.get("method") == "time_aligned_jacobian")].copy()
+    t["episode_top1"] = pd.to_numeric(t["episode_top1"], errors="coerce")
+    obs = {int(r["seed"]): float(r["episode_top1"]) for _, r in t.iterrows()}
+    n_ep = int(pd.to_numeric(t.get("n_episodes", pd.Series([24])), errors="coerce").max() or 24)
+    rows, n_exact, worst_episodes = [], 0, 0
+    for seed, o in sorted(obs.items()):
+        ref = per_seed_ref.get(seed, float("nan"))
+        rel = M.relative_deviation(o, ref)
+        n_delta = int(round(abs(o - ref) * n_ep)) if ref == ref else -1
+        n_exact += int(n_delta == 0)
+        worst_episodes = max(worst_episodes, n_delta)
+        rows.append({"seed": seed, "reference": ref, "observed": o, "relative_deviation": rel,
+                     "episodes_differing": n_delta, "exact": bool(n_delta == 0)})
+    obs_mean = float(np.nanmean(list(obs.values()))) if obs else float("nan")
+    rel_mean = M.relative_deviation(obs_mean, ref_mean)
+    literal_pass = bool(rel_mean == rel_mean and rel_mean <= tol)
+    return {
+        "gate": "PASS" if literal_pass else "FAIL",
+        "quantity": "episode top-1 of the Stage 2A contact_projection_residual localizer on the F4 test set",
+        "tolerance_relative": tol,
+        "seed_mean": {"reference": ref_mean, "observed": obs_mean, "relative_deviation": rel_mean,
+                      "within_tolerance": literal_pass},
+        "per_seed": rows,
+        "n_seeds": len(rows), "n_seeds_exact": n_exact,
+        "max_episodes_differing": worst_episodes,
+        "n_test_episodes": n_ep,
+        "metric_quantum_relative": float(1.0 / n_ep / ref_mean) if ref_mean else float("nan"),
+        "diagnosis": _reproduction_diagnosis(loc if loc is not None else pd.DataFrame(), stage2a_run,
+                                             [int(l) for l in cfg["localization"]["truth_links"]]),
+        "interpretation": (
+            f"{n_exact} of {len(rows)} seeds reproduce the frozen Stage 2A value bit-exactly; the worst seed "
+            f"differs by {worst_episodes} episode(s) out of {n_ep}. Episode top-1 moves in steps of "
+            f"1/{n_ep} = {100.0 / n_ep:.2f} %, i.e. {100.0 / n_ep / ref_mean:.2f} % relative, so the "
+            f"{tol * 100:.0f} % tolerance is finer than one episode and cannot separate a genuine "
+            "reproduction failure from a single vote flipping. The literal pre-registered rule is applied "
+            "to the seed mean and drives the gate; this note exists so the gate is not read as a larger "
+            "discrepancy than it is."),
+    }
+
 
 def _read(res: Path, name: str) -> pd.DataFrame:
     p = res / name
@@ -210,7 +316,10 @@ def _loadpath_evidence(res: Path, ctrl: pd.DataFrame, boot: pd.DataFrame, cfg: d
         c = ctrl.copy()
         c["episode_top1"] = pd.to_numeric(c["episode_top1"], errors="coerce")
         t = c[c.get("partition") == "F4_TEST"] if "partition" in c else c
-        means = {m: float(t[t.method == m]["episode_top1"].mean()) for m in t["method"].unique()}
+        # the random control is one row per replicate ("<name>#k"); average the family, since §04.3
+        # asks for the *distribution* over replicates rather than the best one
+        t = t.assign(family=t["method"].astype(str).str.split("#").str[0])
+        means = {m: float(t[t.family == m]["episode_top1"].mean()) for m in t["family"].unique()}
     aligned = means.get("time_aligned_jacobian", float("nan"))
     support = means.get("support_prefix_rankmatched", float("nan"))
     cf = float(ref["counterfactual_top1"])
@@ -292,16 +401,25 @@ def main() -> int:
                 "healthy_rmse_by_scale": rmse.get("values", [])}
 
     # ---- evidence integrity (§3, evidence integrity block)
-    rank_ok = True
+    rank_ok, rank_detail = True, {}
     if not rank.empty and "mean_rank_overall" in rank:
         r = rank.copy()
         r["mean_rank_overall"] = pd.to_numeric(r["mean_rank_overall"], errors="coerce")
-        synth = r[r["method"].isin(["support_prefix_rankmatched", "random_within_support_rankmatched",
-                                    "shuffled_time_jacobian", "time_aligned_jacobian"])]
-        if len(synth):
-            spread = float(synth.groupby("method")["mean_rank_overall"].mean().max()
-                           - synth.groupby("method")["mean_rank_overall"].mean().min())
-            rank_ok = bool(spread <= 1e-6)
+        # the random control is stored one row per replicate as "<name>#k"
+        r["family"] = r["method"].astype(str).str.split("#").str[0]
+        by_family = r.groupby("family")["mean_rank_overall"].mean().to_dict()
+        target = by_family.get(RANK_MATCH_TARGET, float("nan"))
+        dev = {m: abs(by_family[m] - target) for m in RANK_MATCHED_METHODS if m in by_family}
+        rank_ok = bool(dev and target == target and all(v <= 1e-9 for v in dev.values()))
+        rank_detail = {"target_method": RANK_MATCH_TARGET, "target_mean_rank": target,
+                       "matched_methods": list(RANK_MATCHED_METHODS),
+                       "abs_deviation": dev, "tolerance": 1e-9,
+                       "unmatched_by_design": {m: by_family[m] for m in
+                                               ("fixed_reference_jacobian", "shuffled_time_jacobian")
+                                               if m in by_family},
+                       "note": ("§04.3 requires exact rank matching for the synthetic controls only; the "
+                                "fixed-reference and shuffled-time controls use real Jacobians and their "
+                                "numerical rank is intrinsic, so it is reported rather than matched")}
     sel_score = ""
     selp = res / "stage2b_localizer_selection.json"
     if selp.exists():
@@ -318,20 +436,34 @@ def main() -> int:
             b = pd.to_numeric(t[(t.seed == s) & (t["is_audit_control"] == True)]["episode_top1"], errors="coerce").mean()  # noqa: E712
             if a == a and b == b and a > b:
                 n_stable += 1
+    selected_is_audit = bool(sel_score and set(sel_score.split(",")) == {audit})
     evidence_integrity = {
         "not_favored_by_rank_alone": bool(rank_ok),
-        "rank_matching_spread": 0.0 if rank_ok else float("nan"),
+        "rank_matching": rank_detail,
         "n_seeds_improvement_stable": int(n_stable),
         "selected_score": sel_score, "audit_control_score": audit,
+        "selected_score_is_the_audit_control": selected_is_audit,
+        "improvement_over_stage2a_localizer": (
+            "none by construction -- the score selected on F4_CAL is the frozen Stage 2A raw residual "
+            "itself, so there is no improvement whose stability could be assessed and the condition "
+            "fails for a definitional reason, not a noisy one" if selected_is_audit else
+            f"{n_stable} of 3 seeds show the selected score beating the audit control"),
         "calibration_selected_without_fault_test": bool(cfg["calibration"]["tune_on_healthy_only"]),
         "selection_partition": cfg["localization"]["selection_partition"],
     }
 
     # ---- §1 integrity gates
-    gate_repro = repro.get("gate", "MISSING")
+    # the encoder reproduction is nested under "encoder"; the contact-localizer reproduction is
+    # computed here because Phase 1 deferred it
+    gate_encoder = repro.get("encoder", {}).get("gate", "MISSING") if isinstance(repro.get("encoder"), dict) else repro.get("gate", "MISSING")
+    contact_repro = contact_reproduction(ctrl, cfg, Path(cfg["paths"]["stage2a_run_root"]), loc)
+    write_json(res / "stage2b_contact_reproduction_gate.json", contact_repro)
+    st.log(f"encoder reproduction: {gate_encoder}; contact-localizer reproduction: {contact_repro['gate']} "
+           f"({contact_repro.get('n_seeds_exact')}/{contact_repro.get('n_seeds')} seeds exact, worst seed off by "
+           f"{contact_repro.get('max_episodes_differing')} of {contact_repro.get('n_test_episodes')} episodes)")
     integrity = {
         "stage2a_package_or_dataset_hash_mismatch": bool(freeze.get("gate") != "PASS"),
-        "baseline_reproduction_outside_tolerance": bool(gate_repro != "PASS"),
+        "baseline_reproduction_outside_tolerance": bool(gate_encoder != "PASS" or contact_repro["gate"] != "PASS"),
         "final_test_episodes_modified_or_used_for_selection": False,
         "encoder_or_detector_leakage_found": False,
         "loadpath_controls_not_rank_or_support_matched": bool(not rank_ok),
@@ -339,6 +471,7 @@ def main() -> int:
         "pr_history_rewritten_or_merged": bool(any(not h.get("unchanged", True)
                                                    for h in freeze.get("historical_branch_heads", []))),
     }
+    gate_repro = {"encoder": gate_encoder, "contact_localizer": contact_repro["gate"]}
 
     evidence = {"detection": detection, "localization": localization, "selective": selective,
                 "loadpath": loadpath, "healthy_expansion": hexp,
@@ -351,7 +484,8 @@ def main() -> int:
     result.update({"run_id": st.layout.run_id, "generated_utc": utc_now(), "evidence": evidence,
                    "config_sha256": st.cfg_sha, "dataset_manifest_sha256": st.manifest_sha,
                    "stage2a_git_sha": freeze.get("stage2a_git_sha", ""),
-                   "reproduction_gate": gate_repro})
+                   "reproduction_gate": gate_repro,
+                   "contact_reproduction": contact_repro})
     write_json(res / "stage2b_decision_evidence.json", result)
 
     st.log(f"DECISION: {result['decision']}")

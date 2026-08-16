@@ -42,6 +42,7 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
     thr = cfg["decision"]["go"]
     pre = d.get("preregistered_conservative_rule", {})
     cref = cfg["contact_reference"]
+    rk = e["evidence_integrity"].get("rank_matching", {})
     md = [
         f"# Stage 2B decision memo — `{ev['decision']}`",
         "",
@@ -60,6 +61,45 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
         "",
         f"Evaluation order, frozen in advance: `{ev['evaluation_order']}`.",
         "",
+    ]
+    if ev["decision"] == "BLOCKED":
+        cr = ev.get("contact_reproduction", {})
+        diag = cr.get("diagnosis", {}).get("differing_cells", [])
+        md += [
+            "> ### Read this before any number below",
+            ">",
+            f"> The terminal state is `BLOCKED`, not a scientific verdict. Kickoff §E.6 is explicit: a",
+            "> reproduction failure stops scientific evaluation. Everything after this box is therefore",
+            "> **provisional** — it was computed, it is reported in full, and it is not licensed as a",
+            "> conclusion until the reproduction gate is resolved.",
+            ">",
+            "> What actually failed, precisely:",
+            ">",
+            f"> - the frozen encoder reproduces **bit-exactly** on all five primary metrics (relative deviation 0.0);",
+            f"> - the Stage 2A contact localizer reproduces **bit-exactly on "
+            f"{cr.get('n_seeds_exact')} of {cr.get('n_seeds')} seeds**;",
+            f"> - the remaining seed differs by **one episode out of {cr.get('n_test_episodes')}**"
+            + (f", and the difference is entirely in truth link {diag[0]['link']} "
+               f"({diag[0]['stage2a_correct']}/{diag[0]['n_episodes_this_link']} correct in Stage 2A versus "
+               f"{diag[0]['stage2b_correct']}/{diag[0]['n_episodes_this_link']} here)" if diag else "")
+            + ". Every other cell of every confusion matrix agrees exactly;",
+            f"> - that single episode moves the seed mean by "
+            f"{_f(cr.get('seed_mean', {}).get('relative_deviation', float('nan')) * 100, 2)} %, just past the "
+            f"{_f(cr.get('tolerance_relative', 0.02) * 100, 0)} % tolerance.",
+            ">",
+            "> Episode top-1 over 24 test episodes moves in steps of 1/24, which is "
+            f"{_f(cr.get('metric_quantum_relative', float('nan')) * 100, 1)} % relative. The pre-registered 2 %",
+            "> tolerance is therefore **finer than a single episode**: no run that differs by one vote can pass it,",
+            "> and the gate cannot distinguish a real reproduction failure from a numerical tie. Link 1 is where a",
+            "> tie is most likely — its rank-2 subspace is nested inside every more distal hypothesis, so a",
+            "> floating-point difference of order 1e-12 in the projector flips the argmin.",
+            ">",
+            "> That explanation is *not* a waiver. The threshold was committed before any result existed and is not",
+            "> being moved now that it is inconvenient. The gate fires, the decision is `BLOCKED`, and resolving it",
+            "> is the first item of work for the next run — see `04_KNOWN_ISSUES.md` §0 for what that requires.",
+            "",
+        ]
+    md += [
         "### The one-paragraph answer",
         "",
         "Stage 2B overturns the headline attribution of Stage 2A and then fails to turn the corrected picture",
@@ -92,8 +132,22 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
     md += [
         f"| *frozen Stage 2A counterfactual* | the localizer Stage 2A shipped | {_f(cref['counterfactual_top1'], 4)} |",
         "",
-        "All five controls realise the **same numerical rank** and the same support mask, so none of the spread",
-        "above can be a rank artifact. The decomposition, with episode-cluster confidence intervals:",
+        "",
+        "Every control uses the same serial-chain support mask, and the two **synthetic** controls realise the",
+        f"same mean numerical rank as the time-aligned dictionary to within {_f(rk.get('tolerance', 1e-9), 0) if False else '1e-9'}",
+        f"(target {_f(rk.get('target_mean_rank'), 4)}; deviations "
+        + ", ".join(f"`{k}` {v:.2e}" for k, v in sorted(rk.get("abs_deviation", {}).items()))
+        + "). So the gap between the geometry-free controls and the real Jacobians cannot be a rank artifact.",
+        "",
+        "The other two controls are **not** rank matched, and the contract does not ask them to be: they use real",
+        "Jacobians, so their numerical rank is a property of the configurations rather than a free parameter "
+        + ("(" + ", ".join(f"`{k}` {v:.4f}" for k, v in sorted(rk.get("unmatched_by_design", {}).items())) + ")."
+           if rk.get("unmatched_by_design") else "."),
+        "Note that `fixed_reference_jacobian` sits at the *lowest* rank of all and still beats both geometry-free",
+        "controls by a wide margin, which is the cleanest single piece of evidence that rank is not what is doing",
+        "the work here.",
+        "",
+        "The decomposition, with episode-cluster confidence intervals:",
         "",
         "| gain | meaning | Δ top-1 | 95% CI | claimable |",
         "|---|---|---|---|---|",
@@ -111,7 +165,12 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
         ok = str(r.get("top1_ci_excludes_zero", "")).lower() in ("true", "1")
         md.append(f"| **{nm}** | {desc} | {_f(r.get('top1_diff'), 3)} | "
                   f"[{_f(r.get('top1_ci_low'), 3)}, {_f(r.get('top1_ci_high'), 3)}] | {'yes' if ok else '**no**'} |")
+    d_sup = (float(lp.get("top1_by_method", {}).get("support_prefix_rankmatched", float("nan")))
+             - float(lp.get("top1_by_method", {}).get("random_within_support_rankmatched", float("nan"))))
     md += [
+        f"| **Δ support** | does the prefix mask beat a random frame of the same rank? | {_f(d_sup, 3)} | "
+        "*(no paired contrast: the random control is a distribution over 16 replicates per link, "
+        "reported as its mean)* | **no** |",
         "",
         "Two consequences follow directly, and both constrain what may be written in a paper.",
         "",
@@ -175,33 +234,45 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
         f"{_f(d.get('false_alarm_reduction_factor'), 1)}× the oracle bound would suggest. The gap between the two is the",
         "honest measure of how much of the calibration gain is real and how much is hindsight.",
         "",
-        "### The healthy-OOD / healthy-ID ratio is not estimable here",
+        "### The healthy-OOD / healthy-ID ratio, and why it fails either way",
         "",
-        "At the best operating points the healthy in-distribution false-alarm rate is **exactly zero** over the",
-        "observed episodes while the out-of-distribution rate is clearly positive. That is not evidence the",
-        "threshold transfers; it means the in-distribution rate is below the resolution of the sample, and the",
-        f"ratio is reported as non-estimable ({_f(d.get('healthy_ood_id_ratio'), 2)}). The condition is failed",
-        "conservatively rather than waived. Any future run needs materially more healthy in-distribution test",
-        "episodes before this number means anything.",
+        "At the operating points with the lowest false-alarm rates the healthy in-distribution rate is **exactly",
+        "zero** over the observed episodes while the out-of-distribution rate is clearly positive. A zero count over",
+        "12 episodes is not evidence that the threshold transfers — it means the in-distribution rate is below the",
+        "resolution of the sample — so those points are reported as non-estimable rather than as a ratio of zero.",
+        "",
+        f"Where the ratio is finite, the smallest value any validation-admissible point attains is "
+        f"**{_f(d.get('healthy_ood_id_ratio'), 2)}**, against a bound of {thr['healthy_ood_id_ratio_max']}. So the",
+        "condition fails whether the degenerate points are excluded or treated conservatively, which is the one",
+        "reassuring thing about it: the verdict does not turn on that judgement call. It does mean the number",
+        "carries no quantitative weight until there are materially more healthy in-distribution test episodes.",
         "",
         "## 5. Localization, and what deferring buys",
         "",
-        f"The selected score across seeds was `{e['evidence_integrity'].get('selected_score', '')}`, chosen on the",
-        f"separate `{e['evidence_integrity'].get('selection_partition', '')}` partition; the frozen Stage 2A score",
-        f"`{e['evidence_integrity'].get('audit_control_score', '')}` was retained as an audit control. The rank-aware",
-        "scores did **not** beat the raw residual on the final test set, which is worth stating plainly because it",
-        "was the opposite of the expectation: the rank correction removes a real nesting bias, but on this data the",
-        "bias was helping more than it hurt.",
+        f"Score selection ran on the separate `{e['evidence_integrity'].get('selection_partition', '')}` partition and",
+        f"chose `{e['evidence_integrity'].get('selected_score', '')}` across the three seeds; the frozen Stage 2A score",
+        f"`{e['evidence_integrity'].get('audit_control_score', '')}` was retained as an audit control.",
+        "",
+        "**The selection did not transfer.** The rank-corrected `df_normalized_residual` won on the calibration",
+        f"partition in two of three seeds, yet on the final test set the selected score averages "
+        f"{_f(l.get('episode_top1'), 4)} against {_f(extra.get('audit_top1'), 4)} for the raw residual it was meant to",
+        "improve on. This is worth stating plainly because it is the opposite of the expectation: the rank correction",
+        "removes a nesting bias that the mutation test confirms is real, but on this data the bias was helping more",
+        "than it hurt, and 48 calibration episodes were not enough to tell the two scores apart. Neither the choice",
+        "nor its failure to transfer touched the test set — that is what the separate partition is for.",
         "",
         f"Per-link recall: " + ", ".join(f"link {k.replace('recall_link', '')} {_f(v, 2)}"
                                           for k, v in sorted(l.get("per_link_recall", {}).items())) + ".",
         f"Only {l.get('n_links_recall_ge_040', 0)} links clear the 0.40 floor; the proximal link is the one that fails,",
         "which is the expected direction — a contact near the base loads the whole chain and is hardest to place.",
         "",
-        f"Deferring does reduce error ({s.get('reject_reduces_error')}), but at coverage {_f(s.get('coverage'), 3)},",
-        f"below the {thr['selective_coverage_min']} floor the contract requires, and selective top-1 reaches",
-        f"{_f(s.get('selective_top1'), 3)} against a required {thr['selective_top1_min']}. The mechanism works; the",
-        "operating point is not good enough to ship.",
+        f"Deferring does reduce error ({s.get('reject_reduces_error')}), and the achieved coverage "
+        f"{_f(s.get('coverage'), 3)} clears the {thr['selective_coverage_min']} floor. What fails is the accuracy it",
+        f"buys: selective top-1 reaches only {_f(s.get('selective_top1'), 3)} against a required",
+        f"{thr['selective_top1_min']}, and selective chain distance {_f(s.get('selective_chain_distance'), 3)} against",
+        f"a required {thr['selective_chain_distance_max']}. The mechanism works — declining the ambiguous episodes",
+        "genuinely improves the ones kept, in every seed — but it starts from a base too low for the deferral to",
+        "carry it over the bar.",
         "",
         "## 6. Healthy data scaling",
         "",
@@ -245,24 +316,36 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
         f"| `PIVOT_LOADPATH_LOCALIZATION_ONLY` | localization and rejection all pass, detector fails | localization does not pass |",
         f"| `PIVOT_SEQUENTIAL_DETECTION_ONLY` | detection and sequential all pass | detection does not pass |",
         f"| `PIVOT_CONTEXT_CALIBRATION_ONLY` | ≥10× false-alarm cut, OOD/ID ≤ 1.5, **and** load-path controls add no reliable value | "
-        f"the load-path controls *do* add reliable value, and the ratio is not estimable |",
+        f"the load-path controls *do* add reliable value, and the ratio is {_f(d.get('healthy_ood_id_ratio'), 2)} |",
         f"| `NO_GO_CONTACT_PRODUCT` (§8) | ≥2 of six failure conditions after H160 | "
         f"{ev['no_go_contact_product']['n_fired']} fired |",
         "",
-        "This matters for how the result should be read. §8 is the *strong* no-go — \"this line of work is not",
-        f"paying off\" — and it did **not** fire: only {ev['no_go_contact_product']['n_fired']} of its six failure",
-        "conditions are true. The terminal state is the pre-registered **default**, which fires when nothing",
-        "positive is satisfied either. The honest summary is not \"the idea failed\" but \"every axis works",
-        "partially and none reaches its product threshold\", and the decision rules were written so that this case",
-        "is reported rather than talked up into a pivot.",
+        "This matters for how the result should be read, and it is the part most likely to be misquoted.",
+        "",
+        f"`BLOCKED` is not a scientific verdict — it is the §1 integrity gate firing on the reproduction",
+        "discrepancy described at the top of this memo. Had that gate passed, the table above shows where the run",
+        f"would have landed: no positive state is satisfied, and §8 — the *strong* no-go, \"this line of work is not",
+        f"paying off\" — did **not** fire either, with only {ev['no_go_contact_product']['n_fired']} of its six",
+        "failure conditions true. The run would have fallen through to the pre-registered **default**",
+        "`NO_GO_CONTACT_PRODUCT`, which exists precisely for the case where nothing positive is satisfied and",
+        "nothing strongly negative is either.",
+        "",
+        "So the honest summary of the science, stated provisionally, is neither \"it failed\" nor \"it nearly",
+        "worked\": every axis works partially, none reaches its product threshold, and one previously published",
+        "attribution turns out to have been wrong. The decision rules were written so that this outcome gets",
+        "reported as itself rather than talked up into a pivot it does not qualify for.",
         "",
         "## 8. What would have to change",
         "",
         "In descending order of leverage, based on which condition misses by the most:",
         "",
-        "1. **Healthy in-distribution test volume.** The OOD/ID ratio is unmeasurable at the current sample size and",
-        "   the validation false-alarm rate is quantised too coarsely to tune against. This is the cheapest fix and",
-        "   it blocks two conditions.",
+        "0. **Resolve the reproduction gate first.** Nothing below is licensed until the one-episode discrepancy in",
+        "   seed 260817 is shown to be a numerical tie rather than a methodological divergence, and the gate is",
+        "   re-expressed in units the metric actually has. `04_KNOWN_ISSUES.md` §0 says exactly what that takes.",
+        "1. **Healthy in-distribution test volume.** At the lowest-false-alarm operating points the in-distribution",
+        "   rate is zero over 12 episodes, so the OOD/ID ratio is not estimable there, and the validation",
+        "   false-alarm rate takes only two distinct values across the whole grid — too coarse to tune against.",
+        "   This is the cheapest fix and it blocks two conditions.",
         "2. **The detector, not the calibrator.** Context calibration plus sequential wrappers already cut the false",
         f"   alarm rate by roughly {_f(pre.get('false_alarm_reduction_factor'), 0)}×, and the remaining gap is a factor of",
         "   several. Squeezing the calibration layer further is unlikely to close it; the per-window score itself is",
@@ -280,7 +363,10 @@ def _memo(ev: dict, cfg: dict, run_id: str, extra: dict) -> str:
         "- **not** a physical wrench recovered from network-internal messages;",
         "- **not** universal link identifiability — one of four links is below a 0.40 recall floor;",
         "- **not** \"first\" anything. The bounded literature search found that the serial-chain prefix-support",
-        "  isolation rule and Jacobian-transpose projection are both standard prior art, so claim N1 is retired.",
+        "  isolation rule and Jacobian-transpose projection are both standard prior art, so claim N1 is retired;",
+        "- **not**, for now, a Stage 2B conclusion at all. The reproduction gate fired, so every finding above is",
+        "  provisional. That includes the one this run is most confident about — the correction to the Stage 2A",
+        "  attribution — because it rests on the same localization pipeline the gate is questioning.",
         "",
     ]
     return "\n".join(md)
@@ -372,18 +458,67 @@ def _claim_ledger(ev: dict, cfg: dict, lit: dict) -> list[dict]:
 def _known_issues(ev: dict, cfg: dict) -> str:
     e = ev["evidence"]
     d = e["detection"]
-    return "\n".join([
+    cr = ev.get("contact_reproduction", {})
+    diag = cr.get("diagnosis", {}).get("differing_cells", [])
+    head = [
         "# Stage 2B known issues",
         "",
         "Ordered by how much they constrain the conclusions. Every one of these is a limit on what the numbers",
         "in the memo can be used for, not a bug that was left unfixed.",
         "",
-        "## 1. The healthy-OOD / healthy-ID alarm ratio is not estimable",
+    ]
+    if ev.get("decision") == "BLOCKED":
+        head += [
+            "## 0. BLOCKING — the Stage 2A contact-localizer reproduction is one episode outside tolerance",
+            "",
+            f"The frozen encoder reproduces bit-exactly on all five primary metrics. The Stage 2A contact",
+            f"localizer reproduces bit-exactly on {cr.get('n_seeds_exact')} of {cr.get('n_seeds')} seeds. The third",
+            f"seed differs by exactly one episode out of {cr.get('n_test_episodes')}"
+            + (f", entirely in truth link {diag[0]['link']}: Stage 2A placed "
+               f"{diag[0]['stage2a_correct']} of {diag[0]['n_episodes_this_link']} link-{diag[0]['link']} episodes"
+               f" correctly, this run placed {diag[0]['stage2b_correct']}" if diag else "")
+            + ". Every other cell of every confusion matrix agrees exactly.",
+            "",
+            f"That one episode moves the three-seed mean by "
+            f"{cr.get('seed_mean', {}).get('relative_deviation', float('nan')) * 100:.2f} %, past the "
+            f"{cr.get('tolerance_relative', 0.02) * 100:.0f} % pre-registered tolerance, so the §1 integrity gate",
+            "fires and the terminal state is `BLOCKED`.",
+            "",
+            "**Why it is almost certainly benign, and why that is not enough.** Episode top-1 over 24 episodes is",
+            f"quantised to 1/24 = {cr.get('metric_quantum_relative', float('nan')) * 100:.1f} % relative, so a 2 %",
+            "tolerance is finer than one vote — no run differing by a single episode can ever pass it. Link 1 is",
+            "the most likely place for a tie: its rank-2 subspace is nested inside every more distal hypothesis,",
+            "so a difference of order 1e-12 in the projector flips the argmin. But a plausible explanation is not",
+            "a measurement. The threshold was committed before any result existed and is not being moved now.",
+            "",
+            "**What would resolve it**, in order of preference:",
+            "",
+            "1. dump per-episode predicted links from both stages for seed 260817 and confirm the flipped episode",
+            "   is a near-tie between the link-1 and link-3 hypotheses — a margin of order machine epsilon settles",
+            "   it definitively;",
+            "2. if it is a tie, fix the *tolerance*, not the result: a reproduction gate on a metric quantised to",
+            "   1/n must be expressed in episodes (\"no seed differs by more than one episode, and at least two of",
+            "   three are exact\"), which is both stricter per seed and actually satisfiable. That change belongs in",
+            "   the next kickoff contract, not in this run;",
+            "3. if it is *not* a tie, the difference is a real methodological divergence in the inherited Stage 2A",
+            "   code path and every localization number in this run is void.",
+            "",
+            "Until then: no Stage 2B conclusion is licensed, and the findings below are reported as provisional.",
+            "",
+        ]
+    return "\n".join(head + [
+        "## 1. The healthy-OOD / healthy-ID alarm ratio is barely estimable",
         "",
-        "At the best operating points the healthy in-distribution event false-alarm rate is exactly zero over the",
-        "observed test episodes, so the OOD/ID ratio has a zero denominator and is reported as non-estimable rather",
-        "than as a favourable number. The pre-registered condition is failed conservatively. This is a sample-size",
-        "limit, not a property of the detector, and it blocks one GO condition outright.",
+        "At the operating points with the lowest false-alarm rates the healthy in-distribution event rate is exactly",
+        "zero over the observed test episodes, so the OOD/ID ratio has a zero denominator there. A zero count over 12",
+        "episodes is not evidence that the threshold transfers — it means the in-distribution rate is below the",
+        "resolution of the sample — so those points are reported as non-estimable rather than as a favourable number.",
+        "",
+        f"Across the operating points where the ratio *is* finite, the smallest attainable value is",
+        f"{d.get('healthy_ood_id_ratio', float('nan')):.2f}, still above the {cfg['decision']['go']['healthy_ood_id_ratio_max']}",
+        "bound. So the condition fails on both readings, which is the one reassuring thing about it: the verdict does",
+        "not depend on how the degenerate points are treated. It still needs materially more healthy in-distribution",
+        "test episodes before the number means anything quantitative.",
         "",
         "## 2. Healthy validation resolves the false-alarm rate too coarsely to tune against",
         "",
@@ -447,8 +582,15 @@ def main() -> int:
     bp = res / "stage2b_episode_bootstrap.csv"
     if bp.exists():
         boot_rows = pd.read_csv(bp).to_dict("records")
+    audit_top1 = float("nan")
+    lp_ = res / "stage2b_localization_metrics.csv"
+    if lp_.exists():
+        _l = pd.read_csv(lp_)
+        _t = _l[(_l.get("partition") == "F4_TEST") & (_l.get("is_audit_control") == True)]  # noqa: E712
+        audit_top1 = float(pd.to_numeric(_t["episode_top1"], errors="coerce").mean()) if len(_t) else float("nan")
     extra = {"git_sha": git_sha(st.repo_root), "config_sha": st.cfg_sha,
-             "dataset_manifest_sha": st.manifest_sha, "bootstrap_rows": boot_rows}
+             "dataset_manifest_sha": st.manifest_sha, "bootstrap_rows": boot_rows,
+             "audit_top1": audit_top1}
 
     (res / "stage2b_decision_memo.md").write_text(_memo(ev, cfg, st.layout.run_id, extra), encoding="utf-8")
     (res / "stage2b_known_issues.md").write_text(_known_issues(ev, cfg), encoding="utf-8")
@@ -470,8 +612,10 @@ def main() -> int:
     write_json(res / "stage2b_run_manifest.json", {
         "run_id": st.layout.run_id, "generated_utc": utc_now(),
         "stage": cfg["stage"], "decision": ev["decision"],
-        "git": {"sha": git_sha(st.repo_root), "branch": cfg["git"]["head_branch"],
-                "base_branch": cfg["git"]["base_branch"], "stage2a_sha": ev.get("stage2a_git_sha", "")},
+        "git": {"sha": git_sha(st.repo_root), "branch": cfg["repository"]["stage_branch"],
+                "base_branch": cfg["repository"]["base_branch"], "remote": cfg["repository"]["remote"],
+                "keep_pr_draft": cfg["repository"]["keep_pr_draft"], "auto_merge": cfg["repository"]["auto_merge"],
+                "stage2a_sha": ev.get("stage2a_git_sha", "")},
         "config_sha256": st.cfg_sha, "dataset_manifest_sha256": st.manifest_sha,
         "frozen_inputs": cfg["frozen_inputs"],
         "phases": [p.name for p in sorted(st.layout.root.glob("p*_*"))],

@@ -148,12 +148,22 @@ def point_position(kin: ChainKinematics, link: int, r_link: np.ndarray) -> np.nd
 def candidate_points(chain: ChainModel) -> dict[int, list[tuple[str, np.ndarray]]]:
     """Deployment candidate contact points per link, in that link's own frame.
 
-    Purely geometric: the proximal point is the link's own body origin, the distal point is the
-    origin of the child joint (or the CoM direction scaled to the link length for the last
-    link), the mid point is their midpoint. No fault information is used. The truth contact
-    point of the frozen protocol (a random offset along the link ``z`` axis in
-    ``[0.03, 0.10] m``) is deliberately *not* part of this set; it is only used for the oracle
-    upper bound (``truth_point``).
+    Purely geometric and derived from the link alone -- **never** from the fault protocol:
+
+    * ``proximal``  the link's own body-frame origin;
+    * ``com``       its centre of mass;
+    * ``distal``    the origin of its child joint (for the last link: the CoM direction scaled
+                    to the link length);
+    * ``mid``       the midpoint of proximal and distal;
+    * ``+x/-x/+y/-y/+z/-z``  a fixed offset grid at half the link's characteristic length along
+                    the link-frame axes, so that links whose child joint sits at their own
+                    origin (links 0 and 4 of the Panda) still have off-axis candidates.
+
+    The last point matters: a force applied exactly **on** a joint axis exerts no moment about
+    it, so a candidate set collapsed onto the body origin makes that link unobservable by
+    construction. The truth contact point of the frozen protocol (a random offset along the
+    link ``z`` axis in ``[0.03, 0.10] m``) is deliberately *not* a member of this set; it is
+    only used for the oracle upper bound.
     """
     n = chain.n_links
     out: dict[int, list[tuple[str, np.ndarray]]] = {}
@@ -165,17 +175,25 @@ def candidate_points(chain: ChainModel) -> dict[int, list[tuple[str, np.ndarray]
             com = np.asarray(chain.com[l], dtype=float)
             nrm = float(np.linalg.norm(com))
             distal = com / nrm * float(chain.link_length[l]) if nrm > 1e-9 else np.array([0.0, 0.0, float(chain.link_length[l])])
-        out[l] = [
+        d = 0.5 * max(float(chain.link_length[l]), 0.05)
+        pts: list[tuple[str, np.ndarray]] = [
             ("proximal", np.zeros(3)),
+            ("com", np.asarray(chain.com[l], dtype=float).copy()),
             ("mid", 0.5 * distal),
             ("distal", distal.copy()),
         ]
+        for axis, name in enumerate("xyz"):
+            e = np.zeros(3)
+            e[axis] = d
+            pts.append((f"+{name}", e.copy()))
+            pts.append((f"-{name}", -e))
+        out[l] = pts
     return out
 
 
 def end_effector_point(chain: ChainModel) -> np.ndarray:
     """Link-frame offset of the declared end-effector point (distal point of the last link)."""
-    return candidate_points(chain)[chain.n_links - 1][2][1]
+    return dict(candidate_points(chain)[chain.n_links - 1])["distal"]
 
 
 # --------------------------------------------------------------------------- cross-checks

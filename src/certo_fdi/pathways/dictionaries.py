@@ -148,7 +148,9 @@ class EpisodePathways:
     d_coulomb: np.ndarray  # (Tg, n)
     d_stribeck: np.ndarray  # (Tg, n)
     y_load: np.ndarray  # (Tg, n, 10)
-    j_link: np.ndarray  # (Tg, n_links, 6, n) spatial Jacobians at the body origins
+    j_link: np.ndarray  # (Tg, n_links, 6, n) spatial Jacobians at the body origins (float64:
+    #   the whitened dictionaries reach condition numbers ~1e6, where float32 storage would
+    #   dominate the projection error)
     r_link: np.ndarray  # (Tg, n_links, 3, 3) link orientations (for point Jacobians)
     d_sensor_q: np.ndarray  # (Tg, n, n) d e_tau / d q_bias
     d_sensor_qd: np.ndarray  # (Tg, n, n) d e_tau / d qd_bias
@@ -249,7 +251,7 @@ def build_episode_pathways(
     n = chain.n_links
 
     kin = forward_kinematics(chain, q)
-    j_link = link_spatial_jacobians(kin).astype(np.float32)
+    j_link = link_spatial_jacobians(kin)
 
     d_gain = tau_cmd.copy()
     d_viscous = qd.copy()
@@ -260,9 +262,11 @@ def build_episode_pathways(
     # F6: analytic local control  d e_tau / d Delta = d tau_cmd / dt (central difference)
     d_delay = np.gradient(tau_cmd_full, control_dt, axis=0)[t_index]
     # F6: explicit command-buffer finite difference over a *fractional* delay (linear
-    #     interpolation between taps), so the derivative is well defined off the sample grid.
+    #     interpolation between taps). It is deliberately **causal** (backward): a deployed
+    #     detector only holds past commands, and a centred difference is undefined exactly at
+    #     the window's last sample -- the sample the detector acts on.
     dd = float(delta_delay if delta_delay is not None else 2.0 * control_dt)
-    d_delay_buffer = (_delayed_command(tau_cmd_full, -dd, control_dt)[t_index] - _delayed_command(tau_cmd_full, dd, control_dt)[t_index]) / (2 * dd)
+    d_delay_buffer = (tau_cmd - _delayed_command(tau_cmd_full, dd, control_dt)[t_index]) / dd
 
     if controller is not None and nominal is not None:
         if trajectory is not None:
@@ -284,7 +288,7 @@ def build_episode_pathways(
     return EpisodePathways(
         episode_id=episode_id, t_index=t_index, n_links=n,
         d_gain=d_gain, d_viscous=d_viscous, d_coulomb=d_coulomb, d_stribeck=d_stribeck,
-        y_load=y_load, j_link=j_link, r_link=kin.R_link.astype(np.float32),
+        y_load=y_load, j_link=j_link, r_link=kin.R_link,
         d_sensor_q=d_sensor_q, d_sensor_qd=d_sensor_qd, d_delay=d_delay, d_delay_buffer=d_delay_buffer,
         meta={"coulomb_eps": coulomb_eps, "stribeck_velocity": stribeck_velocity, "delta_q_rad": delta_q,
               "delta_qd_rad_s": delta_qd, "delta_delay_s": dd, "control_dt_s": control_dt,
@@ -328,10 +332,10 @@ def contact_columns(ep: EpisodePathways, rows: np.ndarray, link: int, r_link: np
     ``r_link is None`` -> the point-agnostic 6-column body-wrench form ``-J_l^T``;
     otherwise the 3-column point-force form ``-J_{l,p}^T`` at the link-frame offset.
     """
-    J = ep.j_link[rows, link].astype(np.float64)  # (M,6,n)
+    J = ep.j_link[rows, link]  # (M,6,n)
     if r_link is None:
         return -np.concatenate([J[m].T for m in range(J.shape[0])], axis=0)
-    R = ep.r_link[rows, link].astype(np.float64)  # (M,3,3)
+    R = ep.r_link[rows, link]  # (M,3,3)
     r_world = (R @ np.asarray(r_link, dtype=float)[None, :, None])[..., 0]  # (M,3)
     from certo_fdi.pathways.jacobians import skew
 
@@ -367,4 +371,56 @@ def dictionary_column_units() -> dict[str, list[str]]:
         "F5_encoder_q": [f"rad[{j}]" for j in joint],
         "F5_encoder_qd": [f"rad/s[{j}]" for j in joint],
         "F6_delay": ["s"],
+    }
+
+
+# --------------------------------------------------------------------------- batched builders
+# The per-window Python loop over (link, candidate point) dominated the runtime; these build the
+# whole (Nw, n*M, p) stack in one vectorised step. They are checked against the single-window
+# builders above in tests/test_stage2a_dictionaries.py.
+def contact_columns_batched(ep: EpisodePathways, rows: np.ndarray, link: int, r_link: np.ndarray | None) -> np.ndarray:
+    """(Nw, n*M, 3 or 6) contact dictionaries for every window in ``rows`` (Nw, M)."""
+    rows = np.asarray(rows, dtype=int)
+    Nw, M = rows.shape
+    if r_link is None:
+        J = ep.j_link[:, link]                                   # (Tg, 6, n)
+        cols = -np.swapaxes(J[rows], 2, 3)                       # (Nw, M, n, 6)
+        return cols.reshape(Nw, M * ep.n_links, 6)
+    from certo_fdi.pathways.jacobians import skew
+
+    r_world = (ep.r_link[:, link] @ np.asarray(r_link, dtype=float)[None, :, None])[..., 0]  # (Tg,3)
+    Jp = ep.j_link[:, link, 3:, :] - skew(r_world) @ ep.j_link[:, link, :3, :]                # (Tg,3,n)
+    cols = -np.swapaxes(Jp[rows], 2, 3)                          # (Nw, M, n, 3)
+    return cols.reshape(Nw, M * ep.n_links, 3)
+
+
+def _stack_diag_batched(diag: np.ndarray, rows: np.ndarray) -> np.ndarray:
+    """(Tg, n) diagonals + (Nw, M) rows -> (Nw, n*M, n)."""
+    Nw, M = rows.shape
+    n = diag.shape[1]
+    D = np.zeros((Nw, M, n, n))
+    idx = np.arange(n)
+    D[:, :, idx, idx] = diag[rows]
+    return D.reshape(Nw, M * n, n)
+
+
+def _stack_dense_batched(cols: np.ndarray, rows: np.ndarray) -> np.ndarray:
+    """(Tg, n, p) + (Nw, M) rows -> (Nw, n*M, p)."""
+    Nw, M = rows.shape
+    n, p = cols.shape[1], cols.shape[2]
+    return cols[rows].reshape(Nw, M * n, p)
+
+
+def family_dictionaries_batched(ep: EpisodePathways, rows: np.ndarray) -> dict[str, np.ndarray]:
+    """Non-contact family dictionaries for every window in ``rows`` -> ``{key: (Nw, n*M, p)}``."""
+    rows = np.asarray(rows, dtype=int)
+    return {
+        "F1_actuator": _stack_diag_batched(ep.d_gain, rows),
+        "F2_viscous": _stack_diag_batched(ep.d_viscous, rows),
+        "F2_coulomb": _stack_diag_batched(ep.d_coulomb, rows),
+        "F2_stribeck": _stack_diag_batched(ep.d_stribeck, rows),
+        "F3_payload": _stack_dense_batched(ep.y_load, rows),
+        "F5_encoder_q": _stack_dense_batched(ep.d_sensor_q, rows),
+        "F5_encoder_qd": _stack_dense_batched(ep.d_sensor_qd, rows),
+        "F6_delay": _stack_dense_batched(ep.d_delay_buffer[:, :, None], rows),
     }

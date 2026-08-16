@@ -22,6 +22,11 @@ import numpy as np
 LAMBDA_RELATIVE = 1e-6
 CONDITION_MAX = 1e6
 RANK_TOLERANCE = 1e-10
+# Absolute floor so the normal equations are positive definite even for an identically zero
+# dictionary. That case is physical, not pathological: a point force applied ON a joint axis
+# exerts no moment about it, so link 0's proximal candidate point has an all-zero dictionary.
+# With the floor the fit returns theta = 0 and zero explained energy, which is the right answer.
+LAMBDA_ABSOLUTE_FLOOR = 1e-12
 
 
 def ridge_lambda(D: np.ndarray) -> np.ndarray:
@@ -29,7 +34,7 @@ def ridge_lambda(D: np.ndarray) -> np.ndarray:
     D = np.asarray(D, dtype=float)
     s = np.linalg.svd(D, compute_uv=False)
     smax2 = (s[..., 0] ** 2) if s.ndim > 1 else (s[0] ** 2)
-    return np.maximum(LAMBDA_RELATIVE * smax2, smax2 / CONDITION_MAX)
+    return np.maximum(np.maximum(LAMBDA_RELATIVE * smax2, smax2 / CONDITION_MAX), LAMBDA_ABSOLUTE_FLOOR)
 
 
 def dictionary_spectrum(D: np.ndarray) -> dict[str, float]:
@@ -101,17 +106,34 @@ def exact_projection_energy(D: np.ndarray, z: np.ndarray, rtol: float = 1e-8) ->
     return out
 
 
-def principal_angles(A: np.ndarray, B: np.ndarray, rtol: float = 1e-10) -> np.ndarray:
-    """Principal angles (radians, ascending) between ``range(A)`` and ``range(B)``."""
+def orthonormal_basis(A: np.ndarray, rtol: float | None = None) -> np.ndarray:
+    """Orthonormal basis of ``range(A)`` from the SVD, with the LAPACK default rank tolerance.
+
+    An unpivoted QR cannot estimate rank (``|diag(R)|`` is not a singular-value proxy), and the
+    per-link contact dictionaries are frequently rank deficient -- link ``l`` loads only joints
+    ``0..l``, and nearby window samples are almost collinear. This is the same criterion
+    ``scipy.linalg.orth`` uses, so the principal angles match SciPy exactly.
+    """
     A = np.asarray(A, dtype=float)
-    B = np.asarray(B, dtype=float)
-    Qa, Ra = np.linalg.qr(A)
-    Qb, Rb = np.linalg.qr(B)
-    ka = int((np.abs(np.diag(Ra)) > np.abs(np.diag(Ra)).max() * rtol).sum()) if Ra.size else 0
-    kb = int((np.abs(np.diag(Rb)) > np.abs(np.diag(Rb)).max() * rtol).sum()) if Rb.size else 0
-    if ka == 0 or kb == 0:
+    U, s, _ = np.linalg.svd(A, full_matrices=False)
+    if s.size == 0:
+        return U[:, :0]
+    tol = (rtol if rtol is not None else max(A.shape) * np.finfo(float).eps) * s[0]
+    return U[:, s > tol]
+
+
+def principal_angles(A: np.ndarray, B: np.ndarray, rtol: float | None = None) -> np.ndarray:
+    """Principal angles (radians, ascending) between ``range(A)`` and ``range(B)``.
+
+    Returns ``min(rank(A), rank(B))`` angles; if either subspace is numerically trivial the
+    result is a single right angle (maximally distinguishable, which is the conservative
+    reading for an unobservable dictionary).
+    """
+    Qa = orthonormal_basis(A, rtol)
+    Qb = orthonormal_basis(B, rtol)
+    if Qa.shape[1] == 0 or Qb.shape[1] == 0:
         return np.array([np.pi / 2])
-    s = np.linalg.svd(Qa[:, :ka].T @ Qb[:, :kb], compute_uv=False)
+    s = np.linalg.svd(Qa.T @ Qb, compute_uv=False)
     return np.arccos(np.clip(s, -1.0, 1.0))
 
 

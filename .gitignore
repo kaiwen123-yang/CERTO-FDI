@@ -13,14 +13,25 @@ htmlcov/
 .ruff_cache/
 
 # Results and data must live on the external storage root, never in git
-results/
-runs/
-data/
-audit/
+/results/
+/runs/
+/data/
+/audit/
+/checkpoints/
 *.npz
 *.parquet
 *.pkl
 *.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+
+# Stage 2A artefacts (all persistent outputs live under /mnt/g/CERTO-FDI)
+/figures/
+*.csv.gz
+*.npy
+docs_pointer/_port_rows.json
 
 # Archives
 *.zip

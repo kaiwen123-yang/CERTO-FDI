@@ -32,16 +32,26 @@ from certo_fdi.stage2br.decision_stage2br import integrity_state
 
 UTC = "%Y-%m-%dT%H:%M:%SZ"
 
-# files that must exist for the score-level audit (master prompt §6.2)
+# files that must exist for the score-level audit (master prompt §6.2). The three
+# ``scores_seed*.npz`` and three ``controls_seed*.npz`` are the primary evidence: they carry the
+# per-window, per-link score vectors, and ``run_stage2a_metrics.py`` / ``run_stage2b_loadpath.py``
+# read exactly these files to produce the numbers the reproduction gate compares.
 REQUIRED_EVIDENCE = (
+    ("stage2a_run_root", "p5_ablations/scores_seed260815.npz", "Stage 2A per-window score arrays, seed 260815"),
+    ("stage2a_run_root", "p5_ablations/scores_seed260816.npz", "Stage 2A per-window score arrays, seed 260816"),
+    ("stage2a_run_root", "p5_ablations/scores_seed260817.npz", "Stage 2A per-window score arrays, seed 260817"),
     ("stage2a_run_root", "results/stage2a_localization_metrics.csv", "Stage 2A per-seed localizer metrics"),
-    ("stage2a_run_root", "results/stage2a_localization_confusion.json", "Stage 2A per-seed confusion matrices"),
-    ("stage2a_run_root", "results/stage2a_dictionary_spectrum.csv", "Stage 2A per-link dictionary spectra"),
+    ("stage2a_run_root", "p6_metrics/stage2a_link_confusion.json", "Stage 2A per-seed confusion matrices"),
+    ("stage2a_run_root", "results/stage2a_pathway_dictionary_audit.csv", "Stage 2A per-link dictionary spectra"),
+    ("stage2b_run_root", "p1_loadpath/controls_seed260815.npz", "Stage 2B per-window control stats, seed 260815"),
+    ("stage2b_run_root", "p1_loadpath/controls_seed260816.npz", "Stage 2B per-window control stats, seed 260816"),
+    ("stage2b_run_root", "p1_loadpath/controls_seed260817.npz", "Stage 2B per-window control stats, seed 260817"),
     ("stage2b_run_root", "results/stage2b_loadpath_controls.csv", "Stage 2B per-seed load-path control metrics"),
     ("stage2b_run_root", "results/stage2b_contact_reproduction_gate.json", "Stage 2B contact reproduction gate"),
     ("stage2b_run_root", "results/stage2b_rank_audit.csv", "Stage 2B per-link realised ranks"),
     ("stage2b_run_root", "results/stage2b_localization_metrics.csv", "Stage 2B localization metrics"),
     ("stage2b_run_root", "results/stage2b_decision_evidence.json", "Stage 2B frozen decision evidence"),
+    ("stage2b_run_root", "results/stage2b_input_freeze.json", "Stage 2B Phase 0 input freeze"),
 )
 
 
@@ -135,6 +145,30 @@ def bounded_search_locations(persistent: Path) -> list[Path]:
     return [p for p in out if p.is_dir()]
 
 
+def dataset_content_manifest(paths: dict) -> tuple[Path, str, str]:
+    """Recompute the 590-episode content manifest independently (master prompt §4.4).
+
+    Byte-identical construction to ``run_stage2b_freeze``: content-hash every episode file listed
+    in ``episode_index.csv``, then hash the sorted ``episode_id,sha256`` lines. Recomputed here
+    rather than read from the frozen run's own record, because a run vouching for itself is not a
+    verification.
+    """
+    root = Path(os.path.expanduser(paths["data_root"])) / "pilot_seed260815"
+    index = root / "episode_index.csv"
+    if not index.is_file():
+        return root, "", "episode_index.csv not found"
+    with index.open(newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    per_ep = []
+    for r in rows:
+        p = Path(r["path"])
+        per_ep.append((r["episode_id"], sha256_file(p) if p.exists() else "MISSING"))
+    joint = hashlib.sha256(
+        "\n".join(f"{eid},{sha}" for eid, sha in sorted(per_ep)).encode()).hexdigest()
+    n_missing = sum(1 for _, s in per_ep if s == "MISSING")
+    return root, joint, f"{len(per_ep)} episodes content-hashed, {n_missing} missing"
+
+
 def probe_frozen_inputs(cfg: dict) -> dict:
     """Every frozen input the audit needs: present or absent, hashed when present."""
     paths = cfg["paths"]
@@ -164,10 +198,11 @@ def probe_frozen_inputs(cfg: dict) -> dict:
                    "expected_sha256": fi["stage2b_full_zip_sha256"],
                    "observed_sha256": sha256_file(Path(found)) if found else "",
                    "note": "Stage 2B FULL review package"})
-    checks.append({"item": "dataset_content_manifest", "path": str(Path(paths["data_root"])),
-                   "present": Path(os.path.expanduser(paths["data_root"])).is_dir(), "kind": "manifest",
-                   "expected_sha256": fi["dataset_manifest_sha256"], "observed_sha256": "",
-                   "note": "590 frozen episodes"})
+    ds_root, ds_obs, ds_note = dataset_content_manifest(paths)
+    checks.append({"item": "dataset_content_manifest", "path": str(ds_root),
+                   "present": bool(ds_obs), "kind": "manifest",
+                   "expected_sha256": fi["dataset_manifest_sha256"], "observed_sha256": ds_obs,
+                   "note": ds_note})
 
     for check in checks:
         exp, obs = check["expected_sha256"], check["observed_sha256"]

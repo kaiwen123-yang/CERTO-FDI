@@ -1,0 +1,206 @@
+# CERTO-FDI Stage 2B-F: contact-localizer estimator harmonization and finalization.
+#
+# Derived from the frozen kickoff template 10_STAGE2BF_CONFIG.yaml
+# (kickoff zip sha256 c4e89673f76027960a9d4f3de20245c7a955ca4a75fca43a4be0eeb0ead3b580).
+# Every value under `frozen_inputs`, `estimators`, `reproduction` and `integrity_precedence` is
+# copied verbatim. Committed BEFORE any Stage 2B-F score exists.
+#
+# This stage is NOT new research. It separates two estimators Stage 2B conflated, reproduces both
+# pipelines like-for-like, measures whether Stage 2B's mechanism conclusions depend on which
+# estimator is used, and -- only if the integrity gate passes -- re-runs the ORIGINAL frozen
+# Stage 2B decision function with every scientific metric and threshold unchanged.
+project: CERTO-FDI
+stage: stage2b_f_estimator_harmonization
+profile: no_training_no_regeneration
+method_codename: contact-localizer estimator harmonization
+seed_list: [260815, 260816, 260817]
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: stage/stage2b-contact-loadpath-sequential-calibration
+  expected_base_head: 7b8ecd8f2bef1acbe41789e9676a23941a465353
+  stage_branch: stage/stage2b-f-estimator-harmonization
+  worktree: ~/research/CERTO-FDI-WORKTREES/stage2b-f-estimator-harmonization
+  keep_pr_draft: true
+  auto_merge: false
+  keep_all_prior_prs_draft: true
+
+paths:
+  persistent_root: /mnt/g/CERTO-FDI
+  run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_f_estimator_harmonization
+  stage2a_run_root: /mnt/g/CERTO-FDI/04_runs/stage2a_chain_jacobian_pathway/run_20260816T055853Z_37f81d7
+  stage2b_run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_contact_loadpath_sequential/run_20260816T093055Z_bcf2ad5
+  stage2br_run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_r_reproduction_gate/run_20260817T040732Z_7b8ecd8
+  review_exchange: /mnt/g/CERTO-FDI/06_review_exchange/to_review
+  data_root: /mnt/g/CERTO-FDI/03_data/stage1r
+  stage2b_config: configs/stage2b_contact_loadpath.yaml
+
+frozen_inputs:
+  stage2a_full_zip_sha256: 0ae32ba745917d68b2b819e779f2d3430be535ce3d3e018dcde8baa446b04acc
+  stage2b_full_zip_sha256: 20392940e08a9b6d06135629fa36ef6861aa0ce90ed4c7eef7aa3a9ccbcc1b3d
+  stage2br_full_zip_sha256: 0b2848a3989f740c2d9c42833ec486c81975a484352f3c9dabb8e95352a91ffe
+  stage2a_git_sha: bcf2ad5c978f58dc159636d64d0b5c81efb9e396
+  stage2b_scientific_git_sha: bee5f9b7e21b511c39936a047acaff39cfcfb395
+  stage2b_branch_head_at_stage2br: 7b8ecd8f2bef1acbe41789e9676a23941a465353
+  stage2br_decision_git_sha_prefix: d947edb
+  stage2br_package_git_sha: 9d8d472d962e40476d2841c11418646280f09ffa
+  dataset_content_manifest_sha256: 8c2ba38b9262080efb981c08cfb7b5d58d2bfd037228a313edcae57f062b4100
+  mjcf_sha256: e7090a5e2384b18a223ef532d98bf914f7f9a6b74dc8bc9f74c8291201074071
+  pilot_config_sha256: 24e57b244e83ddc647bccbd978f457947e9c5d632768a0d6e3780d8358ce1ea3
+  stage2bf_kickoff_zip_sha256: c4e89673f76027960a9d4f3de20245c7a955ca4a75fca43a4be0eeb0ead3b580
+
+# files whose bytes must not drift; hashed in Phase 0 and pinned by tests
+frozen_scientific_files:
+  - src/certo_fdi/pathways/geometry.py
+  - src/certo_fdi/stage2b/rank_aware_scores.py
+  - src/certo_fdi/stage2b/contact_calibration.py
+  - src/certo_fdi/stage2b/decision_stage2b.py
+  - configs/stage2b_contact_loadpath.yaml
+
+execution:
+  train_models: false
+  regenerate_data: false
+  modify_whitening: false
+  modify_dictionaries: false
+  modify_candidate_points: false
+  modify_rank_tolerance: false
+  modify_ridge_lambda: false
+  modify_stage2b_thresholds: false
+  max_cpu_threads: 8
+  require_clean_worktree: true
+  build_thin_full_review_packages: true
+
+estimators:
+  stage2a_ridge:
+    canonical_name: stage2a_ridge_residual_norm
+    source_file: src/certo_fdi/pathways/geometry.py
+    source_functions: [ridge_lambda, batched_projection]
+    lambda_relative: 1.0e-6
+    # NOTE: written `1.0e6` in the kickoff template, which YAML parses as a *string* -- an
+    # unsigned exponent is not float notation in YAML 1.1. Written `1.0e+6` here so the value is
+    # a float and the test comparing it against geometry.CONDITION_MAX actually compares numbers.
+    condition_max: 1.0e+6
+    lambda_absolute_floor: 1.0e-12
+    score_unit: residual_norm
+    higher_is_better: false
+  stage2b_svd:
+    canonical_name: truncated_svd_orthogonal_projection_rss
+    source_file: src/certo_fdi/stage2b/rank_aware_scores.py
+    source_function: project
+    rank_rtol: 1.0e-8
+    score_unit: residual_energy
+    higher_is_better: false
+
+legacy_name_mapping:
+  raw_projection_residual: truncated_svd_orthogonal_projection_rss
+  df_normalized_residual: df_normalized_truncated_svd_rss
+  rank_aware_glrt: rank_aware_glrt
+  bic_penalized_fit: bic_penalized_truncated_svd_fit
+  minimal_consistent_link: minimal_consistent_link
+
+#: the historical Stage 2A array name for the ridge score; legacy read-only
+legacy_stage2a_score_key: contact_residual
+
+stage2b_candidate_selection:
+  selection_partition: F4_CAL
+  candidates:
+    - truncated_svd_orthogonal_projection_rss
+    - df_normalized_truncated_svd_rss
+    - rank_aware_glrt
+    - bic_penalized_truncated_svd_fit
+    - minimal_consistent_link
+  ridge_is_audit_only: true
+  final_test_may_not_select: true
+
+loadpath_controls:
+  - random_within_support_rankmatched
+  - support_prefix_rankmatched
+  - fixed_reference_jacobian
+  - shuffled_time_jacobian
+  - time_aligned_jacobian
+
+#: controls whose dictionary is orthonormalised by construction. Ridge on an orthonormal basis has
+#: sigma_i = 1, so its shrinkage is 1/(1+1e-6) and the two estimators coincide to ~1e-6 there BY
+#: CONSTRUCTION. That is a property of how the control is built, not evidence about the estimators,
+#: and the mechanism report must say so rather than presenting ten independent cells.
+orthonormalised_controls:
+  - support_prefix_rankmatched
+  - random_within_support_rankmatched
+  - fixed_reference_jacobian
+raw_dictionary_controls:
+  - time_aligned_jacobian
+  - shuffled_time_jacobian
+
+reproduction:
+  score_abs_tolerance: 1.0e-12
+  score_rel_tolerance: 1.0e-10
+  require_candidate_exact: true
+  require_window_label_exact: true
+  require_episode_votes_exact: true
+  require_episode_label_exact: true
+  require_confusion_exact: true
+  require_cal_selection_exact: true
+
+statistics:
+  independent_unit: episode
+  bootstrap: episode_cluster
+  bootstrap_resamples: 2000
+  bootstrap_alpha: 0.05
+  window_iid_bootstrap_forbidden: true
+
+mechanism_contrasts:
+  delta_support: [support_prefix_rankmatched, random_within_support_rankmatched]
+  delta_shape: [fixed_reference_jacobian, support_prefix_rankmatched]
+  delta_trajectory: [time_aligned_jacobian, fixed_reference_jacobian]
+  delta_alignment: [time_aligned_jacobian, shuffled_time_jacobian]
+
+robustness_labels:
+  - ROBUST_BOTH_ESTIMATORS
+  - DIRECTIONALLY_CONSISTENT
+  - ESTIMATOR_SENSITIVE
+  - NOT_IDENTIFIABLE
+
+integrity_precedence:
+  - BLOCKED_INPUT_PROVENANCE
+  - BLOCKED_BASE_HEAD_MISMATCH
+  - BLOCKED_SCIENTIFIC_CODE_MISMATCH
+  - BLOCKED_DECISION_CODE_MISMATCH
+  - BLOCKED_MISSING_REFERENCE_SCORE_PRECISION
+  - BLOCKED_STAGE2A_RIDGE_REPRODUCTION
+  - BLOCKED_STAGE2B_SVD_REPRODUCTION
+  - BLOCKED_HISTORICAL_ARTIFACT_MUTATION
+  - PASS_ESTIMATOR_HARMONIZATION
+
+scientific_decision:
+  use_original_stage2b_decision_function: true
+  manual_override_forbidden: true
+  historical_stage2b_decision_remains: BLOCKED
+  vocabulary:
+    - GO_CONTACT_LOADPATH_MONITOR
+    - PIVOT_SUPPORT_ONLY_LOCALIZER
+    - PIVOT_LOADPATH_LOCALIZATION_ONLY
+    - PIVOT_SEQUENTIAL_DETECTION_ONLY
+    - PIVOT_CONTEXT_CALIBRATION_ONLY
+    - NO_GO_CONTACT_PRODUCT
+    - BLOCKED
+
+#: fields of the historical Stage 2B decision evidence that Stage 2B-F may change, and the ones it
+#: may not. Any unexplained change to a forbidden field is BLOCKED (rules 06 section 4).
+evidence_delta_policy:
+  allowed:
+    - integrity.baseline_reproduction_outside_tolerance
+    - reproduction_gate
+    - contact_reproduction
+    - evidence_integrity.selected_score
+    - evidence_integrity.audit_control_score
+    - schema_and_name_migration
+    - provenance_references
+  forbidden:
+    - detection
+    - sequential
+    - localization
+    - selective
+    - loadpath
+    - healthy_expansion
+    - thresholds
+    - decision_order

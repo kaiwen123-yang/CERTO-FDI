@@ -1,0 +1,134 @@
+# CERTO-FDI Stage 2B-R: numerical-tie-aware contact-localizer reproduction-gate resolution.
+#
+# Derived from the frozen kickoff template 08_STAGE2BR_CONFIG.yaml
+# (kickoff zip sha256 0923f1188c29373c77499667769bb36f19cc8367dae8d12d50941ff86a8fe8c8;
+#  template sha256 9a57aa3029072fc8d17716f713d60d70ce6ab3819dc8f8a01f768155a700fb33).
+#
+# Every value under `score_equivalence`, `historical_reproduction` and `frozen_inputs` is copied
+# verbatim from that template. This file is committed BEFORE any Stage 2B-R score is extracted
+# and must not be edited to rescue an outcome. Stage 2B-R changes no scientific metric, no
+# scientific threshold, and no part of the localizer: it only classifies whether the single
+# observed label difference is a numerically equivalent near tie or a real mismatch.
+project: CERTO-FDI
+stage: stage2b_r_reproduction_gate
+profile: score_level_integrity_audit
+method_codename: numerical-tie-aware reproduction-gate resolution
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: stage/stage2b-contact-loadpath-sequential-calibration
+  stage_branch: stage/stage2b-r-reproduction-gate-resolution
+  worktree: ~/research/CERTO-FDI-WORKTREES/stage2b-r-reproduction-gate-resolution
+  keep_all_prior_prs_draft: true
+  keep_pr_draft: true
+  auto_merge: false
+
+paths:
+  # canonical persistent root (master prompt §3.2). `storage_root_fallback` is used only when the
+  # canonical root is not mounted; the audit records which one was in effect and a run that used
+  # the fallback may never claim the frozen inputs were verified.
+  persistent_root: /mnt/g/CERTO-FDI
+  storage_root_fallback: ~/research/CERTO-FDI-RUNS-STAGING
+  run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_r_reproduction_gate
+  stage2a_run_root: /mnt/g/CERTO-FDI/04_runs/stage2a_chain_jacobian_pathway/run_20260816T055853Z_37f81d7
+  stage2b_run_root: /mnt/g/CERTO-FDI/04_runs/stage2b_contact_loadpath_sequential/run_20260816T093055Z_bcf2ad5
+  review_exchange: /mnt/g/CERTO-FDI/06_review_exchange/to_review
+  data_root: /mnt/g/CERTO-FDI/03_data/stage1r
+  stage2b_data_root: /mnt/g/CERTO-FDI/03_data/stage2b
+
+# ---------------------------------------------------------------- frozen inputs (§1.3)
+frozen_inputs:
+  stage2a_commit: bcf2ad5c978f58dc159636d64d0b5c81efb9e396
+  stage2b_scientific_commit: bee5f9b7e21b511c39936a047acaff39cfcfb395
+  stage2b_branch_head_at_kickoff: 7b8ecd8f2bef1acbe41789e9676a23941a465353
+  stage2b_full_zip_name: CERTO_FDI_stage2b_contact_loadpath_sequential_AUDIT_20260816T112827Z_bee5f9b_FULL.zip
+  stage2b_full_zip_sha256: 20392940e08a9b6d06135629fa36ef6861aa0ce90ed4c7eef7aa3a9ccbcc1b3d
+  stage2a_full_zip_sha256: 0ae32ba745917d68b2b819e779f2d3430be535ce3d3e018dcde8baa446b04acc
+  dataset_manifest_sha256: 8c2ba38b9262080efb981c08cfb7b5d58d2bfd037228a313edcae57f062b4100
+  stage2br_kickoff_zip_sha256: 0923f1188c29373c77499667769bb36f19cc8367dae8d12d50941ff86a8fe8c8
+  regenerate_data: false
+  retrain_model: false
+  # any mismatch => BLOCKED_INPUT_PROVENANCE (never a scientific NO-GO)
+
+# ---------------------------------------------------------------- what history says happened
+historical_reproduction:
+  seeds: [260815, 260816, 260817]
+  episodes_per_seed: 24
+  stage2a_top1_by_seed: [0.5416666666666666, 0.625, 0.5833333333333334]
+  stage2b_top1_by_seed: [0.5416666666666666, 0.625, 0.5416666666666666]
+  stage2a_top1_mean: 0.5833333333333334
+  expected_differing_predictions: 1
+  expected_differing_seed: 260817
+  expected_differing_truth_link: 1
+  historical_relative_deviation: 0.02380952
+  historical_tolerance_relative: 0.02
+  historical_decision: BLOCKED
+
+# ---------------------------------------------------------------- score-level equivalence (§03)
+score_equivalence:
+  raw_array_absolute_scale: 1.0e-12
+  raw_array_relative_tolerance: 1.0e-10
+  score_absolute_scale: 1.0e-12
+  score_relative_tolerance: 1.0e-10
+  roundoff_factor: 1000
+  tie_multiplier: 2.0
+  independent_backends:
+    - numpy_svd
+    - scipy_svd_gesdd
+    - scipy_svd_gesvd
+    - scipy_lstsq_gelsd
+    - scipy_lstsq_gelsy
+  blas_threads: [1, 8]
+  candidate_orderings: [identity, reverse, fixed_random_260816]
+  memory_orders: [C, F]
+  process_repeats: 3
+  rank_tolerance_scale_diagnostic: [0.5, 1.0, 2.0]
+
+# ---------------------------------------------------------------- the frozen localizer, restated
+# These are NOT new choices. They restate the frozen Stage 2A/2B implementation so the canonical
+# reference module can be checked against it. Changing any of them is out of scope for Stage 2B-R.
+frozen_localizer:
+  rank_relative_tolerance: 1.0e-8          # certo_fdi.stage2b.rank_aware_scores.RANK_RTOL
+  score: raw_projection_residual           # the frozen Stage 2A audit-control score
+  score_direction: argmin                  # lower RSS means "this link explains the residual"
+  candidate_point_reduction: argmin_rss    # best_hypothesis_stats: min RSS over candidate points
+  window_to_episode: majority_vote         # _episode_vote: np.bincount(...).argmax()
+  vote_bins: 7                             # minlength=7 (links 0..6)
+  window_tie_break: lowest_link_index      # np.argmin / np.argmax return the first extremum
+  episode_tie_break: lowest_link_index
+  episode_metric: mean(pred == truth)
+  window_filter: label == 1 and family == F4_contact
+
+# ---------------------------------------------------------------- integrity terminal states (§04A)
+integrity_decision_precedence:
+  - BLOCKED_INPUT_PROVENANCE
+  - BLOCKED_SCIENTIFIC_HEAD_MISMATCH
+  - BLOCKED_MISSING_REFERENCE_EVIDENCE
+  - BLOCKED_UNRESOLVABLE_SCORE_HISTORY
+  - FAIL_REPRODUCTION_IMPLEMENTATION_MISMATCH
+  - PASS_NUMERICALLY_EQUIVALENT_TIE_FLIP
+  - PASS_EXACT_REPRODUCTION
+
+# a modifier, never a terminal state: reported alongside FAIL when a label change is caused by a
+# singular value crossing the rank threshold rather than by a floating-point tie (§8.2)
+rank_instability_label: RANK_THRESHOLD_UNSTABLE
+
+# file classes for the §4.3 scientific-head audit
+git_diff_audit_classes:
+  - SCIENTIFIC_COMPUTATION
+  - CONFIG_OR_THRESHOLDS
+  - DATA_OR_SPLITS
+  - TEST_ONLY
+  - PACKAGING_ONLY
+  - DOCS_ONLY
+blocking_diff_classes:
+  - SCIENTIFIC_COMPUTATION
+  - CONFIG_OR_THRESHOLDS
+  - DATA_OR_SPLITS
+
+execution:
+  max_cpu_threads: 8
+  no_training: true
+  no_data_generation: true
+  require_clean_worktree: true
+  build_review_packages: true

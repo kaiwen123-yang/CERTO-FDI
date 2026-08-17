@@ -140,11 +140,18 @@ def evidence_delta(historical: dict, new: dict, allowed_prefixes: tuple[str, ...
     """
     changes: list[dict] = []
 
+    def _same(a, b) -> bool:
+        # NaN != NaN in IEEE 754, but a metric that was NaN before and is NaN now has not moved.
+        # Without this, every absent-by-construction statistic reads as a forbidden mutation.
+        if isinstance(a, float) and isinstance(b, float) and a != a and b != b:
+            return True
+        return a == b
+
     def walk(a, b, path=""):
         if isinstance(a, dict) and isinstance(b, dict):
             for k in sorted(set(a) | set(b)):
                 walk(a.get(k, "<absent>"), b.get(k, "<absent>"), f"{path}.{k}" if path else k)
-        elif a != b:
+        elif not _same(a, b):
             changes.append({"path": path, "historical": a, "stage2bf": b})
 
     walk(historical, new)

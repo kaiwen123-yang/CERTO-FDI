@@ -40,6 +40,7 @@ PROVENANCE_HEADERS: tuple[str, ...] = (
     "Content-Length",
     "Content-Type",
     "Content-Disposition",
+    "Content-Encoding",
     "Location",
     "Server",
     "Date",
@@ -112,6 +113,15 @@ ENDPOINTS: tuple[Endpoint, ...] = (
     Endpoint("road", "blob_control", "https://gitlab.com/api/v4/projects/AlessioMascolini%2Froaddataset/repository/files/RoADDataset%2Fdata%2Fcontrol.pkl?ref=main", "subset size"),
     Endpoint("road", "blob_weight", "https://gitlab.com/api/v4/projects/AlessioMascolini%2Froaddataset/repository/files/RoADDataset%2Fdata%2Fweight.pkl?ref=main", "subset size"),
     Endpoint("road", "blob_velocity", "https://gitlab.com/api/v4/projects/AlessioMascolini%2Froaddataset/repository/files/RoADDataset%2Fdata%2Fvelocity.pkl?ref=main", "subset size"),
+    # --- round 3: close the supplementary-dataset gaps ---
+    Endpoint("aursad", "code_commits", "https://api.github.com/repos/CptPirx/AURSAD/commits?per_page=5", "loader head commit to freeze"),
+    Endpoint("aursad", "code_license", "https://api.github.com/repos/CptPirx/AURSAD/license", "loader code license"),
+    Endpoint("ur5e_graabaek", "openalex_paper", "https://api.openalex.org/works?filter=title.search:experimental%20comparison%20anomaly%20detection%20collaborative%20robot%20manipulators&per-page=5", "publication status of the associated paper"),
+    Endpoint("ur5e_graabaek", "crossref_paper", "https://api.crossref.org/works?query.bibliographic=experimental+comparison+of+anomaly+detection+methods+for+collaborative+robot+manipulators&rows=5", "formal version, if one exists"),
+    Endpoint("ur5e_graabaek", "zenodo_concept", "https://zenodo.org/api/records/5849299", "concept record: all versions"),
+    Endpoint("pyscrew", "zenodo_16031381", "https://zenodo.org/api/records/16031381", "v1.2.3 record the scenario archive was fetched from"),
+    Endpoint("sarcos", "train_headers_identity", "http://gaussianprocess.org/gpml/data/sarcos_inv.mat", "uncompressed Content-Length and strong ETag", method="HEAD"),
+    Endpoint("sarcos", "test_headers_identity", "http://gaussianprocess.org/gpml/data/sarcos_inv_test.mat", "uncompressed Content-Length and strong ETag", method="HEAD"),
 )
 
 
@@ -206,6 +216,11 @@ class GitHubOnlyAuth(requests.auth.AuthBase):
 def build_session() -> requests.Session:
     session = requests.Session()
     session.headers["User-Agent"] = USER_AGENT
+    # Identity encoding: a HEAD that accepts gzip reports the *compressed*
+    # Content-Length, which is not the size of the file a later download stores.
+    # gaussianprocess.org differs by 60% between the two, and the gzip answer also
+    # downgrades the ETag to a weak one. See dataset_known_issues.md.
+    session.headers["Accept-Encoding"] = "identity"
     token = os.environ.get("GITHUB_TOKEN")
     if token:
         # Only raises the GitHub rate limit; no endpoint here needs authorisation.

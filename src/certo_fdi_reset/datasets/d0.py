@@ -367,7 +367,7 @@ def _aursad() -> DatasetD0:
             "4 damaged thread 3. Labels are constant within a sample, so the episode label is unambiguous."
         ),
         native_code_url="https://github.com/CptPirx/AURSAD",
-        native_code_commit="TO_BE_FROZEN",
+        native_code_commit="c4a2b683b2f459757f9bd50fc518f7039829ab7a",
         native_code_license="MIT",
     )
     card.grade()
@@ -438,8 +438,11 @@ def _ur5e() -> DatasetD0:
     card = FeasibilityCard(
         dataset_id="ur5e_graabaek",
         official_url="https://zenodo.org/records/5849300",
-        paper_doi="10.5281/zenodo.5849300",
-        version="record 5849300 (concept 10.5281/zenodo.5849299)",
+        # The dataset DOI and the paper DOI are different objects. The dataset README
+        # (written 2022) calls the paper "under review"; it was published the next
+        # year, so that note is stale and the paper is citable.
+        paper_doi="10.1109/ACCESS.2023.3289068",
+        version="record 5849300 (concept 10.5281/zenodo.5849299), dataset DOI 10.5281/zenodo.5849300",
         publication_date="2022-01-24",
         license_id="CC-BY-NC-4.0",
         license_url="https://creativecommons.org/licenses/by-nc/4.0/",
@@ -447,45 +450,160 @@ def _ur5e() -> DatasetD0:
         redistribution_allowed=False,
         noncommercial_only=True,
         access_route="Zenodo REST API",
-        robot="Universal Robots UR5e",
-        task="collaborative manipulation, normal vs anomalous runs",
-        sampling_rate_hz=None,
-        episode_unit="run",
-        channel_count=None,
-        documented_signals=[],
-        has_joint_position=None,
-        has_joint_velocity=None,
-        has_joint_torque=None,
-        has_link_orientation=None,
-        has_urdf_or_inertia=None,
-        official_split="UNKNOWN",
-        label_semantics="normal vs anomalous runs; detail UNVERIFIED",
-        native_code_url="loader ships with the dataset",
-        native_code_license="UNKNOWN",
+        robot=(
+            "Universal Robots UR5e (UR software 5.9.1) with a Robotiq 2F-85 gripper on the "
+            "TCP, on a 1.2 x 0.8 m Siegmund table with an Intel RealSense D435i overhead; a "
+            "digital button on digital input pin 5 marks anomaly onset"
+        ),
+        task=(
+            "stochastic pick-and-place between three marked squares with a metal cylinder "
+            "(2.0 kg default, 4 masses available); the branch via square 2 fires 16% of the "
+            "time and the direct square 1 -> 3 path 84%, and square 3's place target is "
+            "randomised in a 20 x 20 cm box to imitate a camera pose estimate"
+        ),
+        sampling_rate_hz=100.0,
+        episode_unit="program run (a full application execution); replications per condition",
+        channel_count=121,
+        documented_signals=[
+            "timestamp, actual_execution_time",
+            "target_q/qd/qdd (6 each) — commanded joint position, velocity, ACCELERATION",
+            "target_current, target_moment (6 each) — COMMANDED joint current and joint torque",
+            "target_TCP_pose, target_TCP_speed (6 each)",
+            "actual_q, actual_qd (6 each) — measured joint position and velocity",
+            "actual_current (6) — measured motor current; there is NO measured joint torque channel",
+            "joint_temperatures (6)",
+            "actual_TCP_pose, actual_TCP_speed, actual_TCP_force (6 each) — measured TCP wrench",
+            "actual_tool_accelerometer (3)",
+            "actual_momentum (1) — the controller's own generalised-momentum scalar",
+            "actual_main_voltage, actual_robot_voltage, actual_robot_current, actual_joint_voltage (6)",
+            "joint_control_output (6)",
+            "robot_mode, joint_mode (6), safety_mode, speed_scaling, target_speed_fraction, runtime_state, script_control_line",
+            "actual_digital_input_bits, actual_digital_output_bits",
+            "output_double_register_20 = loop index, output_double_register_21 = code line number",
+        ],
+        has_joint_position=True,
+        has_joint_velocity=True,
+        # No measured joint torque exists. target_moment is the COMMANDED torque and
+        # actual_current is a motor-current proxy; conflating either with a measured
+        # joint torque would manufacture an observation the dataset does not contain.
+        has_joint_torque=False,
+        has_commanded_torque=True,
+        # actual_TCP_pose carries end-effector orientation as a rotation vector, but
+        # there is no per-link orientation anywhere -- unlike RoAD's per-joint IMUs.
+        has_link_orientation=False,
+        has_urdf_or_inertia=False,
+        official_split=(
+            "A partial split IS published, as data/stochastic_PnP/anomaly_dict.pkl: a dict "
+            "of the 8 anomaly conditions, each listing exactly 10 run names under a single "
+            "'test' key. There is NO 'validation' key and no healthy split, so the healthy "
+            "train/validation division is the user's to make. Verified file inventory: "
+            "normal 508 runs, normal_branch 102, normal_extra_wait 35 (645 healthy runs, "
+            "no label files), plus 10 runs x 8 anomaly conditions each with a paired "
+            "per-sample _label.npy, all under <condition>/test/ -- 725 CSVs total."
+        ),
+        label_semantics=(
+            "Per-sample labels in a float64 .npy aligned 1:1 with the CSV data rows "
+            "(verified: 2279 rows, 2279 labels). Values are 0 or 32 in stochastic_PnP and "
+            "0 or 1 in hyp -- 32 is a flat 'anomalous' marker, NOT a type code: every one "
+            "of the 8 conditions uses the same 32, so the anomaly type is carried by the "
+            "directory name only. Onset is marked live by the operator's digital-input "
+            "button and then CORRECTED after collection against the button state and "
+            "status registers, so the labels are curated rather than automatic. Each "
+            "anomaly has its own written start/end rule."
+        ),
+        native_code_url="DataLoadingExample.py, shipped inside data.zip (requires ur-rtde)",
+        native_code_license="UNKNOWN — no license file accompanies the loader script",
     )
-    card.physics_grade = PhysicsGrade.TO_BE_AUDITED
+    card.grade()
     return DatasetD0(
         card=card,
         role="SUPPLEMENTARY — independent robot anomaly replication",
-        status="AVAILABLE_NOT_YET_AUDITED",
-        canonical_paper="Graabæk et al. — An experimental comparison of anomaly detection methods for collaborative robot manipulators",
+        status="READY",
+        canonical_paper=(
+            "Graabæk, Ancker, Fugl & Christensen — An Experimental Comparison of Anomaly "
+            "Detection Methods for Collaborative Robot Manipulators, IEEE Access 11 (2023), "
+            "doi:10.1109/ACCESS.2023.3289068; preprint TechRxiv 10.36227/techrxiv.19006643 "
+            "(v1/v2 2022, v3 2023)"
+        ),
         online_first_year="2022",
-        issue_year="2022",
-        canonical_citation_year="2022",
+        issue_year="2023",
+        canonical_citation_year="2023",
         data_files=[
-            {"key": "data.zip", "size_bytes": 2_584_585_052, "md5": "7b69a1794ee1bca152fbf32ec627747e", "planned": False},
-            {"key": "ExperimentalDescription.pdf", "size_bytes": 1_148_708, "md5": "c24f5f6d09e9aa89f3aa3f4300a76932", "planned": True},
-            {"key": "README.md", "size_bytes": 2_017, "md5": "f519ec2525a9a510f21fef24db6311c3", "planned": True},
+            {"key": "data.zip", "size_bytes": 2_584_585_052, "md5": "7b69a1794ee1bca152fbf32ec627747e", "planned": True, "downloaded": True, "md5_verified": True, "verified_contents": "1685 entries, 725 CSVs at 121 columns, 80 label .npy, extracted size 7,326,813,579 B"},
+            {"key": "ExperimentalDescription.pdf", "size_bytes": 1_148_708, "md5": "c24f5f6d09e9aa89f3aa3f4300a76932", "planned": True, "downloaded": True, "md5_verified": True},
+            {"key": "README.md", "size_bytes": 2_017, "md5": "f519ec2525a9a510f21fef24db6311c3", "planned": True, "downloaded": True, "md5_verified": True},
         ],
         license_notes="Zenodo license id cc-by-nc-4.0: non-commercial only, and redistribution is not exercised.",
         redistribution_note="NonCommercial: excluded from every review package.",
-        split_definition="TO_BE_DETERMINED",
-        normalization="TO_BE_DETERMINED",
-        native_baseline="the paper's own method comparison",
-        open_verifications=["Full schema, sampling rate, and split are unaudited; only record-level metadata has been verified."],
-        allowed_claims=[],
-        forbidden_claims=["commercial use", "any schema claim before the description PDF and loader are read"],
-        evidence=["ur5e_graabaek/zenodo_5849300.json"],
+        split_definition=(
+            "None published. A split must be built per program run, never per sample: "
+            "consecutive samples inside one run are 10 ms apart and an anomaly spans a "
+            "contiguous stretch of them."
+        ),
+        normalization="none published",
+        native_baseline="the paper's own comparison of anomaly detection methods (IEEE Access 2023)",
+        leakage_risks=[
+            "the archive holds TWO datasets -- stochastic_pnp (the full application) and "
+            "hyp (the paper's hypothesis set). They are different experiments and must not "
+            "be pooled.",
+            "600 normal replications vs 10 per anomaly: a per-sample split would let the "
+            "same program run appear on both sides.",
+            "status register 21 encodes the program node, i.e. exactly which scripted "
+            "motion is running. It is a legitimate context variable but a model given it "
+            "directly can read the wait-time anomaly off the schedule instead of the "
+            "dynamics.",
+        ],
+        open_verifications=[
+            "RESOLVED: the logged channel set is now read directly out of the archive. "
+            "logging/record_configuration.xml is the RTDE recipe and the CSV header "
+            "confirms it -- 121 space-delimited columns. The sampling rate is verified "
+            "numerically too: median dt = 0.010000 s over normal_r0, i.e. exactly 100 Hz.",
+            "RESOLVED: 'force_stop' in the archive IS the description PDF's 'Raised object' "
+            "anomaly -- the PDF describes a 22 mm or 48 mm slab at a pick/place location "
+            "and the in-archive README describes a 22 mm or 48 mm plate making the robot "
+            "pick at the wrong height. Two independent confirmations: the mechanism text, "
+            "and the contamination rate (14.2% measured over the 10 released runs vs 14.04% "
+            "in the PDF's table). The released tree has no 'raised_object' directory; it is "
+            "a rename, not a missing condition.",
+            "DISCREPANCY, unresolved: the description PDF's table reports 600 normal "
+            "replications, while the archive holds 645 healthy runs (508 + 102 + 35). "
+            "Per-anomaly contamination agrees closely with the PDF everywhere (outside_box "
+            "32.1 vs 32.08, change_weight 34.4 vs 33.32, tcp_wrench 15.5 vs 15.00, "
+            "scale_speed 24.2 vs 22.71, long_wait 11.3 vs 11.67, push 9.4 vs 8.64, "
+            "drop_object 25.2 vs 22.92), so the release is consistent with the paper on "
+            "the anomalies and differs only in the healthy count.",
+            "No URDF and no inertial parameters are distributed. A UR5e model is publicly "
+            "available elsewhere, but 09_DATASET_FEASIBILITY 6.4 forbids supplying a "
+            "missing physical quantity from the robot MODEL, so this dataset cannot be "
+            "graded P3 and rnea_gmo_public stays NOT_APPLICABLE here.",
+            "The three healthy variants (normal, normal_branch, normal_extra_wait) are "
+            "different program behaviours, not replicates; whether they may be pooled as "
+            "one healthy distribution is a modelling decision, not a dataset fact.",
+        ],
+        allowed_claims=[
+            "an independent second collaborative-manipulator anomaly benchmark with a "
+            "documented, human-marked and then hand-corrected label protocol",
+            "the richest P2 signal set in this registry: it is the only dataset here that "
+            "publishes commanded joint torque (target_moment), a measured TCP wrench "
+            "(actual_TCP_force) and the controller's own generalised momentum "
+            "(actual_momentum) alongside q and qd -- i.e. the ingredients of a "
+            "momentum-observer-style residual WITHOUT needing an inertial model",
+        ],
+        forbidden_claims=[
+            "commercial use",
+            "any per-channel schema claim before the channel list is read out of data.zip",
+            "treating the 8 conditions as one homogeneous anomaly class -- long wait and "
+            "outside box are scheduling/planning faults, while push and TCP wrench are "
+            "contact events, and only the latter are comparable to a collision benchmark",
+        ],
+        evidence=[
+            "ur5e_graabaek/zenodo_5849300.json",
+            "ur5e_graabaek/zenodo_concept.json",
+            "ur5e_graabaek/crossref_paper.json",
+            "03_data/public/ur5e_graabaek/README.md (md5-verified)",
+            "03_data/public/ur5e_graabaek/ExperimentalDescription.pdf (md5-verified; 9 pages read)",
+            "03_data/public/ur5e_graabaek/data.zip (md5 7b69a1794ee1bca152fbf32ec627747e verified against the Zenodo record; unzip -t clean; RTDE recipe, CSV header, label .npy, anomaly_dict.pkl and timestamps all read directly)",
+        ],
     )
 
 
@@ -494,27 +612,46 @@ def _pyscrew() -> DatasetD0:
         dataset_id="pyscrew",
         official_url="https://github.com/nikolaiwest/pyscrew",
         paper_doi="10.48550/arXiv.2505.11925",
-        version="v1.2.3 (record 10.5281/zenodo.16031381; concept 10.5281/zenodo.14729547)",
+        version="v1.2.3 = Zenodo record 16031381 (concept 10.5281/zenodo.14729547), published 2025-07-17; s03 archive md5 a21fea4da2bfe0138d582584ddfe27f5 verified locally against the record",
         publication_date="2025-07-17",
         license_id="CC-BY-4.0",
         license_url="https://creativecommons.org/licenses/by/4.0/",
         license_verified=True,
         redistribution_allowed=True,
         noncommercial_only=False,
-        access_route="pyscrew package downloads scenario archives from Zenodo",
-        robot="industrial screwdriving station (no manipulator joint instrumentation)",
-        task="screw driving across six experimental scenarios",
-        sampling_rate_hz=None,
-        episode_unit="screw driving operation",
-        channel_count=None,
-        documented_signals=["torque values", "angle values", "time values", "gradient values", "step"],
+        access_route="Zenodo record 16031381 (v1.2.3); the pyscrew package wraps the same archives",
+        robot="automatic screwdriving station (Deprag CS351 controller, Delta PT 40x12 screws into thermoplastic housings) -- NO manipulator and no joint instrumentation",
+        task="screw driving across six experimental scenarios; s03 audited in full",
+        sampling_rate_hz=833.33,
+        episode_unit="screw driving operation = 4 tightening steps (Finding, Thread forming, Pre-tightening, Final tightening at 1.4 Nm), each a variable-length series",
+        channel_count=6,
+        documented_signals=[
+            "angle values (deg)",
+            "torque values (Nm)",
+            "gradient values",
+            "torqueRed values",
+            "angleRed values",
+            "time values (s, restarting at 0 within each of the 4 steps)",
+        ],
         has_joint_position=False,
         has_joint_velocity=False,
         has_joint_torque=False,
         has_link_orientation=False,
         has_urdf_or_inertia=False,
-        official_split="per-scenario class labels; no anomaly-detection split published",
-        label_semantics="class_values per scenario (1 to 44 classes depending on scenario)",
+        official_split=(
+            "No train/test split is published. s03 verified from the archive: 1700 "
+            "operations over 26 classes and 869 unique workpieces."
+        ),
+        label_semantics=(
+            "Three parallel label columns in labels.csv, verified on s03: "
+            "workpiece_result is the station's own OK/NOK verdict (1067 OK / 633 NOK); "
+            "class_value is the 26-way experimental condition; scenario_condition is "
+            "normal/faulty by DESIGN INTENT (500 normal / 1200 faulty) and does NOT "
+            "agree with workpiece_result -- an intentionally faulty setup often still "
+            "produces an OK screw (e.g. 201_adhesive-thread is 43 OK / 7 NOK). Which "
+            "column is 'the' anomaly label is therefore a modelling choice that must be "
+            "declared, not an intrinsic property of the data."
+        ),
         native_code_url="https://github.com/nikolaiwest/pyscrew",
         native_code_license="CC-BY-4.0",
     )
@@ -528,25 +665,63 @@ def _pyscrew() -> DatasetD0:
         issue_year="2025",
         canonical_citation_year="2025",
         data_files=[
-            {"key": "s01_variations-in-thread-degradation.zip", "size_bytes": 29_004_994},
-            {"key": "s02_variations-in-surface-friction.zip", "size_bytes": 83_946_972},
-            {"key": "s03_variations-in-assembly-conditions-1.zip", "size_bytes": 12_588_378},
-            {"key": "s04_variations-in-assembly-conditions-2.zip", "size_bytes": 61_107_763},
-            {"key": "s05_variations-in-upper-workpiece-fabrication.zip", "size_bytes": 26_702_174},
-            {"key": "s06_variations-in-lower-workpiece-fabrication.zip", "size_bytes": 83_080_694},
+            {"key": "s01_variations-in-thread-degradation.zip", "size_bytes": 29_004_994, "md5": "d125657a4b6d7ea0e4a985a4727ebb78", "planned": False},
+            {"key": "s02_variations-in-surface-friction.zip", "size_bytes": 83_946_972, "md5": "0bc948a6e8c6e83f72dbe36973131558", "planned": False},
+            {
+                "key": "s03_variations-in-assembly-conditions-1.zip",
+                "size_bytes": 12_588_378,
+                "md5": "a21fea4da2bfe0138d582584ddfe27f5",
+                "planned": True,
+                "downloaded": True,
+                "md5_verified": True,
+                "verified_contents": "1700 json/ operations + labels.csv (1700 rows) + README.md; unzip -t clean",
+            },
+            {"key": "s04_variations-in-assembly-conditions-2.zip", "size_bytes": 61_107_763, "md5": "7f580205863743c2b083cbeebfa61117", "planned": False},
+            {"key": "s05_variations-in-upper-workpiece-fabrication.zip", "size_bytes": 26_702_174, "md5": "eab215fe08d38c30ca0366a0665c4bbd", "planned": False},
+            {"key": "s06_variations-in-lower-workpiece-fabrication.zip", "size_bytes": 83_080_694, "md5": "ddb668b1e4db64aeb910d07f3ee4e010", "planned": False},
         ],
         license_notes="Zenodo record license cc-by-4.0; the GitHub repository itself is licensed CC-BY-4.0.",
         redistribution_note="Attribution required; not redistributed here.",
-        split_definition="TO_BE_DETERMINED per scenario",
-        normalization="package offers padding/truncation to a target length and duplicate/missing handling",
-        native_baseline="none frozen",
-        open_verifications=["Per-scenario schema and sampling semantics unread; only the record inventory is verified."],
+        split_definition=(
+            "MUST be grouped by workpiece_id, not by operation. Verified on s03: 1700 "
+            "operations share only 869 workpieces, 785 workpieces appear more than once "
+            "and one carries 11 operations, so an operation-level split puts the same "
+            "physical workpiece on both sides."
+        ),
+        normalization="package offers padding/truncation to a target length and duplicate/missing handling; the archive itself is raw (README: no preprocessing)",
+        native_baseline="none frozen (the s03 README states no paper is planned for s03; cite the Zenodo record)",
+        open_verifications=[
+            "Only s03 is audited. s01, s02, s04-s06 are inventoried by md5 and size but "
+            "their schemas are unread, and s03's own README shows the scenarios are not "
+            "independent -- see the leakage note.",
+            "Missing values are 3.65% per the s03 README; the mechanism and per-channel "
+            "distribution are not audited.",
+        ],
+        leakage_risks=[
+            "workpiece reuse WITHIN a scenario: 785 of 869 s03 workpieces carry more than "
+            "one operation (max 11), and workpiece_usage counts prior screw runs on the "
+            "same piece, so the split unit must be workpiece_id.",
+            "workpiece reuse ACROSS scenarios: 9 of s03's 26 classes are not new "
+            "recordings at all. Counted from labels.csv: 003_control-group-from-s01 (200 "
+            "ops) is copied from s01, and 004_control-group-from-s02 (100) plus 601..607 "
+            "(400) are copied from s02 -- 700 of 1700 operations, 41.2%, so only 1000 "
+            "were originally recorded for s03. Pooling scenarios would put identical "
+            "operations on both sides of a split.",
+            "left/right position: a workpiece takes one screw per location, so its two "
+            "operations are near-duplicates of each other.",
+        ],
         allowed_claims=["process-level anomaly detection generalization across screwdriving scenarios"],
         forbidden_claims=[
             "describing a screwdriving process anomaly as a robot-arm body fault",
             "any joint-space or physics-residual claim — no manipulator signals exist here",
+            "pooling two or more scenarios without removing the copied control/condition "
+            "groups first",
         ],
-        evidence=["pyscrew/repo.json", "pyscrew/readme.txt", "pyscrew/zenodo_14769379.json", "pyscrew/zenodo_concept.json", "pyscrew/arxiv.txt"],
+        evidence=[
+            "pyscrew/repo.json", "pyscrew/readme.txt", "pyscrew/zenodo_14769379.json",
+            "pyscrew/zenodo_concept.json", "pyscrew/zenodo_16031381.json", "pyscrew/arxiv.txt",
+            "03_data/public/pyscrew/s03_variations-in-assembly-conditions-1.zip (md5-verified; README, labels.csv and json/ read directly)",
+        ],
     )
 
 
@@ -573,7 +748,11 @@ def _sarcos() -> DatasetD0:
         has_joint_torque=True,
         has_link_orientation=False,
         has_urdf_or_inertia=False,
-        official_split="published train (44484 rows) / test (4449 rows) files",
+        official_split=(
+            "published train / test .mat files, verified by loading them: sarcos_inv "
+            "(44484, 28) and sarcos_inv_test (4449, 28), float64, no NaN or inf, one "
+            "MATLAB 5.0 variable per file and no other keys."
+        ),
         label_semantics="regression targets are torques; there are NO anomaly labels",
         native_code_url="",
         native_code_license="",
@@ -585,15 +764,52 @@ def _sarcos() -> DatasetD0:
         status="AVAILABLE_NORMAL_ONLY",
         canonical_paper="classic inverse-dynamics benchmark distributed with Rasmussen & Williams GPML",
         data_files=[
-            {"key": "sarcos_inv.mat", "size_bytes": 6_206_301, "last_modified": "Tue, 01 Jul 2025 12:45:41 GMT"},
-            {"key": "sarcos_inv_test.mat", "size_bytes": 670_056, "last_modified": "Tue, 01 Jul 2025 12:45:41 GMT"},
+            {
+                "key": "sarcos_inv.mat",
+                "size_bytes": 9_964_616,
+                "last_modified": "Tue, 01 Jul 2025 12:45:41 GMT",
+                "etag": '"6863d875-980c48"',
+                "sha256": "b8a249733253ba6097372fedee7696833fcf30de42037d5b4a7227f21a6d1d97",
+                "verified_shape": "(44484, 28)",
+                "downloaded": True,
+            },
+            {
+                "key": "sarcos_inv_test.mat",
+                "size_bytes": 996_776,
+                "last_modified": "Tue, 01 Jul 2025 12:45:41 GMT",
+                "etag": '"6863d875-f35a8"',
+                "sha256": "161a59b5c3b4f4b404584323f181607b2acbe620eb134dc720760dc3f38f5cec",
+                "verified_shape": "(4449, 28)",
+                "downloaded": True,
+            },
         ],
         license_notes="No license statement is published on the distribution page.",
         redistribution_note="Not redistributed.",
-        split_definition="official train/test .mat files",
+        split_definition="official train/test .mat files, row counts verified from the files",
         normalization="none published",
         native_baseline="GP / regression baselines from the GPML literature",
-        open_verifications=["No license statement exists; use stays local-analysis only."],
+        open_verifications=[
+            "No license statement exists; use stays local-analysis only.",
+            "SAMPLING RATE IS UNVERIFIED AT SOURCE. The gaussianprocess.org distribution "
+            "page states no rate, and the .mat files carry no timestamp column -- 28 "
+            "columns are 7 position, 7 velocity, 7 acceleration, 7 torque and nothing "
+            "else. A rate from the wider literature is NOT imported here: without it, "
+            "any per-second quantity (false alarms/hour, detection delay) is unavailable "
+            "for this dataset, which is acceptable because SARCOS is regression-only.",
+            "Column ORDER within each block of 7 is assumed from the classic description "
+            "and is not verified against a joint naming table; nothing in this round "
+            "depends on which joint is which.",
+            "SIZE-EVIDENCE TRAP, resolved. gaussianprocess.org (GitHub Pages) gzips these "
+            "files on the wire. A request that accepts gzip is answered with "
+            "Content-Length 6,206,301 and a WEAK ETag W/\"6863d875-980c48\"; a request "
+            "with Accept-Encoding: identity is answered with Content-Length 9,964,616 and "
+            "the STRONG ETag \"6863d875-980c48\" -- and 0x980c48 = 9,964,616, so the weak "
+            "ETag encoded the true size all along. An earlier probe recorded the "
+            "compressed length as the file size, which made every correct download look "
+            "truncated. Both the probe and the acquisition path now send "
+            "Accept-Encoding: identity and record Content-Encoding, so Content-Length is "
+            "always the size of the object being stored.",
+        ],
         allowed_claims=["healthy inverse-dynamics representation pretraining"],
         forbidden_claims=[
             "counting SARCOS as fault or anomaly evidence — it contains no anomalies and no anomaly labels",

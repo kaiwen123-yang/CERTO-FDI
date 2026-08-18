@@ -1,7 +1,7 @@
 PYTHON ?= python3
 VENV ?= .venv
 
-.PHONY: venv install install-paper-reset test test-fast hygiene stage1 paper-reset-freeze review-packages
+.PHONY: venv install install-paper-reset test test-fast hygiene stage1 paper-reset-freeze paper-reset-provenance review-packages
 
 venv:
 	$(PYTHON) -m venv $(VENV)
@@ -27,6 +27,9 @@ stage1:
 
 paper-reset-freeze:
 	$(VENV)/bin/python -m certo_fdi_reset.freeze --config configs/paper_reset.yaml
+
+paper-reset-provenance:
+	$(VENV)/bin/python -m certo_fdi_reset.provenance_report --config configs/paper_reset.yaml
 
 review-packages:
 	bash scripts/build_review_packages.sh

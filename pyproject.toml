@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "certo-fdi"
 version = "0.1.0"
-description = "CERTO-FDI Stage 1: closed-loop 2R falsification of certificate-based fault diagnosis"
+description = "CERTO-FDI: certificate/representation falsification for robot fault diagnosis, plus the paper-reset public-benchmark audit"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -25,6 +25,15 @@ dev = [
   "jax>=0.4.26",
   "cvxpy>=1.4",
   "osqp>=0.6.3",
+]
+# Heavy runtime deps for the paper-reset public-benchmark stage. Kept out of
+# `dev` so CI stays a fast, CPU-only contract/decision-code gate.
+paper-reset = [
+  "torch>=2.4",
+  "scikit-learn>=1.4",
+  "h5py>=3.10",
+  "requests>=2.31",
+  "tqdm>=4.66",
 ]
 
 [tool.setuptools.packages.find]

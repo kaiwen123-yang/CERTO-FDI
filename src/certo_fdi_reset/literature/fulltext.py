@@ -54,6 +54,10 @@ class Target:
     arxiv_id: str = ""
     role: str = ""
     why_wave_a: str = ""
+    #: Institutional-repository copy located via OpenAIRE when neither Unpaywall,
+    #: OpenAlex nor Semantic Scholar exposes a PDF (§7.6 rung 2). Recorded here so
+    #: the fetch is reproducible instead of a one-off manual download.
+    repository_pdf_url: str = ""
 
 
 WAVE_A: tuple[Target, ...] = (
@@ -69,19 +73,23 @@ WAVE_A: tuple[Target, ...] = (
     Target("mobnet", "MOB-Net: Limb-modularized uncertainty torque learning of humanoids for sensorless external torque estimation",
            "10.1177/02783649241260428", role="killer_candidate",
            why_wave_a="limb-modularised uncertainty torque learning collides with the modular-chain claim"),
-    Target("kim_lim_park_transferable", "Transferable Collision Detection Learning for Collaborative Manipulator",
-           role="nearest_neighbour", why_wave_a="cross-context transfer of collision detection"),
+    Target("kim_lim_park_transferable",
+           "Transferable Collision Detection Learning for Collaborative Manipulator Using Versatile Modularized Neural Network",
+           "10.1109/TRO.2021.3129630", role="nearest_neighbour",
+           why_wave_a="cross-context transfer of collision detection"),
     Target("park_unsupervised_collision", "Collision Detection for Robot Manipulators Using Unsupervised Anomaly Detection Algorithms",
            "10.1109/TMECH.2021.3119057", role="nearest_neighbour",
            why_wave_a="healthy-only/unsupervised collision detection — the closest problem statement to ours"),
     Target("lim_lstm_mo", "Momentum Observer-Based Collision Detection Using LSTM for Model Uncertainty Learning",
-           role="nearest_neighbour", why_wave_a="LSTM residual on a momentum observer"),
+           "10.1109/ICRA48506.2021.9561667", role="nearest_neighbour",
+           why_wave_a="LSTM residual on a momentum observer"),
     Target("voraus_ad", "The voraus-AD Dataset for Anomaly Detection in Robot Applications",
            "10.1109/TRO.2023.3332224", arxiv_id="2311.04765", role="benchmark",
            why_wave_a="mandatory dataset 1 and its native MVT-Flow baseline"),
     Target("road", "Robotic Arm Dataset (RoAD): A Dataset to Support the Design and Test of Machine Learning-Driven Anomaly Detection in a Production Line",
            "10.1109/IECON51785.2023.10311726", role="benchmark",
-           why_wave_a="mandatory dataset 2; the only source for its sampling rate and frame conventions"),
+           why_wave_a="mandatory dataset 2; the only source for its sampling rate and frame conventions",
+           repository_pdf_url="https://iris.polito.it/bitstream/11583/2982400/1/TAD_dataset.pdf"),
     Target("varade", "VARADE: a Variational-based AutoRegressive model for Anomaly Detection on the Edge",
            "10.1145/3649329.3655691", arxiv_id="2409.14816", role="native_baseline",
            why_wave_a="RoAD's native baseline; needed for a faithful reproduction level"),
@@ -89,17 +97,20 @@ WAVE_A: tuple[Target, ...] = (
            "10.48550/arXiv.2102.01409", arxiv_id="2102.01409", role="benchmark",
            why_wave_a="mandatory dataset 3; the only documented source for its schema"),
     Target("diffnea", "Encoding Physical Constraints in Differentiable Newton-Euler Algorithm",
-           role="nearest_neighbour", why_wave_a="differentiable Newton-Euler — structured dynamics prior art"),
+           "10.48550/arXiv.2001.08861", arxiv_id="2001.08861", role="nearest_neighbour",
+           why_wave_a="differentiable Newton-Euler — structured dynamics prior art"),
     Target("ms_hgnn", "Morphological-Symmetry-Equivariant Heterogeneous Graph Neural Network for Robotic Dynamics Learning",
-           arxiv_id="2412.01297", role="killer_candidate",
+           "10.48550/arXiv.2412.01297", arxiv_id="2412.01297", role="killer_candidate",
            why_wave_a="symmetry-equivariant robot graph: collides with the representation novelty claims"),
     # Contract 20 lists these two only as prose descriptions ("Sheikhi et al., data-driven
     # subspace fault isolation, L-CSS 2025"; "Tan et al., confidence-set residual
     # separation/MDF, Automatica 2023") with no title and no DOI. Both titles below are
     # reconstructions, so a failure to resolve them means the SEED was never verified --
     # it is not evidence that the work does not exist.
-    Target("sheikhi_subspace", "Data-Driven Fault Isolation via Subspace Identification",
-           role="nearest_neighbour", why_wave_a="data-driven subspace fault isolation, the geometric-FDI rival"),
+    # Resolved from the Annual Review author list: Sheikhi is a TU Delft co-author of both.
+    Target("sheikhi_subspace", "Data-Driven Fault Isolation in Linear Time-Invariant Systems: A Subspace Classification Approach",
+           "10.1109/LCSYS.2025.3581854", arxiv_id="2509.01347", role="nearest_neighbour",
+           why_wave_a="data-driven subspace fault isolation, the geometric-FDI rival"),
     Target("tan_confidence_set", "Fault detection and isolation via confidence-set separation",
            role="nearest_neighbour", why_wave_a="confidence-set residual separation / maximum distinguishability"),
 )
@@ -317,6 +328,8 @@ def _follow_landing_page(url: str, response: requests.Response, session: request
 def fetch_fulltext(resolution: Resolution, session: requests.Session, out_dir: Path) -> None:
     """Download the best lawfully reachable full text and set the evidence level."""
     candidates: list[tuple[str, str, str]] = []
+    if resolution.target.repository_pdf_url:
+        candidates.append((resolution.target.repository_pdf_url, EvidenceLevel.A2, "institutional_repository"))
     if resolution.open_fulltext_url:
         candidates.append((resolution.open_fulltext_url, EvidenceLevel.A2, resolution.access_route or "oa_location"))
     if resolution.arxiv_id:

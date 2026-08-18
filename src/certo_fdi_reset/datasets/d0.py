@@ -198,8 +198,8 @@ def _road() -> DatasetD0:
         noncommercial_only=None,
         access_route="pip install git+https://gitlab.com/AlessioMascolini/roaddataset (data ships inside the package)",
         robot="KUKA LBR iiwa collaborative manipulator, 7 DoF, in a pilot production line; 7 IMU sensor ids 0..6 (identified from the VARADE paper p4 by the same authors)",
-        task="production line pick/handling with induced anomalies",
-        sampling_rate_hz=200.0,
+        task="production-line pick and place of ~20 g objects, with controlled anomalies: manual collisions (point), object-weight changes (collective), and trajectory speed reduced to 50% and 75% (collective, mixed with occasional collisions)",
+        sampling_rate_hz=10.0,
         episode_unit="recording (list element per subset)",
         channel_count=87,
         documented_signals=[
@@ -223,9 +223,12 @@ def _road() -> DatasetD0:
             "weight=1, velocity=2 -- 15 recordings in total. No further official split is published."
         ),
         label_semantics=(
-            "Verified per subset: training has 86 columns (no label at all); collision 0/1 with 1.52% "
-            "anomalous rows; control all-0 (a healthy non-training subset); weight all-1; "
-            "velocity carries labels 1 AND 2, so it is multi-class, not binary."
+            "The label is a COUNT of co-occurring anomalies at each timestep, not a class id: 0, 1 or 2 "
+            "(RoAD paper §IV). Verified per subset: training has 86 columns (no label at all); "
+            "collision 0/1 with 1.52% anomalous rows; control all-0 (a healthy non-training subset); "
+            "weight all-1; velocity carries 1 AND 2, where 2 means a collision occurred on top of the "
+            "underlying speed-change anomaly -- so velocity is a MIXED point+collective scenario, not "
+            "a second anomaly class."
         ),
         native_code_url="https://gitlab.com/AlessioMascolini/varade",
         native_code_commit="43f9b3c8b3f4c842097adc10270e364e2935663c",
@@ -256,7 +259,7 @@ def _road() -> DatasetD0:
         ),
         redistribution_note="Local research analysis proceeds provisionally; redistribution of raw data is forbidden, in git and in review packages alike.",
         signal_groups=[
-            {"group": "action", "channels": "robot action ID", "count": 1},
+            {"group": "action", "channels": "robot action ID in [0,30]", "count": 1},
             {"group": "whole-system electrical", "channels": "apparent power … voltage (Eastron SDM230 single-phase meter)", "count": 8},
             {"group": "per-joint IMU linear", "channels": "3-axis acceleration × 7 joints", "count": 21},
             {"group": "per-joint IMU angular", "channels": "3-axis angular velocity × 7 joints", "count": 21},
@@ -283,8 +286,8 @@ def _road() -> DatasetD0:
             "reproduction."
         ),
         open_verifications=[
-            "RESOLVED via VARADE p4 (same authors, evidence level A2): the 7 IMUs (DFRobot SEN0386) stream at 200 Hz after an on-sensor Kalman filter. The robot's OWN controller interface is limited to 5 Hz, which is why IMUs were added at all -- so nothing in this dataset comes from the robot controller.",
-            "PARTIALLY RESOLVED via VARADE p4: the quaternions are not raw IMU output -- the authors converted the IMU's Euler angles to quaternions because the [-180,+180] deg range jumps near its extremes. The component ORDER (w-first vs w-last) is still undocumented and must be settled numerically before any orientation-aware feature is built.",
+            "RESOLVED, and it corrects an earlier reading: the IMUs RECORD at 200 Hz, but the RoAD paper §IV states the recordings were RESAMPLED TO 10 Hz before publication, so the released arrays are 10 Hz. Verified numerically: at 10 Hz the training subset is 389.7 min and the collision subset 81.9 min, matching the 390 min and 82 min that the VARADE paper independently reports for the same recordings. The robot's own controller interface is limited to 5 Hz, which is why IMUs were added at all -- nothing here comes from the robot controller.",
+            "PARTIALLY RESOLVED via the RoAD paper §IV and VARADE p4, which agree: the quaternions are not raw IMU output -- three Euler angles per node were converted to unit quaternions because the [-180,+180] deg range wraps. The component ORDER (w-first vs w-last) is still undocumented and must be settled numerically before any orientation-aware feature is built.",
             "Frame convention, IMU mounting, and joint/link assignment per channel block are undocumented.",
             "Quaternion sign continuity across a recording is unverified.",
             "Inter-joint time synchronisation is unverified.",

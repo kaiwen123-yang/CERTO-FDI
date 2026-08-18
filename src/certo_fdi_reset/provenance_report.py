@@ -145,6 +145,15 @@ def git_provenance(repo: Path, cfg) -> str:
     log = _git(repo, "log", "--oneline", "-12", "--no-decorate")
     remote_heads = _git(repo, "ls-remote", "--heads", "origin")
     contracts_sha = sha256_tree(repo / "contracts" / "paper_reset")
+    # A round can receive follow-up contract packages (a resume prompt after the
+    # operator fixed the storage mount, for instance). Each is frozen as its own
+    # contracts/ subtree, so hash all of them -- reporting only the first would
+    # leave later instructions unattributable to any commit.
+    contract_trees = {
+        directory.name: sha256_tree(directory)
+        for directory in sorted((repo / "contracts").iterdir())
+        if directory.is_dir()
+    }
 
     lines = [
         "# Git provenance — CERTO-FDI paper reset",
@@ -156,6 +165,12 @@ def git_provenance(repo: Path, cfg) -> str:
         f"- HEAD: `{head}`",
         f"- worktree dirty: {dirty}",
         f"- frozen contract tree sha256: `{contracts_sha}`",
+        "",
+        "## Frozen contract packages",
+        "",
+        "| contracts/ subtree | tree sha256 |",
+        "| --- | --- |",
+        *[f"| `{name}` | `{sha}` |" for name, sha in contract_trees.items()],
         "",
         "## Commit chain (most recent first)",
         "",

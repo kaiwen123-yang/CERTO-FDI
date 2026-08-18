@@ -59,3 +59,15 @@ def test_only_a1_a2_b1_can_support_occupancy():
     supporting = {EvidenceLevel.A1, EvidenceLevel.A2, EvidenceLevel.B1}
     assert EvidenceLevel.C not in supporting
     assert EvidenceLevel.NONE not in supporting
+
+
+def test_control_characters_are_stripped_but_layout_survives():
+    """NULs from PDF extraction make the file binary to grep; newlines must stay."""
+    from certo_fdi_reset.literature.fulltext import strip_control_characters
+
+    raw = "quadruped\x00 robot\n<<<PAGE 2>>>\nnext\tcol\x07umn"
+    cleaned = strip_control_characters(raw)
+    assert "\x00" not in cleaned and "\x07" not in cleaned
+    assert "\n" in cleaned and "\t" in cleaned
+    assert "quadruped robot" in cleaned
+    assert "<<<PAGE 2>>>" in cleaned

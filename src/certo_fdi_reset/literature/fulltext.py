@@ -21,6 +21,7 @@ import argparse
 import csv
 import re
 import time
+import unicodedata
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -362,10 +363,44 @@ MANIFEST_COLUMNS = (
 )
 
 
+def strip_control_characters(text: str) -> str:
+    """Remove C0 control characters except newline and tab.
+
+    PyMuPDF emits NUL for glyphs it cannot map. Left in place, those bytes make the
+    extracted file "binary" to file(1), grep and every other text tool, so a later
+    search for a term that is plainly in the paper silently returns nothing.
+    """
+    return "".join(ch for ch in text if ch in "\n\t" or unicodedata.category(ch) != "Cc")
+
+
+def extract_text(pdf_dir: Path) -> list[tuple[str, int, int]]:
+    """Extract page-marked plain text next to each PDF. Returns (stem, pages, chars)."""
+    import pymupdf
+
+    out_dir = pdf_dir / "text"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    results: list[tuple[str, int, int]] = []
+    for pdf in sorted(pdf_dir.glob("*.pdf")):
+        doc = pymupdf.open(pdf)
+        text = "".join(
+            f"\n<<<PAGE {i + 1}>>>\n" + page.get_text() for i, page in enumerate(doc)
+        )
+        cleaned = strip_control_characters(text)
+        (out_dir / f"{pdf.stem}.txt").write_text(cleaned, encoding="utf-8")
+        results.append((pdf.stem, doc.page_count, len(cleaned)))
+        doc.close()
+    return results
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="certo_fdi_reset.literature.fulltext")
     parser.add_argument("--config", required=True, type=Path)
     parser.add_argument("--only", default="")
+    parser.add_argument(
+        "--extract-text",
+        action="store_true",
+        help="Only re-extract plain text from the PDFs already stored; no network access.",
+    )
     return parser
 
 
@@ -375,6 +410,11 @@ def main(argv: list[str] | None = None) -> int:
     layout = cfg.layout
     out_dir = layout.literature_open_fulltexts
     manifest_dir = layout.literature_access_manifest
+
+    if args.extract_text:
+        for stem, pages, chars in extract_text(out_dir):
+            print(f"  {stem:28s} pages={pages:3d} chars={chars:>8,}")
+        return 0
 
     wanted = {s.strip() for s in args.only.split(",") if s.strip()}
     targets = [t for t in WAVE_A if not wanted or t.target_id in wanted]

@@ -84,3 +84,34 @@ def test_matrices_are_written_and_internally_consistent(tmp_path):
     manifest = json.loads(paths["dataset_download_manifest.json"].read_text(encoding="utf-8"))
     assert manifest["planned_download_bytes"] > 0
     assert {d["dataset_id"] for d in manifest["datasets"]} == {r.card.dataset_id for r in records}
+
+
+def test_d0_exit_gate_states_are_the_contract_ones():
+    """§6.10: the round may not enter full training unless these three hold."""
+    required = {
+        "voraus_ad": "READY",
+        "road": "READY_WITH_LICENSE_RESTRICTION",
+        "aursad": "READY",
+    }
+    by_id = {r.card.dataset_id: r for r in build_cards()}
+    for dataset_id, status in required.items():
+        assert by_id[dataset_id].status == status, dataset_id
+
+
+def test_aursad_has_no_measured_joint_torque():
+    """It publishes commanded target_moment and currents, never a measured joint
+    torque, so it must not be promoted to a full-dynamics grade."""
+    aursad = next(r for r in build_cards() if r.card.dataset_id == "aursad")
+    assert aursad.card.has_joint_position is True
+    assert aursad.card.has_commanded_torque is True
+    assert aursad.card.has_joint_torque is False
+    assert aursad.card.has_urdf_or_inertia is False
+    assert aursad.card.physics_grade is PhysicsGrade.P2_PARTIAL_PHYSICS_SIGNALS
+    assert "rnea_gmo_public" not in aursad.card.permitted_adapters
+
+
+def test_no_mandatory_dataset_permits_rnea():
+    """No mandatory dataset publishes a URDF, so RNEA/GMO is unavailable on all of them."""
+    for record in build_cards():
+        if record.card.dataset_id in MANDATORY:
+            assert "rnea_gmo_public" not in record.card.permitted_adapters

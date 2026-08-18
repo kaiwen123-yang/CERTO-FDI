@@ -1,10 +1,39 @@
 # CERTO-FDI
 
-**Stage 1: closed-loop 2R falsification of certificate-based fault detection, isolation, and local identification.**
+**Current round: Paper Reset — systematic full-text literature audit and public benchmark reproduction.**
 
-## Scientific status
+## Current round (this branch)
 
-- Current project decision: **PIVOT** (frozen at Stage 0 round 3; re-evaluated at end of Stage 1).
+`stage/paper-reset-literature-public-benchmarks` is a clean cut from `main`. It is not a
+new-algorithm stage. Its only jobs are a systematic full-text literature audit, a
+licence/schema audit of public robot-anomaly datasets, faithful reproduction of those
+datasets' native baselines plus a unified universal baseline matrix, a fair external
+check of the existing candidate on public data, and one paper-level decision.
+
+New networks, new Jacobian/pathway modules, strict certificates, simulation fault
+injection, and real-robot experiments are all **forbidden** this round
+(`contracts/paper_reset/03_SCOPE_AND_CLAIM_FREEZE.md`).
+
+| Item | Location |
+|---|---|
+| Frozen governing contracts | `contracts/paper_reset/` |
+| Protocol freeze record | `docs/paper_reset/PROTOCOL_FREEZE.md` |
+| Code-port ledger from PR #1–#7 | `docs/paper_reset/PORT_PROVENANCE.md` |
+| Frozen decision code | `src/certo_fdi_reset/decision.py` |
+| Stage config | `configs/paper_reset.yaml` |
+
+Phase 0 bootstrap (verifies the persist root, builds its tree, writes the run manifest):
+
+```bash
+python -m certo_fdi_reset.freeze --config configs/paper_reset.yaml
+```
+
+Draft PRs #1–#7 are historical. They stay Draft, unmerged, and their heads are never
+moved or rewritten.
+
+## Historical status (Stage 1)
+
+- Stage 1 project decision: **PIVOT** (frozen at Stage 0 round 3; re-evaluated at end of Stage 1).
 - **No non-empty detection / isolation / identification certificate has been established yet.**
 - This repository contains *active code only*. It must **not** be interpreted as a completed
   T-RO-ready method, nor cited as evidence that any certificate is non-empty.

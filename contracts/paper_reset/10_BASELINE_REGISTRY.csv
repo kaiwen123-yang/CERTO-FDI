@@ -1,0 +1,16 @@
+baseline_id,tier,source,datasets,training_data,implementation_status,role,hard_rules
+dataset_native_mvt_flow,NATIVE,official voraus-AD repository,voraus_ad,healthy-only,OFFICIAL_REPRODUCTION,primary native baseline,checkout frozen commit; use official split/config before adaptation
+dataset_native_varade,NATIVE,official VARADE repository/paper,road,per paper,OFFICIAL_OR_FAITHFUL,RoAD native baseline,freeze code commit and paper policy; no silent fixes
+aursad_paper_baselines,NATIVE,AURSAD technical report + official loader,aursad,per paper,PAPER_POLICY_BASELINE,dataset-native baseline,read full report before selecting methods
+pca_spe_t2,UNIVERSAL,standard MSPM,all,healthy-only,REFERENCE,linear statistical baseline,fit on train only; document scaling and component selection
+ocsvm,UNIVERSAL,scikit-learn/reference paper,all,healthy-only,REFERENCE,classic one-class baseline,validation-only hyperparameters
+isolation_forest,UNIVERSAL,scikit-learn/reference paper,all,healthy-only,REFERENCE,tree baseline,validation-only hyperparameters
+autoencoder,UNIVERSAL,frozen simple architecture,all,healthy-only,REFERENCE,neural reconstruction baseline,matched search budget
+gru_autoencoder,UNIVERSAL,frozen simple architecture,all,healthy-only,REFERENCE,temporal baseline,episode-safe windows
+mvt_flow_adapted,UNIVERSAL_DEEP,official MVT-Flow code adapted by interface only,compatible datasets,healthy-only,ADAPTED_OFFICIAL,strong deep baseline,keep architecture; document dataset-specific interface changes
+recent_mtsad_1,UNIVERSAL_DEEP,selected after full-text/code audit,compatible datasets,healthy-only,TO_BE_FROZEN,one recent strong MTSAD,official code + license + reproducibility required; freeze before results
+joint_gru_public,INTERNAL_ABLATION,CERTO adapter,all,healthy-only,CANDIDATE_ABLATION,joint-space candidate,same inputs/window/head as chain model
+chain_gnn_public,INTERNAL_CANDIDATE,CERTO adapter,P1+ datasets,healthy-only,CANDIDATE,topology candidate,only public joint order/topology; no invented geometry
+geometry_aware_chain_public,INTERNAL_CANDIDATE,CERTO adapter,P2/P3 datasets only,healthy-only,CONDITIONAL_CANDIDATE,geometry increment,NOT_APPLICABLE if required metadata absent
+rnea_gmo_public,PHYSICS,classic RNEA/GMO,P3 only,healthy calibration,CONDITIONAL_BASELINE,physics baseline,NOT_APPLICABLE unless full metadata is public
+mobnet_like_public,PHYSICS_LEARNING,MOB-Net/LSTM-MO method card,P3 only,healthy or external-torque labels per paper,CONDITIONAL_FAITHFUL,strong nearest-neighbor,do not call reproduction if required targets unavailable

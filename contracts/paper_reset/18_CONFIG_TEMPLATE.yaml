@@ -1,0 +1,58 @@
+project: CERTO-FDI
+stage: paper_reset_literature_public_benchmarks
+current_date: 2026-08-18
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: main
+  branch: stage/paper-reset-literature-public-benchmarks
+  worktree: ~/research/CERTO-FDI-WORKTREES/paper-reset-literature-public-benchmarks
+  keep_draft: true
+  auto_merge: false
+
+storage:
+  persistent_root: /mnt/g/CERTO-FDI
+  run_root: /mnt/g/CERTO-FDI/04_runs/paper_reset_public_benchmarks
+  literature_root: /mnt/g/CERTO-FDI/01_frozen_sources/literature_reset
+  public_data_root: /mnt/g/CERTO-FDI/03_data/public
+
+literature:
+  discovery_min: 250
+  screened_min: 120
+  fulltext_min: 60
+  direct_neighbor_min: 25
+  killer_dossier_min: 10
+  recent_2025_2026_fulltext_min: 15
+  seed_queries_file: 05_LITERATURE_SEARCH_STRINGS.md
+  no_abstract_only_occupancy_claims: true
+
+mandatory_datasets:
+  - voraus_ad
+  - road
+  - aursad
+supplementary_datasets:
+  - ur5e_graabaek
+  - pyscrew
+
+baseline_tiers:
+  native: [dataset_native_mvt_flow, dataset_native_varade, aursad_paper_baselines]
+  universal: [pca_spe_t2, ocsvm, isolation_forest, autoencoder, gru_autoencoder, mvt_flow_adapted, recent_mtsad_1]
+  candidate: [joint_gru_public, chain_gnn_public, geometry_aware_chain_public]
+
+training:
+  seeds: [260818, 260819, 260820]
+  healthy_fractions: [0.10, 0.25, 0.50, 1.00]
+  tune_on_test_anomalies: false
+  split_unit: episode_or_operation
+
+metrics:
+  primary: [episode_auroc, episode_auprc, fpr_at_tpr90]
+  secondary: [window_auroc, window_auprc, event_f1, false_alarms_per_hour, detection_delay]
+  bootstrap_unit: episode
+
+execution:
+  smoke_first: true
+  max_cpu_threads: 8
+  single_gpu_process: true
+  require_clean_worktree: true
+  build_review_packages: true

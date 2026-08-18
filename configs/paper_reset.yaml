@@ -1,0 +1,99 @@
+# CERTO-FDI Paper Reset - resolved stage config.
+# Derived from contracts/paper_reset/18_CONFIG_TEMPLATE.yaml; values here are FROZEN
+# in the Phase 0 milestone commit and may only change via an explicit amendment
+# commit that restates the previous value and the reason.
+
+project: CERTO-FDI
+stage: paper_reset_literature_public_benchmarks
+current_date: 2026-08-18
+
+run:
+  run_id: run_20260818T124611Z_paper_reset
+  protocol_freeze_utc: "2026-08-18T12:46:11Z"
+  contract_package: CERTO_FDI_LITERATURE_PUBLIC_BENCHMARK_RESET_KICKOFF_20260818.zip
+  contract_package_sha256: dbb066041c50f7020b59a16a2a282d143844df2e64f0b478cd385b6f01b8e245
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: main
+  branch: stage/paper-reset-literature-public-benchmarks
+  worktree: ~/research/CERTO-FDI-WORKTREES/paper-reset-literature-public-benchmarks
+  keep_draft: true
+  auto_merge: false
+  protected_draft_prs: [1, 2, 3, 4, 5, 6, 7]
+
+storage:
+  persistent_root: /mnt/g/CERTO-FDI
+  run_root: /mnt/g/CERTO-FDI/04_runs/paper_reset_public_benchmarks
+  literature_root: /mnt/g/CERTO-FDI/01_frozen_sources/literature_reset
+  public_data_root: /mnt/g/CERTO-FDI/03_data/public
+  # Overridable at runtime by CERTO_PERSIST_ROOT; any override MUST be recorded
+  # in run_manifest.json (01_MASTER_PROMPT.md section 2).
+  require_real_mountpoint: true
+  # The path that must itself be a real mountpoint (the drive, not the project dir).
+  mount_anchor: /mnt/g
+
+literature:
+  discovery_min: 250
+  screened_min: 120
+  fulltext_min: 60
+  direct_neighbor_min: 25
+  killer_dossier_min: 10
+  recent_2025_2026_fulltext_min: 15
+  seed_queries_file: contracts/paper_reset/05_LITERATURE_SEARCH_STRINGS.md
+  no_abstract_only_occupancy_claims: true
+  # Frozen coverage window: classics unrestricted, monitored window below.
+  monitored_window_start: 2020-08-18
+  monitored_window_end: 2026-08-18
+  search_execution_date: 2026-08-18
+  evidence_levels_supporting_occupancy: [A1, A2, B1]
+  evidence_levels_discovery_only: [B2, C]
+
+mandatory_datasets:
+  - voraus_ad
+  - road
+  - aursad
+supplementary_datasets:
+  - ur5e_graabaek
+  - pyscrew
+normal_only_optional_datasets:
+  - sarcos   # healthy dynamics only; NEVER counted as fault/anomaly evidence
+
+baseline_tiers:
+  native: [dataset_native_mvt_flow, dataset_native_varade, aursad_paper_baselines]
+  universal: [pca_spe_t2, ocsvm, isolation_forest, autoencoder, gru_autoencoder, mvt_flow_adapted, recent_mtsad_1]
+  candidate: [joint_gru_public, chain_gnn_public, geometry_aware_chain_public]
+  conditional_physics: [frame_aug_chain_public, rnea_gmo_public, mobnet_like_public]
+
+training:
+  seeds: [260818, 260819, 260820]
+  healthy_fractions: [0.10, 0.25, 0.50, 1.00]
+  tune_on_test_anomalies: false
+  split_unit: episode_or_operation
+
+metrics:
+  primary: [episode_auroc, episode_auprc, fpr_at_tpr90]
+  secondary: [window_auroc, window_auprc, event_f1, false_alarms_per_hour, detection_delay]
+  bootstrap_unit: episode
+  bootstrap_resamples: 2000
+  bootstrap_ci: 0.95
+
+candidate_survival:
+  min_auroc_gain: 0.03
+  min_auprc_gain: 0.05
+  max_fpr_at_tpr90_degradation: 0.10
+  min_mandatory_datasets: 2
+  min_concordant_seeds: 2
+  min_concordant_contexts: 2
+  sample_efficiency_fraction: 0.25
+
+reproduction_tolerance:
+  abs: 0.01
+  rel: 0.02
+
+execution:
+  smoke_first: true
+  max_cpu_threads: 8
+  single_gpu_process: true
+  require_clean_worktree: true
+  build_review_packages: true

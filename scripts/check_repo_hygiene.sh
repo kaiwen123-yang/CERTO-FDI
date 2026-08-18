@@ -18,13 +18,27 @@ while IFS= read -r f; do
   esac
 done <<< "$TRACKED"
 
-# 2. Data artifacts only allowed as small hand-made fixtures under tests/fixtures/.
+# 2. Data artifacts only allowed as small hand-made fixtures under tests/fixtures/,
+#    or as frozen contract registries/templates under contracts/ (these are
+#    protocol text shipped in the kickoff package, not experimental data).
 while IFS= read -r f; do
   case "$f" in
     tests/fixtures/*) continue ;;
+    contracts/*/*.csv) continue ;;
   esac
   case "$f" in
     *.csv|*.npz|*.parquet|*.pkl|*.h5) note "tracked data artifact outside tests/fixtures: $f" ;;
+  esac
+done <<< "$TRACKED"
+
+# 2b. Contract CSVs are protocol text: they must stay small and must never carry
+#     measured results (a results row would smuggle data into git).
+while IFS= read -r f; do
+  case "$f" in
+    contracts/*/*.csv)
+      size=$(stat -c%s "$f")
+      [ "$size" -gt 65536 ] && note "contract CSV too large to be protocol text: $f ($size bytes)"
+      ;;
   esac
 done <<< "$TRACKED"
 

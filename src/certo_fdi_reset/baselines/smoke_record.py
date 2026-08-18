@@ -123,9 +123,23 @@ def dependency_deltas(pins: dict[str, str], installed: dict[str, str]) -> list[d
     return rows
 
 
-def reproduction_level(deltas: list[dict], code_modified: bool, device: str) -> str:
+def reproduction_level(
+    deltas: list[dict], code_modified: bool, device: str, track: str = "A"
+) -> str:
+    """Name the level this run actually earned (§9.1), never the one hoped for.
+
+    Track A claims EXACT_OFFICIAL only when the official pins installed with zero
+    deltas AND the official source is untouched. Track B is a different claim: its
+    dependency deltas are the whole point (torch 1.12 has no kernels for sm_120), so
+    mismatches do NOT demote it -- but a modified source does, because then it is no
+    longer the official algorithm being run.
+    """
     mismatched = [d for d in deltas if d["status"] in {"MISMATCH", "MISSING"}]
-    if mismatched or code_modified:
+    if code_modified:
+        return "FAITHFUL_PAPER"
+    if track.upper() == "B":
+        return "FAITHFUL_OFFICIAL_GPU_PORT"
+    if mismatched:
         return "FAITHFUL_PAPER"
     return "EXACT_OFFICIAL_CPU" if device == "cpu" else "EXACT_OFFICIAL"
 
@@ -139,13 +153,25 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--python-bin", required=True, type=Path)
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--data-file", type=Path, default=None)
+    parser.add_argument(
+        "--track",
+        default="A",
+        choices=["A", "B"],
+        help="A = EXACT_OFFICIAL_CPU attempt; B = FAITHFUL_OFFICIAL_GPU_PORT attempt.",
+    )
+    parser.add_argument(
+        "--out-name",
+        default=None,
+        help="Output subdirectory under b0/. Defaults to the dataset id; a second track "
+             "must pass its own name so it cannot overwrite the first track's evidence.",
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     cfg = load_config(args.config)
-    out_dir = cfg.layout.run_dir(cfg.run_id) / "b0" / args.dataset
+    out_dir = cfg.layout.run_dir(cfg.run_id) / "b0" / (args.out_name or args.dataset)
     out_dir.mkdir(parents=True, exist_ok=True)
 
     log_text = args.log.read_text(encoding="utf-8", errors="replace")
@@ -163,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
         ["git", "-C", str(args.repo), "rev-parse", "HEAD"],
         capture_output=True, text=True, check=False,
     ).stdout.strip()
-    level = reproduction_level(deltas, bool(dirty), args.device)
+    level = reproduction_level(deltas, bool(dirty), args.device, args.track)
 
     delta_csv = out_dir / "dependency_delta.csv"
     with delta_csv.open("w", encoding="utf-8", newline="") as fh:
@@ -175,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
         "run_id": cfg.run_id,
         "dataset_id": args.dataset,
         "generated_utc": utc_stamp(),
-        "track": "A",
+        "track": args.track,
         "reproduction_level": level,
         "device": args.device,
         "outcome": result.outcome,
@@ -198,7 +224,11 @@ def main(argv: list[str] | None = None) -> int:
         "data_file": str(args.data_file) if args.data_file else "",
         "data_sha256": sha256_file(args.data_file) if args.data_file and args.data_file.exists() else "",
     }
-    manifest_path = out_dir / "official_cpu_smoke.json"
+    # The contract names both files (§8.1); each track writes its own so a reviewer can
+    # diff them instead of finding one overwritten by the other.
+    manifest_path = out_dir / (
+        "gpu_port_smoke.json" if args.track.upper() == "B" else "official_cpu_smoke.json"
+    )
     manifest_sha = write_manifest(manifest_path, payload)
 
     print(f"outcome            {result.outcome}")

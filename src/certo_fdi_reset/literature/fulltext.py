@@ -28,7 +28,7 @@ from pathlib import Path
 import requests
 
 from ..config import load_config
-from ..provenance import sha256_bytes, utc_stamp, write_manifest
+from ..provenance import sha256_bytes, sha256_file, sha256_text, utc_stamp, write_manifest
 
 CONTACT_EMAIL = "tarekmasserini291@gmail.com"
 USER_AGENT = f"CERTO-FDI-paper-reset/1.0 (research audit; mailto:{CONTACT_EMAIL})"
@@ -111,8 +111,15 @@ WAVE_A: tuple[Target, ...] = (
     Target("sheikhi_subspace", "Data-Driven Fault Isolation in Linear Time-Invariant Systems: A Subspace Classification Approach",
            "10.1109/LCSYS.2025.3581854", arxiv_id="2509.01347", role="nearest_neighbour",
            why_wave_a="data-driven subspace fault isolation, the geometric-FDI rival"),
-    Target("tan_confidence_set", "Fault detection and isolation via confidence-set separation",
-           role="nearest_neighbour", why_wave_a="confidence-set residual separation / maximum distinguishability"),
+    # Resolved: a Crossref search restricted to container-title Automatica returns
+    # Tan, Zheng, Meng & Yuan 2023, whose subject IS confidence-set analysis of the
+    # minimal detectable fault -- i.e. the contract's "confidence-set residual
+    # separation/MDF, Automatica 2023" prose description, with MDF = minimal
+    # detectable fault. The earlier title here was a reconstruction and never matched.
+    Target("tan_confidence_set",
+           "Confidence set-based analysis of minimal detectable fault under hybrid Gaussian and bounded uncertainties",
+           "10.1016/j.automatica.2023.111141", role="nearest_neighbour",
+           why_wave_a="confidence-set residual separation / maximum distinguishability"),
 )
 
 
@@ -141,6 +148,83 @@ class Resolution:
 
 
 MIN_TITLE_OVERLAP = 0.6
+
+#: The §7.6 acquisition ladder, in order, with how each rung is exercised here. The
+#: negative search log is written against this list so "we tried everything" is a
+#: checkable statement rather than a claim.
+LADDER: tuple[tuple[str, str], ...] = (
+    ("1. publisher formal-page metadata", "OpenAlex works record + Crossref, by DOI"),
+    ("2. author institutional repository", "OpenAIRE publications API by DOI; Semantic Scholar openAccessPdf; explicit Target.repository_pdf_url when a copy is known"),
+    ("3. author accepted manuscript", "Unpaywall oa_locations of host_type=repository"),
+    ("4. arXiv cross-checked against the formal version", "arXiv id from OpenAlex/Unpaywall/Semantic Scholar externalIds, else an arXiv title query"),
+    ("5. formal conference proceedings", "reached only through the publisher DOI; IEEE returns 418 and ACM 403 from this host"),
+    ("6. Unpaywall / OpenAlex OA location", "best_oa_location and every oa_location, PDF first then landing page"),
+    ("7. otherwise FULLTEXT_UNAVAILABLE", "recorded as evidence level C, which §7.2 bars from carrying any occupancy verdict"),
+)
+
+
+def render_negative_search_log(resolutions: list["Resolution"], run_id: str) -> str:
+    """Write down what was tried and failed, per target.
+
+    This document exists so an absent full text can never be quietly upgraded into
+    "no competing work exists". §7.2 makes FULLTEXT_UNAVAILABLE inadmissible as
+    evidence of an open field, and that rule is only enforceable if the failure trail
+    is explicit.
+    """
+    blocked = [
+        r for r in resolutions
+        if r.evidence_level in {EvidenceLevel.C, EvidenceLevel.NONE}
+    ]
+    got = [r for r in resolutions if r not in blocked]
+    lines = [
+        "# Negative search log — Wave A full-text acquisition",
+        "",
+        f"- run_id: `{run_id}`",
+        f"- generated (UTC): {utc_stamp()}",
+        f"- targets: {len(resolutions)} | full text obtained: {len(got)} | "
+        f"unreachable: {len(blocked)}",
+        "",
+        "## The ladder that was applied to every target (§7.6)",
+        "",
+        "| rung | how it is exercised here |",
+        "| --- | --- |",
+        *[f"| {rung} | {how} |" for rung, how in LADDER],
+        "",
+        "No access control was circumvented at any rung. A paywall that refuses this host is",
+        "recorded as a refusal, not worked around.",
+        "",
+        "## Targets with no lawfully reachable full text",
+        "",
+    ]
+    if not blocked:
+        lines += ["None — every Wave A target resolved to A1/A2/B1 full text.", ""]
+    for r in blocked:
+        lines += [
+            f"### `{r.target.target_id}`",
+            "",
+            f"- title: {r.resolved_title or r.target.title}",
+            f"- DOI: `{r.resolved_doi or r.target.doi or 'UNRESOLVED'}`",
+            f"- venue: {r.venue or 'unknown'}",
+            f"- publisher page: {r.publisher_url or 'n/a'}",
+            f"- OA status reported: is_oa={r.is_oa or 'unknown'}, oa_status={r.oa_status or 'unknown'}",
+            f"- arXiv id found: {r.arxiv_id or 'none'}",
+            f"- evidence level: **{r.evidence_level}** (FULLTEXT_UNAVAILABLE)",
+            f"- why it matters: {r.target.why_wave_a}",
+            f"- trail: {'; '.join(r.notes) if r.notes else 'no OA location reported by any service'}",
+            "",
+        ]
+    lines += [
+        "## What may and may not be concluded",
+        "",
+        "- These targets count toward **discovery**, never toward full-text coverage.",
+        "- None of them may be cited as showing a claim is open, unoccupied, or novel.",
+        "- Any C1-C6 verdict that depends on one of them stays `UNKNOWN` until the text is read.",
+        "- The literature gate cannot read `LITERATURE_PASS_PLAUSIBLY_OPEN` while nearest-neighbour",
+        "  targets sit in this list; the applicable state is",
+        "  `LITERATURE_UNKNOWN_INSUFFICIENT_FULLTEXT` (§7.1).",
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def _title_tokens(text: str) -> set[str]:
@@ -310,6 +394,56 @@ def resolve_semantic_scholar(resolution: Resolution, session: requests.Session) 
         resolution.access_route = "semantic_scholar_oa"
 
 
+def resolve_openaire(resolution: Resolution, session: requests.Session) -> None:
+    """§7.6 rung 2, mechanised: OpenAIRE aggregates institutional repositories.
+
+    This is the rung that recovered the RoAD postprint from iris.polito.it. Doing it
+    programmatically matters for a different reason than convenience: when it finds
+    nothing, that is the evidence which lets a target be marked FULLTEXT_UNAVAILABLE
+    honestly, instead of the weaker claim that nobody looked.
+    """
+    doi = resolution.resolved_doi or resolution.target.doi
+    if not doi or resolution.open_fulltext_url:
+        return
+    response = _get(
+        session,
+        "https://api.openaire.eu/search/publications",
+        params={"doi": doi, "format": "json"},
+    )
+    if response is None or response.status_code != 200:
+        return
+    try:
+        payload = response.json()
+    except ValueError:
+        return
+    results = ((payload.get("response") or {}).get("results") or {}).get("result") or []
+    if isinstance(results, dict):
+        results = [results]
+    for item in results:
+        try:
+            metadata = item["metadata"]["oaf:entity"]["oaf:result"]
+        except (KeyError, TypeError):
+            continue
+        access = (metadata.get("bestaccessright") or {}).get("@classname", "")
+        resolution.notes.append(f"openaire bestaccessright={access or 'unknown'}")
+        instances = (metadata.get("children") or {}).get("instance") or metadata.get("instance") or []
+        if isinstance(instances, dict):
+            instances = [instances]
+        for instance in instances:
+            resources = instance.get("webresource") or []
+            if isinstance(resources, dict):
+                resources = [resources]
+            for resource in resources:
+                url = (resource.get("url") or {}).get("$", "")
+                # A doi.org link is the publisher again, not a repository copy.
+                if url and "doi.org" not in url:
+                    resolution.open_fulltext_url = url
+                    resolution.access_route = "openaire_repository"
+                    return
+    if not resolution.open_fulltext_url:
+        resolution.notes.append("openaire: no repository copy, only publisher links")
+
+
 def _follow_landing_page(url: str, response: requests.Response, session: requests.Session) -> bytes | None:
     """Turn a repository record URL into the PDF it describes, or None."""
     match = re.search(r"mediatum\.ub\.tum\.de/(\d+)", response.url or url)
@@ -386,22 +520,60 @@ def strip_control_characters(text: str) -> str:
     return "".join(ch for ch in text if ch in "\n\t" or unicodedata.category(ch) != "Cc")
 
 
-def extract_text(pdf_dir: Path) -> list[tuple[str, int, int]]:
-    """Extract page-marked plain text next to each PDF. Returns (stem, pages, chars)."""
+def extract_text(pdf_dir: Path) -> list[tuple[str, int, int, str]]:
+    """Extract page-marked plain text next to each PDF.
+
+    Also writes ``text/text_manifest.json`` holding each extraction's SHA256, because
+    for at least one Wave A source the PDF itself cannot serve as the reproduction
+    anchor. iris.polito.it regenerates its postprint on every request -- two
+    consecutive fetches of the RoAD paper differ in length (437,446 vs 437,447 bytes)
+    since the repository stamps a cover page and PDF metadata per download -- while the
+    extracted text is byte-identical across fetches. A reviewer re-running the fetch
+    would otherwise see a SHA256 mismatch and reasonably suspect tampering. The text
+    hash is the quantity that is actually stable, so it is the one recorded for
+    reproduction.
+
+    Returns (stem, pages, chars, text_sha256).
+    """
     import pymupdf
 
     out_dir = pdf_dir / "text"
     out_dir.mkdir(parents=True, exist_ok=True)
-    results: list[tuple[str, int, int]] = []
+    results: list[tuple[str, int, int, str]] = []
     for pdf in sorted(pdf_dir.glob("*.pdf")):
         doc = pymupdf.open(pdf)
         text = "".join(
             f"\n<<<PAGE {i + 1}>>>\n" + page.get_text() for i, page in enumerate(doc)
         )
         cleaned = strip_control_characters(text)
-        (out_dir / f"{pdf.stem}.txt").write_text(cleaned, encoding="utf-8")
-        results.append((pdf.stem, doc.page_count, len(cleaned)))
+        text_path = out_dir / f"{pdf.stem}.txt"
+        text_path.write_text(cleaned, encoding="utf-8")
+        results.append((pdf.stem, doc.page_count, len(cleaned), sha256_text(cleaned)))
         doc.close()
+
+    write_manifest(
+        out_dir / "text_manifest.json",
+        {
+            "note": (
+                "SHA256 of the EXTRACTED TEXT, which is the stable reproduction anchor. "
+                "Some repository PDFs are regenerated per request and are not "
+                "byte-reproducible; see the docstring of extract_text."
+            ),
+            "generated_utc": utc_stamp(),
+            "extractor": "pymupdf get_text(), page-marked, control characters stripped",
+            "texts": [
+                {
+                    "stem": stem,
+                    "pages": pages,
+                    "chars": chars,
+                    "pdf_sha256": sha256_file(pdf_dir / f"{stem}.pdf"),
+                    "pdf_bytes": (pdf_dir / f"{stem}.pdf").stat().st_size,
+                    "text_sha256": text_sha,
+                }
+                for stem, pages, chars, text_sha in results
+            ],
+        },
+    )
     return results
 
 
@@ -425,8 +597,8 @@ def main(argv: list[str] | None = None) -> int:
     manifest_dir = layout.literature_access_manifest
 
     if args.extract_text:
-        for stem, pages, chars in extract_text(out_dir):
-            print(f"  {stem:28s} pages={pages:3d} chars={chars:>8,}")
+        for stem, pages, chars, text_sha in extract_text(out_dir):
+            print(f"  {stem:28s} pages={pages:3d} chars={chars:>8,}  text_sha256={text_sha[:16]}")
         return 0
 
     wanted = {s.strip() for s in args.only.split(",") if s.strip()}
@@ -441,6 +613,7 @@ def main(argv: list[str] | None = None) -> int:
         resolve_openalex(resolution, session)
         resolve_unpaywall(resolution, session)
         resolve_semantic_scholar(resolution, session)
+        resolve_openaire(resolution, session)
         resolve_arxiv(resolution, session)
         fetch_fulltext(resolution, session, out_dir)
         resolution.canonical_citation_year = resolution.publication_year
@@ -502,7 +675,12 @@ def main(argv: list[str] | None = None) -> int:
             ),
         },
     )
+    log_path = manifest_dir / "negative_search_log.md"
+    log_text = render_negative_search_log(resolutions, cfg.run_id)
+    log_path.write_text(log_text, encoding="utf-8")
+
     print(f"\nmanifest  {csv_path}")
+    print(f"neg log   {log_path}  sha256={sha256_text(log_text)[:16]}")
     print(f"levels    {levels}")
     return 0
 

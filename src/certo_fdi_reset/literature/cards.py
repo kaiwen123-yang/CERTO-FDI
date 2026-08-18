@@ -116,12 +116,40 @@ def render_matrix(cards: list[dict], rows: list[dict]) -> str:
             else "".join(f"- {c['paper_id']}\n" for c in killers)
         ),
         "",
-        "This is a statement about the cards written so far, not a conclusion: 7 of the 15 Wave A",
-        "targets have no card yet, and 5 of those are metadata-only at publishers that refuse this",
-        "host. §7.2 forbids reading a missing full text as evidence that no competitor exists.",
+    ]
+    lines += coverage_caveat(rows)
+    return "\n".join(lines)
+
+
+def coverage_caveat(rows: list[dict]) -> list[str]:
+    """State the Wave A shortfall from the target list, never from a typed-in number.
+
+    An earlier version of this footer carried the counts as literal text and went stale
+    the moment two more cards were written. The numbers below are derived, so the caveat
+    cannot drift away from the evidence it is warning about.
+    """
+    from .fulltext import WAVE_A
+
+    have = {r["paper_id"] for r in rows}
+    missing = [t.target_id for t in WAVE_A if t.target_id not in have]
+    total = len(WAVE_A)
+    if not missing:
+        return [
+            f"All {total} Wave A targets have a full-text card.",
+            "",
+        ]
+    return [
+        f"This is a statement about the {len(rows)} cards written so far, not a conclusion.",
+        f"**{len(missing)} of the {total} Wave A targets still have no card**, because no lawful",
+        "full text was reachable for them after the §7.6 ladder was exhausted:",
+        "",
+        *[f"- `{name}`" for name in missing],
+        "",
+        "§7.2 forbids reading a missing full text as evidence that no competitor exists, so none",
+        "of the PLAUSIBLY_OPEN verdicts above may be promoted to a novelty claim while these",
+        "remain unread. See `negative_search_log.md` for the per-target access trail.",
         "",
     ]
-    return "\n".join(lines)
 
 
 def build_parser() -> argparse.ArgumentParser:

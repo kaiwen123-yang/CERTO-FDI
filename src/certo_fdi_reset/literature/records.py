@@ -142,11 +142,26 @@ def dedup_key(record: LiteratureRecord) -> str:
     return f"tay:{title}|{author}|{year}"
 
 
-def deduplicate(records: list[LiteratureRecord]) -> list[LiteratureRecord]:
-    """Collapse duplicates, then fold title-keyed records into DOI-keyed twins.
+# A title shorter than this is too generic to merge on ("Index", "Anomaly
+# Detection", "Rigid Body Dynamics" all appear as distinct works).
+MIN_TITLE_CHARS_FOR_TITLE_MERGE = 30
 
-    A record found on arXiv without a DOI and again on Crossref with one would
-    otherwise be counted twice and inflate the discovery total.
+
+def deduplicate(records: list[LiteratureRecord]) -> list[LiteratureRecord]:
+    """Collapse duplicates in three passes.
+
+    1. Exact key (DOI, else title+author+year).
+    2. Fold DOI-less records into a DOI-carrying twin with the same title -- an
+       arXiv hit and its published version would otherwise be counted twice.
+    3. Fold records that share a distinctive title *and* first author even when
+       both carry DOIs. Journal, conference, preprint and dataset records of the
+       same work get separate DOIs; without this the UR5e comparison paper alone
+       appears five times and inflates the discovery total.
+
+    Pass 3 is deliberately conservative: it requires a title of at least
+    ``MIN_TITLE_CHARS_FOR_TITLE_MERGE`` characters and an agreeing first-author
+    surname (or a missing author on one side), so genuinely distinct works that
+    share a generic title are not merged.
     """
     merged: dict[str, LiteratureRecord] = {}
     for record in records:
@@ -156,6 +171,7 @@ def deduplicate(records: list[LiteratureRecord]) -> list[LiteratureRecord]:
         else:
             merged[key] = record
 
+    # Pass 2: DOI-less into DOI-carrying twin.
     by_title: dict[tuple[str, str], LiteratureRecord] = {}
     for record in merged.values():
         if record.doi:
@@ -169,14 +185,38 @@ def deduplicate(records: list[LiteratureRecord]) -> list[LiteratureRecord]:
             title = normalize_title(record.title)
             twin = by_title.get((title, str(record.year or "")))
             if twin is None and title:
-                # Same title, unknown year on one side: accept a year-agnostic match.
                 candidates = [v for (t, _y), v in by_title.items() if t == title]
                 twin = candidates[0] if len(candidates) == 1 else None
             if twin is not None:
                 twin.merge(record)
                 continue
         survivors[key] = record
-    return list(survivors.values())
+
+    # Pass 3: same distinctive title + first author, differing DOIs.
+    final: dict[str, LiteratureRecord] = {}
+    title_author_index: dict[tuple[str, str], str] = {}
+    for key, record in survivors.items():
+        title = normalize_title(record.title)
+        author = surname(record.authors[0]) if record.authors else ""
+        if len(title) >= MIN_TITLE_CHARS_FOR_TITLE_MERGE:
+            existing_key = title_author_index.get((title, author))
+            if existing_key is None and author:
+                # Allow a match against a twin whose author list was empty.
+                existing_key = title_author_index.get((title, ""))
+            if existing_key is None and not author:
+                candidates = [
+                    k for (t, _a), k in title_author_index.items() if t == title
+                ]
+                existing_key = candidates[0] if len(candidates) == 1 else None
+            if existing_key is not None:
+                winner = final[existing_key]
+                winner.merge(record)
+                if not winner.authors and record.authors:
+                    winner.authors = record.authors
+                continue
+            title_author_index[(title, author)] = key
+        final[key] = record
+    return list(final.values())
 
 
 assert CSV_COLUMNS[0] == "record_id"

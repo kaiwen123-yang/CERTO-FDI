@@ -250,3 +250,84 @@ def test_unreachable_databases_are_declared():
     for db in ("ieee_xplore", "scopus", "web_of_science", "acm_dl", "sciencedirect"):
         assert db in UNREACHABLE_DATABASES
         assert UNREACHABLE_DATABASES[db]
+
+
+# --- dedup pass 3: same work, different DOIs ---------------------------------
+
+def test_same_title_and_author_merges_across_differing_dois():
+    """The UR5e comparison paper appeared 5x under journal/preprint/dataset DOIs."""
+    title = "An experimental comparison of anomaly detection methods for collaborative robot manipulators"
+    variants = [
+        LiteratureRecord(title=title, doi="10.1/journal", authors=["A. Graabaek"], year=2022,
+                         source_apis={"openalex"}),
+        LiteratureRecord(title=title, doi="10.2/preprint", authors=["A. Graabaek"], year=2022,
+                         source_apis={"crossref"}),
+        LiteratureRecord(title=title, doi="10.5281/zenodo.5849300", authors=["A. Graabaek"],
+                         year=2022, source_apis={"crossref"}),
+    ]
+    merged = deduplicate(variants)
+    assert len(merged) == 1
+    assert merged[0].source_apis == {"openalex", "crossref"}
+
+
+def test_generic_short_titles_are_never_merged():
+    """"Index", "Anomaly Detection", "Rigid Body Dynamics" are distinct works."""
+    generic = [
+        LiteratureRecord(title="Anomaly Detection", doi="10.1/a", authors=["X. One"]),
+        LiteratureRecord(title="Anomaly Detection", doi="10.1/b", authors=["Y. Two"]),
+        LiteratureRecord(title="Index", doi="10.1/c"),
+        LiteratureRecord(title="Index", doi="10.1/d"),
+    ]
+    assert len(deduplicate(generic)) == 4
+
+
+def test_distinctive_title_with_different_authors_is_not_merged():
+    long_title = "A Very Distinctive And Sufficiently Long Paper Title About Robots"
+    records = [
+        LiteratureRecord(title=long_title, doi="10.1/a", authors=["A. One"]),
+        LiteratureRecord(title=long_title, doi="10.1/b", authors=["B. Two"]),
+    ]
+    assert len(deduplicate(records)) == 2
+
+
+# --- citation-chase anchors ---------------------------------------------------
+
+def test_all_eight_contract_anchors_are_declared():
+    from certo_fdi_reset.literature.seeds import MANDATORY_ANCHORS
+
+    assert len(MANDATORY_ANCHORS) == 8
+    ids = {a.anchor_id for a in MANDATORY_ANCHORS}
+    assert ids == {
+        "annual_review_2026", "haddadin_2017", "evangelisti_hirche_2024",
+        "mobnet_2025", "voraus_ad_2024", "road_2023", "aursad_2021", "ms_hgnn_2025",
+    }
+    for anchor in MANDATORY_ANCHORS:
+        assert anchor.title and anchor.lineage
+
+
+def test_anchor_resolution_flags_a_year_mismatch(monkeypatch):
+    """Contract 20 seeds are unverified; a wrong year must surface, not pass silently."""
+    from certo_fdi_reset.literature.seeds import Anchor, CitationChaser
+
+    chaser = CitationChaser(pause=0.0)
+    anchor = Anchor("x", "Some Title", expected_year=2026)
+    monkeypatch.setattr(
+        chaser, "resolve",
+        lambda a: {"id": "https://openalex.org/W1", "title": "Some Title",
+                   "publication_year": 2019, "referenced_works": []},
+    )
+    monkeypatch.setattr(chaser, "_get", lambda url, params: None)
+    result = chaser.chase(anchor)
+    assert result.resolved is True
+    assert "YEAR_MISMATCH" in result.note
+
+
+def test_unresolved_anchor_is_recorded_not_dropped(monkeypatch):
+    from certo_fdi_reset.literature.seeds import Anchor, CitationChaser
+
+    chaser = CitationChaser(pause=0.0)
+    monkeypatch.setattr(chaser, "resolve", lambda a: None)
+    result = chaser.chase(Anchor("x", "Nonexistent Paper"))
+    assert result.resolved is False
+    assert "UNRESOLVED" in result.note
+    assert result.as_csv_row()["resolved"] == "false"

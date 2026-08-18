@@ -197,9 +197,9 @@ def _road() -> DatasetD0:
         redistribution_allowed=False,
         noncommercial_only=None,
         access_route="pip install git+https://gitlab.com/AlessioMascolini/roaddataset (data ships inside the package)",
-        robot="KUKA production-line robotic arm (column prefix `machine_nameKuka Robot_`), 7 IMU sensor ids 0..6",
+        robot="KUKA LBR iiwa collaborative manipulator, 7 DoF, in a pilot production line; 7 IMU sensor ids 0..6 (identified from the VARADE paper p4 by the same authors)",
         task="production line pick/handling with induced anomalies",
-        sampling_rate_hz=None,
+        sampling_rate_hz=200.0,
         episode_unit="recording (list element per subset)",
         channel_count=87,
         documented_signals=[
@@ -257,7 +257,7 @@ def _road() -> DatasetD0:
         redistribution_note="Local research analysis proceeds provisionally; redistribution of raw data is forbidden, in git and in review packages alike.",
         signal_groups=[
             {"group": "action", "channels": "robot action ID", "count": 1},
-            {"group": "whole-system electrical", "channels": "apparent power … voltage", "count": 8},
+            {"group": "whole-system electrical", "channels": "apparent power … voltage (Eastron SDM230 single-phase meter)", "count": 8},
             {"group": "per-joint IMU linear", "channels": "3-axis acceleration × 7 joints", "count": 21},
             {"group": "per-joint IMU angular", "channels": "3-axis angular velocity × 7 joints", "count": 21},
             {"group": "per-joint orientation", "channels": "quaternion (4) × 7 joints", "count": 28},
@@ -276,14 +276,19 @@ def _road() -> DatasetD0:
             "gitlab.com/AlessioMascolini/varade @ 43f9b3c8. Ships VAAR.py, Transformer.py, "
             "autoencoder.py, BERTTrainer.py, positionalEncoding.py, main.py, trained checkpoints "
             "(VAAR, AE, ARLSTM, BERT, GBRT, IsolationForest, KNN), and a bundled copy of only the "
-            "training and collision subsets."
+            "training and collision subsets. Reported result: AUC-ROC 0.84 on an 82-minute collision "
+            "recording containing 125 human-induced collisions (VARADE p5). SCOPE LIMIT: the native "
+            "baseline covers the COLLISION condition only -- weight, velocity and control have no "
+            "native baseline, so any number we produce there is our own policy baseline, not a "
+            "reproduction."
         ),
         open_verifications=[
-            "Sampling rate is not stated in the README and the arrays carry no timestamp column, so it can only come from the paper.",
-            "Quaternion component order (w-first vs w-last) is undocumented.",
+            "RESOLVED via VARADE p4 (same authors, evidence level A2): the 7 IMUs (DFRobot SEN0386) stream at 200 Hz after an on-sensor Kalman filter. The robot's OWN controller interface is limited to 5 Hz, which is why IMUs were added at all -- so nothing in this dataset comes from the robot controller.",
+            "PARTIALLY RESOLVED via VARADE p4: the quaternions are not raw IMU output -- the authors converted the IMU's Euler angles to quaternions because the [-180,+180] deg range jumps near its extremes. The component ORDER (w-first vs w-last) is still undocumented and must be settled numerically before any orientation-aware feature is built.",
             "Frame convention, IMU mounting, and joint/link assignment per channel block are undocumented.",
             "Quaternion sign continuity across a recording is unverified.",
             "Inter-joint time synchronisation is unverified.",
+            "CONFOUND (VARADE p4): the energy meter monitors the robot AND the industrial PC on the same phase, so the 8 power channels carry PC load. A detector can score well by learning PC activity rather than robot state; power channels must be ablated separately.",
             "Units for acceleration, angular velocity, and temperature are unstated.",
             "RESOLVED: the training subset genuinely has 86 columns. The official loader still slices [:, 86:] for it, which yields an empty (N,0) array, so training comes back with 86 columns while every other subset has 87. Any downstream code that assumes a uniform width breaks silently.",
             "Quaternion channels are named sensor_idK_q1..q4; whether q1 is the scalar part is still undocumented.",
@@ -392,9 +397,16 @@ def _aursad() -> DatasetD0:
         normalization="Loader offers optional z-score standardisation; must be fitted on training only.",
         leakage_risks=[
             "The loader's sliding-window 'prediction mode' labels a window by the NEXT sample's class, which mixes horizons; the labelling mode must be frozen before any result.",
+            "CRITICAL LEAKAGE RISK (AURSAD paper p15): of the 134 columns, several are auxiliary features 'intentionally added during data collection to allow for easier data manipulation and labeling' and are 'not representative of the actual data that the UR or screwdriver provide'. The paper's recommended feature count is 125. Training on all 134 can leak the label through its own labelling helpers, so the 125-feature set must be fixed before any AURSAD result.",
             "Damaged-thread has n=3 samples: any split that puts all three on one side makes that class unlearnable or untestable. Per-class counts must be reported.",
         ],
-        native_baseline="Paper's own ML benchmarks; official aursad Python package (MIT)",
+        native_baseline=(
+            "The paper's own benchmarks are SUPERVISED multi-class classifiers, not healthy-only "
+            "anomaly detection: LSTM F1 4.79% on raw data (it collapsed to a single class), TABL "
+            "43.11%, and after PCA 44.68% / 71.02% (p19). A faithful native reproduction here "
+            "reproduces a supervised classifier; a healthy-only detector is a DIFFERENT TASK on the "
+            "same data and may not be compared to these numbers as if it were the same benchmark."
+        ),
         open_verifications=[
             "RESOLVED: 134 columns confirmed in the HDF5 (block0 7 uint8, block1 111 float64, block2 15 int64, block3 1 int32), 6,249,074 rows, timestamp dt exactly 0.01 s = 100.00 Hz.",
             "RESOLVED: measured joint position and velocity ARE present (actual_q, actual_qd), but there is NO measured joint torque -- only target_moment (commanded) and actual_current. Grade is therefore P2, not P3.",
@@ -409,6 +421,7 @@ def _aursad() -> DatasetD0:
         ],
         forbidden_claims=[
             "calling a screwdriving process anomaly a manipulator body fault",
+            "comparing a healthy-only anomaly score against the paper's supervised F1 numbers as though they measured the same task",
             "any physics-residual claim before the schema audit resolves what is actually recorded",
         ],
         evidence=[

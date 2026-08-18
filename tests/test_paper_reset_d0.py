@@ -115,3 +115,37 @@ def test_no_mandatory_dataset_permits_rnea():
     for record in build_cards():
         if record.card.dataset_id in MANDATORY:
             assert "rnea_gmo_public" not in record.card.permitted_adapters
+
+
+def test_smoke_log_parsing_and_level_rules():
+    """A reproduction level must be earned: any pin mismatch or code edit downgrades it."""
+    from certo_fdi_reset.baselines.smoke_record import (
+        dependency_deltas,
+        parse_log,
+        reproduction_level,
+    )
+
+    log = (
+        "loading data took 5.225 seconds\n"
+        "Epoch 000: auroc(mean)=0.311, loss=0.056834\n"
+        "Epoch 009: auroc(mean)=0.814, loss=-1.910243\n"
+        "PASSED\n"
+        "1 passed in 363.81s (0:06:03)\n"
+    )
+    result = parse_log(log, "voraus_ad")
+    assert result.outcome == "PASS"
+    assert len(result.epochs) == 2
+    assert result.final_auroc == 0.814
+    assert result.best_auroc == 0.814
+    assert result.wall_seconds == 363.81
+    assert result.stage_timings["loading data"] == 5.225
+
+    clean = dependency_deltas({"torch": "1.12.1"}, {"torch": "1.12.1"})
+    assert clean[0]["status"] == "MATCH"
+    assert reproduction_level(clean, code_modified=False, device="cpu") == "EXACT_OFFICIAL_CPU"
+    # A modified official checkout can never be EXACT, however well it scores.
+    assert reproduction_level(clean, code_modified=True, device="cpu") == "FAITHFUL_PAPER"
+
+    drifted = dependency_deltas({"torch": "1.12.1"}, {"torch": "2.13.0"})
+    assert drifted[0]["status"] == "MISMATCH"
+    assert reproduction_level(drifted, code_modified=False, device="cpu") == "FAITHFUL_PAPER"

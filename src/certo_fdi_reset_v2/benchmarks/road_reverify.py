@@ -174,6 +174,7 @@ class GruAE:
         torch.manual_seed(seed)
         np.random.seed(seed)
         self.torch, self.nn = torch, nn
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.groups = groups
         self.epochs, self.lr = epochs, lr
         if groups is None:
@@ -187,6 +188,8 @@ class GruAE:
         self.dec = nn.GRU(dec_in, dec_in, batch_first=True)
         self.head = nn.Linear(dec_in, n_ch)
         mods = ([self.enc] if self.enc is not None else list(self.encs)) + [self.dec, self.head]
+        for m in mods:
+            m.to(self.device)
         self.params = [p for m in mods for p in m.parameters()]
 
     def _embed(self, x):
@@ -206,7 +209,7 @@ class GruAE:
 
     def fit(self, train_w: np.ndarray, batch: int = 64):
         t = self.torch
-        x = t.tensor(train_w, dtype=t.float32)
+        x = t.tensor(train_w, dtype=t.float32, device=self.device)
         opt = t.optim.Adam(self.params, lr=self.lr)
         loss_fn = self.nn.MSELoss()
         n = len(x)
@@ -225,9 +228,9 @@ class GruAE:
         out = []
         with t.no_grad():
             for i in range(0, len(test_w), batch):
-                xb = t.tensor(test_w[i : i + batch], dtype=t.float32)
+                xb = t.tensor(test_w[i : i + batch], dtype=t.float32, device=self.device)
                 err = ((self._recon(xb) - xb) ** 2).mean(dim=(1, 2))
-                out.append(err.numpy())
+                out.append(err.cpu().numpy())
         return np.concatenate(out) if out else np.empty((0,))
 
 
@@ -287,6 +290,7 @@ def evaluate_split(road: Road, train_ids: list[int], seed: int,
     train_w = np.concatenate([prep(a)[0] for a in train_arrays], axis=0)
     out: dict = {}
     for m in models:
+        print(f"[eval] model={m}", flush=True)
         per_set = {}
         for set_name, recs in road.anomalies.items():
             ys, ss = [], []

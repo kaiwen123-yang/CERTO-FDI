@@ -1,0 +1,61 @@
+version: 1
+stage: paper_reset_v2r_mead_submission_closure
+
+algorithm_states:
+  - ALGORITHM_NO_GO_CURRENT_METHOD_PUBLIC_DATA
+  - ALGORITHM_EVIDENCE_REOPENED_MEAD_PHYSICS_RESIDUAL
+  - ALGORITHM_EVIDENCE_REOPENED_CONTEXT_CALIBRATION
+  - ALGORITHM_INCONCLUSIVE
+
+benchmark_artifact_states:
+  - BENCHMARK_ARTIFACT_SUBMISSION_READY
+  - BENCHMARK_ARTIFACT_MAJOR_REVISION
+  - BENCHMARK_ARTIFACT_NO_GO
+  - BENCHMARK_ARTIFACT_BLOCKED
+
+submission_readiness:
+  - READY_RAL_ICRA_BENCHMARK
+  - READY_TRO_EVALUATION_PAPER
+  - NOT_READY
+  - BLOCKED
+
+combined_states:
+  - V2R_READY_BENCHMARK_PAPER
+  - V2R_MAJOR_REVISION_REQUIRED
+  - V2R_NO_GO_BENCHMARK_PAPER
+  - V2R_REOPEN_METHOD_DISCUSSION
+  - V2R_BLOCKED
+
+mead_physics_residual_gate:
+  min_tasks_with_gain: 4
+  tasks_total: 7
+  auroc_gain: 0.03
+  auprc_gain: 0.05
+  max_relative_fpr_tpr90_worsening: 0.10
+  min_concordant_seeds: 2
+  require_blind_all_joint_score: true
+  require_permuted_joint_control: true
+  require_earlier_detection_in_min_tasks: 4
+
+context_calibration_gate:
+  min_datasets: 2
+  min_false_alarm_reduction_fraction: 0.30
+  min_frontends: 3
+  min_concordant_seeds: 2
+  require_permutation_control: true
+  require_no_detection_degradation: true
+
+benchmark_submission_ready:
+  mandatory_datasets:
+    - voraus_ad
+    - road
+    - aursad
+    - me_ad
+  require_aursad_dual_protocol: true
+  require_mead_progressive_metrics: true
+  require_universal_core_matrix: true
+  require_dataset_native_matrix: true
+  require_self_contained_literature: true
+  require_code_snapshot_or_git_bundle: true
+  require_per_seed_predictions_or_metrics: true
+  require_claim_table_consistency: true

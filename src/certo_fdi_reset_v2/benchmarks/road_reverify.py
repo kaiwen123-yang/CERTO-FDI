@@ -236,18 +236,50 @@ class GruAE:
 
 MODELS = ("pca_spe", "knn", "iforest", "gru_ae")
 
+# Fit-once cache. Deterministic seeds mean a cached fit is numerically identical
+# to a refit; this only removes the redundant per-recording refits that made the
+# first runs pathologically slow. Keyed on the training-array object identity,
+# which stays alive for the duration of each experiment's split scope.
+_FIT_CACHE: dict = {}
+
+
+def _scorer(name: str, train_w, seed: int, groups):
+    key = (name, seed, id(train_w), repr(groups)[:200])
+    if key in _FIT_CACHE:
+        return _FIT_CACHE[key]
+    if name == "pca_spe":
+        from sklearn.decomposition import PCA
+        Xtr = train_w.reshape(len(train_w), -1)
+        pca = PCA(n_components=0.95, svd_solver="full").fit(Xtr)
+        def fn(test_w):
+            Xte = test_w.reshape(len(test_w), -1)
+            rec = pca.inverse_transform(pca.transform(Xte))
+            return ((Xte - rec) ** 2).mean(1)
+    elif name == "knn":
+        from sklearn.neighbors import NearestNeighbors
+        nn = NearestNeighbors(n_neighbors=5).fit(train_w.reshape(len(train_w), -1))
+        def fn(test_w):
+            d, _ = nn.kneighbors(test_w.reshape(len(test_w), -1))
+            return d.mean(1)
+    elif name == "iforest":
+        from sklearn.ensemble import IsolationForest
+        f = IsolationForest(n_estimators=200, random_state=seed).fit(
+            train_w.reshape(len(train_w), -1))
+        def fn(test_w):
+            return -f.score_samples(test_w.reshape(len(test_w), -1))
+    elif name == "gru_ae":
+        model = GruAE(train_w.shape[2], groups=groups, seed=seed).fit(train_w)
+        fn = model.score
+    else:
+        raise ValueError(name)
+    _FIT_CACHE[key] = fn
+    if len(_FIT_CACHE) > 64:
+        _FIT_CACHE.pop(next(iter(_FIT_CACHE)))
+    return fn
+
 
 def model_scores(name: str, train_w, test_w, seed: int, groups=None) -> np.ndarray:
-    if name == "pca_spe":
-        return score_pca_spe(train_w, test_w)
-    if name == "knn":
-        return score_knn(train_w, test_w)
-    if name == "iforest":
-        return score_iforest(train_w, test_w, seed)
-    if name == "gru_ae":
-        n_ch = train_w.shape[2]
-        return GruAE(n_ch, groups=groups, seed=seed).fit(train_w).score(test_w)
-    raise ValueError(name)
+    return _scorer(name, train_w, seed, groups)(test_w)
 
 
 # -------------------------------------------------------------- experiments --

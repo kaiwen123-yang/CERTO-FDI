@@ -212,11 +212,12 @@ def extras():
     for fk, v in cp.items():
         if not fk.startswith("frac_"):
             continue
-        entry = v if isinstance(v, dict) else {"auroc": v}
         se_rows.append(dict(dataset="voraus_ad", model="ocsvm", frac=fk.split("_")[1],
                             seed="sealed_v2", status="MEASURED",
-                            auroc=round(float(entry.get("auroc_mean", entry.get("auroc"))), 4),
-                            source="v2/confirm/confirm_pass.json", reason=""))
+                            auroc=round(float(v["marginal_auroc"]), 4),
+                            source=f"v2/confirm/confirm_pass.json (n_fit_episodes={v['n_fit_episodes']}; "
+                                   f"ctx_z variant {v['ctx_z_auroc']:.4f} recorded separately)",
+                            reason=""))
     sj = json.loads((V2R / "mead/mead_sample_efficiency.json").read_text())
     for k, v in sj.items():
         seed, frac = k.split("_frac")

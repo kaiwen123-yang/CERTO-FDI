@@ -243,8 +243,14 @@ MODELS = ("pca_spe", "knn", "iforest", "gru_ae")
 _FIT_CACHE: dict = {}
 
 
+def _fingerprint(a: np.ndarray) -> tuple:
+    # content-aware cache key: id() may be reused after gc (observed: an 86-ch
+    # model served a 93-ch array), so key on shape + cheap content probes.
+    return (a.shape, a.dtype.str, float(a[0].sum()), float(a[-1].sum()), round(float(a.mean()), 9))
+
+
 def _scorer(name: str, train_w, seed: int, groups):
-    key = (name, seed, id(train_w), repr(groups)[:200])
+    key = (name, seed, _fingerprint(train_w), repr(groups)[:200])
     if key in _FIT_CACHE:
         return _FIT_CACHE[key]
     if name == "pca_spe":

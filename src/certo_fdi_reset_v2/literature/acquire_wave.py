@@ -95,9 +95,49 @@ WAVE_V2A: tuple[Target, ...] = (
 )
 
 
+#: Wave B closes the lineage-quota gaps L500 left (L5 especially), adds the
+#: curated classics reachable through author/institutional copies, and the
+#: canonical recent-MTSAD candidates. Known-item additions not in the 680-row
+#: screening set are recorded in screening_delta batch_18 for auditability.
+WAVE_V2B: tuple[Target, ...] = (
+    Target("approx_equiv_icml22", "Approximately Equivariant Networks for Imperfectly Symmetric Dynamics", doi="10.48550/arxiv.2201.11969", arxiv_id="2201.11969", role="l5", why_wave_a="approximate equivariance foundation (ICML22)"),
+    Target("approx_equiv_gnn23", "Approximately Equivariant Graph Networks", role="l5", why_wave_a="approximate equivariance for graphs (NeurIPS23)"),
+    Target("approx_equiv_np24", "Approximately Equivariant Neural Processes", role="l5", why_wave_a="approximate equivariance in meta-learning (NeurIPS24)"),
+    Target("sym_structured_matrices24", "Symmetry-Based Structured Matrices for Efficient Approximately Equivariant Networks", role="l5", why_wave_a="efficient approximate equivariance"),
+    Target("algebraic_priors25", "Algebraic Priors for Approximately Equivariant Networks", role="l5", why_wave_a="2025 approximate-equivariance theory"),
+    Target("equact_se3_25", "EquAct: An SE(3)-Equivariant Multi-Task Transformer for Open-Loop Robotic Manipulation", role="l5", why_wave_a="where exact equivariance DOES work in manipulation"),
+    Target("se3_kinematics_ral22", "Augmented Neural Network for Full Robot Kinematic Modelling in SE(3)", doi="10.1109/lra.2022.3180428", role="l5", why_wave_a="SE(3)-structured model learning"),
+    Target("anomaly_transformer_iclr22", "Anomaly Transformer: Time Series Anomaly Detection with Association Discrepancy", arxiv_id="2110.02642", role="mtsad", why_wave_a="canonical recent MTSAD (ICLR22); known-item addition"),
+    Target("usad_kdd20", "USAD: UnSupervised Anomaly Detection on Multivariate Time Series", doi="10.1145/3394486.3403392", role="mtsad", why_wave_a="classic-slot MTSAD baseline (KDD20)"),
+    Target("idempotent_neurips25", "Multivariate Time Series Anomaly Detection with Idempotent Reconstruction", doi="10.52202/085713-5374", role="mtsad", why_wave_a="newest reconstruction family (NeurIPS25)"),
+    Target("safepr_arxiv25", "SafePR: Unified Approach for Safe Parallel Robots by Contact Detection and Reaction with Redundancy Resolution", doi="10.48550/arxiv.2501.17773", arxiv_id="2501.17773", role="neighbor", why_wave_a="L6 Hannover PR line"),
+    Target("pr_clamping_arxiv23", "Safe Collision and Clamping Reaction for Parallel Robots During Human-Robot Collaboration", doi="10.48550/arxiv.2308.09656", arxiv_id="2308.09656", role="neighbor", why_wave_a="collision-vs-clamping discrimination"),
+    Target("mad_cnn_arxiv23", "Robust Collision Detection for Robots with Variable Stiffness Actuation by Using MAD-CNN: Modularized-Attention-Dilated Convolutional Neural Network", doi="10.48550/arxiv.2310.02573", arxiv_id="2310.02573", role="neighbor", why_wave_a="modular attention collision detection"),
+    Target("kinetostatic_pr_icra23", "Towards Human-Robot Collaboration with Parallel Robots by Kinetostatic Analysis, Impedance Control and Contact Detection", doi="10.1109/icra48891.2023.10161217", role="neighbor", why_wave_a="PR kinetostatic contact detection"),
+    Target("deluca_mattone_icra03", "Actuator failure detection and isolation using generalized momenta", role="classic", why_wave_a="the generalized-momentum FDI origin (ICRA03)"),
+    Target("deluca_iros06", "Collision detection and safe reaction with the DLR-III lightweight manipulator arm", role="classic", why_wave_a="collision detection via MOB classic (IROS06)"),
+    Target("federated_xrobot_plos25", "Federated fault diagnosis method for collaborative self-diagnosis and cross-robot peer diagnosis", doi="10.1371/journal.pone.0322484", role="crossrobot", why_wave_a="cross-robot peer diagnosis"),
+    Target("lstm_contact_transfer_techrxiv25", "Learning-Based Contact Interpretation with LSTM Networks: A Transferable Skill for Robots", doi="10.36227/techrxiv.174742058.83011810/v1", role="crossrobot", why_wave_a="claimed cross-DoF transferable contact interpretation"),
+    Target("clue_ai_access23", "CLUE-AI: A Convolutional Three-Stream Anomaly Identification Framework for Robot Manipulation", doi="10.1109/access.2023.3276297", role="l9", why_wave_a="multimodal manipulation anomaly identification"),
+    Target("multimodal_hrc_sciprog21", "Comparison of deep learning-based methods in multimodal anomaly detection: A case study in human-robot collaboration", doi="10.1177/00368504211021192", role="l9", why_wave_a="multimodal robot AD comparison"),
+    Target("sensorimotor_graph_iros21", "SENSORIMOTOR GRAPH: Action-Conditioned Graph Neural Network for Learning Robotic Soft Hand Dynamics", doi="10.1109/iros51168.2021.9636377", role="l4", why_wave_a="action-conditioned graph dynamics"),
+    Target("pinn_cobot_ral23", "Physics-Informed Neural Network for Model Prediction and Dynamics Parameter Identification of Collaborative Robot Joints", doi="10.1109/lra.2023.3329620", role="l4", why_wave_a="PINN cobot joint dynamics"),
+    Target("kalmannet_tsp22", "KalmanNet: Neural Network Aided Kalman Filtering for Partially Known Dynamics", doi="10.1109/tsp.2022.3158588", arxiv_id="2107.10043", role="l4", why_wave_a="hybrid structured estimation"),
+    Target("active_inference_survey21", "Active Inference in Robotics and Artificial Agents: Survey and Challenges", doi="10.48550/arxiv.2112.01871", arxiv_id="2112.01871", role="l11", why_wave_a="active-inference robotics anchor"),
+    Target("fd_ftc_review_arxiv24", "Review on Fault Diagnosis and Fault-Tolerant Control Scheme for Robotic Manipulators: Recent Advances in AI, Machine Learning, and Digital Twin", doi="10.48550/arxiv.2402.02980", role="review", why_wave_a="recent robot FD/FTC review"),
+    Target("grounded_anomaly_jint21", "Endowing Robots with Longer-term Autonomy by Recovering from External Disturbances in Manipulation Through Grounded Anomaly Classification and Recovery Policies", doi="10.1007/s10846-021-01312-6", role="l7", why_wave_a="anomaly classification + recovery line"),
+    Target("screwdriving_usecase_lnme21", "Detecting Faults During Automatic Screwdriving: A Dataset and Use Case of Anomaly Detection for Automatic Screwdriving", doi="10.1007/978-3-030-90700-6_25", role="dataset", why_wave_a="AURSAD-adjacent screwdriving AD use case"),
+    Target("active_fdia_defence_26", "From Passive Monitoring to Active Defence: Resilient Control of Manipulators Under Cyberattacks", role="l11", why_wave_a="active defence vs stealthy FDIA"),
+    Target("lie_ft_localization_25", "Fault-Tolerant Multi-Modal Localization of Multi-Robots on Matrix Lie Groups", role="l5", why_wave_a="Lie-group estimation with fault rejection"),
+)
+
+WAVES = {"a": WAVE_V2A, "b": WAVE_V2B}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--only", default="", help="comma-separated target ids")
+    parser.add_argument("--wave", default="a", choices=sorted(WAVES))
     parser.add_argument("--extract-text", action="store_true")
     args = parser.parse_args(argv)
 
@@ -107,7 +147,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     wanted = {s.strip() for s in args.only.split(",") if s.strip()}
-    targets = [t for t in WAVE_V2A if not wanted or t.target_id in wanted]
+    targets = [t for t in WAVES[args.wave] if not wanted or t.target_id in wanted]
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     MANIFEST_DIR.mkdir(parents=True, exist_ok=True)

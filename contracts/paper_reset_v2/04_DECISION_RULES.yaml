@@ -1,0 +1,38 @@
+version: 1
+stage: paper_reset_v2_500x100_public_story_convergence
+literature_gate:
+  screened_min: 500
+  fulltext_min: 100
+  direct_neighbors_min: 35
+  killer_dossiers_min: 15
+  direct_2025_2026_min: 25
+  dataset_code_papers_min: 20
+  citation_chains_min: 10
+benchmark_gate:
+  mandatory_datasets:
+    - voraus_ad_100hz
+    - road
+    - aursad
+  native_baseline_required: true
+  universal_baseline_required: true
+  deep_model_seeds_min: 3
+method_survival:
+  min_datasets_with_gain: 2
+  auroc_gain: 0.03
+  auprc_gain: 0.05
+  max_relative_fpr_tpr90_worsening: 0.10
+  min_concordant_seeds: 2
+  min_concordant_anomaly_types_or_contexts: 2
+  require_random_feature_control: true
+  require_multi_permutation_control: true
+terminal_states:
+  - PAPER_GO_TRO_CANDIDATE
+  - PAPER_GO_ICRA_RSS_CANDIDATE
+  - PIVOT_PUBLIC_ROBOT_ANOMALY
+  - PIVOT_COLLISION_CONTACT_SPECIALIST
+  - PIVOT_BENCHMARK_DATASET_PAPER
+  - NO_GO_CURRENT_METHOD_PUBLIC_DATA
+  - NO_GO_NOVELTY_OCCUPIED
+  - NO_GO_NO_COHERENT_ROBOT_SCIENCE
+  - LITERATURE_OR_BENCHMARK_INCONCLUSIVE
+  - BLOCKED

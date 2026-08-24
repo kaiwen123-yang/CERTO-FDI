@@ -131,7 +131,85 @@ WAVE_V2B: tuple[Target, ...] = (
     Target("lie_ft_localization_25", "Fault-Tolerant Multi-Modal Localization of Multi-Robots on Matrix Lie Groups", role="l5", why_wave_a="Lie-group estimation with fault rejection"),
 )
 
-WAVES = {"a": WAVE_V2A, "b": WAVE_V2B}
+#: Wave C fills the contract-4.3 lineage quotas the first two waves left short
+#: (learned-dynamics residuals, calibration/sequential/false-alarm, cross-domain,
+#: active diagnosis, symmetry-breaking), preferring records with arXiv/OA
+#: presence. Selection provenance: pool regex mining + known-item additions,
+#: recorded in screening_delta_waveC.csv.
+WAVE_V2C: tuple[Target, ...] = (
+    # lineage 2: learned dynamics / residual / external torque
+    Target("dyn_models_scirob25", "A review of learning-based dynamics models for robotic manipulation", doi="10.1126/scirobotics.adt1497", role="l2rev", why_wave_a="Science Robotics 2025 review of learned dynamics models"),
+    Target("ext_torque_floating_23", "Proprioceptive External Torque Learning for Floating Base Robot and its Applications to Humanoid", arxiv_id="2309.04138", role="l2", why_wave_a="SNU external-torque learning line"),
+    Target("lutter_ct_dynamics_21", "Combining Physics and Deep Learning to learn Continuous-Time Dynamics Models", arxiv_id="2110.01894", role="l2", why_wave_a="physics+DL dynamics models (Lutter)"),
+    Target("structured_rbd_survey_21", "Structured learning of rigid-body dynamics: A survey and unified view from a robotics perspective", arxiv_id="2012.06250", role="l2rev", why_wave_a="contract-named structured-RBD survey"),
+    Target("lagrangian_graph_rbd_22", "Learning Articulated Rigid Body Dynamics with Lagrangian Graph Neural Network", arxiv_id="2209.11588", role="l3", why_wave_a="Lagrangian graph dynamics of articulated bodies"),
+    Target("soft_ddob_ral20", "Data-Driven Disturbance Observers for Estimating External Forces on Soft Robots", doi="10.1109/lra.2020.3010738", role="l2", why_wave_a="data-driven DOB (soft)"),
+    Target("delan_iclr19", "Deep Lagrangian Networks: Using Physics as Model Prior for Deep Learning", arxiv_id="1907.04490", role="classic", why_wave_a="DeLaN classic; basis of DeLaN-MOB line"),
+    Target("lagrangian_nn_20", "Lagrangian Neural Networks", arxiv_id="2003.04630", role="classic", why_wave_a="LNN classic"),
+    Target("hamiltonian_se3_21", "Adaptive Control of SE(3) Hamiltonian Dynamics with Learned Disturbance Features", arxiv_id="2109.09974", role="l4", why_wave_a="port-Hamiltonian SE(3) learning (contract killer list)"),
+    Target("actuator_net_scirob19", "Learning agile and dynamic motor skills for legged robots", arxiv_id="1901.08652", role="classic", why_wave_a="actuator-net classic (Science Robotics 2019)"),
+    # lineage 7: calibration / sequential / false alarms
+    Target("conformal_fm_ad_26", "Adaptive Conformal Anomaly Detection with Time Series Foundation Models for Signal Monitoring", arxiv_id="2604.20122", role="l7cal", why_wave_a="conformal AD x TS foundation models (2026)"),
+    Target("conformal_ts_bench_26", "Conformal Prediction Algorithms for Time Series Forecasting: Methods and Benchmarking", arxiv_id="2601.18509", role="l7cal", why_wave_a="conformal TS methods benchmark"),
+    Target("conformal_graph_mts_26", "Delving into Non-Exchangeability for Conformal Prediction in Graph-Structured Multivariate Time Series", arxiv_id="2605.04957", role="l7cal", why_wave_a="conformal for graph MTS under non-exchangeability"),
+    Target("conformal_beyond_exch_22", "Conformal prediction beyond exchangeability", arxiv_id="2202.13415", role="l7cal", why_wave_a="foundational: conformal under distribution drift"),
+    Target("e_detectors_22", "E-detectors: a nonparametric framework for sequential change detection", arxiv_id="2203.03532", role="l7cal", why_wave_a="modern sequential change detection with FA control"),
+    Target("conformal_pvalues_21", "Testing for Outliers with Conformal p-values", arxiv_id="2104.08279", role="l7cal", why_wave_a="foundational: calibrated outlier p-values (FDR control)"),
+    Target("qcd_review_12", "Quickest Change Detection", arxiv_id="1210.5552", role="classic", why_wave_a="sequential detection classic anchor (Veeravalli-Banerjee)"),
+    Target("conformal_ellipsoids_26", "Filtered Conformal Ellipsoids for Graph-Native Time Series", arxiv_id="2606.17014", role="l7cal", why_wave_a="multivariate conformal regions (2026)"),
+    # lineage 8: cross-domain / few-shot / shift
+    Target("causal_mechanism_fd_26", "Cross-Domain Industrial Fault Detection by Causal Mechanism Monitoring", arxiv_id="2608.14666", role="crossrobot", why_wave_a="causal-mechanism cross-domain FD (2026)"),
+    Target("xdomain_graph_ttt_25", "Cross-Domain Graph Anomaly Detection via Test-Time Training with Homophily-Guided Self-Supervision", arxiv_id="2502.14293", role="crossrobot", why_wave_a="test-time-training AD under domain shift"),
+    Target("anoshift_neurips22", "AnoShift: A Distribution Shift Benchmark for Unsupervised Anomaly Detection", arxiv_id="2206.15476", role="crossrobot", why_wave_a="distribution-shift AD benchmark"),
+    Target("adbench_neurips22", "ADBench: Anomaly Detection Benchmark", arxiv_id="2206.09426", role="crossrobot", why_wave_a="AD benchmark incl. generalization axes"),
+    # lineage 9: active diagnosis
+    Target("joint_gain_input_activefd_24", "Joint Observer Gain and Input Design for Asymptotic Active Fault Diagnosis", arxiv_id="2406.09061", role="l11", why_wave_a="arXiv version of the Automatica active-FD line"),
+    Target("geometric_activefd_20", "Fault-Structure-Based Active Fault Diagnosis: A Geometric Observer Approach", doi="10.3390/en13174475", role="l11", why_wave_a="geometric active FD (OA)"),
+    Target("active_dyn_learning_tro24", "Active Learning of Discrete-Time Dynamics for Uncertainty-Aware Model Predictive Control", doi="10.1109/tro.2023.3339543", role="l11", why_wave_a="active dynamics probing under condition change"),
+    # lineage 4 extra: symmetry breaking as signal
+    Target("symbreak_order_params_20", "Finding Symmetry Breaking Order Parameters with Euclidean Neural Networks", arxiv_id="2007.02005", role="l5", why_wave_a="symmetry-breaking as measured order parameter (physics)"),
+    Target("symbreak_equivariant_23", "Symmetry Breaking and Equivariant Neural Networks", arxiv_id="2312.09016", role="l5", why_wave_a="relaxed-equivariance theory of symmetry breaking"),
+    # lineage 3 extra
+    Target("gns_icml20", "Learning to Simulate Complex Physics with Graph Networks", arxiv_id="2002.09405", role="classic", why_wave_a="graph-network simulation classic"),
+    # lineage 5 datasets
+    Target("pyscrew_descriptor", "PyScrew: A comprehensive collection of industrial screw driving datasets", role="dataset", why_wave_a="PyScrew data descriptor (title-resolve)"),
+)
+
+#: Wave D: 2025-2026 direct-relevance top-up + last classics + retries.
+WAVE_V2D: tuple[Target, ...] = (
+    Target("drift_wolf_26", "When Drift Detectors cry Wolf: False Alarm Rates in continuous ML Monitoring", arxiv_id="2607.17336", role="l7cal", why_wave_a="false-alarm behaviour of drift detectors (2026)"),
+    Target("distfree_fa_calib_26", "Distribution-free false-alarm calibration and chance-corrected spatial evaluation for industrial anomaly detection", arxiv_id="2608.15090", role="l7cal", why_wave_a="distribution-free FA calibration for industrial AD (2026)"),
+    Target("sewer_sht_25", "Explainable Deep Anomaly Detection with Sequential Hypothesis Testing for Robotic Sewer Inspection", arxiv_id="2507.22546", role="l7cal", why_wave_a="sequential hypothesis testing on robot AD (2025)"),
+    Target("physics_guided_fusion_26", "A Novel Hierarchical Temporal-Graph Physics-Guided Fusion Network for Predictive Fault Diagnosis in Robotic Arms", doi="10.58346/jowua.2026.i1.034", role="neighbor", why_wave_a="physics-guided temporal-graph FD on robot arms (2026, weak venue — occupancy check)"),
+    Target("llm_mfg_review_26", "Large language models in intelligent manufacturing and mechanical engineering: a review of robotics, fault diagnosis", doi="10.1007/s10845-026-02927-y", role="l9", why_wave_a="LLM x fault-diagnosis review (2026)"),
+    Target("flexible_sparse_latent_25", "A real-time anomaly detection method for robots based on a flexible and sparse latent space", doi="10.1016/j.engappai.2025.111310", role="l7", why_wave_a="2025 robot AD method (EAAI)"),
+    Target("ftc_review_air25", "Fault-tolerant control strategies for industrial robots: state of the art and future perspective on AI-based fault management", doi="10.1007/s10462-025-11327-2", role="review", why_wave_a="2025 AIR robot fault-management review"),
+    Target("few_shot_ptfm_25", "Few-Shot Fault Diagnosis for Industrial Robot Transmission Systems via a Prototypical Time-Frequency Mixer", doi="10.1109/access.2025.3620386", role="crossrobot", why_wave_a="few-shot robot-component FD (2025)"),
+    Target("momentumnet_cd_25", "MomentumNet-CD: Real-Time Collision Detection for Industrial Robots Based on Momentum Observer with Optimized BP Neural Network", doi="10.3390/machines13040334", role="neighbor", why_wave_a="MOB+NN collision detection (2025; MDPI — occupancy evidence only)"),
+    Target("deluca_mattone_icra05", "Sensorless robot collision detection and hybrid force/motion control", role="classic", why_wave_a="De Luca-Mattone ICRA05 momentum-residual classic"),
+    Target("casper_lsens26_retry", "CatBoost-Driven Anomaly Detection in Industrial Robotic Arms Using CASPER Dataset", doi="10.1109/lsens.2026.3656499", role="dataset", why_wave_a="retry: identify the CASPER dataset"),
+)
+
+#: Wave F: queue items never laddered before; Wave G: guaranteed-arXiv top-ups.
+WAVE_V2F: tuple[Target, ...] = (
+    Target("observer_survey_robotica23", "A brief survey of observers for disturbance estimation and compensation", doi="10.1017/s0263574723001091", role="l3", why_wave_a="L3 observer taxonomy survey"),
+    Target("zero_fault_kbs23", "Residual shrinkage transformer relation network for intelligent fault detection of industrial robot with zero-fault samples", doi="10.1016/j.knosys.2023.110452", role="l2", why_wave_a="healthy-only robot FD (KBS)"),
+    Target("compound_dualtf_jms22", "Compound fault diagnosis for industrial robots based on dual-transformer networks", doi="10.1016/j.jmsy.2022.12.006", role="l2", why_wave_a="compound robot FD (JMS)"),
+    Target("slowfeature_jsen22", "Data-Driven Sensor Fault Diagnosis Under Closed-Loop Control With Slow Feature Analysis", doi="10.1109/jsen.2022.3221282", role="l2", why_wave_a="closed-loop FD (JSEN)"),
+    Target("feedback_invariant_tie26", "Data-Driven Closed-Loop System Fault Diagnosis Using Feedback-Invariant Dynamic Residual Analysis", doi="10.1109/tie.2026.3657018", role="l2", why_wave_a="feedback-invariant residuals (TIE26)"),
+    Target("sim2real_fd_access24", "Research on Fault Diagnosis of Robot Arm With Dynamic Simulation and Domain Adaptation", doi="10.1109/access.2024.3380842", role="crossrobot", why_wave_a="sim2real robot-arm FD"),
+    Target("etfa_metric_22", "Improving safety in physical human-robot collaboration via deep metric learning", doi="10.1109/etfa52439.2022.9921623", role="neighbor", why_wave_a="metric-learning contact discrimination"),
+    Target("sensorless_admittance_mech22", "Collision detection and reaction for a collaborative robot with sensorless admittance control", doi="10.1016/j.mechatronics.2022.102811", role="neighbor", why_wave_a="L6 sensorless admittance"),
+)
+
+WAVE_V2G: tuple[Target, ...] = (
+    Target("cross_platform_ftc_25", "Cross-platform Learning-based Fault Tolerant Surfacing Controller for Underwater Robots", arxiv_id="2502.07133", role="crossrobot", why_wave_a="cross-platform fault-tolerant policy (screened background, read for L10 context)"),
+    Target("tactile_force_survey_26", "Learning Physical Interaction: A Survey of Tactile- and Force-aware Robot Learning", arxiv_id="2608.07558", role="l6", why_wave_a="contact-rich learning survey (screened background)"),
+    Target("robomind_rss25", "RoboMIND: Benchmark on Multi-embodiment Intelligence Normative Data for Robot Manipulation", role="dataset", why_wave_a="multi-embodiment proprioceptive demos (screened background; cross-robot healthy pretraining resource)"),
+    Target("progress_based_fd_26", "Progress-Based Fault Detection and Health-Aware Task Allocation for Heterogeneous Multi-Robot Systems", role="crossrobot", why_wave_a="multi-robot progress-based FD (screened background)"),
+)
+
+WAVES = {"a": WAVE_V2A, "b": WAVE_V2B, "c": WAVE_V2C, "d": WAVE_V2D, "f": WAVE_V2F, "g": WAVE_V2G}
 
 
 def main(argv: list[str] | None = None) -> int:

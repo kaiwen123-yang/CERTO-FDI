@@ -80,13 +80,15 @@ def rows_road():
 
 
 def rows_mead():
-    p = V2R / "mead/mead_core8_metrics.json"
+    p = V2R / "mead/mead_core8_macro.json"
     if not p.exists():
         return []
     d = json.loads(p.read_text())
+    proto = json.loads((V2R / "mead/mead_core8_metrics.json").read_text()).get(
+        "_protocol", {}).get("summary", "official tasks; cycle unit; macro over 7 tasks")
     out = []
     for k, v in d.items():
-        if k.startswith("_"):
+        if k.startswith("_") or "macro" not in v:
             continue
         m, s = k.rsplit("_seed", 1)
         out.append(dict(dataset="me_ad", model=m, seed=s,
@@ -172,6 +174,64 @@ def main():
     }
     (OUT / "matrix_completeness.json").write_text(json.dumps(completeness, indent=2))
     print(json.dumps(completeness, indent=2))
+    extras()
+
+
+def extras():
+    """event_false_alarm_matrix.csv + sample_efficiency_matrix.csv.
+    Cells are MEASURED / NOT_RUN / NOT_APPLICABLE with reasons — never derived
+    by proxy from a different protocol."""
+    fa_rows = []
+    mead = json.loads((V2R / "mead/mead_core8_metrics.json").read_text())
+    for k, v in mead.items():
+        if k.startswith("_"):
+            continue
+        task_model, seed = k.rsplit("_seed", 1)
+        task, model = task_model.split("_", 1)
+        fa_rows.append(dict(dataset="me_ad", unit="healthy cycle", scope=task, model=model,
+                            seed=seed, status="MEASURED",
+                            fa_per_1000_healthy_units_at_cal_thr=round(
+                                v["false_alarms_per_1000_healthy_cycles"], 1),
+                            reason=""))
+    for ds, why in (
+        ("voraus_ad", "NOT_RUN: cal-threshold event-FA protocol was frozen for cycle-structured "
+                      "data this round; voraus episode FPR@TPR90 lives in universal_core_matrix"),
+        ("road", "NOT_RUN: same as voraus_ad; RoAD windows carry FPR@TPR90 in universal_core_matrix"),
+        ("aursad", "NOT_APPLICABLE: supervised multi-class protocol (official); unsupervised "
+                   "cal-threshold event-FA undefined under the native task"),
+    ):
+        fa_rows.append(dict(dataset=ds, unit="", scope="", model="", seed="",
+                            status=why.split(":")[0], fa_per_1000_healthy_units_at_cal_thr="",
+                            reason=why.split(": ", 1)[1]))
+    with (OUT / "event_false_alarm_matrix.csv").open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(fa_rows[0].keys()))
+        w.writeheader(); w.writerows(fa_rows)
+
+    se_rows = []
+    cp = json.loads((V2 / "confirm/confirm_pass.json").read_text())["voraus_sample_efficiency_ocsvm"]
+    for fk, v in cp.items():
+        if not fk.startswith("frac_"):
+            continue
+        entry = v if isinstance(v, dict) else {"auroc": v}
+        se_rows.append(dict(dataset="voraus_ad", model="ocsvm", frac=fk.split("_")[1],
+                            seed="sealed_v2", status="MEASURED",
+                            auroc=round(float(entry.get("auroc_mean", entry.get("auroc"))), 4),
+                            source="v2/confirm/confirm_pass.json", reason=""))
+    sj = json.loads((V2R / "mead/mead_sample_efficiency.json").read_text())
+    for k, v in sj.items():
+        seed, frac = k.split("_frac")
+        se_rows.append(dict(dataset="me_ad", model="window_ae", frac=frac,
+                            seed=seed.replace("seed", ""), status="MEASURED",
+                            auroc=round(v["auroc"], 4), source="v2r/mead (Task1; saturated)",
+                            reason=""))
+    for ds, why in (("road", "NOT_RUN: not part of the frozen V2-R scope"),
+                    ("aursad", "NOT_RUN: not part of the frozen V2-R scope")):
+        se_rows.append(dict(dataset=ds, model="", frac="", seed="", status="NOT_RUN",
+                            auroc="", source="", reason=why.split(": ", 1)[1]))
+    with (OUT / "sample_efficiency_matrix.csv").open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(se_rows[0].keys()))
+        w.writeheader(); w.writerows(se_rows)
+    print(f"extras: fa_rows={len(fa_rows)} se_rows={len(se_rows)}")
 
 
 if __name__ == "__main__":

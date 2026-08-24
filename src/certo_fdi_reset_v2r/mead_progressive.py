@@ -120,40 +120,55 @@ def earliest_detection() -> dict:
     return out
 
 
-def context_calibration() -> dict:
+def context_calibration(min_cell: int = 40) -> dict:
+    """min_cell=40 is the FROZEN v2 rule (gate-eligible). Other values are
+    SENSITIVITY_NOT_GATE diagnostics. Window scores are cached per (fe, seed)
+    so sensitivity reruns do not refit models."""
     from certo_fdi_reset_v2.candidate.context_calibration import (
         ContextCalibrator, permute_contexts,
     )
     from sklearn.metrics import roc_auc_score
-    out = {}
+    out = {"_label": ("FROZEN_GATE_ELIGIBLE" if min_cell == 40
+                      else f"SENSITIVITY_NOT_GATE_mincell{min_cell}"),
+           "_min_cell": min_cell}
+    cache_dir = RUN / "ctx_cache"; cache_dir.mkdir(parents=True, exist_ok=True)
     idxs = {"fit": range(0, 15), "cal": range(15, 20),
             "heal": range(20, 70)}
     for fe in ("window_ae", "gru_pred", "tcn_ae"):
         for seed in SEEDS:
-            # build per-op windows for Task7 ops
-            fit_ws = []
-            for op in T7_OPS:
-                for i in idxs["fit"]:
-                    fit_ws.append(load_op_cycle(op, i))
-            mu, sd = fit_stats(fit_ws)
-            train_w = np.concatenate([cycle_windows(c, mu, sd) for c in fit_ws], 0)
-            score = fit_model(fe, train_w, seed)
-
-            def group(ix_range, faulty=False):
-                s_list, c_list, cyc = [], [], []
+            cpath = cache_dir / f"{fe}_seed{seed}.npz"
+            if cpath.exists():
+                z = np.load(cpath)
+                s_cal, c_cal = z["s_cal"], z["c_cal"]
+                s_h, c_h, cy_h = z["s_h"], z["c_h"], z["cy_h"]
+                s_f, c_f, cy_f = z["s_f"], z["c_f"], z["cy_f"]
+            else:
+                # build per-op windows for Task7 ops
+                fit_ws = []
                 for op in T7_OPS:
-                    n = len(list((MEAD / "Pandas" / op).glob("cleaned_dataset_*.pkl")))
-                    rng = range(n - 50, n) if faulty else ix_range
-                    for j, i in enumerate(rng):
-                        w = cycle_windows(load_op_cycle(op, i), mu, sd)
-                        s_list.append(score(w))
-                        c_list.append(np.full(len(w), op))
-                        cyc.append(np.full(len(w), f"{op}_{i}"))
-                return (np.concatenate(s_list), np.concatenate(c_list), np.concatenate(cyc))
+                    for i in idxs["fit"]:
+                        fit_ws.append(load_op_cycle(op, i))
+                mu, sd = fit_stats(fit_ws)
+                train_w = np.concatenate([cycle_windows(c, mu, sd) for c in fit_ws], 0)
+                score = fit_model(fe, train_w, seed)
 
-            s_cal, c_cal, _ = group(idxs["cal"])
-            s_h, c_h, cy_h = group(idxs["heal"])
-            s_f, c_f, cy_f = group(None, faulty=True)
+                def group(ix_range, faulty=False):
+                    s_list, c_list, cyc = [], [], []
+                    for op in T7_OPS:
+                        n = len(list((MEAD / "Pandas" / op).glob("cleaned_dataset_*.pkl")))
+                        rng = range(n - 50, n) if faulty else ix_range
+                        for j, i in enumerate(rng):
+                            w = cycle_windows(load_op_cycle(op, i), mu, sd)
+                            s_list.append(score(w))
+                            c_list.append(np.full(len(w), op))
+                            cyc.append(np.full(len(w), f"{op}_{i}"))
+                    return (np.concatenate(s_list), np.concatenate(c_list), np.concatenate(cyc))
+
+                s_cal, c_cal, _ = group(idxs["cal"])
+                s_h, c_h, cy_h = group(idxs["heal"])
+                s_f, c_f, cy_f = group(None, faulty=True)
+                np.savez(cpath, s_cal=s_cal, c_cal=c_cal, s_h=s_h, c_h=c_h,
+                         cy_h=cy_h, s_f=s_f, c_f=c_f, cy_f=cy_f)
 
             def cyc_scores(s, cyc):
                 uni = np.unique(cyc)
@@ -170,15 +185,20 @@ def context_calibration() -> dict:
                         "fa_per_1000_healthy_cycles_at_calmax": None}
 
             variants = {"marginal": evaluate(lambda s, c: s)}
-            cal = ContextCalibrator("z").fit(s_cal, c_cal)
+            cal = ContextCalibrator("z", min_cell=min_cell).fit(s_cal, c_cal)
             variants["ctx_z"] = evaluate(cal.transform)
-            pc = ContextCalibrator("z").fit(s_cal, permute_contexts(c_cal, seed))
+            variants["n_contexts_above_min_cell"] = len(cal.stats)
+            pc = ContextCalibrator("z", min_cell=min_cell).fit(
+                s_cal, permute_contexts(c_cal, seed))
             variants["permuted_z"] = evaluate(pc.transform)
             out[f"{fe}_seed{seed}"] = variants
-            print(f"[ctx] {fe} s{seed}: marg={variants['marginal']['auroc']:.3f} "
+            print(f"[ctx] {fe} s{seed} mc={min_cell} cells={len(cal.stats)}: "
+                  f"marg={variants['marginal']['auroc']:.3f} "
                   f"ctx={variants['ctx_z']['auroc']:.3f} perm={variants['permuted_z']['auroc']:.3f}",
                   flush=True)
-    (RUN / "mead_context_calibration_metrics.json").write_text(json.dumps(out, indent=2))
+    name = ("mead_context_calibration_metrics.json" if min_cell == 40
+            else f"mead_context_calibration_sensitivity_mincell{min_cell}.json")
+    (RUN / name).write_text(json.dumps(out, indent=2))
     return out
 
 
@@ -215,5 +235,8 @@ if __name__ == "__main__":
         earliest_detection()
     if which in ("all", "ctx"):
         context_calibration()
+    if which == "ctx_sens":
+        context_calibration(min_cell=40)   # rebuild cache + frozen record
+        context_calibration(min_cell=10)   # SENSITIVITY_NOT_GATE
     if which in ("all", "sampeff"):
         sample_efficiency()

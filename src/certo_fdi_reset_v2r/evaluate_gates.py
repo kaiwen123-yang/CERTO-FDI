@@ -18,6 +18,78 @@ LIT = Path("/mnt/g/CERTO-FDI/02_research_docs/paper_reset_v2r")
 REPO = Path.home() / "research/CERTO-FDI-WORKTREES/paper-reset-v2r-mead-submission-closure"
 
 
+# Contract §14.2: every direct neighbour with full text held must be covered by a
+# card at deep-template quality (equation/number/page anchors), measured from the
+# files — the neighbour list itself comes from 05_nearest_neighbor_matrix.md, whose
+# own count note excludes the two FULLTEXT_UNAVAILABLE killers (#22, #23).
+_NEIGHBOR_EXCLUDED = {"kim_lim_park_tro21", "park_unsup_tmech22"}
+_NEIGHBOR_CARD_ALIASES = {
+    "evangelisti_hirche_tro24": "v1_inherited__evangelisti_hirche_2024.md",
+    "mobnet": "v1_inherited__mobnet.md",
+    "haddadin_tro17": "v1_inherited__haddadin_2017.md",
+    "voraus_mvtflow_tro23": "v1_inherited__voraus_ad.md",
+    "road_iecon23": "v1_inherited__road.md",
+    "aursad_2021": "v1_inherited__aursad.md",
+    "varade": "v1_inherited__varade.md",
+}
+_DEEP_MIN_CHARS, _DEEP_MIN_PAGES, _DEEP_MIN_EQS, _DEEP_MIN_NUMS = 4000, 3, 3, 10
+
+
+def deep_neighbor_coverage(write: bool = False) -> dict:
+    """Measure §14.2 deep-card coverage of the full-text-held neighbour set."""
+    toks = []
+    for line in (LIT / "05_nearest_neighbor_matrix.md").read_text().splitlines():
+        m = re.match(r"\|\s*(\d+)\s*\|\s*(\S+)", line)
+        if m:
+            toks.append(m.group(2))
+    neighbors = [t for t in toks if t not in _NEIGHBOR_EXCLUDED]
+
+    def resolve(tok: str) -> Path | None:
+        p = LIT / "deep_40_neighbor_cards" / f"{tok}.md"
+        if p.exists():
+            return p
+        p = LIT / "self_contained_method_cards" / f"{tok}.md"
+        if p.exists():
+            return p
+        if tok in _NEIGHBOR_CARD_ALIASES:
+            p = LIT / "self_contained_method_cards" / _NEIGHBOR_CARD_ALIASES[tok]
+            if p.exists():
+                return p
+        return None
+
+    per_card, n_located, n_deep = {}, 0, 0
+    for tok in neighbors:
+        p = resolve(tok)
+        if p is None:
+            per_card[tok] = {"file": None, "deep": False}
+            continue
+        n_located += 1
+        t = p.read_text(encoding="utf-8", errors="replace")
+        pages = len(re.findall(
+            r"\bp{1,2}\.\s?\d+|\bSec(?:tion)?\.?\s?[IVX0-9]|\bFig(?:ure)?\.?\s?\d"
+            r"|\bTable\s?[0-9IVX]|§\s?\d", t))
+        eqs = len(re.findall(r"\bEq(?:s)?\.?\s?\(?\d|\\\(|\$[^$]+\$"
+                             r"|[a-zA-Zστθτ_]\s?=\s?[^=\s]", t))
+        nums = len(re.findall(r"\d+\.\d+|\d+%", t))
+        deep = (len(t) >= _DEEP_MIN_CHARS and pages >= _DEEP_MIN_PAGES
+                and (eqs >= _DEEP_MIN_EQS or nums >= _DEEP_MIN_NUMS))
+        n_deep += deep
+        per_card[tok] = {"file": str(p.relative_to(LIT)), "chars": len(t),
+                         "page_anchors": pages, "eq_anchors": eqs,
+                         "numeric_values": nums, "deep": deep}
+    out = {
+        "n_neighbors": len(neighbors), "n_located": n_located, "n_deep": n_deep,
+        "thresholds": {"min_chars": _DEEP_MIN_CHARS, "min_page_anchors": _DEEP_MIN_PAGES,
+                       "min_eq_anchors": _DEEP_MIN_EQS, "min_numeric_values": _DEEP_MIN_NUMS,
+                       "rule": "chars>=min and pages>=min and (eqs>=min or nums>=min)"},
+        "excluded_fulltext_unavailable": sorted(_NEIGHBOR_EXCLUDED),
+        "per_card": per_card,
+    }
+    if write:
+        (LIT / "deep_neighbor_coverage.json").write_text(json.dumps(out, indent=2))
+    return out
+
+
 def mead_gate() -> tuple[D.MeadPhysicsResidualEvidence, dict]:
     core = json.loads((RUN / "mead/mead_core8_metrics.json").read_text())
     res = json.loads((RUN / "mead/mead_torque_residual_metrics.json").read_text())
@@ -166,10 +238,12 @@ def bench_gate() -> D.BenchmarkReadinessEvidence:
     mead_ok = mead_ok and (RUN / "mead/mead_context_calibration_metrics.csv").exists()
 
     inv = json.loads((LIT / "self_contained_inventory.json").read_text())
+    cov = deep_neighbor_coverage(write=True)
     self_ok = ((LIT / "02_verified_bibliography.bib").exists()
                and len(list((LIT / "self_contained_method_cards").glob("*.md"))) >= 100
                and len(list((LIT / "killer_dossiers").glob("*.md"))) >= 15
-               and len(list((LIT / "deep_40_neighbor_cards").glob("*.md"))) >= 19)
+               and cov["n_located"] == cov["n_neighbors"]
+               and cov["n_deep"] >= 40)
 
     bundle_ok = (any((RUN / "provenance").glob("*.bundle"))
                  and len(list((RUN / "provenance/environment_locks").glob("*"))) >= 3)

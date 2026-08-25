@@ -111,6 +111,22 @@ def test_claims_match_tables():  # item 11
         assert abs(val - c["value"]) <= c.get("tol", 1e-6), (c["claim"], val)
 
 
+def test_deep_neighbor_coverage_40():  # item 12 extension (contract §14.2)
+    """All full-text-held direct neighbours (40 per the neighbour matrix) must be
+    covered by deep-quality cards, measured from the files — not a manual flag.
+    The persisted deep_neighbor_coverage.json must agree with a live recount."""
+    _need(LIT / "05_nearest_neighbor_matrix.md")
+    from certo_fdi_reset_v2r.evaluate_gates import deep_neighbor_coverage
+    cov = deep_neighbor_coverage(write=False)
+    assert cov["n_neighbors"] == 40, cov["n_neighbors"]
+    assert cov["n_located"] == 40, [k for k, v in cov["per_card"].items() if not v["file"]]
+    shallow = [k for k, v in cov["per_card"].items() if not v["deep"]]
+    assert cov["n_deep"] >= 40, shallow
+    persisted = json.loads(_need(LIT / "deep_neighbor_coverage.json").read_text())
+    assert persisted["n_deep"] == cov["n_deep"]
+    assert persisted["n_located"] == cov["n_located"]
+
+
 def test_mead_forbidden_inputs_ast():  # item 3
     """No ME-AD experiment module may read cycle_index/fault/split-id columns
     as model INPUTS (they are allowed only in evaluation/ordering code marked

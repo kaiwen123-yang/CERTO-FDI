@@ -1,0 +1,96 @@
+# CERTO-FDI Paper Reset V2-R — resolved frozen config.
+# Amendments only via commits restating old/new + reason.
+
+project: CERTO-FDI
+stage: paper_reset_v2r_mead_submission_closure
+current_date: 2026-08-24
+
+run:
+  run_id: run_20260824T084349Z_paper_reset_v2r
+  contract_package: CERTO_FDI_V2R_MEAD_BENCHMARK_SUBMISSION_CLOSURE_20260824.zip
+  contract_package_sha256: a0a27bf9ddd82db6766f59548b7db6ad6ca72db80924c85871c3c4a657187109
+
+repository:
+  remote: git@github.com:kaiwen123-yang/CERTO-FDI.git
+  base_branch: stage/paper-reset-v2-500x100-public-story-convergence
+  base_head_at_freeze: e8ca63983d0738e7540d82200e551d20a8fca681
+  branch: stage/paper-reset-v2r-mead-submission-closure
+  worktree: ~/research/CERTO-FDI-WORKTREES/paper-reset-v2r-mead-submission-closure
+  protected_draft_prs: [1,2,3,4,5,6,7,8,9]
+  keep_draft: true
+  auto_merge: false
+  force_push: false
+
+storage:
+  run_root: /mnt/g/CERTO-FDI/04_runs/paper_reset_v2r/run_20260824T084349Z_paper_reset_v2r
+  mead_source: /mnt/g/CERTO-FDI/03_data/public/me_ad/source_v1
+  literature_root: /mnt/g/CERTO-FDI/02_research_docs/paper_reset_v2r
+  g_free_min_gib: 50
+  wsl_root_free_min_gib: 20
+  local_staging_max_gib: 5
+
+v2_evidence:
+  full_package: /mnt/g/CERTO-FDI/06_review_exchange/to_review/full/CERTO_FDI_V2_FULL_REVIEW_20260824T065812Z.zip
+  full_package_sha256: 7cb14c7888e7768f6fd84120c1c2eac8cab4ce22ee2ce0af65b2a32338e5b73f
+  historical_terminal_state: PIVOT_BENCHMARK_DATASET_PAPER   # immutable
+
+mead:
+  zenodo_doi: 10.5281/zenodo.20817531
+  official_md5: c74dedb954931034d1870db8cd13e33b
+  archive: ME-AD.zip (10,788,420,015 bytes)
+  license: CC-BY-SA-4.0
+  first_pass_extract: [README*, Tasks/, Pandas/, "*.py", requirements*, LICENSE*]
+  sample_unit: cycle
+  rul: NOT_APPLICABLE_UNLESS_OFFICIAL_LABEL
+  onset_terminology: benchmark_onset   # never "physical fault onset"
+  forbidden_inputs: [cycle_index, fault_progression_index, split_id, fault_label]
+
+core8:
+  deterministic: [mahalanobis, pca_spe]          # 1 fit + cycle bootstrap
+  stochastic: [iforest, ocsvm, window_ae, gru_pred_or_ae, tcn_ae, frozen_mtsad_anchor]
+  frozen_mtsad_anchor: gdn_policy_or_mvtflow     # per dataset legality; recorded per row
+  seeds: [260824, 260825, 260826]
+  point_adjustment: false
+  window_bootstrap_as_independent: false
+
+progressive_baselines: [ewma_scores, one_sided_cusum, cycle_pca_health_index, cycle_summary_mahalanobis]
+
+torque_residual_feasibility:
+  models: [ridge_invdyn, mlp_invdyn, gru_invdyn]   # standard architectures only
+  scores: [all_joint_residual_energy_BLIND_PRIMARY, per_joint_standardized, joint3_DIAGNOSTIC_ONLY]
+  controls: [same_capacity_direct_anomaly, permuted_joint, context_permuted_calibration]
+
+gates:  # mirrors 03_DECISION_RULES.yaml; tested for equality
+  mead_physics_residual:
+    min_tasks_with_gain: 4
+    tasks_total: 7
+    auroc_gain: 0.03
+    auprc_gain: 0.05
+    max_relative_fpr_tpr90_worsening: 0.10
+    min_concordant_seeds: 2
+    require_blind_all_joint_score: true
+    require_permuted_joint_control: true
+    require_earlier_detection_in_min_tasks: 4
+  context_calibration:
+    min_datasets: 2
+    min_false_alarm_reduction_fraction: 0.30
+    min_frontends: 3
+    min_concordant_seeds: 2
+    require_permutation_control: true
+    require_no_detection_degradation: true
+
+aursad_dual_protocol:
+  native: FAITHFUL_NATIVE_POLICY_if_exact_split_unrecoverable
+  honest: healthy_only_grouped_temporal
+  class4_reporting: separate_never_macro
+  leakage_quantification: [exact_dup_hashes, near_dup_nn, cross_split_operation, window_overlap, inflation_effect_size_with_CI]
+
+matrix_truth:
+  completeness_flags_computed_from_rows_only: true
+  seed_count_explicit_per_row: true
+  distinguish: [NOT_APPLICABLE, NOT_RUN]
+
+execution:
+  max_cpu_threads: 8
+  single_gpu_process: true
+  smoke_first: true

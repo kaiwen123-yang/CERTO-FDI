@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "status": "IMPLEMENTED_C1_C2_TINY_FIXTURES_AND_DRY_RUN_PASS_ROOT_REVIEW_PENDING",
+  "before_source_sha256": {
+    "work/d2a_cert_partial_first_success.py": "7c83403d97418d38e290762d6b6141fe21b4916c8465e706f64b9eafbce03bdc",
+    "outputs/d2a_partial_first_success_v1.py": "7c83403d97418d38e290762d6b6141fe21b4916c8465e706f64b9eafbce03bdc",
+    "work/d2a_cert_preflight.py": "d60ca87a6d6f7329f2e82e268cfbe1a17e64975e895f7494c97a3b20a64c5c13"
+  },
+  "after_source_sha256": {
+    "work/d2a_cert_partial_first_success.py": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c",
+    "outputs/d2a_partial_first_success_v1.py": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c",
+    "work/d2a_cert_preflight.py": "aba4de0223251574a8227062487684ca43b1c33aa3ae52bda1fed9749ae32ad4",
+    "work/d2a_metadata_guard.py": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+    "work/d2a_metadata_guard_fixtures_v1.py": "f286d6a5684118def4084ce767a3a1fca51e601a4357e38e9c921056a22c1109",
+    "work/d2a_metadata_guard_selector_equivalence_v1.py": "dffb28d83926e7f6f2beda1f4797b55d56cff9e90e46e929d5b3297a4945823a",
+    "work/d2a_core.py": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9",
+    "work/d2a_cert_case.py": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999",
+    "work/d2a_cert_verify.py": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b",
+    "work/d2a_PROTOCOL_v1.json": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6"
+  },
+  "scope": "Only two metadata partial-report wrappers, preflight classification/clock guard and new pure work module/tests.",
+  "fixes": {
+    "C1": "Same captured CSV bytes parsed and hashed; exact expected400 keys/uniqueness and nonempty complete expected family/H required.",
+    "C2": "Initial physical NOT_CHECKED; inherited explicit validation+original clock gate before PASS; physical/projection/metadata failures separated.",
+    "C3": "No changes to live case classification/numeric/source digest. Event-exhaustion only final derived diagnostics.",
+    "C4": "Full-grid metadata gate remains separate from subset all-completed artifact PASS."
+  },
+  "fixtures": {
+    "status": "PASS_TINY_METADATA_GUARD_FIXTURES",
+    "tests": [
+      {
+        "name": "400 aliases remain logical rows",
+        "pass": true
+      },
+      {
+        "name": "exact max power/minS tie retained",
+        "pass": true
+      },
+      {
+        "name": "captured bytes rows/hash same snapshot",
+        "pass": true
+      },
+      {
+        "name": "deleted predecessor rejected",
+        "pass": true
+      },
+      {
+        "name": "same count duplicate hides no missing key",
+        "pass": true
+      },
+      {
+        "name": "stage alias may not be dropped",
+        "pass": true
+      },
+      {
+        "name": "unexpected S0 rejected",
+        "pass": true
+      },
+      {
+        "name": "pending is not complete",
+        "pass": true
+      },
+      {
+        "name": "missing certified power rejected, not zero",
+        "pass": true
+      },
+      {
+        "name": "short CSV row with None power fails closed",
+        "pass": true
+      },
+      {
+        "name": "valid inherited clock gets physical pass",
+        "pass": true
+      },
+      {
+        "name": "explicit contract failure cannot retain physical pass",
+        "pass": true
+      },
+      {
+        "name": "1750 clock guards even spoofed valid flag",
+        "pass": true
+      },
+      {
+        "name": "projection failure separate from physical",
+        "pass": true
+      },
+      {
+        "name": "metadata failure does not falsify physical or projection",
+        "pass": true
+      }
+    ],
+    "preflight_executed": false,
+    "science_executed": false,
+    "files_written": false
+  },
+  "actual_dry_run": {
+    "full_table_complete": false,
+    "review_bound_table_sha256": "3096aa6d9ce7b2f8bbdf03e48e6183a17265ea374f3e0ab167803d2f0d171d34",
+    "metadata_guard": "EXACT_EXPECTED_400_KEYS_UNIQUE_NONEMPTY_CURRENT_GROUPS_SINGLE_CSV_BYTES",
+    "rows": 400,
+    "dry_run": true,
+    "metadata_written": false,
+    "pairs": [
+      {
+        "readout": "average250",
+        "family": "stay",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "average250",
+        "family": "fixed20",
+        "first_success_H": 100,
+        "physical_endpoint_seconds": "26",
+        "family_selection_at_H_complete": true,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "average250",
+        "family": "fixed40",
+        "first_success_H": 120,
+        "physical_endpoint_seconds": "31",
+        "family_selection_at_H_complete": true,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "average250",
+        "family": "fixed76",
+        "first_success_H": 100,
+        "physical_endpoint_seconds": "26",
+        "family_selection_at_H_complete": true,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "average250",
+        "family": "terminal_balanced",
+        "first_success_H": 100,
+        "physical_endpoint_seconds": "26",
+        "family_selection_at_H_complete": true,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "average250",
+        "family": "switch_then_stay",
+        "first_success_H": 100,
+        "physical_endpoint_seconds": "26",
+        "family_selection_at_H_complete": true,
+        "selected_stage_endpoint": "100"
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "stay",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed20",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed40",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed76",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "terminal_balanced",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "switch_then_stay",
+        "first_success_H": null,
+        "physical_endpoint_seconds": null,
+        "family_selection_at_H_complete": null,
+        "selected_stage_endpoint": null
+      }
+    ]
+  },
+  "actual_old_new_selector": {
+    "status": "PASS_ACTUAL_SINGLE_SNAPSHOT_OLD_NUMERIC_PAYLOAD_PRESERVED",
+    "csv_sha256": "4139e7c0a8026173797804f7faee44baa3140f94b51d6dbea4900c51d3f47834",
+    "rows": 400,
+    "pairs_and_selected_numeric_strings_exactly_equal": true,
+    "science_imports": false,
+    "old_script_main_or_atomic_executed": false,
+    "live_output_written": false
+  },
+  "final_recipe_dependencies": [
+    "work/d2a_metadata_guard.py",
+    "work/d2a_cert_partial_first_success.py",
+    "outputs/d2a_partial_first_success_v1.py"
+  ],
+  "checks_only": [
+    "python -S -B -X utf8 work/d2a_metadata_guard_fixtures_v1.py",
+    "python -S -B -X utf8 work/d2a_metadata_guard_selector_equivalence_v1.py",
+    "python -S -B -X utf8 outputs/d2a_partial_first_success_v1.py --dry-run"
+  ],
+  "normal_metadata_CLI_run_by_this_agent": false,
+  "preflight_imported_or_executed": false,
+  "frozen400_records_written": false,
+  "science_or_verifier_executed": false,
+  "protocol_or_core_or_case_or_verifier_modified": false,
+  "live_report_files_written_by_this_agent": false,
+  "root_next": "Review these hashes, then run one normal metadata CLI; existing sole publisher invokes updated wrapper naturally on subsequent changes.",
+  "limitations": [
+    "Does not close full400 or actual finalZIP/scientific witness acceptance.",
+    "Physical PASS remains inherited-rule clock instance check, not new nonlinear/hardware proof."
+  ]
+}

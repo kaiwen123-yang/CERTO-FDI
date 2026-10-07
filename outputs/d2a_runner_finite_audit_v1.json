@@ -1,0 +1,42 @@
+{
+  "checks": {
+    "valid_baseline_cache_accepted": true,
+    "baseline_mean_hash_matches": true,
+    "wrong_mean_hash_rejected": true,
+    "wrong_mean_hash_cache_rejected": true,
+    "missing_ACTUAL_PROTOCOL.json_rejected": true,
+    "missing_DIRECTION.json_rejected": true,
+    "missing_covariance_rejected": true,
+    "stale_report_cache_rejected": true,
+    "false_target_full_wrapper_rejected": true,
+    "false_target_apply_rejected": true,
+    "false_target_cache_rejected": true,
+    "full_receipt_bound_after_wrapper": true,
+    "stale_derived_does_not_shadow_full": true,
+    "crash_transaction_prepared": true,
+    "crash_no_false_usable_receipt": true,
+    "crash_retry_committed": true,
+    "crash_retry_cache_accepted": true,
+    "complete_payload_resume_verifier_only": true,
+    "historical_log_archived": true,
+    "attempt_log_exists": true,
+    "failure_history_retained_on_normal_finish": true,
+    "failed_table_not_arithmetic_complete": true,
+    "sentinel_jet_unchanged": true,
+    "witness_only_resume_selects_derive_from_witness": true,
+    "witness_only_derives_without_covariance_reference": true,
+    "disk_guard_starts_no_child": true,
+    "failure_history_retained_on_disk_guard": true,
+    "failure_history_retained_before_child": true
+  },
+  "failing_boolean_checks": [],
+  "production_jets_read": false,
+  "large_recursions_executed": false,
+  "worker_processes_launched": 0,
+  "source_sha256": {
+    "d2a_cert_batch.py": "4ccd7329f33c893a8bb3f6cea8f0d28dff33b890c6f90fc649bc6cf4bd2e1ee3",
+    "d2a_cert_case.py": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999",
+    "d2a_cert_verify.py": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b",
+    "d2a_cert_rebind_derived.py": "2ac3f29121fc91d36f5a88c1517368ec5c1f026e0b06dbb3a3d4f71776ebb048"
+  }
+}

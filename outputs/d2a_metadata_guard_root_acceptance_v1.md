@@ -1,0 +1,9 @@
+# C1/C2 守门修复：根验收与自然启用
+
+根验收接受限定的元数据修复。C1要求完整且唯一的400期望键、非空当前族组和全部更早成员；同一次CSV字节同时用于解析和hash。C2在physical/clock验证通过前保留NOT_CHECKED，并把physical、projection和metadata失败分开。15项新纯元数据fixtures及单CSV快照的新旧selector精确等价检查已经通过；这是有限源代码/守门验收，不是重新运行科学证书。
+
+根此前实际运行新版入口的dry-run，400键守门通过且未写live文件。本次读取唯一publisher自然生成的正常报告，已包含新版metadata_guard标记和400行。根没有再运行第二个正常写入入口，也没有重启science/publisher；两入口仍可能共享临时文件名，因此不增加并发写者。代码和这两个读取快照的精确hash在同名JSON。
+
+原core、case、独立verifier及协议字节与修复报告绑定一致。没有执行preflight.main或重生成400方向记录。原作者报告中“root review pending”和建议运行normal CLI是其交付时点状态；本回执提供后续闭合记录，原报告不改写。
+
+恢复代码另存于13payload的runtime guard delta v2，实际manifest检查通过，V1原runtime不覆盖。此验收不关闭完整400行或实际最终科学ZIP；physical PASS仍仅为继承合同的clock实例检查。

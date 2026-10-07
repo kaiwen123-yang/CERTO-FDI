@@ -1,0 +1,744 @@
+{
+  "date": "2026-10-07",
+  "baseline": {
+    "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e",
+    "PDFSHA256": "c8e02b022d0c875163499f5a45ff374208376702f1176da66f02bd08665b6195",
+    "pagesFromExistingRootReceipt": 11
+  },
+  "operationScope": "No manuscript edit, new source retrieval, primary-PDF reread, theoretical extension, compilation or scientific checks/D2 rerun. Existing primary-support receipts and previously reviewed proof scopes are reused with explicit version limits. Small selected calendar/direction/receipt metadata were read for the >=3-block example criterion.",
+  "selectedRowsSnapshot": {
+    "path": "work/contribution_terminal_case_extract.json",
+    "SHA256": "63514ed309e6aa06659a9ab78c55a2e1388cbbc1c006d514cf3cae52a43db5ff",
+    "rows": 14,
+    "scope": "Selected existing terminal-balanced row metadata, not a full-grid audit."
+  },
+  "primarySourceInventoryCount": 17,
+  "primaryFullTextFiniteLocatorCount": 13,
+  "fullTextGaps": [
+    {
+      "legacyID": "L09",
+      "authors": "Esna Ashari, Nikoukhah, Campbell",
+      "title": "Effects of feedback on active fault detection",
+      "year": 2012,
+      "doi": "10.1016/j.automatica.2012.02.020",
+      "status": "Full article theorem/proof not obtained; metadata/snippets cannot establish exclusion."
+    },
+    {
+      "legacyID": "L10",
+      "authors": "Esna Ashari, Nikoukhah, Campbell",
+      "title": "Active Robust Fault Detection in Closed-Loop Systems: Quadratic Optimization Approach",
+      "year": 2012,
+      "doi": "10.1109/TAC.2012.2188430",
+      "status": "Full article theorem/proof not obtained; topic acknowledged, coverage unresolved."
+    },
+    {
+      "legacyID": "L14",
+      "authors": "Cheng, Steinberg",
+      "title": "Trend robust two-level factorial designs",
+      "year": 1991,
+      "doi": "10.1093/biomet/78.2.325",
+      "status": "Full theorem comparison unresolved; abstract includes AR(1)/time-series trends, not merely polynomial trends."
+    },
+    {
+      "legacyID": "L15",
+      "authors": "Coster, Cheng",
+      "title": "Minimum Cost Trend-Free Run Orders of Fractional Factorial Designs",
+      "year": 1988,
+      "doi": "10.1214/aos/1176350955",
+      "status": "Full theorem comparison unresolved; minimum-change/run-order topic cannot be ruled out from metadata."
+    }
+  ],
+  "sourceInventory": [
+    {
+      "legacyID": "L01",
+      "title": "Controlled Sensing for Multihypothesis Testing",
+      "reviewedEdition": "2013; IEEE TAC 58(10):2451-2464; DOI 10.1109/TAC.2013.2261188",
+      "sourceURL": "https://vvv.ece.illinois.edu/papers/journal/niti-atia-veer-tac-2013.pdf",
+      "cachedPDFSHA256": "45b0fc075e760db157945292f34f911c5fefbf1d2486986a0c8fe6de698551a6",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "问题与结果定向核查；第3/4/6页公式图像复核；Appendix定位；非全篇逐行重证",
+      "preciseLocator": "§II PDF pp2-3; §III-A Proposition1 PDF p4/print2454 eq(6)-(8); Theorems1-2 PDF pp4-5; §IV Theorems3-4 PDF pp5-6; AppendixA/B pp8-13",
+      "remainingReviewLimit": "未逐行重证多元指数界或全部序贯证明；不可泛称全文独立审查完成",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L02",
+      "title": "Controlled Sensing for Sequential Multihypothesis Testing with Controlled Markovian Observations and Non-Uniform Control Cost",
+      "reviewedEdition": "arXiv:1310.1844v2; 28 June 2014; original 2013",
+      "sourceURL": "https://arxiv.org/pdf/1310.1844v2",
+      "cachedPDFSHA256": "ba0dfdaf42a5bfd8c1cb7979018d6a864f331d6f2b1a3454ad85576744288beb",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§3-5结果与假设；Appendix converse Lemmas6.1-6.2与forward occupation-measure关键段",
+      "preciseLocator": "§3 pp6-7 eq(3.1)-(3.2); Theorem4.1 pp8-9; Theorem4.2 p10; Theorem5.1 p11 eq(5.2)-(5.6); Appendix pp14-22 eq(6.1),Lemma6.2",
+      "remainingReviewLimit": "未独立重证全部tail/occupation lemmas；识别率零时定理除法不可用；未将非均匀cost泛称switching pair-cost",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L03",
+      "title": "Active Search with a Cost for Switching Actions",
+      "reviewedEdition": "arXiv:1505.02358v1; 2015 ITA",
+      "sourceURL": "https://arxiv.org/pdf/1505.02358v1",
+      "cachedPDFSHA256": "b3a1a27c46b4f8b6ddcd759a3fa53119bce708744d4c781df0e8c6b07f8bc899",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§II-A/B合同、Assumptions、Theorem6及完整短proof；Appendix定向定位",
+      "preciseLocator": "§II-A pp2-3 Assumptions(I),(IIa),(IIb); §II-B p4 Theorem4,Proposition5,Theorem6 eq(8)-(12); Appendixpp5-8",
+      "remainingReviewLimit": "只取主定理IIb版本；IIa改造部分proof原文省略，不能称本轮已补齐",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L04",
+      "title": "Anomaly Search with Multiple Plays under Delay and Switching Costs",
+      "reviewedEdition": "arXiv:2108.03082v1; 2021; related DOI 10.1109/TSP.2021.3136810",
+      "sourceURL": "https://arxiv.org/pdf/2108.03082v1",
+      "cachedPDFSHA256": "c6564863d056acfce172b2b9c0ad144ee986351b678dd6c766c07cf2a1ad45ba",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§II/III policy与Theorem1；Appendix Lemma1-2/7关键边界定位；非publisher修订版全文比较",
+      "preciseLocator": "§II pp4-5 eq(1)-(3); §III eq(7) p6; §III-C Theorem1 p12 eq(20); Appendix Lemma1 p17,Lemma2 pp18-20,Lemma7 pp25-27",
+      "remainingReviewLimit": "未逐行重证所有Appendix machine-delay lemmas；不可把Bayes optimal变成uniformPFA/power optimal",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L05",
+      "title": "Optimal Fault Detection for Closed-Loop Linear Uncertain Systems",
+      "reviewedEdition": "CDC2024 pp1326-1331; DOI 10.1109/CDC56724.2024.10886525; PDF有1页机构封面",
+      "sourceURL": "https://pure.tue.nl/ws/files/361857968/Optimal_Fault_Detection_for_Closed-Loop_Linear_Uncertain_Systems.pdf",
+      "cachedPDFSHA256": "a9b1bfeed21a77abecc560c9ea560f8f76021bb8fd702b2eb56bff661d04f88c",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§III model与Problem1；§IV Theorem1及完整proof；Definition5→eq(17)单独反例核查",
+      "preciseLocator": "§III PDFpp3-4/print1327-1328 eq(1)-(10); §IV Definition5,Theorem1 PDFp5/print1329; proofeq(16)-(19); Remarks8-9 PDFp6",
+      "remainingReviewLimit": "不进口逐Δ最优结论；需更强tightness或robust-supremum分母解释；并未宣称paper整体错误",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L06",
+      "title": "Input design for guaranteed fault diagnosis using zonotopes",
+      "reviewedEdition": "Automatica50(2014):1580-1589",
+      "sourceURL": "https://web.mit.edu/braatzgroup/input_design_for_guaranteed_fault_diagnosis_using_zonotopes.pdf",
+      "cachedPDFSHA256": "3aa9ddb81150d4e043d9a56a147ac00bcd2ed80a5972bd91d546af37e80c0637",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§2合同；§3.2全史coupling；§4 Theorem3及完整proof；§5输入优化与§7近似范围",
+      "preciseLocator": "§2 PDFp2/print1581; §3.2 and§4 Theorem3 PDFp3/print1582 eq(14),(16)-(17); §5 pp4-5 eq(18)-(29); §7 p6",
+      "remainingReviewLimit": "未独立重建全部MIQP计算复杂度与examples；bounded noise保证不迁移到Gaussianrisk",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L07",
+      "title": "Hypothesis testing by convex optimization",
+      "reviewedEdition": "arXiv:1311.6765v7; 2016 version; original2013",
+      "sourceURL": "https://arxiv.org/pdf/1311.6765v7",
+      "cachedPDFSHA256": "dbc82a4a5779e982c450716e61b398128d041ee33e5fb6399667a5cd5c225577",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_INTERFACE_ONLY_REVIEW",
+      "priorReviewScope": "仅定位统计接口：§2.1/2.2/2.3.1，非整篇应用/aggregation审查",
+      "preciseLocator": "§2.1 PDFp3 assumptions; Theorem2.1 p4; §2.3.1 Gaussian pp5-7尤其p6 closest-pair/minimax normal-tail discussion",
+      "remainingReviewLimit": "只审接口；精确asymmetricpower是共同Σ最近对+Neyman-Pearson的直接推论，未宣称generalnearoptimaltheorem给所有exactrisks",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L08",
+      "title": "Hypothesis Testing via Affine Detectors",
+      "reviewedEdition": "arXiv:1604.02576; downloadedcurrentPDF31pages",
+      "sourceURL": "https://arxiv.org/pdf/1604.02576",
+      "cachedPDFSHA256": "b9c550d4e47215e49f4bb8d13eea005ced15b1421aafa86687c7e2a153a78808",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_INTERFACE_ONLY_REVIEW",
+      "priorReviewScope": "§3.2.3 Proposition3.3/3.4及完整短proof；非整篇quadraticdetectors审查",
+      "preciseLocator": "§3.2.3 PDFpp12-13 eq(12)-(21); Proposition3.4 p13",
+      "remainingReviewLimit": "未审其他quadratic/subGaussian章节；无界meansetattainment由本项目另证",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L09",
+      "title": "Effects of feedback on active fault detection",
+      "reviewedEdition": "Automatica48(2012):866-872; DOI10.1016/j.automatica.2012.02.020",
+      "sourceURL": "https://www.sciencedirect.com/science/article/pii/S0005109812000714",
+      "cachedPDFSHA256": "",
+      "fullTextStatus": "PUBLISHER_SNIPPETS_ONLY_NOT_FULL_THEOREM_REVIEW",
+      "priorReviewScope": "出版社abstract/introduction/conclusion/snippets；HAL访问拒绝；不以摘要升级定理核查",
+      "preciseLocator": "publisherIntroduction; sectionsnippetsFeedback and energy/linearquadraticcost; Conclusion；无可核全文theoremnumber",
+      "remainingReviewLimit": "FULL_TEXT_NOT_OBTAINED；HALAnubisdeny；保留后续priority",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L10",
+      "title": "Active Robust Fault Detection in Closed-Loop Systems: Quadratic Optimization Approach",
+      "reviewedEdition": "IEEE TAC57(10)(2012):2532-2544; DOI10.1109/TAC.2012.2188430",
+      "sourceURL": "https://doi.org/10.1109/TAC.2012.2188430",
+      "cachedPDFSHA256": "",
+      "fullTextStatus": "NOT_OBTAINED_AUTHOR_PUBLICATION_METADATA_ONLY",
+      "priorReviewScope": "作者出版目录确认title/venue/pages；IEEE入口418；完整定理未取得",
+      "preciseLocator": "https://sites.google.com/site/aliesnaashari/publica Journalpapers；无全文定位",
+      "remainingReviewLimit": "FULL_TEXT_NOT_OBTAINED；IEEE418和DOI工具不可访问",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L11",
+      "title": "Design and Analysis of Switchback Experiments",
+      "reviewedEdition": "arXiv:2009.00148v4; 17 Sep 2025 revision; original2020",
+      "sourceURL": "https://arxiv.org/pdf/2009.00148v4",
+      "cachedPDFSHA256": "eae4c62f93ecd1258e97b50477dac06fa5a62a56122562fa05980579d4b724bb",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_THEOREM_REVIEW",
+      "priorReviewScope": "§2-3合同/风险/Theorems1-2及EC.3.6.1关键proof；非79页逐行审查",
+      "preciseLocator": "Assumptions1-2 pp6-7; regular designs p8; HT estimator/MSE eq(4)-(6) pp10-11; Assumption3,Lemma1,Theorem1 p12; Theorem2 p13 eq(7); EC.3.6.1 pp56-57",
+      "remainingReviewLimit": "v4主结果编号Theorem2，不能沿用旧版3.3；未审全部randomization CLT/misspecified m结果",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L12",
+      "title": "Optimization of radio astronomical observations using Allan variance measurements",
+      "reviewedEdition": "arXiv:astro-ph/0105071v1; 2001; publisher题名用heterodyne observations",
+      "sourceURL": "https://arxiv.org/pdf/astro-ph/0105071",
+      "cachedPDFSHA256": "2dfd2343243337c3aabd6cc7b2b8bfb4adb820db61c6d5a6871b7bee9e3f518a",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_MODEL_RESULT_REVIEW",
+      "priorReviewScope": "§3噪声谱/cutoff/Allan尺度；§4.1 dead time 与 fixed-total-time 方差/最优积分；§4.2 mapping定向定位",
+      "preciseLocator": "§3 pp3-5 eq(5)-(13); §4.1 pp5-7 eq(15)-(17); §4.2 pp7-10；无编号theorem",
+      "remainingReviewLimit": "按取得preprint题名和页码定位；未独立重证全部mapping/color-correlation approximations",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L13",
+      "title": "The stability of spectroscopic instruments: A unified Allan variance computation scheme",
+      "reviewedEdition": "arXiv:0712.4335; A&A2008 related; downloaded13pages",
+      "sourceURL": "https://arxiv.org/pdf/0712.4335",
+      "cachedPDFSHA256": "67be5ae3f51e118e33f4e0c9ae4101c0f7d4823a8d70f2dc3e1460f0116c9cd1",
+      "fullTextStatus": "FULL_TEXT_OBTAINED_TARGETED_MODEL_RESULT_REVIEW",
+      "priorReviewScope": "§4.2 Allan尺度与§5完整观测优化表达；非全文实验验证审查",
+      "preciseLocator": "§4.2 pp7-8 eq(14)-(18); §5 pp10-11 eq(23)-(27); p11 second-order observing loops；无编号theorem",
+      "remainingReviewLimit": "未独立重证全部观测variance推导/实验；α=1不能直接代通式",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L14",
+      "title": "Trend robust two-level factorial designs",
+      "reviewedEdition": "Biometrika78(2)(1991):325-336; DOI10.1093/biomet/78.2.325",
+      "sourceURL": "https://academic.oup.com/biomet/article-abstract/78/2/325/232157",
+      "cachedPDFSHA256": "",
+      "fullTextStatus": "PUBLISHER_ABSTRACT_ONLY_NOT_FULL_THEOREM_REVIEW",
+      "priorReviewScope": "出版社abstract与作者publications metadata；未取得PDF",
+      "preciseLocator": "publisherAbstract；原文theorem/section UNREVIEWED",
+      "remainingReviewLimit": "publisher purchase/PDF；作者旧论文目录无下载；未对外联系",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "legacyID": "L15",
+      "title": "Minimum Cost Trend-Free Run Orders of Fractional Factorial Designs",
+      "reviewedEdition": "Annals of Statistics16(1988):1188-1205; DOI10.1214/aos/1176350955",
+      "sourceURL": "https://projecteuclid.org/journals/annals-of-statistics/volume-16/issue-3/Minimum-Cost-Trend-Free-Run-Orders-of-Fractional-Factorial-Designs/10.1214/aos/1176350955.full",
+      "cachedPDFSHA256": "",
+      "fullTextStatus": "NOT_OBTAINED_AUTHOR_INSTITUTION_METADATA_ONLY",
+      "priorReviewScope": "Berkeley作者publication list与Purdue1987报告目录；Euclid安全检查拦截；未取得全文",
+      "preciseLocator": "https://www.stat.berkeley.edu/~cscheng/publications.htm item35; https://www.stat.purdue.edu/research/technical-reports/1987/ item46；无theoremlocator",
+      "remainingReviewLimit": "Euclidsecuritycheck；Purdue目录只有contact获取指引；未发送外部消息",
+      "matrixContract": "2026-10-07 v1 raw M0",
+      "matrixContractSHA256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+      "legacyExclusionNotAutomaticallyTransferredToR6": true
+    },
+    {
+      "citeKey": "kim",
+      "title": "Optimum input design for fault detection and diagnosis: Model-based prediction and statistical distance measures",
+      "sourceURL": "https://skoge.folk.ntnu.no/prost/proceedings/ecc-2013/data/papers/1214.pdf",
+      "fullTextStatus": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "preciseLocator": "Sec.III, Eqs.(4)-(5); Sec.IV, Eqs.(9)-(16); Sec.V-C, PDF pp.4-6 / print pp.1943-1945; Eqs.(20)-(25); Remark3 p.5 / p.1944",
+      "supports": "Affine-feedback Gaussian input design propagates both means and covariances and imposes input/state moment constraints; general closed-loop statistical diagnosis is prior art.",
+      "doesNotEstablish": "Algorithm1 cannot directly optimize (K_t,nu_t) jointly; Remark3 separates gain design, and the conclusion describes local input optima. Do not attribute the current global sharp calendar law or uniform joint asymptotic bridge to this source.",
+      "PDFSHA256": "26786822156dc8350928d7798bd5e98afe8c126007791278df07215b36c8df3e"
+    },
+    {
+      "citeKey": "closedset",
+      "title": "Closed-loop input design for guaranteed fault diagnosis using set-valued observers",
+      "sourceURL": "https://web.mit.edu/braatzgroup/Raimondo_Automatica_2016.pdf",
+      "fullTextStatus": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "preciseLocator": "Sec.2.2, Eqs.(10)-(13), PDF p.3 / print p.109; Theorem1, Eqs.(19)-(20), p.4 / p.110; Lemma3, Theorems4-5, Algorithm1, p.5 / p.111; appendix pp.9-10 / pp.115-116",
+      "supports": "Set-valued observers retain prior output/input history, and moving-horizon input design preserves bounded-uncertainty diagnosis guarantees.",
+      "doesNotEstablish": "Conservative observers provide sufficient implications; the converse requires an exact observer. This is not Gaussian minimax power or the deterministic full-calendar sharp deficit.",
+      "PDFSHA256": "cf26542d1749811684b7a77123883aa399b59c31d9f7a4f2ea199a6528a8df84"
+    }
+  ],
+  "claims": [
+    {
+      "id": "calendar_sharpness",
+      "claim": "For beta_k>0, all legal deterministic calendars obey the matching H^(5/2) deficit with C=sqrt(2)/5*sqrt(F*beta_k*r)*eta^(3/2), and an observable terminal-balanced calendar attains it.",
+      "paperLocations": [
+        {
+          "label": "sf:two-regime",
+          "line": 178,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:positive",
+          "line": 188,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:upper",
+          "line": 195,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:converse",
+          "line": 768,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:lower",
+          "line": 818,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:block",
+          "line": 828,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:positive-support",
+          "line": 922,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        }
+      ],
+      "priorPrimarySupport": [
+        "L01: Proposition1/Theorems1-2, PDF pp4-5",
+        "L02: Theorems4.1-4.2/5.1, pp8-11",
+        "L03: Proposition5/Theorem6, p4",
+        "L04: Theorem1, p12",
+        "L11: Theorem2, p13; proof pp56-57",
+        "L12: Sec4.1 (15)-(17), pp5-7",
+        "L13: Sec5 (23)-(27), pp10-11"
+      ],
+      "inheritedToolsOrPriorScope": "Controlled sensing, Markov/cost sensing, switching, symmetric drift/dead-time design and switchback minimax patterns already exist; their reviewed stationary-simple/Bayes/MSE contracts differ.",
+      "potentialCritic": "A symmetric-family construction or finite sweep does not prove an arbitrary-calendar optimum, and missing time might be charged twice.",
+      "responseEvidence": "The converse uses one complete legal healthy tent path, terminal dominance, actual affine-span cross budget, and one global T split, including long/cross-macro gaps and fully missing macros. Observable scalar weighted repair supplies the matching constant. Finite checks do not replace this proof.",
+      "allowedStrength": "Fixed-contract leading-coefficient sharpness, not first sensing/switching theorem or H^2 remainder sharpness."
+    },
+    {
+      "id": "score_regime",
+      "claim": "beta_k=0 characterizes constant-force score preservation and gives Theta(H^2); capacity k<nu_R<=d-p+1.",
+      "paperLocations": [
+        {
+          "label": "sf:zero",
+          "line": 205,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:capacity",
+          "line": 224,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:score",
+          "line": 229,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:capacity-bound",
+          "line": 233,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:geometry",
+          "line": 607,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:zero-proof",
+          "line": 965,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        }
+      ],
+      "priorPrimarySupport": [
+        "L07: Gaussian interface Sec2.1-2.3.1",
+        "L08: Affine detector Sec3.2.3/Propositions3.3-3.4",
+        "Existing finite reachability/rowspace tools, acknowledged as tools rather than historical priority exclusion"
+      ],
+      "potentialCritic": "Zero beta may merely mean all latent inputs were recovered, or may cease under tiny unmodeled measurement noise/rank error.",
+      "responseEvidence": "The existing nilpotent example has rank(H2)=3<4, P2!=I4 and lost affine-slope norm squared 1/2. The zero upper balances all input g, uses Abel/global scalar repair and full-clock support; the lower covers late positive spans or bounded zero spans. The model explicitly requires known fixed noise image/full states.",
+      "allowedStrength": "Order-sharp quadratic deficit with no sharp H^2 coefficient; fixed known common support only, not robust recovery under additional sensors/noise or changing rank."
+    },
+    {
+      "id": "physical_control",
+      "claim": "Under the same physical plant, force vector, process noise and observation contract, full records are control-neutral but missing-span penalties depend on A_K; equal poles need not imply equal diagnostic loss.",
+      "paperLocations": [
+        {
+          "label": "sf:plant",
+          "line": 96,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:interval",
+          "line": 143,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:information",
+          "line": 160,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:control",
+          "line": 297,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        }
+      ],
+      "priorPrimarySupport": [
+        "Kim2013: SecV-C (20)-(25), Remark3",
+        "Raimondo2016: Theorem1, Lemma3, Theorems4-5/Algorithm1",
+        "L06: Sec3.2 full-history output sets",
+        "L05: fixed-K u/y residual-filter contract",
+        "L09/L10: identities/topics only, full theorem coverage unresolved"
+      ],
+      "potentialCritic": "Known invertible feedback cannot increase information, or the comparison silently grants extra sensors, changes Q, or ignores actuator constraints.",
+      "responseEvidence": "The complete-record experiment is explicitly invariant. Physical evolution precedes deletion of states; the two common-B/Q equal-pole gains have different retained rowspaces/penalties. Internal states and revealing commands remain excluded for the diagnostician.",
+      "allowedStrength": "A controller-dependent gap penalty and an ideal common-input comparison; no hardware-optimal gain, broader uncertainty handling, or general feedback-diagnosis priority claim."
+    },
+    {
+      "id": "uniform_design",
+      "claim": "A compact gain family with common Q positive definite and bounded integer k(K) admits uniform normalized deficit convergence and joint infimum of the leading coefficient.",
+      "paperLocations": [
+        {
+          "label": "sf:uniform",
+          "line": 401,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:settling",
+          "line": 345,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:control-proofs",
+          "line": 1121,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        }
+      ],
+      "priorPrimarySupport": [
+        "Kim2013 Remark3 explicitly limits its joint/global optimization interpretation; Gaussian feedback/input design is established",
+        "Existing compact-resolvent/stability tools; no exhaustive uniform-control prior-art search asserted"
+      ],
+      "potentialCritic": "Pointwise little-o cannot be optimized over gains depending on H; finite-valued k need not attain a minimum; homogeneous settling does not certify noisy forced return.",
+      "responseEvidence": "The common resolvent/transient, positive beta/b lower bounds, compact positive xi interval, packing/inactive cutoff and remainder are proved uniformly. General k uses inf, not assumed min. Only the scalar plateau/lower-semicontinuity/unique optimum supports convergence to c*=81/100.",
+      "allowedStrength": "Joint leading-order design in common-SPD compact families; no singular/rank-changing uniform extension, finite-H global optimizer, or full forced-return guarantee."
+    },
+    {
+      "id": "risk_and_finite_instance",
+      "claim": "Classical convex-Gaussian closest sets give the fixed-calendar risk interface; the nonlinear readout example independently supplies finite sufficient risk certificates.",
+      "paperLocations": [
+        {
+          "label": "sf:risk",
+          "line": 262,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:verification",
+          "line": 458,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        },
+        {
+          "label": "sf:readout-figure",
+          "line": 585,
+          "sourceSHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+        }
+      ],
+      "priorPrimarySupport": [
+        "L07/L08: Gaussian closest-pair/affine-detector interfaces",
+        "Raimondo2016: bounded-uncertainty diagnosis guarantees, different risk contract"
+      ],
+      "potentialCritic": "The detector is already known, or point certificate zero/variance ratios are being presented as actual power or asymptotic validation.",
+      "responseEvidence": "Closest mean distance/whitening are attributed to prior tools. Free-level polyhedral attainment and +/-z*/2 actual budgets are proved locally. The nonlinear statistic has an unconditional Gaussian comparator per path, two mean/error/event budgets, and positive-gap risk bounds; no conditioning on good events or borrowing of the exact main formula.",
+      "allowedStrength": "No new detector/filter claim. H100/26s is a certified point of the specified grid/family; zero sufficient lower power is not actual power zero; the finite nonlinear case does not instantiate the linear asymptotic theorem."
+    }
+  ],
+  "secondaryClaim": {
+    "label": "sf:even",
+    "scope": "Fixed bounded additive actual Minkowski envelope costs O(H^2); positive leading coefficient and quadratic order preserved, not quadratic coefficient, multiplicative uncertainty, or changed covariance/rank."
+  },
+  "integrationPlan": {
+    "frozenProtocolIdentity": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "horizonGridPostSlots": [
+      40,
+      60,
+      80,
+      100,
+      120,
+      160,
+      200,
+      240,
+      300,
+      400,
+      500,
+      600
+    ],
+    "elapsedSecondsFormula": "(H+4)/4",
+    "readouts": [
+      "average250",
+      "point_last_fast_read"
+    ],
+    "calendarFamilies": [
+      "stay",
+      "fixed20",
+      "fixed40",
+      "fixed76",
+      "terminal_balanced",
+      "switch_then_stay"
+    ],
+    "switchThenStayMembers": "S=20,40,...,20*floor(H/20), including S=H when divisible; preserve duplicates.",
+    "expectedRows": 400,
+    "completionGate": "All 400 declared identities processed and classifications locked; eligible numeric claims require correct protocol/case/direction/evidence bindings, accepted mean/event chain, and actual verification. Uncomputed or pending predecessors block first-grid claims.",
+    "requiredDataGroups": {
+      "identity_and_coverage": [
+        "H_post_slots",
+        "elapsed_seconds",
+        "family",
+        "stage_endpoint",
+        "readout",
+        "completed_symmetric_blocks",
+        "physical_rule_status",
+        "direction_status",
+        "failure_classification"
+      ],
+      "risk_budget_exact": [
+        "Vminus",
+        "Vplus",
+        "variance_ratio_upper",
+        "mu0_upper",
+        "mu1_lower",
+        "b0",
+        "b1",
+        "dynamic_loss_per_side",
+        "event_budget_per_hypothesis",
+        "threshold",
+        "gap",
+        "standardized_gap",
+        "false_alarm_upper",
+        "protected_power_lower"
+      ],
+      "provenance_and_review": [
+        "direction_record_sha256",
+        "case_result_sha256",
+        "current_receipt_path",
+        "current_receipt_sha256",
+        "evidence_hash_binding_path",
+        "evidence_hash_binding_sha256",
+        "covariance_certificate_sha256",
+        "witness_sha256",
+        "mathematical_review_status",
+        "mean_review_scope",
+        "historical_execution_failure_retained",
+        "historical_execution_failure_resolved"
+      ]
+    },
+    "writes": [
+      {
+        "location": "SecVI sf:verification, current H120 table",
+        "action": "Replace the compact main-text table with six-family x two-readout first-certified-grid/coverage summary (12 rows). Preserve the exact H120 pair and budgets in the full-grid/source-data supplement and immutable R6 history."
+      },
+      {
+        "location": "sf:readout-figure Figure2 + adjacent incomplete-subgrid text/caption",
+        "action": "Extend the same prescribed terminal-balanced paired comparison to all 12 declared horizons, retaining every valid nonpass bound and explicit missing/degenerate statuses. Replace the incomplete-400 sentence only after the completion gate passes; all claims remain finite-grid/family-specific."
+      },
+      {
+        "location": "SecVI representative finite-risk example paragraph",
+        "action": "Apply the predeclared >=3-complete-block example criterion independently of first-grid success. H160/41s is currently the earliest qualifying declared-grid terminal-balanced average case, with n=(12,14,18), three blocks and certified target pass. Pair it with its valid but target-not-met point readout. Keep H100/26s as the first certified terminal-balanced average grid point and preserve H120/31s history."
+      },
+      {
+        "location": "Supplement/full-grid data",
+        "action": "Publish all 400 identities and statuses, including duplicate S members, KKT/physical/mean/variance/event failures and degenerate directions. Provide a status matrix for both readouts across families/H/S; optionally add a protected-gap budget decomposition from exact recorded terms."
+      },
+      {
+        "location": "sf:conclusion and scientific scope",
+        "action": "Keep H<=600, frozen ramp f<=0.045, information-access and independent nonlinear-comparator scope. Do not rewrite as hardware optimum, global-calendar shortest time, sequential stopping or validation of the linear sharp constant."
+      }
+    ],
+    "firstGridRule": "For each declared family/readout, report the smallest grid H only after every earlier H and all S candidates at H have been processed. For switch_then_stay follow the frozen highest-certified-power rule and minimum-S tie; preserve all candidate rows. Pass requires PFA<1e-3 and protected lower power>=0.9.",
+    "flagshipSelectionIsNotRiskEligibility": true,
+    "flagshipEvidence": [
+      {
+        "H": 100,
+        "elapsedSeconds": "26",
+        "completedBlocks": 2,
+        "blocks": [
+          {
+            "post_offset": 0,
+            "n": 12,
+            "duration_slots": 48
+          },
+          {
+            "post_offset": 48,
+            "n": 14,
+            "duration_slots": 52
+          }
+        ],
+        "physicalContractValidated": true,
+        "validationErrors": [],
+        "directionRecord": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_preflight\\h100_terminal_balanced_average250.json",
+        "directionRecordSHA256": "51660dc555f113ff1eab45b7708a837c900555ce1fec4c9f6bc64d6ec2db4416",
+        "arithmeticRiskTargetStatus": "CERTIFIED_TARGET_PASS",
+        "mathematicalReviewStatus": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+        "VplusExact": "3106273785271977329065878339853123214628066888948357729900331960754508522223189219868461211216810688430856588840234635761789682095816093183654155581301155969261627724675535515791769178629625652481736219430323345750502296506461375455221642125469203970567952427944344883704438522468159705535158882557738834549282088357413075473637373657945232801588495998870540076888372951494151625858196089/4090519123042377010175130826866800872623020084014411608110071873578544933580049246468861844743304993563462562919665705359888757284143835278296103520156934720891122127888842063698174497468192542326982533621748437234079713467047747603085844440186645976777288809462673784271878244855657401303147824300765478255925700068473815917968750000000000000000000000000000000000000000000000000000000000000000",
+        "protectedPowerLowerExact": "52416539121729167734042034650558940168641334639118131285460946722968877245489132123757100501771899916436330833121819728149274402936951392079929781322019537566867340588915951500015358066327458114339594023318163798522163966206501006806336958158552530293877560874019634760171317008402858119233835502325461883883187662840664843769796621462045273753699122221515935774679195813024841616373512772346450764385428728791927842533956593682265041305843047056131664249510718123341938070168708139622945595242865703028523215188964416506313618894322176592964833133710658759976153758197166384769424942854986169351318903621328737560783429088979438232530165348583130614333790369514472810780459673208920570122006662398697955447130334255892506962719999449292072235746292509090660196543900296354103537942429891358442571617566104660848122361635786126947714651591972213247679901958592874738072884001719291206008334762408180649081892429499821935189169849570482122771789515264279627723964951972745891781296359358458080018399763888075994662002754747589912140612363733156950859666787862287655380806652265566139186562883340470078638791093502532456087723765549868401358263395580426089902148017407753439379612038251706992234943032033519194179103384303798121936177430623556375247064557497875182616206918462164257594570296052958696070817968700329239294862908392714042581314135535392233296888019538564096727248888857405357904431213988910135638088703431914800388360826251611043826176695818215035055378640750847664553894327575790665717966931960576727500350341384150878015140316726749023085264900127880226196272727915895449907075269588590837220422560604406670881336536876912396145551723617847861160214056323402966221128076401909657790659480694251995564566227748552137456794433267748261673558657292179647454963583708382618731836256366661443323005583845482476936244795340633926389984038169147/52416539125614326727570741953572193130097935338230404381982643896145543437680002956629323442350187625134096230887674247547204551564372599128929398198721978445309500700065935159215771178971126620580373057347790333649012827822997456814985172944534163064896665399495070764684440548940792310949772772400510290982965993899798362560223722911632000381032018484452027815937031474628689414393122932830667147161471701102898543842261838166049533223293062053210138121465084278984855376961205323431244955006574954098813309211720750262654909430808751680481159624204446142768274817565654591792048462249524872050621225697049278699626199593510671768890468627661729877766021816843687200718280019121340495883374090760367650321799752149951506448062628370792623296963990906185330659931031705342444176923322557598815525850573726204487865256029193209361506587770280389108800601662661397934282401085833601116044525712048848731122557564239386956376537429358567816029611250031430709219995365664095316729350902498989393397191839397579359251176838579630963277517754258901720476830542264404489550522162730746299425164639770282474410960797626881952663528986788696701355370491181237083251663265728288577451899351441193953840413507619967014367936490399718303303495019811952158742727590422072704587385155625026624997245204574379998485996100166401108656929561692327564197577453925750252871414396645404110868919167461169155552904185142300420901101019078470145192981535629784405586794107164744922200196333352069743670514893098180278518219295824769954981345880569440981047371054972725834595017683756173475876435677731118180091238414816328295901988051638634295949642513165469348713608394072377081613037353843009835114304046972451796179626826726333363672542826405414867398835070680761938506234181520962216315390828862186375707916956341490951961946804182500000000000000000000000000000000000000",
+        "displayVplusApprox": 7.59383758353303e-07,
+        "displayPowerLowerApprox": 0.9999999999258792,
+        "currentReceiptPath": "work\\d2a_cert_h100_terminal_balanced_average250\\STDLIB_VERIFICATION_RECEIPT.json",
+        "currentReceiptSHA256": "2ca1d48b7ae66750e0ae721e658db028cf462d793e3c136ae8d293d17221d796",
+        "evidenceBindingPath": "work\\d2a_cert_h100_terminal_balanced_average250\\EVIDENCE_ARTIFACT_HASHES.json",
+        "evidenceBindingSHA256": "613873c9cfb6efac8761dca3efcfbbd8fa67616303e901c10faaf43954ea5a01",
+        "currentReceiptReadThisTask": false,
+        "largeScientificPayloadOrVerifierRerun": false
+      },
+      {
+        "H": 120,
+        "elapsedSeconds": "31",
+        "completedBlocks": 2,
+        "blocks": [
+          {
+            "post_offset": 0,
+            "n": 16,
+            "duration_slots": 56
+          },
+          {
+            "post_offset": 56,
+            "n": 20,
+            "duration_slots": 64
+          }
+        ],
+        "physicalContractValidated": true,
+        "validationErrors": [],
+        "directionRecord": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_preflight\\h120_terminal_balanced_average250.json",
+        "directionRecordSHA256": "e9a774ec480a7106f1354eae37d6ece05029a24ad3c122a8ffddb4004e130b27",
+        "arithmeticRiskTargetStatus": "CERTIFIED_TARGET_PASS",
+        "mathematicalReviewStatus": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+        "VplusExact": "2405976968635300389878375967733109535577554396187001203999380312316491060187939978330307208650842560088909701895449607801657755948374570923940066097478428353561792819077993104806491505606089684058666353700403978416582874683070165531941277703958264302665496662468420975922961983626652641764169542561948358674293478885978246350686845070137262548861480197129889215897539632657181356019002415529/3587051691110973406253888612141951707709312473916362089229351852583871150002688533080456286179052636067612089678645617572874956122773193972843296878534069117889114459118181526290235795372359262722916917714903086416611386822190583989812305856121119348797380919790739523706782925471460477118829362347396383370323746930807828903198242187500000000000000000000000000000000000000000000000000000000000000",
+        "protectedPowerLowerExact": "209666156498124885753875735187667076436754820480795898954031366443798101530500759465738657056583742075610439807980781109374378697594303069867513694342894568030442651108895576733787072845001660246423470943042348906676394326165575879900696280999157683125410826455758435588646302786059327813702790442260898271534187335379062182974087236217563606831458654942837100524370931481313368955189374159829068200175935692570928437763491164840659893791238144740453783836727657302806401499128151385147640576971567041048185982660012917005226405739486407322638676195568183662049298901158341027545734226910698797155293212881277662960009739817256768204082418843642523886097464657515609313376738095487704026331230921254622273674183656565766400520154028961928548680074685963772769555428668484374034525563451019119171375888169201948834482692505996549070828282722987891126957923275364898828778645440196527560894534827193295683959354060313603098619025135662925697532880603790215867839334866602921396848710210322182087518508097218207138100888239509083630934121820507700798826928848611038710969685767922179989526725600951621178530175613023423122510750455161948544430240901722507235333428597916499634972375848886055445330986587998589387028216050764786691464693498345145054296565299209834366029639916932708467354977635590898201255319570783901246058088111030836040739291975937426880454597430327250377727146539443664330018109931341888909677442346622701540397682062219725276498736896409389009305987759229449165146511706569932194643060432616471715870512430807521915901350867929344482497176731671202258077352665565619983793282073515844387646645916017624102408293406233618424371772266381740834447391541618428711344455466717496248790176220198581723398394135615765478039950836788478509857543076637424067152437830728843359710067425954230188024996700718455125449716833217463403619215221278327/209666156502457306910282967814288772520391741352921617527930575584582173750720011826517293769400750500536384923550696990188818206257490396515717592794887913781238002800263740636863084715884506482321492229391161334596051311291989827259940691778136652259586661597980283058737762195763169243799091089602041163931863975599193450240894891646528001524128073937808111263748125898514757657572491731322668588645886804411594175369047352664198132893172248212840552485860337115939421507844821293724979820026299816395253236846883001050619637723235006721924638496817784571073099270262618367168193848998099488202484902788197114798504798374042687075561874510646919511064087267374748802873120076485361983533496363041470601287199008599806025792250513483170493187855963624741322639724126821369776707693290230395262103402294904817951461024116772837446026351081121556435202406650645591737129604343334404464178102848195394924490230256957547825506149717434271264118445000125722836879981462656381266917403609995957573588767357590317437004707354318523853110071017035606881907322169057617958202088650922985197700658559081129897643843190507527810654115947154786805421481964724948333006653062913154309807597405764775815361654030479868057471745961598873213213980079247808634970910361688290818349540622500106499988980818297519993943984400665604434627718246769310256790309815703001011485657586581616443475676669844676622211616740569201683604404076313880580771926142519137622347176428658979688800785333408278974682059572392721114072877183299079819925383522277763924189484219890903338380070735024693903505742710924472720364953659265313183607952206554537183798570052661877394854433576289508326452149415372039340457216187889807184718507306905333454690171305621659469595340282723047754024936726083848865261563315448745502831667825365963807847787216730000000000000000000000000000000000000000",
+        "displayVplusApprox": 6.707394193949089e-07,
+        "displayPowerLowerApprox": 0.9999999999793365,
+        "currentReceiptPath": "work\\d2a_cert_h120_terminal_balanced_average250\\DERIVED_VERIFICATION_RECEIPT.json",
+        "currentReceiptSHA256": "c0493af404113240b9732f78aeb7340c5f794c98de1dcb2d9679220957620649",
+        "evidenceBindingPath": "work\\d2a_cert_h120_terminal_balanced_average250\\EVIDENCE_ARTIFACT_HASHES.json",
+        "evidenceBindingSHA256": "b0bcd724d38154b35e253fa08f6ee61d28692abd025baaeabeaa879f67ffdcc7",
+        "currentReceiptReadThisTask": false,
+        "largeScientificPayloadOrVerifierRerun": false
+      },
+      {
+        "H": 160,
+        "elapsedSeconds": "41",
+        "completedBlocks": 3,
+        "blocks": [
+          {
+            "post_offset": 0,
+            "n": 12,
+            "duration_slots": 48
+          },
+          {
+            "post_offset": 48,
+            "n": 14,
+            "duration_slots": 52
+          },
+          {
+            "post_offset": 100,
+            "n": 18,
+            "duration_slots": 60
+          }
+        ],
+        "physicalContractValidated": true,
+        "validationErrors": [],
+        "directionRecord": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_preflight\\h160_terminal_balanced_average250.json",
+        "directionRecordSHA256": "ef64194dfc9e56a02faa07eaa696f49069b80d67fec032735b3f4085450e2688",
+        "arithmeticRiskTargetStatus": "CERTIFIED_TARGET_PASS",
+        "mathematicalReviewStatus": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+        "VplusExact": "510641120789037721844502578676832636641615922073540247269155290439556377017685151336626508771184173937684599466767568297940040087020612226928716886297029667533326529124987301684705525798518704543364387542736337158531938296953505171325306295342371124267364709681844340687903295132318406629566446676698276316985383588520881665556090134854850223727865746612404121394719885238719500493260533090721/824805171731391525858552843571107078205856572160579596557539951058428097618537080326835307039024570657001506339970948324228108594069618139520239620006356676756651962621345647275818157990982058892565562741970012016436035653124791514864579891054193982117174209438333480630664751493825892637829595363530010843078343896195292472839355468750000000000000000000000000000000000000000000000000000000000000000",
+        "protectedPowerLowerExact": "209666156496715107108007566293334687477965538626103685274563350036066563339394104779096016737402504922351117329919738887002734617867273014540551153067066470861715228566327848539436472722299024941376574876585245881526145427264347354433318655132395630778879732566104954095691792961805754200993725400476451865584996953022471978222778015859299132077712043343356992908756859836892843080006565849733318141855516627559818826638044528368575948136815992156981354227551091922229222636188102006837408553259685561454604965825525785369921705362768531281028106241168468394606926390238017021511113403410628464433207091628377910404601886394245388172237602659650259132296211793080227556974283547530593854983306627451923394048269498857588515243545495574472145324819982792778689904646473427597248237446839958761211890031954539480111440886783697867531516229382211156173042784358680675508630147747319815709515986967516428431766063063402560326989013469450007508591909047670560446942104934694923647428538209393575056578671591937450146857808167073980066317458632370866374075639453374552508674449856090718808664318917950949938726308228865846589534328567540988102087097295985232458441079717562286580431531163371163396062434510803250019922441154145093515943975368462820451910822337909527246179209691562192056015942949364349077409475409565362472363579273609169458423620787027236255818538479168315873151022293759303668415822398091750535132396822311109499825197231431274392022605948474505399469434307892139227781314205684433172735599314187304868684038157787023352359042776568499825394100699580663264745085895253964222345498427209634080127885626366784756896105484312729711698571275651929328071408059842418194558595468178989974661347081521651934873415330416815089914129683350724837437853467245776577828669380088038348970818952289129996326188417258455125449716833217463403619215221278327/209666156502457306910282967814288772520391741352921617527930575584582173750720011826517293769400750500536384923550696990188818206257490396515717592794887913781238002800263740636863084715884506482321492229391161334596051311291989827259940691778136652259586661597980283058737762195763169243799091089602041163931863975599193450240894891646528001524128073937808111263748125898514757657572491731322668588645886804411594175369047352664198132893172248212840552485860337115939421507844821293724979820026299816395253236846883001050619637723235006721924638496817784571073099270262618367168193848998099488202484902788197114798504798374042687075561874510646919511064087267374748802873120076485361983533496363041470601287199008599806025792250513483170493187855963624741322639724126821369776707693290230395262103402294904817951461024116772837446026351081121556435202406650645591737129604343334404464178102848195394924490230256957547825506149717434271264118445000125722836879981462656381266917403609995957573588767357590317437004707354318523853110071017035606881907322169057617958202088650922985197700658559081129897643843190507527810654115947154786805421481964724948333006653062913154309807597405764775815361654030479868057471745961598873213213980079247808634970910361688290818349540622500106499988980818297519993943984400665604434627718246769310256790309815703001011485657586581616443475676669844676622211616740569201683604404076313880580771926142519137622347176428658979688800785333408278974682059572392721114072877183299079819925383522277763924189484219890903338380070735024693903505742710924472720364953659265313183607952206554537183798570052661877394854433576289508326452149415372039340457216187889807184718507306905333454690171305621659469595340282723047754024936726083848865261563315448745502831667825365963807847787216730000000000000000000000000000000000000000",
+        "displayVplusApprox": 6.191051393593039e-07,
+        "displayPowerLowerApprox": 0.9999999999726127,
+        "currentReceiptPath": "work\\d2a_cert_h160_terminal_balanced_average250\\STDLIB_VERIFICATION_RECEIPT.json",
+        "currentReceiptSHA256": "f72f332ec80fca32e6aab3eece5410774ce5084ef2c8eb275c398c9d6ccf1b65",
+        "evidenceBindingPath": "work\\d2a_cert_h160_terminal_balanced_average250\\EVIDENCE_ARTIFACT_HASHES.json",
+        "evidenceBindingSHA256": "9ab1dcdb2d5119a5b73efd55f123dc8fe3de9d60064ce7ace6c9819dedac16e4",
+        "currentReceiptReadThisTask": true,
+        "largeScientificPayloadOrVerifierRerun": false
+      }
+    ],
+    "H160PointStatus": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+    "H160PointLowerPowerExact": "0",
+    "failureNarratives": [
+      "No certified point-readout target by H600 means the frozen sufficient procedure does not establish the desired uniform power on this grid; it is not actual power zero or information-theoretic impossibility.",
+      "Failure or non-optimal ranking of the terminal-balanced nonlinear example does not refute the linear asymptotic theorem: the contracts, nuisance classes, prescribed directions and finite H differ.",
+      "If no >=3-block representative passes, report that the predeclared representative criterion was unmet; keep all valid shorter certificates and all failures, without changing physical parameters.",
+      "A valid certificate that misses the power target is distinct from absent/degenerate/physically invalid/unfinished evidence; use NA with reasons for missing bounds, never power zero.",
+      "For exact gap diagnostics use (mu1_lower-mu0_upper)-(b0+b1)-(threshold-mu0_upper-b0). The final term is the actual stored threshold noise allowance, including the outward-rounded square-root bound, not a display-decimal recomputation. Dynamic mean loss already included in mean endpoints is not subtracted twice; event probabilities stay in probability units, outside an amplitude-budget stack.",
+      "Comparator variance belongs to the horizon/readout-specific prescribed statistic. Direction norm scaling is not variance standardization; a plotted variance ratio is not universal readout improvement or iid evidence."
+    ]
+  },
+  "englishContributionParagraph": "Within a known stable linear plant with common Gaussian input support, complete retained states, and scalar healthy inputs with free levels and full-history rate bounds, we prove a sharp information deficit over all deterministic task calendars. Positive missing-span loss of the constant-force score yields matching five-halves-order bounds with the same leading coefficient and an observable terminal-balanced construction; zero score loss yields matching quadratic-order bounds without a claimed quadratic coefficient. The classification concerns a scalar score and does not imply recovery of all latent inputs. Keeping the physical force, noise and observation contract common, we identify controller-dependent gap penalties and prove uniform leading-order design over compact controller families with common positive-definite process noise. Established convex Gaussian methods provide the fixed-calendar testing interface. The nonlinear example supplies separate finite sufficient risk certificates rather than an instance of the linear asymptotic theorem.",
+  "evidenceFiles": [
+    {
+      "path": "outputs/certo_fdi_control_memory_draft_v1.tex",
+      "SHA256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e"
+    },
+    {
+      "path": "outputs/submission_consolidation_review_v1.md",
+      "SHA256": "a5f41eea19e6dc747a6fd26462593b9e7e791ba3098aaa7d4c13cf93e0926c69"
+    },
+    {
+      "path": "outputs/manuscript_revision6_integration_review_v1.md",
+      "SHA256": "4aea7a01324415a506ef0b177d86ed77d4ea7ce54331e0680a8559b5e2422c96"
+    },
+    {
+      "path": "outputs/manuscript_compile_layout_status_v2.json",
+      "SHA256": "1bbbe330528cebaa68af8635daf0509011d69a7c7a6ccd5be0a3cb969652bc0b"
+    },
+    {
+      "path": "outputs/novelty_matrix.csv",
+      "SHA256": "d34f2e7a98e47973b46d8288caad9bb82c82f652f8ae0719de5c1311dfc9306d"
+    },
+    {
+      "path": "outputs/novelty_control_memory_collision_v1.md",
+      "SHA256": "df0d892080901a0c0c1b1653baedd5eac0305e1aa61eec8daf2bb93bbb59e890"
+    },
+    {
+      "path": "outputs/control_design_prior_art_extension_v1.md",
+      "SHA256": "0f0d87e1f5d655e3b7bf1d374dfd3f0cad103037210d1f9737773fab8b70006f"
+    },
+    {
+      "path": "outputs/citation_support_matrix_v1.json",
+      "SHA256": "4794d4b4aa3c549db0999e0eb94aaafc86cd079cff5c422ea9f748f4ced641d8"
+    },
+    {
+      "path": "outputs/d2a_protocol_v1.md",
+      "SHA256": "ea3befdf916b9f630e5f151563045c6304b6fccb3fed8cb527332be0093b0c12"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_review_v1.md",
+      "SHA256": "f22a4dca7c3186f19715267779fe8cfe31c0292f06ae04a0143dc63a1d3e5022"
+    },
+    {
+      "path": "RESEARCH_PLAN.md",
+      "SHA256": "60886f873db0ef15f33fdc0daaa9b3a9c4dffae4f0ce91683c8e39daa1b1c119"
+    }
+  ],
+  "notAnAcceptanceForecast": true,
+  "originalManuscriptUnchanged": true
+}

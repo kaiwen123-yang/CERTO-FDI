@@ -1,0 +1,48 @@
+{
+  "status": "ACCEPTED_SCOPED_C1_C2_SOURCE_FIX_WITH_NATURAL_PUBLISHER_ACTIVATION",
+  "checked_utc": "2026-10-07T10:02:20.750005+00:00",
+  "source_sha256": {
+    "work/d2a_metadata_guard.py": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+    "work/d2a_cert_partial_first_success.py": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c",
+    "outputs/d2a_partial_first_success_v1.py": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c",
+    "work/d2a_cert_preflight.py": "aba4de0223251574a8227062487684ca43b1c33aa3ae52bda1fed9749ae32ad4",
+    "work/d2a_core.py": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9",
+    "work/d2a_cert_case.py": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999",
+    "work/d2a_cert_verify.py": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b",
+    "work/d2a_PROTOCOL_v1.json": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6"
+  },
+  "author_fix_report": {
+    "path": "outputs/d2a_metadata_guard_fix_v1.json",
+    "sha256": "b73386b8dd4f1c57f8d7301bb13edb7a44a5b77d6750f13ab91eb573acccb703",
+    "fixtures": 15,
+    "all_pass": true,
+    "selector_equivalence": "Exact same captured400-row numeric strings/selection; author-scoped finite report, not rerun here"
+  },
+  "root_dry_run": {
+    "path": "work/root_metadata_guard_activation_dry_run.json",
+    "sha256": "d8e40d2e37c54152aa8048d9e6847a7e8f6b7e32027952490edfb0c2b1e0360f",
+    "rows": 400,
+    "metadata_guard": "EXACT_EXPECTED_400_KEYS_UNIQUE_NONEMPTY_CURRENT_GROUPS_SINGLE_CSV_BYTES",
+    "table_sha256": "bff9e0458179151671cdf75f3bf708c03a0f384867b853de55097f313a0b7b56",
+    "metadata_written": false
+  },
+  "observed_publisher_output": {
+    "path": "work/d2a_cert_partial_first_success.json",
+    "snapshot_file_sha256": "21e190d4e568fa97bd4e3c4d187a1c9308bd8c50483eae1b66806e352ec9a2fd",
+    "rows": 400,
+    "metadata_guard": "EXACT_EXPECTED_400_KEYS_UNIQUE_NONEMPTY_CURRENT_GROUPS_SINGLE_CSV_BYTES",
+    "table_sha256": "29e9bfd43ca226702d50d0418ba6352bf8d60921e66f0c5ed0b169e80738d1ab",
+    "full_table_complete": false,
+    "dynamic": true
+  },
+  "root_manual_normal_metadata_write": false,
+  "reason": "Existing sole publisher naturally loaded new normal CLI. No second writer needed; avoiding concurrent shared .next path.",
+  "preflight_executed": false,
+  "science_restarted": false,
+  "frozen400_records_regenerated": false,
+  "core_case_verifier_protocol_unchanged": true,
+  "limitations": [
+    "This closes only C1/C2 metadata source/activation scope, not full400 or final scientific archive.",
+    "Physical classification fix checked by pure fixtures/source; no new physical-model execution."
+  ]
+}

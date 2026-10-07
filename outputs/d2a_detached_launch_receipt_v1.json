@@ -1,0 +1,33 @@
+{
+  "status": "DETACHED_SERIAL_SCIENCE_AND_METADATA_STARTED",
+  "utc": "2026-10-07T06:36:11.9770167Z",
+  "workspace": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI",
+  "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+  "launcher_pid": 71048,
+  "launcher_mode": "WMI broker outside unified-exec descendant tree; Start-Process Hidden",
+  "removed_stale_locks": [],
+  "science_pid": 62844,
+  "publisher_pid": 10032,
+  "unified_exec_session": null,
+  "preparation_receipt": "work/d2a_cert_detached_recovery_preparation.json",
+  "science_stdout": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_detached_science_20261007T063611973Z.stdout.log",
+  "science_stderr": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_detached_science_20261007T063611973Z.stderr.log",
+  "publisher_stdout": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_detached_publisher_20261007T063611973Z.stdout.log",
+  "publisher_stderr": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_detached_publisher_20261007T063611973Z.stderr.log",
+  "science_alive_at_handoff": true,
+  "publisher_alive_at_handoff": true,
+  "processes_at_handoff": [
+    {
+      "ProcessId": 62844,
+      "ParentProcessId": 71048,
+      "CreationDate": "2026-10-07T14:36:12.335112+08:00",
+      "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_batch.py"
+    },
+    {
+      "ProcessId": 10032,
+      "ParentProcessId": 71048,
+      "CreationDate": "2026-10-07T14:36:12.589057+08:00",
+      "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_publish_live.py --watch-pid 62844"
+    }
+  ]
+}

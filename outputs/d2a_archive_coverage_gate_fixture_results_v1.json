@@ -1,0 +1,108 @@
+{
+  "status": "PASS_REAL_TINY_ZIP_AND_PURE_REPLAY_COVERAGE_FIXTURES",
+  "test_count": 22,
+  "tests": [
+    {
+      "name": "valid exactly400 rows/3 science rows/2 canonical cases accepted",
+      "pass": true
+    },
+    {
+      "name": "omitted science case rejected before shared extraction",
+      "pass": true
+    },
+    {
+      "name": "missing row rejected",
+      "pass": true
+    },
+    {
+      "name": "duplicate row index rejected",
+      "pass": true
+    },
+    {
+      "name": "duplicate/missing logical key rejected",
+      "pass": true
+    },
+    {
+      "name": "extra canonical case rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong/incomplete case row set rejected",
+      "pass": true
+    },
+    {
+      "name": "duplicate case row rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong canonical directory/name rejected",
+      "pass": true
+    },
+    {
+      "name": "wrong canonical identity rejected",
+      "pass": true
+    },
+    {
+      "name": "orphan currentcase witness cannot be shared hash-only payload",
+      "pass": true
+    },
+    {
+      "name": "actual tiny ZIP metadata binds all400 CSV/direction rows and canonical cases",
+      "pass": true
+    },
+    {
+      "name": "actual tiny ZIP metadata view contains no witness/dummy payload",
+      "pass": true
+    },
+    {
+      "name": "manifest status must bind actual immutable CSV",
+      "pass": true
+    },
+    {
+      "name": "coherent forged manifest identity still rejected by actual direction",
+      "pass": true
+    },
+    {
+      "name": "direction member mapping binds actual CSV path/hash",
+      "pass": true
+    },
+    {
+      "name": "actual ZIP CSV certificate_reference must bind canonical directory",
+      "pass": true
+    },
+    {
+      "name": "complete synthetic replay records accepted only as coverage contract",
+      "pass": true
+    },
+    {
+      "name": "missing fresh replay rejected",
+      "pass": true
+    },
+    {
+      "name": "duplicate replay identity rejected",
+      "pass": true
+    },
+    {
+      "name": "fresh replay wrong directory rejected",
+      "pass": true
+    },
+    {
+      "name": "pure gates do not mutate supplied manifest",
+      "pass": true
+    }
+  ],
+  "synthetic_logical_rows": 400,
+  "synthetic_science_rows": 3,
+  "synthetic_cases": 2,
+  "actual_tiny_zip": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_coverage_fixture_5d1c02b4\\actual_tiny_coverage.zip",
+  "actual_tiny_zip_bytes": 450561,
+  "real_science_or_R1_executed": false,
+  "real_large_witness_bytes_read": 0,
+  "scientific_ready": false,
+  "synthetic_receipt_records_are_real_replays": false,
+  "source_sha256": {
+    "d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+    "package_full_d2a_release_v2.py": "97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f",
+    "d2a_archive_coverage_gate_fixtures_v1.py": "314030b67dac31624f74cd014d7332d4b67fd1a2e250ea28e90037061903793c"
+  }
+}

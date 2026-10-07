@@ -1,0 +1,1172 @@
+{
+  "schema_version": 2,
+  "updated_date": "2026-10-07",
+  "purpose": "Version-bound active research ledger. Proven tools, reviewed bounds, conjectures, source gaps and finite certificates have separate statuses.",
+  "claims": [
+    {
+      "id": "SRC-001",
+      "claim": "The publicly rendered dialogue body contains 52 rounds and 104 messages, with archived text and reading manifest.",
+      "status": "INHERITED_ARCHIVE_AND_REVIEW",
+      "assumptions": [
+        "Public body only; attachments are separate sources."
+      ],
+      "evidence": [
+        "references/audit_20261007/reading_manifest.json",
+        "references/audit_20261007/dialogue_body.md",
+        "references/audit_20261007/round_by_round_review.md"
+      ],
+      "review_version": "audit_20261007; imported unchanged",
+      "dependencies": [],
+      "next_action": "Use indexed targeted reads; do not claim attachment coverage.",
+      "evidence_sha256": {
+        "references/audit_20261007/reading_manifest.json": "8eb324c35563b4994728f806bde0505d63c1924d12e079a6a22c739c066c12dd",
+        "references/audit_20261007/dialogue_body.md": "6578986e920c78f1ae44266398779d7de373d8d70cfe29ac754b2983edd0e60b",
+        "references/audit_20261007/round_by_round_review.md": "06160f43369fa665c5cb0de990ef051cc03f342a66fc163c1bba9845f45f7be3"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "R1-001",
+      "claim": "The delivered R1 ZIP passed the previously executed full standard-library verifier for its stated fixed-calendar scope.",
+      "status": "INHERITED_EXECUTION_PASS",
+      "assumptions": [
+        "Archive SHA256 f703091ace28d9017d0400e07984f4c34f03d5efdba14742f5a3a9f4ea94a60b",
+        "Actual fixed directions and two finite deterministic average-readout risk cases",
+        "No new run in the CEO-FDI repository during plan preparation"
+      ],
+      "evidence": [
+        "references/audit_20261007/r1_verification_receipt.json",
+        "references/audit_20261007/r1_verification_stdout.log",
+        "references/audit_20261007/r1_source_scope.md"
+      ],
+      "review_version": "2026-10-07 prior WSL clean-copy execution",
+      "dependencies": [],
+      "next_action": "Trace exact inputs and entry points for D2-a; rerun only for changed code/environment, unresolved concern or final delivered-package acceptance.",
+      "evidence_sha256": {
+        "references/audit_20261007/r1_verification_receipt.json": "5c94d28e8c50b72f64191920722297882b1744449a74273dfb86abef7126d708",
+        "references/audit_20261007/r1_verification_stdout.log": "7bf4512af1d2a6af5ba6226d1427f100f5044fbb95bbe7692c67a53ae5b8f33b",
+        "references/audit_20261007/r1_source_scope.md": "8c67793ed78145ca71b8acb60441ba3ca9845bea6e7b3a24a14daab35b2904ad"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "IID-001",
+      "claim": "The prior discussion reports a sharp H^(5/2) information deficit for its iid, two-task, known-horizon deterministic model with unbounded-amplitude rate-limited nuisance.",
+      "status": "SOURCE_RECOVERED_TWO_THEOREMS_REVIEWED_FIXES_PENDING_INTEGRATION",
+      "assumptions": [
+        "Original model and nuisance quantifiers must be recovered exactly",
+        "Fixed finite amplitude boxes have different long-horizon behavior"
+      ],
+      "evidence": [
+        "references/manuscript_20260909/model.tex",
+        "references/manuscript_20260909/results.tex",
+        "references/manuscript_20260909/proof_sharp.tex",
+        "references/manuscript_20260909/proof_finite.tex",
+        "outputs/iid_independent_audit_v1.md",
+        "outputs/ar1_iid_audit_checks_v1.py",
+        "outputs/ar1_iid_audit_checks_v1.json",
+        "outputs/iid_source_recovery_v1.json"
+      ],
+      "review_version": "2026-10-07 independent audit, hashes bound; constant-fault and mechanical chapters excluded",
+      "dependencies": [
+        "SRC-001"
+      ],
+      "next_action": "Integrate positive-part/risk range, final-k movement pairing and explicit m=0/global-joining clarifications into a working manuscript; keep source snapshot immutable.",
+      "evidence_sha256": {
+        "references/manuscript_20260909/model.tex": "05d652bef5209497428da3ce30854a13b5ca2ab34d08627c33adcd63ae688977",
+        "references/manuscript_20260909/results.tex": "cc659fa8e9d969c1ed9776e3a6f176ae31dcc8b9fe25461fe5540fe9a00b982c",
+        "references/manuscript_20260909/proof_sharp.tex": "468c248f87dce51c0058e03e78c988ff2f05b4b2f76dcd1e6be2ef7bd49e3fd7",
+        "references/manuscript_20260909/proof_finite.tex": "d7ec2eff9bc36e778caeec13bcbb760ef0952786c80e11e5c617fbe953ff82c1",
+        "outputs/iid_independent_audit_v1.md": "65a70105c36d9554af3a31d79fea62ef84b740f97a748918a71f5f944b12a074",
+        "outputs/ar1_iid_audit_checks_v1.py": "024dae1323f308859b1eb5fe4a3b8b24784a9bfeb6c5084d561b92399120ba4b",
+        "outputs/ar1_iid_audit_checks_v1.json": "042a2a7072ca106fb948f673c22ce4351fdc06f6eceabbfcdc27512a0fc3b04d",
+        "outputs/iid_source_recovery_v1.json": "ec6d24c5b3334774cefd79185991a05b7e29a390e069fa8bd78f47f8060b839c"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "POST-POINT-001",
+      "claim": "Under the inherited event and time domain, the post-move point-readout deterministic error is at most 0.003399888498583189 N m for hold index n >= 1500.",
+      "status": "INHERITED_CONDITIONAL_BOUND_WITH_EXACT_SUPPORT",
+      "assumptions": [
+        "Same inherited event, horizon and component induction",
+        "n is counted from move end",
+        "New calendars require their own event and return checks"
+      ],
+      "evidence": [
+        "references/audit_20261007/post_move_point_bound.md",
+        "references/audit_20261007/post_move_point_support.py",
+        "references/audit_20261007/post_move_point_support.json"
+      ],
+      "review_version": "2026-10-07 prior derivation and calculation",
+      "dependencies": [
+        "R1-001"
+      ],
+      "next_action": "Bind readout indices and event budget before using in D2-a risk certificates.",
+      "evidence_sha256": {
+        "references/audit_20261007/post_move_point_bound.md": "f6a84d8fd9f2a5f09c98ba0d69070d9c50fdf00a0e5c91f09dd4bb1d65ee5317",
+        "references/audit_20261007/post_move_point_support.py": "c2f4af540979b9b9c5fd818c789bac9dbb01d70362e07e11d705d5ee172cb8f7",
+        "references/audit_20261007/post_move_point_support.json": "f66e09440723ea61ee47e9a754e211fc8fd21cbc58da16a5356ae22eee3212b8"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "AR1-GAP-001",
+      "claim": "The stationary AR(1), known constant-mean, single internal missing-gap information loss has an exact expression, checked against eight rational covariance examples.",
+      "status": "NEW_EXACT_EXTENDED_LEMMAS_AND_RATIONAL_CHECKS",
+      "assumptions": [
+        "Absolute rho below one; stationary covariance",
+        "Known constant mean contrast",
+        "One internal gap with retained endpoints",
+        "No nuisance profiling or arbitrary-calendar theorem implied"
+      ],
+      "evidence": [
+        "outputs/ar1_information_lemmas_v1.md",
+        "outputs/ar1_information_lemmas_v1.tex",
+        "outputs/ar1_information_checks_v1.py",
+        "outputs/ar1_information_checks_v1.json"
+      ],
+      "review_version": "2026-10-07 root algebra review plus exact finite checks; TeX compilation unverified",
+      "dependencies": [],
+      "next_action": "Use the exact raw boundary and affine reflection identities in the global proof; do not claim novelty of standard Markov/Schur tools.",
+      "evidence_sha256": {
+        "outputs/ar1_information_lemmas_v1.md": "b5b4adc0780a4abf46f9a49c7db12dfe6c398df233d031d2a1aac5a0d0d4983c",
+        "outputs/ar1_information_lemmas_v1.tex": "5704eb064fae7a35a5bd9c2bb835f70324748dcd4ffc3d7f59ec77bf053b448c",
+        "outputs/ar1_information_checks_v1.py": "0c2fe4de3579babfd53435a832e1f2f3dc67838f7e0eecc3e3e1bf8428d6e730",
+        "outputs/ar1_information_checks_v1.json": "1c6ef0a11ece4dc8ada93ef2f0dba44a8da786a4c314c4d9c202fbd694058fcc"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "COLORED-SHARP-001",
+      "claim": "In the frozen M0 raw stationary AR(1) contract, the optimal information deficit has matching leading coefficient sqrt(2)/5 sqrt(nu beta_k r) eta^(3/2) H^(5/2).",
+      "status": "PROVED_MATCHING_BOUNDS_INDEPENDENTLY_REVIEWED",
+      "assumptions": [
+        "All fixed problem_contract_v1 assumptions, including n0>=1, fixed |rho|<1, sigma>0, eta,r>0, k>=1.",
+        "Known-horizon deterministic calendars; full unbounded-amplitude rate-limited two-sided paths; no extra diagnostic channels.",
+        "First leading term only; no controller-dependent physical noise claim from this additive M0 model."
+      ],
+      "evidence": [
+        "outputs/problem_contract_v1.md",
+        "outputs/colored_ar1_converse_v1.md",
+        "outputs/colored_ar1_converse_review_v1.md",
+        "outputs/ar1_upper_construction_v1.md",
+        "outputs/ar1_upper_independent_review_v1.md",
+        "outputs/ar1_upper_checks_v1.json",
+        "outputs/main_ar1_theorem_v1.tex"
+      ],
+      "review_version": "Reviewed lower v1.1 and frozen upper v1; SHA bindings in respective independent reports. TeX compilation unverified.",
+      "dependencies": [
+        "IID-001",
+        "AR1-GAP-001",
+        "COLORED-CONVERSE-001"
+      ],
+      "next_action": "Use as a calibrated parallel model; integrate physical matrix theorem without conflating their mean/noise contracts.",
+      "evidence_sha256": {
+        "outputs/problem_contract_v1.md": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef",
+        "outputs/colored_ar1_converse_v1.md": "7e81111f4fbfd568c7ab071dc7c838189ef0380c245e2de2580a34f6bb55f1f6",
+        "outputs/colored_ar1_converse_review_v1.md": "2e4959c224b7ae534cd91cf5d6461ee762494c0dcacd9f67edf8ee51306cc1a3",
+        "outputs/ar1_upper_construction_v1.md": "3de88ca76f497e2836e01abd8a1e9e997741a1af5b337f4a37964409735948b2",
+        "outputs/ar1_upper_independent_review_v1.md": "a166bbcf243ca9b64256e2af54af80ce88f4ad55f2a9484a7f9c5d7741c2af0e",
+        "outputs/ar1_upper_checks_v1.json": "f3a7f749ffba5f319d1009b363ff53166521cfa66eef5f0dbdb87d3f33930669",
+        "outputs/main_ar1_theorem_v1.tex": "4802c70f48e39d263c4382c9f55267827cbce4b0141cfe0bd36f105979f0c539"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "D2A-001",
+      "claim": "Full point/average readout horizon sweep with actual-direction full-history covariance, two-sided protection and all failure rows.",
+      "status": "FULL_SCAN_ACTIVE_REVIEW_BOUND_PARTIAL_CERTIFICATES",
+      "assumptions": [
+        "Preserve original physical model, noise and declared comparison grid",
+        "Freeze rounding, readout indices, normalization, tie handling and event allocation before scan",
+        "First successful grid certificate is not a sequential stopping-time optimality result"
+      ],
+      "evidence": [
+        "outputs/d2a_protocol_v1.md",
+        "outputs/d2a_source_map_v1.md",
+        "outputs/d2a_certificate_progress_v1.md",
+        "outputs/d2a_mean_risk_review_v1.md",
+        "work/d2a_cert_review_bound_table.csv",
+        "work/d2a_cert_partial_first_success.json",
+        "work/d2a_cert_batch_checkpoint.json",
+        "outputs/d2a_partial_first_success_v1.md",
+        "outputs/d2a_partial_first_success_v1.json",
+        "outputs/d2a_runner_finite_audit_v1.md",
+        "outputs/d2a_runner_finite_audit_v1.json",
+        "outputs/d2a_recovery_index_v1.md",
+        "outputs/d2a_completed_artifact_integrity_v1.json",
+        "outputs/d2a_runtime_checkpoint_v1/README.md",
+        "outputs/d2a_runtime_checkpoint_v1/MANIFEST_SHA256.json"
+      ],
+      "review_version": "Mean/risk accepted only for the fixed ramp H<=600 (actual f<=0.045), report SHA 6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+      "dependencies": [
+        "R1-001",
+        "POST-POINT-001"
+      ],
+      "next_action": "Continue sole detached science62844 and metadata10032; frozen400 current/earlier-family closure followed by actual canonical science release. New metadata guard naturally active; no duplicate writer or science restart.",
+      "evidence_sha256": {
+        "outputs/d2a_protocol_v1.md": "ea3befdf916b9f630e5f151563045c6304b6fccb3fed8cb527332be0093b0c12",
+        "outputs/d2a_source_map_v1.md": "3f37cb71c103b80efe67b56df5f225eed61af13c7ff907faa407a86d38f3bd63",
+        "outputs/d2a_certificate_progress_v1.md": "c26db892530196a4f72e292bcc5f50f3ea8687c944742b6798c95a8ac2d36fc7",
+        "outputs/d2a_mean_risk_review_v1.md": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+        "outputs/d2a_partial_first_success_v1.md": "8949943b8e1df3bf4605480058719aed5cb65370b12ac2dfe871570bfc11682a",
+        "outputs/d2a_runner_finite_audit_v1.md": "c80ddef88169354b1c3a622ba9d751e1aefb3fc1617d4e634911dfecfd590ede",
+        "outputs/d2a_runner_finite_audit_v1.json": "e6668cca6b53078aa6eb3d5e16264b58b136f1d15ff8ccd03eb80b713a5a7b03",
+        "outputs/d2a_recovery_index_v1.md": "b0d8eef6f96096aa0c02594d6329c7357b7e4d1e4c75b1e7e806d9eab78de9bf",
+        "outputs/d2a_completed_artifact_integrity_v1.json": "331821f38cef5ab65c310cbc2c9819255b00c0308c5a74f3abb8e2d67856a306",
+        "outputs/d2a_runtime_checkpoint_v1/README.md": "3927341d95876d6d160337c90303e7b88cf0066c42531881a11fd8da219c28d6",
+        "outputs/d2a_runtime_checkpoint_v1/MANIFEST_SHA256.json": "13e6aed87eee6eb422ff680946c68aada226f849f1de1562e9f811fcfb6b0005"
+      },
+      "dynamic_evidence": [
+        "work/d2a_cert_review_bound_table.csv",
+        "work/d2a_cert_partial_first_success.json",
+        "work/d2a_cert_batch_checkpoint.json",
+        "outputs/d2a_partial_first_success_v1.json"
+      ],
+      "snapshot": {
+        "rows_total": 400,
+        "review_bound_risk_counts": {
+          "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+          "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 93,
+          "CERTIFIED_TARGET_PASS": 51,
+          "NOT_RUN": 182
+        },
+        "snapshot_utc": "2026-10-07T10:19:46.495054+00:00",
+        "full_table_completed": false,
+        "authoritative_table_sha256": "0bc0c3872be5579b5f11732f526e1a533efe6d6ce60299a2b6367bdadef050bf",
+        "partial_first_success": "outputs/d2a_partial_first_success_v1.json",
+        "closed_H_grids_at_snapshot": [
+          40,
+          60,
+          80,
+          100,
+          120,
+          160,
+          200,
+          240
+        ],
+        "first_success_scope": "Exact expected400 keys; only complete current-and-earlier family grid members. Not sequential, continuous time or all-calendar optimum."
+      }
+    },
+    {
+      "id": "D1B-6R-001",
+      "claim": "A complete six-joint third-order certificate with first/second variations, homotopy tube and uniform epsilon_3.",
+      "status": "OPEN_OPTIONAL_PRIORITY",
+      "assumptions": [
+        "Generic recursions are interfaces, not a completed six-joint certificate",
+        "Original deterministic defect cannot be relabeled as a third-order remainder"
+      ],
+      "evidence": [
+        "references/audit_20261007/next_proofs.tex",
+        "references/audit_20261007/next_proofs_explained.md",
+        "references/audit_20261007/research_review.md"
+      ],
+      "review_version": null,
+      "dependencies": [
+        "R1-001"
+      ],
+      "next_action": "Prioritize only if it improves a needed guarantee or removes a main-theorem limitation.",
+      "evidence_sha256": {
+        "references/audit_20261007/next_proofs.tex": "7665ed30c78834901a8279b4573d1769d311f5fd4355b42271aa919ba9b4ac7b",
+        "references/audit_20261007/next_proofs_explained.md": "1532d50054e0017d99732bd053d19b40ea046511d8dfd2c9221a8db058eb45a3",
+        "references/audit_20261007/research_review.md": "0ad561949356e924ac12d3af24730364aec32afc31cd24c87bd0642ba96136fb"
+      },
+      "dynamic_evidence": [],
+      "priority_assessment": "outputs/d2a_remainder_priority_assessment_v1.json; do not open merely to tighten budgets for these six point rows; remains optional/open, not a6R result."
+    },
+    {
+      "id": "PIPER-H-001",
+      "claim": "Official commit-bound PiPER_H interface review and preparation protocol completed; actual hardware/firmware/data/model assumptions remain unverified.",
+      "status": "OFFICIAL_SOURCE_PREPARATION_REVIEWED_WITH_LOCAL_CLARIFICATIONS",
+      "assumptions": [
+        "Official SDK commit841a625f5f4920e776f20b934eb13048b747e6d0.",
+        "No SDK imported/installed or hardware operated; source review is targeted.",
+        "Async caches/current-derived torque do not prove full-state commonGaussian-support model.",
+        "Future actual hardware/model/clock/firmware validation is optional and separately authorized."
+      ],
+      "evidence": [
+        "outputs/piper_h_interface_protocol_v1.md",
+        "outputs/piper_h_source_audit_v1.json",
+        "outputs/piper_h_protocol_review_v1.md",
+        "outputs/piper_h_protocol_review_v1.json"
+      ],
+      "review_version": "Current ebf843... protocol accepted by localized revision addendum; original source/binary evidence scopes preserved.",
+      "dependencies": [],
+      "next_action": "Preserve protocol; future user-authorized hardware session should confirm actual model/firmware, raw-frame clock and received/valid identities before theory correspondence.",
+      "evidence_sha256": {
+        "outputs/piper_h_interface_protocol_v1.md": "ebf843c1195e9b32a4a945e2575b08c2a84cf666a3c2eb06f4fcf77071643832",
+        "outputs/piper_h_source_audit_v1.json": "91a2fb9d3d359e04827522e989e96e2e9b0d0e37eda62e71c9f62ce317a14700",
+        "outputs/piper_h_protocol_review_v1.md": "4890cb9da858b3df2fbff2ae5e9ee1a6a5fbd1cce30a7cea7e679e0e4cdb5d30",
+        "outputs/piper_h_protocol_review_v1.json": "69c1a5118b7f7c375f722219d56c5e970768095d8c70dd2fcafd4e16b485d9ba"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "AR1-RAW-PROFILE-001",
+      "claim": "Retained bulk plus exact raw task/missing boundary and stationary endpoint terms approximates profiled AR(1) information with uniform O(H) error over the same complete unbounded-amplitude Lipschitz nuisance class.",
+      "status": "PROVED_WITH_ROOT_ALGEBRA_REVIEW",
+      "assumptions": [
+        "Common stationary known AR(1) covariance; fixed deterministic retained set",
+        "Signal Lipschitz constant and health difference rate fixed independently of H",
+        "All double-endpoint task terms retained; a jump at onset uses the appropriate finite signal Lipschitz envelope"
+      ],
+      "evidence": [
+        "outputs/ar1_information_lemmas_v1.md",
+        "outputs/ar1_information_checks_v1.py",
+        "outputs/ar1_information_checks_v1.json"
+      ],
+      "review_version": "2026-10-07 Theorem H; root reviewed exact identity and inf inequality",
+      "dependencies": [
+        "AR1-GAP-001"
+      ],
+      "next_action": "Do not delete boundary products; analyze the same variational problem for the upper construction.",
+      "evidence_sha256": {
+        "outputs/ar1_information_lemmas_v1.md": "b5b4adc0780a4abf46f9a49c7db12dfe6c398df233d031d2a1aac5a0d0d4983c",
+        "outputs/ar1_information_checks_v1.py": "0c2fe4de3579babfd53435a832e1f2f3dc67838f7e0eecc3e3e1bf8428d6e730",
+        "outputs/ar1_information_checks_v1.json": "1c6ef0a11ece4dc8ada93ef2f0dba44a8da786a4c314c4d9c202fbd694058fcc"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "AR1-BRIDGE-COUNTEREXAMPLE-001",
+      "claim": "A constant-gap beta replacement is not uniformly o(H^(5/2)) over every legal raw nuisance path in a specified full-sign extension.",
+      "status": "PROVED_COUNTEREXAMPLE_TO_WRONG_BRIDGE_ONLY",
+      "assumptions": [
+        "rho=1/2, sigma=1, k=1; J=sqrt(H) separated gaps",
+        "z=H constant, a=0, task flips across each gap",
+        "The chosen nuisance is not a profile minimizer; zero nuisance gives zero profiled information"
+      ],
+      "evidence": [
+        "outputs/ar1_information_lemmas_v1.md",
+        "outputs/ar1_information_checks_v1.json"
+      ],
+      "review_version": "2026-10-07 exact rational examples and symbolic derivation",
+      "dependencies": [
+        "AR1-GAP-001"
+      ],
+      "next_action": "Use it to reject the all-path replacement method, not the main sharp coefficient.",
+      "evidence_sha256": {
+        "outputs/ar1_information_lemmas_v1.md": "b5b4adc0780a4abf46f9a49c7db12dfe6c398df233d031d2a1aac5a0d0d4983c",
+        "outputs/ar1_information_checks_v1.json": "1c6ef0a11ece4dc8ada93ef2f0dba44a8da786a4c314c4d9c202fbd694058fcc"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "COLORED-CONVERSE-001",
+      "claim": "Under fixed M0 parameters, n0>=1, B=infinity, deterministic known-horizon calendars, liminf D*/H^(5/2) >= sqrt(2)/5 sqrt(nu beta_k r) eta^(3/2).",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_WITH_CLARIFICATIONS",
+      "assumptions": [
+        "All problem_contract_v1 M0 assumptions",
+        "No alternative channels, third task, moving observations, adaptive calendar or required terminal task",
+        "Fixed rho in (-1,1), sigma>0, k>=1, eta,r>0",
+        "This is a lower bound, not a matching or finite-H theorem"
+      ],
+      "evidence": [
+        "outputs/colored_ar1_converse_v1.md",
+        "outputs/colored_ar1_converse_review_v1.md",
+        "outputs/ar1_converse_checks_v1.py",
+        "outputs/ar1_converse_checks_v1.json"
+      ],
+      "review_version": "Independent v1.1 binding; 7e81111f4fbfd568c7ab071dc7c838189ef0380c245e2de2580a34f6bb55f1f6",
+      "dependencies": [
+        "AR1-GAP-001"
+      ],
+      "next_action": "Integrated with the independently reviewed matching upper. Retain exact lower proof and hash-bound review.",
+      "evidence_sha256": {
+        "outputs/colored_ar1_converse_v1.md": "7e81111f4fbfd568c7ab071dc7c838189ef0380c245e2de2580a34f6bb55f1f6",
+        "outputs/colored_ar1_converse_review_v1.md": "2e4959c224b7ae534cd91cf5d6461ee762494c0dcacd9f67edf8ee51306cc1a3",
+        "outputs/ar1_converse_checks_v1.py": "773d90c3806df5f0626e7f16fa0885fff5c0cb853c513cdd76aa7ef03f3f6a03",
+        "outputs/ar1_converse_checks_v1.json": "f4d141f403c356123bcd513da8914030ca5773ec8b509c0f39ef11dda09fdfae"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "CONTROL-MEMORY-001",
+      "claim": "For a common-input known first-order closed loop with deterministic x0=0 and q>0, full KL=Hd^2/(2q), while an internal missing gap loses d^2/(2q)(m-A_m^2/B_m).",
+      "status": "PROVED_TOOL_WITH_EXACT_FINITE_CHECKS",
+      "assumptions": [
+        "Known c=lambda-K with uniform stable admissible class",
+        "Same external constant input d, innovation q, horizon and retained outputs across controllers",
+        "No health profiling, extra measurement noise or free reconstruction from commands in this toy"
+      ],
+      "evidence": [
+        "outputs/control_memory_example_v1.md",
+        "outputs/control_memory_checks_v1.py",
+        "outputs/control_memory_checks_v1.json"
+      ],
+      "review_version": "2026-10-07 root proof and 16 exact deterministic-initialization matrix checks",
+      "dependencies": [],
+      "next_action": "Map the drift/task input through the same physical filter and add observation/control constraints; do not substitute kappa into M0 without this mapping.",
+      "evidence_sha256": {
+        "outputs/control_memory_example_v1.md": "5eb2f17dcedff0edc3d0c6891f10e3858485f4ff6ff5d25ce2b97c1590bf55b7",
+        "outputs/control_memory_checks_v1.py": "72c71e16376796e46cf292a9c94aa8083c0a683d8a37b519f27de22ee4a0cc0c",
+        "outputs/control_memory_checks_v1.json": "5c493d2a99cf5332aefe99c17f5e7805d8960d434dbe0ab0333d15c7ee27d948"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "NOVELTY-M0-001",
+      "claim": "A finite targeted theorem audit records prior active feedback, controlled sensing, switching cost, full-history set separation and Gaussian convex testing; it does not prove exhaustive novelty.",
+      "status": "TARGETED_SOURCE_BACKED_AUDIT_WITH_EXPLICIT_GAPS",
+      "assumptions": [
+        "Bound to problem_contract_v1",
+        "Full text and abstract-only/NOT_OBTAINED items distinguished",
+        "Source theorem conditions and risk metrics preserved"
+      ],
+      "evidence": [
+        "outputs/novelty_matrix.csv",
+        "outputs/novelty_audit_v1.md",
+        "work/literature_20261007/download_manifest.json",
+        "work/literature_audit_receipt.json"
+      ],
+      "review_version": "2026-10-07 targeted primary-source audit",
+      "dependencies": [],
+      "next_action": "Use restricted contribution wording and resolve the most relevant remaining theorem collisions as the physical M1 contract develops.",
+      "evidence_sha256": {
+        "outputs/novelty_matrix.csv": "d34f2e7a98e47973b46d8288caad9bb82c82f652f8ae0719de5c1311dfc9306d",
+        "outputs/novelty_audit_v1.md": "a0cb537d848de483f5184e9c802f2653f673ee069347d694c14279df4a04f785"
+      },
+      "dynamic_evidence": [
+        "work/literature_20261007/download_manifest.json",
+        "work/literature_audit_receipt.json"
+      ]
+    },
+    {
+      "id": "M1-SHARP-001",
+      "claim": "For a common-force scalar plant with known stable feedback, the full-record oracle is controller-neutral and fixed-controller deficit is sqrt(2)/(5q) sqrt(kappa_c(k) r) eta^(3/2) H^(5/2)+o(H^(5/2)).",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_EDITORIAL_CLARIFICATIONS_AND_NONZERO_SUPPLEMENT_DELIVERED",
+      "assumptions": [
+        "Known deterministic initialization, full retained state, scalar two-sided whole-input healthy path.",
+        "Same physical plant/force/innovation variance across controllers; no command/state diagnostic bypass.",
+        "Bidirectional repeatable exact-k moves required by attainment; no full noisy return/actuator guarantee."
+      ],
+      "evidence": [
+        "outputs/m1_problem_contract_v1.md",
+        "outputs/m1_controlled_memory_theorem_v1.md",
+        "outputs/m1_independent_review_v1.md",
+        "outputs/m1_controlled_memory_checks_v1.json",
+        "outputs/m1_problem_contract_v1_1.md",
+        "outputs/m1_controlled_memory_theorem_v1_1.md",
+        "outputs/memory_asymmetric_repair_supplement_v1.md",
+        "outputs/memory_asymmetric_repair_checks_v1.py",
+        "outputs/memory_asymmetric_repair_checks_v1.json"
+      ],
+      "dependencies": [
+        "IID-001",
+        "CONTROL-MEMORY-001"
+      ],
+      "next_action": "Use the clarified v1.1 in manuscript integration, retaining frozen v1/review input hashes and six separately reproduced nonzero cases.",
+      "review_version": "Independent fixed-scope proof acceptance; formal original symmetric profiles have zero repair, new asymmetric witness in report.",
+      "evidence_sha256": {
+        "outputs/m1_problem_contract_v1.md": "9d01225548c86481b88fb5fe50305a2a9ecf8364ea4a3116137b55c0540389a3",
+        "outputs/m1_controlled_memory_theorem_v1.md": "0689f5ce730f656ba1fe6cfbf2b2f13be1da89ff0ff91d932c81efaeda913ffe",
+        "outputs/m1_independent_review_v1.md": "49a84f89f7d1523ed7ba3cf8f18f0f8c6fc6539851f7933ce7b3ee9eda8a44cd",
+        "outputs/m1_controlled_memory_checks_v1.json": "deda3a5015fce31f6adff15d65dae267ddf07a05739a95c84016627a8ed31ddc",
+        "outputs/m1_problem_contract_v1_1.md": "96e3404ef50cacdb02aa79d2cade36993471b8b15e49a2e75329673cb3ccf378",
+        "outputs/m1_controlled_memory_theorem_v1_1.md": "4608ce534db9b53b223bf68350526b5a9999021880b5a5ecb408daa4343ee901",
+        "outputs/memory_asymmetric_repair_supplement_v1.md": "e297d281991a41273318a4775f8f32ac51ce5d7ccfb3a1a9b601a1b7b1d8d071",
+        "outputs/memory_asymmetric_repair_checks_v1.py": "0411fba7daac9948bb6d3a1a3687f657f0bb9e21f8779cf04ced9852dcb96db1",
+        "outputs/memory_asymmetric_repair_checks_v1.json": "ba6e9936cccf6c32685298af971904217a6d1e88615d1ada47078c5bc3496576"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "M2-SHARP-001",
+      "claim": "For fixed-dimensional known strictly stable closed loops with Q positive definite, B nonzero and scalar healthy force, beta_K(k)>0 and the optimal deficit has sharp coefficient sqrt(2)/5 sqrt(F beta_K(k) r) eta^(3/2).",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_EDITORIAL_CLARIFICATIONS_AND_NONZERO_SUPPLEMENT_DELIVERED",
+      "assumptions": [
+        "All m2_problem_contract_v1 assumptions; retained complete state vectors, common B/Q and known feedback.",
+        "F=B^T Q^-1 B and beta=(k+1)F-M^T W^-1 M; raw covariance is not reset.",
+        "Fixed controller and scalar nuisance; excludes singular Q, partial/noisy states, saturation and uniform uncontrolled controller families."
+      ],
+      "evidence": [
+        "outputs/m2_problem_contract_v1.md",
+        "outputs/m2_controlled_memory_theorem_v1.md",
+        "outputs/m2_independent_review_v1.md",
+        "outputs/m2_controlled_memory_checks_v1.json",
+        "outputs/m2_problem_contract_v1_1.md",
+        "outputs/m2_controlled_memory_theorem_v1_1.md",
+        "outputs/memory_asymmetric_repair_supplement_v1.md",
+        "outputs/memory_asymmetric_repair_checks_v1.py",
+        "outputs/memory_asymmetric_repair_checks_v1.json"
+      ],
+      "dependencies": [
+        "M1-SHARP-001"
+      ],
+      "next_action": "Use the clarified v1.1 in manuscript integration, retaining frozen v1/review input hashes and six separately reproduced nonzero cases.",
+      "review_version": "Complete independent Markdown proof review bound to 38d2aecf2d00a6a781f0a99f6448d93a4d2fcccd1e895526ca3c5fed2c3455b1",
+      "evidence_sha256": {
+        "outputs/m2_problem_contract_v1.md": "794c245d0fdb672021cb36566382d68834b2abe20331dde0bc01a0bc71671eae",
+        "outputs/m2_controlled_memory_theorem_v1.md": "38d2aecf2d00a6a781f0a99f6448d93a4d2fcccd1e895526ca3c5fed2c3455b1",
+        "outputs/m2_independent_review_v1.md": "17b27584e1333292d8135d67b8e96e446e0e6e57fc2ef676b6053b0121cc0fb6",
+        "outputs/m2_controlled_memory_checks_v1.json": "d99e688f7d527798edacc697e46822fd76898baa5f912aeafc8ecded9ec22559",
+        "outputs/m2_problem_contract_v1_1.md": "4ccf5895f656a3f7a9453b4ac3b928339605311e6fcb8544716a4fd384f016f0",
+        "outputs/m2_controlled_memory_theorem_v1_1.md": "3134a8c2170cf523bbe2ac44cb5bc9327d72ff35526c017e0bb8b3fc6a387f82",
+        "outputs/memory_asymmetric_repair_supplement_v1.md": "e297d281991a41273318a4775f8f32ac51ce5d7ccfb3a1a9b601a1b7b1d8d071",
+        "outputs/memory_asymmetric_repair_checks_v1.py": "0411fba7daac9948bb6d3a1a3687f657f0bb9e21f8779cf04ced9852dcb96db1",
+        "outputs/memory_asymmetric_repair_checks_v1.json": "ba6e9936cccf6c32685298af971904217a6d1e88615d1ada47078c5bc3496576"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "M2S-SUPPORT-001",
+      "claim": "On common Gaussian support B in range(G), thin process noise has an exact latent projector and a constant-force score-recovery criterion; positive beta gives the same leading sharp law.",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_FIXED_COMMON_SUPPORT",
+      "assumptions": [
+        "Known strictly stable fixed A_K, G full column rank, B in range(G), retained full states.",
+        "No pseudoinverse congruence shortcut; use SVD and unchanged rowspace under actual triangular predictors.",
+        "Noise-reached-subspace conditioning is fixed; no controller-uniform rank-changing claim."
+      ],
+      "evidence": [
+        "outputs/m2s_problem_contract_v1.md",
+        "outputs/m2s_singular_memory_theorem_v1.md",
+        "outputs/m2s_singular_memory_checks_v1.py",
+        "outputs/m2s_singular_memory_checks_v1.json",
+        "outputs/m2s_independent_review_v1.md"
+      ],
+      "dependencies": [
+        "M2-SHARP-001"
+      ],
+      "next_action": "Accepted fixed-common-support proof is now integrated; retain SPD-only controller-uniform scope and no whole-input recovery claim.",
+      "review_version": "Independent report SHA 83f711812f92bd0cfe4f0ed5e158e8ff5c9005cf58006613fec25599a640c448; frozen proof SHA 8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431",
+      "evidence_sha256": {
+        "outputs/m2s_problem_contract_v1.md": "80a5a5d643432f54f1a2d9f3dc7a9e374528358c18e10beb6b0e1ac1d5b9e7d5",
+        "outputs/m2s_singular_memory_theorem_v1.md": "8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431",
+        "outputs/m2s_singular_memory_checks_v1.py": "c8bea30a8f07c30e7022ca7b29c7d35b4c08099009fd48a062d32bbb1b53d957",
+        "outputs/m2s_singular_memory_checks_v1.json": "279f4d64d90021de274bfe5884e5ecfcb3a2f00d04bab224e1cf4ed04a18e239",
+        "outputs/m2s_independent_review_v1.md": "83f711812f92bd0cfe4f0ed5e158e8ff5c9005cf58006613fec25599a640c448"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "M2S-ZERO-REGIME-001",
+      "claim": "For the frozen fixed common-support M2S contract, beta_k=0 gives optimal deficit Theta(H^2), with a bounded full-input cumulative-task calendar and a calendar-uniform lower bound.",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_ORDER_ONLY",
+      "assumptions": [
+        "Same M2S common-support and scalar-path contract with fixed r,eta>0.",
+        "Offline balanced bounded-length holds and repeated bidirectional known exact-k moves.",
+        "No sharp H^2 constant claimed."
+      ],
+      "evidence": [
+        "outputs/m2s_problem_contract_v1.md",
+        "outputs/m2s_singular_memory_theorem_v1.md",
+        "outputs/m2s_recoverable_order_v1.md",
+        "outputs/m2s_recoverable_order_review_v1.md",
+        "outputs/m2s_recoverable_order_checks_v1.py",
+        "outputs/m2s_recoverable_order_checks_v1.json"
+      ],
+      "dependencies": [
+        "M2S-SUPPORT-001"
+      ],
+      "next_action": "Accepted two-regime proof is now inlined in the manuscript. Keep order-only qualification, real profile-aware upper and all-calendar lower; no new theory direction needed.",
+      "review_version": "Independent report SHA c32efb758b39e3b3f1d11e8219ee365f50fb33f84eb44857739620d8e99571c8; no sharp H^2 coefficient.",
+      "evidence_sha256": {
+        "outputs/m2s_problem_contract_v1.md": "80a5a5d643432f54f1a2d9f3dc7a9e374528358c18e10beb6b0e1ac1d5b9e7d5",
+        "outputs/m2s_singular_memory_theorem_v1.md": "8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431",
+        "outputs/m2s_recoverable_order_v1.md": "5b04f87f23fbfe1d2bc1fb1fbb791e783a47e029c7cdf130e1c000dd22d0f4f1",
+        "outputs/m2s_recoverable_order_review_v1.md": "c32efb758b39e3b3f1d11e8219ee365f50fb33f84eb44857739620d8e99571c8",
+        "outputs/m2s_recoverable_order_checks_v1.py": "09a375c98f27e4c2c4afe33d41e5420f5647ded852ddb9708177d8bd9e3302c3",
+        "outputs/m2s_recoverable_order_checks_v1.json": "11e34d29ff2186617fc2cb13622aab0ed30ab850a9e10191dc93fb490a11382b"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "EVEN-BOUNDED-001",
+      "claim": "Adding fixed bounded task-even bias along the same physical B changes information and optimal deficit by at most F E sqrt(H+n0) ||a||=O(H^2), uniformly in calendars.",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_FIXED_COMMON_INPUT_ENVELOPE",
+      "assumptions": [
+        "Fixed E, unchanged plant/noise/covariance/projection/calendar class.",
+        "Two-sided e budget E/2 per hypothesis; explicit Minkowski difference envelope containing zero.",
+        "Not an O(1) translation, multiplicative uncertain plant or preservation of H^2 sharp constants."
+      ],
+      "evidence": [
+        "outputs/bounded_even_bias_corollary_v1.md",
+        "outputs/bounded_even_bias_review_v1.md"
+      ],
+      "dependencies": [
+        "M2-SHARP-001"
+      ],
+      "next_action": "Use a restricted robustness corollary. Clarify that unbounded even inputs cause indistinguishability only if their difference class contains a.",
+      "review_version": "Independent mathematical review bound to 7483128fec16576869fe0f94fdc22f8e9e8d824bd3dc97e8e47f8bf06ae9c24b",
+      "evidence_sha256": {
+        "outputs/bounded_even_bias_corollary_v1.md": "7483128fec16576869fe0f94fdc22f8e9e8d824bd3dc97e8e47f8bf06ae9c24b",
+        "outputs/bounded_even_bias_review_v1.md": "064717806c4695d600a14051c740d6ff901f8b8a6562ceb4ef7a18a49645daa4"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "SETTLING-DESIGN-001",
+      "claim": "For a scalar stable common-input plant and a fixed homogeneous recovery threshold, k(c) creates a finite plateau-endpoint controller optimization; slow-control gap cost diverges as c approaches one.",
+      "status": "PROVED_WITH_EXACT_FINITE_AND_COMPACT_EXAMPLE",
+      "assumptions": [
+        "Known constant-force single-gap experiment and explicitly homogeneous recovery qualification.",
+        "Common force/noise/input clock and compact positive stable c interval.",
+        "Not complete noisy nonlinear return, hardware tracking or uniform sharp calendar/controller optimization."
+      ],
+      "evidence": [
+        "outputs/controller_settling_tradeoff_v1.md",
+        "outputs/controller_settling_checks_v1.py",
+        "outputs/controller_settling_checks_v1.json"
+      ],
+      "dependencies": [
+        "CONTROL-MEMORY-001",
+        "M1-SHARP-001"
+      ],
+      "next_action": "Build a representative analytical figure and clearly separate finite-family, continuum coefficient and actual finite-H risk optimization.",
+      "review_version": "Exact Fraction checks with rational root isolation; c=0.9 best in the three-point family, c=0.81 best on [0.8,0.95].",
+      "evidence_sha256": {
+        "outputs/controller_settling_tradeoff_v1.md": "081fc156382680cf750c3a40c177e18eac58d627e6cdeeb7973f5a27ce1579ae",
+        "outputs/controller_settling_checks_v1.py": "c97c9733c5b8fcb2a9ee6d5199f654f4a1c0811d0466ac144bf2b9f69ece690d",
+        "outputs/controller_settling_checks_v1.json": "0e7be10bdd4bf4e53749f706c562978f8ea0d446fc0824f4bdb0029b9f7cfcc2"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "CONTROLLER-UNIFORM-001",
+      "claim": "The positive-definite common-input matrix calendar law is uniform over compact pointwise-Schur gain families with bounded integer k; joint controller-calendar asymptotic optimization follows. The declared settling continuum has unique leading optimum c=0.81 and near-optimal controller sequences converge to it.",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_COMPACT_COMMON_SPD",
+      "assumptions": [
+        "Same fixed plant/B/Q/r/eta/prefix/information budget, Q positive definite, compact known gain family.",
+        "Finite k(K) values and repeatedly concatenable known bidirectional exact-k profiles; no profile continuity required.",
+        "General k need not be lower semicontinuous or attain inf; the explicit homogeneous settling example separately has this property.",
+        "Not actual forced/noisy return, actuator budget, singular rank-changing uniformity or computed finite-H optimum."
+      ],
+      "evidence": [
+        "outputs/compact_controller_uniform_bridge_v1.md",
+        "outputs/compact_controller_uniform_review_v1.md"
+      ],
+      "dependencies": [
+        "M2-SHARP-001",
+        "SETTLING-DESIGN-001"
+      ],
+      "next_action": "Use the reviewed bridge in the same technical manuscript and retain explicit common packing/inactive-cutoff constants.",
+      "review_version": "Independent complete bridge review SHA 35f627a5fc637fe255b00c982768daf4067837e81a70060368783fd7a90ecd71",
+      "evidence_sha256": {
+        "outputs/compact_controller_uniform_bridge_v1.md": "89762501f1272eb8b0ed5150985225655e62f0681d24c62c41729750dbcdf351",
+        "outputs/compact_controller_uniform_review_v1.md": "35f627a5fc637fe255b00c982768daf4067837e81a70060368783fd7a90ecd71"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "MANUSCRIPT-001",
+      "claim": "Current single-file IEEE revision8 preserves the reviewed core and adds a fully proved fixed-endpoint risk cost under the same linear contract; actual12-page PDF and local semantic integration accepted. Full submission preparation remains incomplete.",
+      "status": "CURRENT_IEEE_SOURCE_PDF_AND_SCOPED_REVIEWS_ACCEPTED_FULL_RELEASE_INCOMPLETE",
+      "assumptions": [
+        "Revision8 source2245714e.../actual PDFe148cf...;12pages exclude real author metadata/bios/photos.",
+        "Positive branch leading sharp; zero branch matching quadratic order only; endpoint zero excess O1 has no universal positive lower constant.",
+        "H160 three-block representative and H100 first terminal-average certified grid remain distinct.",
+        "Full400, actual final scientific ZIP and four prior-art full-text comparisons remain incomplete."
+      ],
+      "evidence": [
+        "outputs/certo_fdi_control_memory_draft_v1.tex",
+        "outputs/manuscript_spine_v1.md",
+        "outputs/manuscript_integration_review_v1.md",
+        "outputs/manuscript_revision_2_receipt.json",
+        "outputs/manuscript_compile_status_v1.json",
+        "outputs/tac_venue_check_20261007.md",
+        "outputs/control_settling_figure_plan_v1.md",
+        "outputs/control_settling_figure_caption_v1.md",
+        "outputs/control_settling_figure_qa_v1.json",
+        "outputs/manuscript_full_review_v1.md",
+        "outputs/manuscript_local_revision_review_v1.md",
+        "outputs/manuscript_revision_3_receipt.json",
+        "outputs/manuscript_revision_4_receipt.json",
+        "outputs/m2s_two_regime_section_v1.tex",
+        "outputs/m2s_regime_integration_review_v1.md",
+        "outputs/certo_fdi_control_memory_draft_v1.pdf",
+        "outputs/submission_body_consolidated_v1.tex",
+        "outputs/submission_consolidation_map_v1.md",
+        "outputs/submission_consolidation_review_v1.md",
+        "outputs/submission_layout_candidate_v1.tex",
+        "outputs/submission_layout_review_v1.md",
+        "outputs/submission_layout_review_v1.json",
+        "outputs/manuscript_revision_5_receipt.json",
+        "outputs/manuscript_revision_6_receipt.json",
+        "outputs/manuscript_compile_layout_status_v2.md",
+        "outputs/manuscript_compile_layout_status_v2.json",
+        "outputs/citation_preflight_v1.md",
+        "outputs/submission_bibliography_verified_v1.tex",
+        "outputs/citation_support_matrix_v1.json",
+        "outputs/tac_format_preflight_v1.md",
+        "outputs/tac_format_preflight_v1.json",
+        "outputs/original_goal_requirements_audit_v1.md",
+        "outputs/original_goal_requirements_audit_v1.json",
+        "outputs/manuscript_revision6_integration_review_v1.md",
+        "outputs/manuscript_revision6_integration_review_v1.json",
+        "outputs/control_settling_figure_portable_v2.py",
+        "outputs/portable_figure_recipe_receipt_v2.md",
+        "outputs/manuscript_revision_7_receipt.json",
+        "outputs/manuscript_revision_8_receipt.json",
+        "outputs/manuscript_compile_layout_status_v3.md",
+        "outputs/manuscript_compile_layout_status_v3.json",
+        "outputs/manuscript_compile_layout_status_v4.md",
+        "outputs/manuscript_compile_layout_status_v4.json",
+        "outputs/manuscript_revision7_integration_review_v1.md",
+        "outputs/manuscript_revision7_integration_review_v1.json",
+        "outputs/manuscript_revision8_integration_review_v1.md",
+        "outputs/manuscript_revision8_integration_review_v1.json",
+        "outputs/fixed_endpoint_horizon_corollary_v1.md",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.md"
+      ],
+      "dependencies": [
+        "M2-SHARP-001",
+        "CONTROLLER-UNIFORM-001",
+        "EVEN-BOUNDED-001",
+        "M2S-ZERO-REGIME-001",
+        "ENDPOINT-HORIZON-001"
+      ],
+      "next_action": "Complete frozen400 and full-grid discussion/figures; freeze latest source/PDF and perform actual full scientific archive acceptance.",
+      "review_version": "R7 eight finite-example replacements and R8 two insertions independently version-bound; all12 R8 pages actually viewed, embedded fonts/geometry/full-log accepted. No old full proof coverage silently upgraded.",
+      "evidence_sha256": {
+        "outputs/certo_fdi_control_memory_draft_v1.tex": "2245714e5b92c5e36039a688f453b477256aa57df15f97a783442ea2bacbfdc1",
+        "outputs/manuscript_spine_v1.md": "0fdf9891d9315ea4b978272700218b8d5fe43a82a2772f1c2579965661cb30e3",
+        "outputs/manuscript_integration_review_v1.md": "a3a4ffa3c4bcb806698c23e3135705f2fd11d4a78c2364479760326d815b424d",
+        "outputs/manuscript_revision_2_receipt.json": "cb2d9dec1293d8e7a5e36e0af41082b28d1300237174a85db85123357c56c911",
+        "outputs/manuscript_compile_status_v1.json": "73e1d219979588f5aff02f1773a245c91435577584e0becb139062327d19e044",
+        "outputs/tac_venue_check_20261007.md": "d5e0035f5aa942de7740c3f5c0217494701581661796b5fa41452756756567b4",
+        "outputs/control_settling_figure_plan_v1.md": "9458aa2e2b9568b28a7ed6993cb758127b071511640648415ccb986c751ddc66",
+        "outputs/control_settling_figure_caption_v1.md": "daa3083745143935c9eaa2329dfbcf7b8f556f3338f2eab69774dca6fae03d1b",
+        "outputs/control_settling_figure_qa_v1.json": "67e67cc335e1249ddd81b50aa977d23f18a2691d0e5e7e7249d226e1411cce62",
+        "outputs/manuscript_full_review_v1.md": "c5a9f25560120d5194c10345af3113f37f67d5aaa86853f5f8aa020856c5a103",
+        "outputs/manuscript_local_revision_review_v1.md": "a5ce449508692a7f1c24602e37602eb4255553284fad4a9ef8190c72c22bfcf0",
+        "outputs/manuscript_revision_3_receipt.json": "194ace7b65b7bbcd616497ee0419928a09f24c0c74bc44ba7364267b0d19a952",
+        "outputs/manuscript_revision_4_receipt.json": "bd2c1ef129ae21a2e88c05636eafc17a6ae1792c313fa0322d33f1c9099c73c3",
+        "outputs/m2s_two_regime_section_v1.tex": "9e7bb4513007c9226f315e5e58ee661f556a7097d26fb31030aefc136fb03b7f",
+        "outputs/m2s_regime_integration_review_v1.md": "9ded76ab36794d00aef1d1a81f75419c301def1a5cbcd4389a56a8c8a59f077a",
+        "outputs/certo_fdi_control_memory_draft_v1.pdf": "e148cf867fb38deef1f91bcb8aabc5c3cf6d1c7786d9cf3b88f07c01d8aae30c",
+        "outputs/submission_body_consolidated_v1.tex": "7ced33a8641dc8ccb0b216684f68d13f2f26334effa16ccf3dceaea98001a6d9",
+        "outputs/submission_consolidation_map_v1.md": "060e9bc672b2718653c8cfdd3f596ce4a26d227d5cbd2346fd6842fd2f7a3fad",
+        "outputs/submission_consolidation_review_v1.md": "a5f41eea19e6dc747a6fd26462593b9e7e791ba3098aaa7d4c13cf93e0926c69",
+        "outputs/submission_layout_candidate_v1.tex": "d1ba94f30430e9ec9c36b2063296231c518204d17812ac61e8a014691ac16cb4",
+        "outputs/submission_layout_review_v1.md": "0b8e0bcbc1a7e128782d0f513b649414845d3a48f5bef86abe6d683c06c4e9aa",
+        "outputs/submission_layout_review_v1.json": "37d138b2a3bcaeeda7aa30e46b34bcd1bb64935148c1926ace664f0452bedc66",
+        "outputs/manuscript_revision_5_receipt.json": "d88e049a467c078075062c58638266c06861d42b58073a36ea0b992ae329a828",
+        "outputs/manuscript_revision_6_receipt.json": "87a8c014335b532d833e29803a2d7448fb5b16708afad8bb0531dca80d75f1ba",
+        "outputs/manuscript_compile_layout_status_v2.md": "15040813f780dfb105fd1487771af219871ecec6a29f65fb5c1e4e46b0038c8b",
+        "outputs/manuscript_compile_layout_status_v2.json": "1bbbe330528cebaa68af8635daf0509011d69a7c7a6ccd5be0a3cb969652bc0b",
+        "outputs/citation_preflight_v1.md": "2fa6f30ee61081c5c47d629f6e44071354096a8a516a2b42578c2f128c3e39f6",
+        "outputs/submission_bibliography_verified_v1.tex": "cf0ce385edee79785471d656f4113dd32fd0c88d3ea8e1f5fae174e2cf67671a",
+        "outputs/citation_support_matrix_v1.json": "4794d4b4aa3c549db0999e0eb94aaafc86cd079cff5c422ea9f748f4ced641d8",
+        "outputs/tac_format_preflight_v1.md": "c1b10f5eec6cd636913de3ffdfefd16bfe18e8777af71b62f610fa76e653fee8",
+        "outputs/tac_format_preflight_v1.json": "1615d86907394da87405ff4c95fd8a6c0ed6a951f8dd4d1d291238c7f8e9e55a",
+        "outputs/original_goal_requirements_audit_v1.md": "bc12d52a6d00cf4219a115902e021a4e23d8c27a4702f07d40b55d6682666a2b",
+        "outputs/original_goal_requirements_audit_v1.json": "ce7a13934780c767546673ec1489c29cbc23f67dc04f89b5e6dd67572178bc2d",
+        "outputs/manuscript_revision6_integration_review_v1.md": "4aea7a01324415a506ef0b177d86ed77d4ea7ce54331e0680a8559b5e2422c96",
+        "outputs/manuscript_revision6_integration_review_v1.json": "ae66bd48836b43bf7d45a961a0ba075cf71c0148c05380647840bc82dfcaeae7",
+        "outputs/control_settling_figure_portable_v2.py": "18211af41910c8147b07e3628ec2c5f2a131cc8751adaa25c9d57a212b6f9501",
+        "outputs/portable_figure_recipe_receipt_v2.md": "ae88e34a29560b2e93c84d5ad10183ce7755107edfb0b26ddd43346ab65a3e65",
+        "outputs/manuscript_revision_7_receipt.json": "5ff7349a018795a040b53d8a78f8fed903bdc96cec0745537baff0a583fd8b6c",
+        "outputs/manuscript_revision_8_receipt.json": "2e58a8f12d0a5a248fcc3c784dcf852cae78a52e2c8a53a1a4b205631db274a0",
+        "outputs/manuscript_compile_layout_status_v3.md": "58c2323d6cbafe4f38f06e62f1c99d5c03c1293d69d64e3f5b2c0875ea7c57bb",
+        "outputs/manuscript_compile_layout_status_v3.json": "751bf5bcddc242deff91cfebfb6493e50f08c379c08bd258ae84d666182a4992",
+        "outputs/manuscript_compile_layout_status_v4.md": "e22e7de1d4821a7e89b83019809790a47f9d0f7a6c7e9bdefaf985a2a817f411",
+        "outputs/manuscript_compile_layout_status_v4.json": "6c2bad639004215942f6de0fa19271553f462891a8725d7cb6853bb13e9c1181",
+        "outputs/manuscript_revision7_integration_review_v1.md": "dca0253b4a231a9f3d9256c9286dbe06d0a9535b360a67e41ae5b3680e718834",
+        "outputs/manuscript_revision7_integration_review_v1.json": "62def826117159a2dfb206414e9918b8d57288db2750f9156f28eaaeaecbc2bb",
+        "outputs/manuscript_revision8_integration_review_v1.md": "7c47f09d5dd5ad5426a303ed82863148e936a91f5d0144c2dea56b5905e70cd6",
+        "outputs/manuscript_revision8_integration_review_v1.json": "cc5a24c98ca1251dff7e49075d571be59607df8c16fd50bd6aa4270decc2a7ed",
+        "outputs/fixed_endpoint_horizon_corollary_v1.md": "47e9f15a41e90ce71c262dce4c725ec3cc7bda41760fc865bb8d5302ce5ade0e",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.md": "de520083bc5ea064cbb9aa0abe4139dad4dadd7db9565e9274ba9e318d9bc290"
+      },
+      "dynamic_evidence": [],
+      "historical_revisions": [
+        {
+          "revision": 6,
+          "source_sha256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e",
+          "pdf_sha256": "c8e02b022d0c875163499f5a45ff374208376702f1176da66f02bd08665b6195",
+          "pages": 11,
+          "archive": "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V2.zip"
+        },
+        {
+          "revision": 7,
+          "source_sha256": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca",
+          "pdf_sha256": "ec237f48280d1f1680461c729e3d8c58f46dbea86a1dc0e6752af290048843bd",
+          "pages": 11
+        }
+      ]
+    },
+    {
+      "id": "THEORY-ZIP-001",
+      "claim": "The actual 98-file finite-theory checkpoint ZIP was newly extracted, all payload hashes matched, and every one of 11 included exact check scripts passed in a separate -S process with saved JSON agreement.",
+      "status": "EXECUTED_PASS_ACTUAL_ZIP_FINITE_THEORY_SCOPE",
+      "assumptions": [
+        "Archive SHA 55e5155cb5dc3e7cb40e5e3abfffa61fa438b197c7bc68213b27f286ede03ac3",
+        "Finite exact checks only, not proof-by-enumeration, compiler acceptance or full D2-a.",
+        "Stage ZIP preserves its own snapshot, including then-pending Theta review status; later reports are separately version bound."
+      ],
+      "evidence": [
+        "outputs/theory_checkpoint_archive_receipt_v1.json",
+        "outputs/theory_checkpoint_validation_v1.json",
+        "outputs/theory_checkpoint_validation_v1.md"
+      ],
+      "dependencies": [
+        "M2-SHARP-001",
+        "M2S-SUPPORT-001",
+        "M2S-ZERO-REGIME-001"
+      ],
+      "next_action": "Retain this immutable stage ZIP. Build a final release only after full manuscript and D2-a acceptance; do not relabel this as the complete goal.",
+      "review_version": "Root fresh actual-ZIP extraction, 11 stdlib processes, exit=0, failures=[]",
+      "evidence_sha256": {
+        "outputs/theory_checkpoint_archive_receipt_v1.json": "808b49abf27d06ffe36c076deeeef8e4c6e5322efa176467a553225a85af2b69",
+        "outputs/theory_checkpoint_validation_v1.json": "fb2b08fd9dfcbdad7420902d1548a641ffa7d32cf6f388192fc764e8caed1598",
+        "outputs/theory_checkpoint_validation_v1.md": "49a118d765c8626144cf6451877bbf37ecdb7f9154601a49f79c474efd01096a"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "NOVELTY-CONTROL-001",
+      "claim": "A separate M2/M2S claim-to-nearest-result audit includes Gaussian feedback design and closed-loop history-aware diagnosis; direct Esna Ashari 2012 theorem coverage remains unresolved after 23 new source requests.",
+      "status": "TARGETED_PRIMARY_SOURCE_AUDIT_WITH_UNRESOLVED_FULLTEXT_GAPS",
+      "assumptions": [
+        "Original 15-item matrix is M0 bound; two new primary full texts are an explicit M2 supplement.",
+        "No first/exhaustive novelty claim; projection/feedback/real-dead-time/switchback have prior art.",
+        "Two 2012 feedback articles and two trend-design texts are not promoted from metadata to theorem coverage."
+      ],
+      "evidence": [
+        "outputs/novelty_control_memory_collision_v1.md",
+        "outputs/control_design_prior_art_extension_v1.md",
+        "outputs/feedback_prior_art_fulltext_review_v1.md",
+        "outputs/feedback_local_library_lookup_v1.md",
+        "outputs/citation_preflight_v1.md",
+        "outputs/citation_support_matrix_v1.json"
+      ],
+      "dependencies": [
+        "NOVELTY-M0-001",
+        "M2-SHARP-001"
+      ],
+      "next_action": "Web/author/repository and verified local Zotero routes have not obtained the two2012 sources. Keep their theorem coverage UNREVIEWED; use a genuinely new authorized source route or user-provided text when available. Continue other independent preparation.",
+      "review_version": "Finite primary-source audit; source retrieval outcomes and narrow full-text scopes explicitly recorded.",
+      "evidence_sha256": {
+        "outputs/novelty_control_memory_collision_v1.md": "df0d892080901a0c0c1b1653baedd5eac0305e1aa61eec8daf2bb93bbb59e890",
+        "outputs/control_design_prior_art_extension_v1.md": "0f0d87e1f5d655e3b7bf1d374dfd3f0cad103037210d1f9737773fab8b70006f",
+        "outputs/feedback_prior_art_fulltext_review_v1.md": "3175f0be8dc0c407fc382ad3663c36975d2956f808b0b554d143c2f496b5a5df",
+        "outputs/feedback_local_library_lookup_v1.md": "ac2efb5ee00a4f7255036228bc74002363e8040d01c0516631947c154026e21f",
+        "outputs/citation_preflight_v1.md": "2fa6f30ee61081c5c47d629f6e44071354096a8a516a2b42578c2f128c3e39f6",
+        "outputs/citation_support_matrix_v1.json": "4794d4b4aa3c549db0999e0eb94aaafc86cd079cff5c422ea9f748f4ced641d8"
+      },
+      "dynamic_evidence": []
+    },
+    {
+      "id": "D2A-SUBGRID-FIGURE-001",
+      "claim": "Complete declared terminal-balanced H<=200 subgrid retains14 classifications and plots12 finite certificate rows;4average passes and first certified grid H100 are family-specific.",
+      "status": "IMMUTABLE_SUBGRID_SOURCE_AND_FIGURE_INDEPENDENTLY_REVIEWED",
+      "assumptions": [
+        "Fixed protocol/ramp; no full400 or global/continuous/sequential optimum claim.",
+        "2H40 zero directions have no risk bound and are not plotted as zero.",
+        "V+ is Gaussian-comparator variance, while nonlinear errors/events are paid separately.",
+        "Direction norm scaling and statistic standardization are distinct."
+      ],
+      "evidence": [
+        "outputs/d2a_readout_figure_data_v1.json",
+        "outputs/d2a_readout_figure_v1.py",
+        "outputs/d2a_readout_figure_v1.pdf",
+        "outputs/d2a_readout_figure_plan_v1.md",
+        "outputs/d2a_readout_figure_caption_v1.md",
+        "outputs/d2a_readout_figure_qa_v1.json",
+        "outputs/d2a_readout_figure_review_v1.md",
+        "outputs/d2a_readout_figure_review_v1.json"
+      ],
+      "evidence_sha256": {
+        "outputs/d2a_readout_figure_data_v1.json": "8022e863c9b74179f01c3452e0028ab489aa84b7111823b8bd811aab2a816e97",
+        "outputs/d2a_readout_figure_v1.py": "a427d7ac369d0038fe4783ed745ff0f77b0545606aea723153ab2e1455a68263",
+        "outputs/d2a_readout_figure_v1.pdf": "999fa810669c21de84592649f8fc59325db5ca424303406c88bac5aef53b4767",
+        "outputs/d2a_readout_figure_plan_v1.md": "f5998c02e58c192368b342f6f2e006987df5a044024dbc87eaa3f7ae7dd5739c",
+        "outputs/d2a_readout_figure_caption_v1.md": "f6c0414ef4bbd5737e2e5253caf878d6b0801d20e933718939c8832bf8cf10d5",
+        "outputs/d2a_readout_figure_qa_v1.json": "d5fd3fb017c077b78b5f3876f9b87cd80721db43cb2900497d1732276273bb77",
+        "outputs/d2a_readout_figure_review_v1.md": "f22a4dca7c3186f19715267779fe8cfe31c0292f06ae04a0143dc63a1d3e5022",
+        "outputs/d2a_readout_figure_review_v1.json": "5103a9e1d85c09535b2908de88fa575349b0cc40c0143f28b80a3e422ec5b3e5"
+      },
+      "dynamic_evidence": [],
+      "review_version": "Current fixed snapshot8022e863...;38small metadata leaves matched, no large science replay.",
+      "dependencies": [
+        "D2A-001"
+      ],
+      "next_action": "Retain this snapshot; use a separately versioned full-grid figure once complete."
+    },
+    {
+      "id": "THEORY-ZIP-V2-001",
+      "claim": "Immutable R6-stage V2 archive contains212members; actual fresh extraction passed210payload hashes,11separate stdlib reports and14row/38leaf Figure2 metadata.",
+      "status": "EXECUTED_PASS_ACTUAL_V2_ZIP_FINITE_THEORY_AND_METADATA",
+      "assumptions": [
+        "V2 SHA 6ab32cb85ebc7befd6410974b6781d97f5285147f13f19a744d1d7cf03cbb99c",
+        "Build-time revision6 source8eaa.../PDFc8e02...; does not contain current revision8 or full400.",
+        "Stage checkpoint, not finalfull400/TACready; universalproof and largeD2 replay not certified by scripts.",
+        "V1 preserved immutable; new finite replay not combined into invented universal coverage."
+      ],
+      "evidence": [
+        "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V2.zip",
+        "outputs/theory_checkpoint_archive_receipt_v2.json",
+        "outputs/theory_checkpoint_validation_v2.md",
+        "outputs/theory_checkpoint_validation_v2.json"
+      ],
+      "evidence_sha256": {
+        "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V2.zip": "6ab32cb85ebc7befd6410974b6781d97f5285147f13f19a744d1d7cf03cbb99c",
+        "outputs/theory_checkpoint_archive_receipt_v2.json": "ea743bcdab9ddbbf3b633647f9dfdd2bdf70ac1e2f0434cf3155194e81b6400d",
+        "outputs/theory_checkpoint_validation_v2.md": "3f682ebcfba15ec47a2a0b9d24b778d3d1240719c316508508dd9e265413575f",
+        "outputs/theory_checkpoint_validation_v2.json": "d1df970295bbb4a32c66a2815bd05c4fd07500b6940eb1556db9e1517ea010bb"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "MANUSCRIPT-001",
+        "D2A-SUBGRID-FIGURE-001"
+      ],
+      "review_version": "Actual new V2 ZIP extraction/standalone validator exit0 with zero failures; root archive/currentbinding checks.",
+      "next_action": "Preserve V2; complete full400/current paper acceptance before final actual full-evidence release."
+    },
+    {
+      "id": "ENDPOINT-HORIZON-001",
+      "claim": "Under the existing fixed-endpoint linear/common-support contract, positive missing-score loss gives a sharp sqrt(oracleH) extra endpoint; zero loss gives O1 without universal positive cost; commonSPD compact joint design uses uniform near-inf choices.",
+      "status": "PROVED_INDEPENDENTLY_REVIEWED_AND_BYTE_BOUND_R8_INTEGRATION",
+      "assumptions": [
+        "Known deterministic endpoint/calendar/controller and full two-sided healthy path class; fixed miss tolerance and alpha tending to zero.",
+        "Actual calendar/test existence; no unattained supremum equality or monotonicity shortcut.",
+        "No sequential/ARL/expected stopping claim or extrapolation to bounded-time nonlinear D2.",
+        "Interpretation of existing principal theorem, not a new model or standalone principal novelty."
+      ],
+      "evidence": [
+        "outputs/fixed_endpoint_horizon_corollary_v1.md",
+        "outputs/fixed_endpoint_horizon_corollary_v1.tex",
+        "outputs/fixed_endpoint_horizon_corollary_v1.json",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.md",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.json",
+        "outputs/manuscript_revision8_integration_review_v1.md"
+      ],
+      "evidence_sha256": {
+        "outputs/fixed_endpoint_horizon_corollary_v1.md": "47e9f15a41e90ce71c262dce4c725ec3cc7bda41760fc865bb8d5302ce5ade0e",
+        "outputs/fixed_endpoint_horizon_corollary_v1.tex": "d60b75fb81d3bb1da1e2e507588d41cd8442cb4531b222b8cf13a24fae853287",
+        "outputs/fixed_endpoint_horizon_corollary_v1.json": "9b20b8c19ff51aa1402fb93cbaba43a29252f4712c88e98c29cc8a9abce3a088",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.md": "de520083bc5ea064cbb9aa0abe4139dad4dadd7db9565e9274ba9e318d9bc290",
+        "outputs/fixed_endpoint_horizon_corollary_review_v1.json": "e274b6fe172ff918aad6d9652ee4b46c6f52ddaeb103da6f52f24c6385aa803f",
+        "outputs/manuscript_revision8_integration_review_v1.md": "7c47f09d5dd5ad5426a303ed82863148e936a91f5d0144c2dea56b5905e70cd6"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "M2-SHARP-001",
+        "M2S-ZERO-REGIME-001",
+        "CONTROLLER-UNIFORM-001"
+      ],
+      "review_version": "Final d60/9b fragment binding explicitly accepted; old initial fragment review binding retained. R8 corollary/proof/risk-scale/copy-plant counterexample exact to final fragment.",
+      "next_action": "Retain main-risk/control interpretation and exact scope during full-grid final writing."
+    },
+    {
+      "id": "D2A-THREE-BLOCK-001",
+      "claim": "H160/41s is the earliest declared terminal-balanced average-certified representative with at least3 complete symmetric blocks; H100/26s remains that family's first certified grid endpoint.",
+      "status": "ACCEPTED_FROZEN_FINITE_PAIR_AND_R7_INTEGRATION",
+      "assumptions": [
+        "Three-block criterion is instance selection, not certificate feasibility.",
+        "All H160 numbers inherited from accepted frozen pair; no protocol or science rerun.",
+        "Point lower bound0 means insufficient certificate, not actual power0; displayed decimals are approximate."
+      ],
+      "evidence": [
+        "outputs/d2a_three_block_example_review_v1.md",
+        "outputs/d2a_three_block_example_review_v1.json",
+        "outputs/manuscript_revision7_integration_review_v1.md",
+        "outputs/manuscript_revision7_integration_review_v1.json"
+      ],
+      "evidence_sha256": {
+        "outputs/d2a_three_block_example_review_v1.md": "ff64a112a69879ae12449d7ee79e1c66f4dedc7251c803180b3dc4c9fb63a8e8",
+        "outputs/d2a_three_block_example_review_v1.json": "40685f84d52164a4e4174d7f62aa462f6ed5ed2c0c86d8a629df1e7a8166edcf",
+        "outputs/manuscript_revision7_integration_review_v1.md": "dca0253b4a231a9f3d9256c9286dbe06d0a9535b360a67e41ae5b3680e718834",
+        "outputs/manuscript_revision7_integration_review_v1.json": "62def826117159a2dfb206414e9918b8d57288db2750f9156f28eaaeaecbc2bb"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "D2A-SUBGRID-FIGURE-001"
+      ],
+      "review_version": "Exact H160 source/mean-risk binding and8literal replacements independently checked.",
+      "next_action": "Keep representative selection distinct from first-success and full-grid conclusions."
+    },
+    {
+      "id": "D2A-METADATA-GUARD-001",
+      "claim": "C1 exact400 predecessor/member guard and single-CSV binding, and C2 physical/projection/metadata classification source fix passed tiny fixtures and root acceptance; sole publisher naturally loaded the new normal entry.",
+      "status": "ACCEPTED_SCOPED_FIX_NATURALLY_ACTIVE_WITH_IMMUTABLE_DELTA",
+      "assumptions": [
+        "15pure fixtures plus exact old/new selected numeric payload comparison; no scientific proof replay.",
+        "Root dry-run writes no live data; no second normal writer or process restart.",
+        "Physical PASS only inherited-rule clock instance check; preflight main not executed.",
+        "Guard delta13payload actual manifest check; base runtimeV1 and protocol/core/case/verifier unchanged."
+      ],
+      "evidence": [
+        "outputs/d2a_partial_first_success_v1.py",
+        "outputs/full_d2a_release_metadata_guard_v1.py",
+        "outputs/d2a_metadata_guard_fix_v1.md",
+        "outputs/d2a_metadata_guard_fix_v1.json",
+        "outputs/d2a_metadata_guard_root_acceptance_v1.md",
+        "outputs/d2a_metadata_guard_root_acceptance_v1.json",
+        "outputs/d2a_runtime_guard_delta_v2/README.md",
+        "outputs/d2a_runtime_guard_delta_v2/MANIFEST.json"
+      ],
+      "evidence_sha256": {
+        "outputs/d2a_partial_first_success_v1.py": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c",
+        "outputs/full_d2a_release_metadata_guard_v1.py": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+        "outputs/d2a_metadata_guard_fix_v1.md": "da857c8ed4217e62f97c767f67b0470d6364f4424cdea951b905d56781e8a002",
+        "outputs/d2a_metadata_guard_fix_v1.json": "b73386b8dd4f1c57f8d7301bb13edb7a44a5b77d6750f13ab91eb573acccb703",
+        "outputs/d2a_metadata_guard_root_acceptance_v1.md": "b3d8ce4a5ef8f55d8be708463ea41f16efafbbb9d1f263c6cddce200414a3843",
+        "outputs/d2a_metadata_guard_root_acceptance_v1.json": "6dadf6a0d6faea50fdd1d84aabae0c3ae58285fdf72a887c67e8ce3161702e0e",
+        "outputs/d2a_runtime_guard_delta_v2/README.md": "fe50f2b3581d221f76366058b8a78d4e7ce5e60085d019827b6a6ecd9503e2f2",
+        "outputs/d2a_runtime_guard_delta_v2/MANIFEST.json": "fff78cc36a6eb84473a51c22b0c1c4b379eb1ec872f6af3a4715e1d3d059a571"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "D2A-001"
+      ],
+      "review_version": "Source-bound finite guard test/equivalence report and root observed natural-publisher activation are separate receipts.",
+      "next_action": "Include guard module and both revised wrappers in future full release; never apply overlay to active worktree."
+    },
+    {
+      "id": "D2A-FINAL-RECIPE-001",
+      "claim": "Future full400 actual-ZIP release recipe has bounded metadata/real-ZIP IO fixtures and explicit science coverage gates; complete scientific archive build/replay remains unexecuted.",
+      "status": "PREPARED_BOUNDED_IO_REVIEW_ONLY_NOT_SCIENTIFIC_ACCEPTANCE",
+      "assumptions": [
+        "Actual ZIP member/size/manifest SHA mapping is presence only, not large body hash/arithmetic.",
+        "Separate original readonly metadata and per-case science roots; no dummy witness or worktree fallback.",
+        "Future full replay requires frozen/quiescent400, all canonical cases, independent full-S arithmetic and all actual payload hashes.",
+        "Stream original witnesses into Zip64; cleanup only successful newly extracted owned case; preserve originals/failure history.",
+        "V1 recipe/contract preserved; future full scientific branch not executed or accepted by tiny fixtures."
+      ],
+      "evidence": [
+        "outputs/full_d2a_release_contract_v1.md",
+        "outputs/full_d2a_release_contract_v1.json",
+        "outputs/full_d2a_release_recipe_precheck_v1.json",
+        "outputs/full_d2a_release_preflight_v1.json",
+        "outputs/package_full_d2a_release_v1.py",
+        "outputs/package_full_d2a_release_v2.py",
+        "outputs/d2a_full_grid_acceptance_review_v1.md",
+        "outputs/d2a_full_grid_acceptance_v1.py",
+        "outputs/d2a_full_grid_acceptance_v2.py",
+        "outputs/d2a_archive_witness_view_v1.py",
+        "outputs/d2a_archive_view_bridge_fixtures_v1.py",
+        "outputs/d2a_archive_view_bridge_fixture_results_v1.json",
+        "outputs/d2a_archive_view_bridge_v1.md",
+        "outputs/d2a_archive_view_bridge_v1.json",
+        "outputs/d2a_archive_coverage_gate_v1.py",
+        "outputs/d2a_archive_coverage_gate_fixtures_v1.py",
+        "outputs/d2a_archive_coverage_gate_fixture_results_v1.json",
+        "outputs/d2a_archive_coverage_gate_addendum_v1.md",
+        "outputs/d2a_archive_coverage_gate_addendum_v1.json",
+        "outputs/d2a_archive_csv_cap_fixtures_v1.py",
+        "outputs/d2a_archive_csv_cap_fixture_results_v1.json",
+        "outputs/d2a_archive_csv_cap_addendum_v1.md",
+        "outputs/d2a_archive_csv_cap_addendum_v1.json",
+        "outputs/d2a_archive_view_bridge_review_v1.md",
+        "outputs/d2a_archive_view_bridge_review_v1.json",
+        "outputs/independent_review_archive_io_bridge_v1.py",
+        "outputs/independent_review_archive_io_bridge_v1_receipt.json",
+        "outputs/independent_review_archive_csv_cap_v1.py",
+        "outputs/independent_review_archive_csv_cap_v1_receipt.json",
+        "outputs/d2a_archive_independent_sources_preservation_v1.json"
+      ],
+      "evidence_sha256": {
+        "outputs/full_d2a_release_contract_v1.md": "d633636c7d145b88de4c324d0dd772addef0afac8c700dbae43ccb462834dd80",
+        "outputs/full_d2a_release_contract_v1.json": "b822b2aae5296f10a6bf82ace28629b647e3ea1ef0080e06315f354dcd40b2f6",
+        "outputs/full_d2a_release_recipe_precheck_v1.json": "dd9a9f68d890f12a54ad3cea88f3246ac9f03b1acd1659736e8f6521d7434305",
+        "outputs/full_d2a_release_preflight_v1.json": "895473f88cf365fef887178e4846ee7800d687270b6187f9fbb567bc6d76563b",
+        "outputs/package_full_d2a_release_v1.py": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920",
+        "outputs/package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+        "outputs/d2a_full_grid_acceptance_review_v1.md": "92ce644380eef88c02eef282eac884823edd62dd7e00163fb8e39b23c2f8deed",
+        "outputs/d2a_full_grid_acceptance_v1.py": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+        "outputs/d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+        "outputs/d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+        "outputs/d2a_archive_view_bridge_fixtures_v1.py": "5f262131a8d111cb233707428a695e5b3443565c46328e2965483d5f223b4961",
+        "outputs/d2a_archive_view_bridge_fixture_results_v1.json": "625125c7f29daf9552c33ee77f365ad7429694f7600326298a789e6bace16ee1",
+        "outputs/d2a_archive_view_bridge_v1.md": "54af455b080ba1a27d6beec5c8deef35bf24c22128bc9407a5a1a7013b2915c5",
+        "outputs/d2a_archive_view_bridge_v1.json": "8509c76ca634578e0d1fbb1f8b71f3b66350dba3f44a266105d0504bdc4ff9f8",
+        "outputs/d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+        "outputs/d2a_archive_coverage_gate_fixtures_v1.py": "314030b67dac31624f74cd014d7332d4b67fd1a2e250ea28e90037061903793c",
+        "outputs/d2a_archive_coverage_gate_fixture_results_v1.json": "909a1c3a10bcfbfd141b7e00d2b3c143db5896f33c3a5b68297038076a8c9180",
+        "outputs/d2a_archive_coverage_gate_addendum_v1.md": "d732fd68ce9614d1ddea159674ebca66489aa1042b9584eea6c6c134790cdbf7",
+        "outputs/d2a_archive_coverage_gate_addendum_v1.json": "d43beb618df13c970c046e5112768015d99651739ebc7173791f9bf11703ecf2",
+        "outputs/d2a_archive_csv_cap_fixtures_v1.py": "4c5957026dc6d6ded729e4e98e8be51f0d5494f6b188c6173fc29a8a7ebdfa53",
+        "outputs/d2a_archive_csv_cap_fixture_results_v1.json": "36a2152897eaebf8af4d1e822e25d951066f7413c58cfd40f5c50bf6bd96cef2",
+        "outputs/d2a_archive_csv_cap_addendum_v1.md": "da4369a6d00897fc2af45cf381fe25df04b05fa9e51b9f58f1cdcc6422aa4476",
+        "outputs/d2a_archive_csv_cap_addendum_v1.json": "33cb7c3d6020f016af6d4fe72a0d1ab83a9f8806bfcb79e134a960fc5453d9d1",
+        "outputs/d2a_archive_view_bridge_review_v1.md": "43a995ad62c6c9627874a5ffb6d986df8355bc2ccfaf796f7f5a44137236139d",
+        "outputs/d2a_archive_view_bridge_review_v1.json": "aa304889fbe2b2c29141e722ca9be037519d51f038da8e8753c736a0edc7f839",
+        "outputs/independent_review_archive_io_bridge_v1.py": "254ddc15d04cddbbda7e21f24996ceb58dc3f124530cafe4aa2f94c16472845e",
+        "outputs/independent_review_archive_io_bridge_v1_receipt.json": "c9de5fcb1d9b9f3edc02f236d7c7f5565411fea600bd5df97023476b309b4b08",
+        "outputs/independent_review_archive_csv_cap_v1.py": "7393eb1e0ac423cec1c3c8b2e1ad316a85969bc56afe9d307d95e4b0aff837dd",
+        "outputs/independent_review_archive_csv_cap_v1_receipt.json": "f1303f7d3ecb7c703fbd4866123c84c4e9c8643e8322943547389a94fa026b77",
+        "outputs/d2a_archive_independent_sources_preservation_v1.json": "7481d48b29a935a7f51dc8026ea24245bb49f59a9568228502069a48f45e20ff"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "D2A-001",
+        "D2A-METADATA-GUARD-001"
+      ],
+      "review_version": "Bounded new IO/canonical-inventory fixtures and independent source review only; no big hashes/R1/science or final archive.",
+      "next_action": "After sole scan ends, derive full regime and latest paper freeze, actual ZIP and clean per-case science acceptance; diagnose any observed failures."
+    },
+    {
+      "id": "D2A-REMAINDER-PRIORITY-001",
+      "claim": "Six frozen terminal point rows remain outside the current90percent sufficient risk interface even with nonlinear/event budgets zero and both dynamic mean losses removed.",
+      "status": "ROOT_REVIEWED_EXACT_FINITE_BUDGET_OBSTRUCTION",
+      "assumptions": [
+        "Only H60..200 fixed directions/mean envelopes/comparator variance; not true-power or all-statistic impossibility. Rational Mills/Taylor proof and exact5U squared<Vminus; full6R optional branch need not open merely to rescue these point rows."
+      ],
+      "evidence": [
+        "outputs/d2a_remainder_priority_assessment_v1.md",
+        "outputs/d2a_remainder_priority_assessment_v1.json",
+        "outputs/d2a_remainder_priority_assessment_v1.py"
+      ],
+      "evidence_sha256": {
+        "outputs/d2a_remainder_priority_assessment_v1.md": "63b116e79d769d3758a229806e18cd309e74ece913a5dd501a95ac1328cd9266",
+        "outputs/d2a_remainder_priority_assessment_v1.json": "77394c638e9e7756569f88c2bc7150f8d195e868eb66ed2756a916af0fca6fa5",
+        "outputs/d2a_remainder_priority_assessment_v1.py": "7fea57b41013ae1895b78c24ce0207db09f60ed784bbf35f3ce7848bda7377f3"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "D2A-SUBGRID-FIGURE-001"
+      ],
+      "review_version": "Exact frozen author bytes and actual independent/root review within declared scope.",
+      "next_action": "Retain for human GitHub review; resume full goal only at user request."
+    },
+    {
+      "id": "D2A-PAIR-REHEARSAL-001",
+      "claim": "Actual H160 average/point ZIP fresh-root full standardlib scientific replays each executed once with documented Windows cleanup and long-path bookkeeping recovery.",
+      "status": "INDEPENDENTLY_ACCEPTED_ACTUAL_SCOPED_PAIR_SCIENCE_REPLAY_NOT_FULL400",
+      "assumptions": [
+        "ActualZIP c5dfadbb/296443279bytes with48payloads; freshR1463files,47original inputs before/after, avg PASS and point TARGET_NOT_MET. Originalwrapper two operations failed; recovery code outside ZIP. scientific_ready=false/full400=false; V3 full driver unexecuted."
+      ],
+      "evidence": [
+        "outputs/d2a_science_zip_rehearsal_v1.md",
+        "outputs/d2a_science_zip_rehearsal_v1.json",
+        "outputs/d2a_science_zip_rehearsal_receipt_v1.json",
+        "outputs/d2a_science_zip_rehearsal_review_v1.md",
+        "outputs/d2a_science_zip_rehearsal_review_v1.json",
+        "outputs/d2a_science_zip_rehearsal_v1.py",
+        "outputs/d2a_science_zip_rehearsal_resume_v1.py",
+        "outputs/d2a_science_zip_rehearsal_finalize_v1.py",
+        "outputs/d2a_science_zip_rehearsal_cleanup_diagnostic_v1.json",
+        "outputs/d2a_science_zip_rehearsal_longpath_diagnostic_v1.json",
+        "outputs/d2a_native_owned_case_cleanup_v1.py",
+        "outputs/d2a_native_owned_case_cleanup_fixture_v1.json",
+        "outputs/package_full_d2a_release_v3.py"
+      ],
+      "evidence_sha256": {
+        "outputs/d2a_science_zip_rehearsal_v1.md": "caab4817569539c9bd704e1d3bc6d424183a43d768cfd4405f7a94862720e997",
+        "outputs/d2a_science_zip_rehearsal_v1.json": "9939355fce37d2edb5a75a056d5be0e2194385b39d90ac107f79e7f79769d6e0",
+        "outputs/d2a_science_zip_rehearsal_receipt_v1.json": "7b80a9f530f40e6c89767dd6d75bb6ebd0c01b5912e29b41fd703adfda9a8832",
+        "outputs/d2a_science_zip_rehearsal_review_v1.md": "f8f3be89ffafbeff674bc5612ec7d7c3bf61ebcdc28cf32d61a80e4aed75f247",
+        "outputs/d2a_science_zip_rehearsal_review_v1.json": "17ff63191978192bdf1cfd5f996d429cb67bcbf5b1dc68f6d94d278b94808480",
+        "outputs/d2a_science_zip_rehearsal_v1.py": "2d324aefaa33cb869b79c94bd57aaeb7be6c4b05ec38056118e061e07edb8186",
+        "outputs/d2a_science_zip_rehearsal_resume_v1.py": "eaa7875ca115baf464ae3e544545e3d297a9a3869869c08ab79d66d002d37fcf",
+        "outputs/d2a_science_zip_rehearsal_finalize_v1.py": "15bd463094278a4f90ba9cd87fa9aa2407fc883562d7d87031895618465693d5",
+        "outputs/d2a_science_zip_rehearsal_cleanup_diagnostic_v1.json": "ed576e91fcd65f274f428e26b7dc4ebc276fe37107aba8722599ae6e5c151d3d",
+        "outputs/d2a_science_zip_rehearsal_longpath_diagnostic_v1.json": "739cffecb8cc744b7018794783a45b1df4440e8bd1c6675e590eeb5f0ac88741",
+        "outputs/d2a_native_owned_case_cleanup_v1.py": "f8f4bde50b121f7be975ade18d2988c66428d5463effde29a8889167efa7d070",
+        "outputs/d2a_native_owned_case_cleanup_fixture_v1.json": "ae753af25096e7d102490416501d8869754d079e8eca0e5344a8e41e66d94c60",
+        "outputs/package_full_d2a_release_v3.py": "6c5512c180046c7916f8294626eef6af748d4385346442a54088572c59490dd0"
+      },
+      "dynamic_evidence": [],
+      "dependencies": [
+        "D2A-THREE-BLOCK-001",
+        "D2A-FINAL-RECIPE-001"
+      ],
+      "review_version": "Exact frozen author bytes and actual independent/root review within declared scope.",
+      "next_action": "Retain for human GitHub review; resume full goal only at user request."
+    }
+  ],
+  "updated_utc": "2026-10-07T10:53:14.407134+00:00",
+  "evidence_binding_scope": "Static hashes bind the ledger read snapshot. Live table/liveness views are explicitly dynamic and bind their own dated table/case receipts."
+}

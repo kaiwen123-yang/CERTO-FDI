@@ -1,0 +1,43 @@
+\documentclass[journal]{IEEEtran}
+\pdfminorversion=4
+\usepackage{amsmath,amssymb,amsthm,bm,graphicx,booktabs,array,cite,url}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\theoremstyle{remark}\newtheorem{remark}{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\E}{\mathbb E}
+\newcommand{\K}{\mathcal K}\newcommand{\PiH}{\Pi_H}
+\newcommand{\pos}[1]{[#1]_+}\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ind}{\mathbf 1}\newcommand{\dd}{\mathrm d}
+\newcommand{\clip}{\operatorname{clip}}\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\hypersetup{pdftitle={Sharp Information Limits for Deterministic Two-Task Self-Tests Under Rate-Limited Healthy Drift},pdfauthor={},pdfkeywords={Planned self-test, deterministic scheduling, minimax, healthy drift}}
+\begin{document}
+\title{Sharp Information Limits for Deterministic Two-Task Self-Tests Under Rate-Limited Healthy Drift}
+\author{Author details to be supplied}
+\maketitle
+\begin{abstract}
+We study planned two-task self-tests with deterministic observation schedules, a specified onset and additive fault-growth direction, and known Gaussian readout covariance. Both hypotheses admit the same amplitude- and rate-constrained class of healthy paths; their least favorable paths may differ. Task switching reverses the healthy response while preserving the physical fault direction, but excludes transition readings and enlarges the reachable healthy increment. For a linearly growing fault and an unbounded healthy level, we determine the exact coefficient of the optimal five-halves-power information deficit relative to a full-calendar oracle. A uniform converse is attained by symmetric task blocks with square-root-scale holds, yielding a positive second-order penalty in the planned detection horizon. With a fixed finite healthy bound, the optimal deficit equals an explicit quadratic polynomial up to a bounded remainder, and staying loses at most a bounded amount of information. The constant-amplitude case gives a marginal holding-time rule. A closed-loop residual certificate reduces admission-tolerance and calendar selection to a finite optimization of protected power. In a slow-ramp, single-channel rigid-mechanism example, a 75-second symmetric experiment has protected power above 0.999 at level 0.001 while staying has zero minimax separation. Comparisons with fixed holds identify the intermediate-horizon benefit of growing holds. Ideal and deterministic-error-protected powers are reported together.
+\end{abstract}
+\begin{IEEEkeywords}
+Fault diagnosis, experiment design, minimax testing, rate-limited uncertainty, switching cost, robot control.
+\end{IEEEkeywords}
+\input{introduction}
+\input{model}
+\input{control}
+\input{results}
+\input{numerical}
+\input{scope}
+\section{Conclusion}
+Deterministic two-task self-tests exhibit two different optimal design regimes under one rate-limited healthy class. Unbounded levels incur an unavoidable deficit with a sharp five-halves-power coefficient and a matching symmetric construction. Fixed amplitude bounds reduce the deficit to a full quadratic baseline plus a bounded remainder. The control interface turns a verified settling envelope into an offline choice between time exclusions and residual-error protection. In the slow-ramp example, switching separates a fault that staying cannot distinguish before amplitude escape. Its largest protected-power improvement over the tested fixed hold occurs at intermediate horizons; the powers become close at the longer tested horizons, without making the two information-efficiency laws equivalent. Randomized and adaptive calendars with precommitted health paths, unknown onset, vector or mixed-parity uncertainty, and physical calibration of residual error and noise remain open directions.
+\appendices
+\input{proof_constant}
+\input{proof_sharp}
+\input{proof_finite}
+\input{proof_rankone}
+\input{proof_embedding}
+\input{references}
+\end{document}

@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "status": "ACCEPTED_LOCAL_REVISION6_INTEGRATION",
+  "scope": "Source-byte/diff and local semantic integration review only. No full theorem rereview, old scientific checks, D2, SDK or compilation/rendering rerun.",
+  "source_sha256": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e",
+  "layout_candidate_sha256": "d1ba94f30430e9ec9c36b2063296231c518204d17812ac61e8a014691ac16cb4",
+  "compile_layout_receipt_sha256": "1bbbe330528cebaa68af8635daf0509011d69a7c7a6ccd5be0a3cb969652bc0b",
+  "evidence": {
+    "source_files": {
+      "outputs/certo_fdi_control_memory_draft_v1.tex": "8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e",
+      "outputs/submission_layout_candidate_v1.tex": "d1ba94f30430e9ec9c36b2063296231c518204d17812ac61e8a014691ac16cb4",
+      "outputs/submission_layout_review_v1.md": "0b8e0bcbc1a7e128782d0f513b649414845d3a48f5bef86abe6d683c06c4e9aa",
+      "outputs/submission_layout_review_v1.json": "37d138b2a3bcaeeda7aa30e46b34bcd1bb64935148c1926ace664f0452bedc66",
+      "work/submission_layout_edits.json": "acac203ba646d6e4dee72b2eacb52fb1c7a566a3270b1bbb3bff1f6189ab1a90",
+      "work/integrate_submission_revision6.py": "34c0a16b80abb8c2535fb7130ac1736d405da83144e8d5bc908259a2f6326389",
+      "outputs/manuscript_revision_6_receipt.json": "87a8c014335b532d833e29803a2d7448fb5b16708afad8bb0531dca80d75f1ba",
+      "outputs/manuscript_compile_layout_status_v2.json": "1bbbe330528cebaa68af8635daf0509011d69a7c7a6ccd5be0a3cb969652bc0b",
+      "outputs/d2a_readout_figure_review_v1.md": "f22a4dca7c3186f19715267779fe8cfe31c0292f06ae04a0143dc63a1d3e5022",
+      "outputs/d2a_readout_figure_review_v1.json": "5103a9e1d85c09535b2908de88fa575349b0cc40c0143f28b80a3e422ec5b3e5",
+      "outputs/d2a_readout_figure_caption_v1.md": "f6c0414ef4bbd5737e2e5253caf878d6b0801d20e933718939c8832bf8cf10d5",
+      "outputs/d2a_readout_figure_data_v1.json": "8022e863c9b74179f01c3452e0028ab489aa84b7111823b8bd811aab2a816e97",
+      "outputs/d2a_readout_figure_v1.pdf": "999fa810669c21de84592649f8fc59325db5ca424303406c88bac5aef53b4767"
+    },
+    "host_exactly_expected_candidate_single_replacement": true,
+    "candidate_old_occurrence_count": 1,
+    "changed_hunks": 1,
+    "new_block": "Figure~\\ref{sf:readout-figure} extends this finite comparison over the complete\ndeclared terminal-balanced subgrid $H\\in\\{40,60,80,100,120,160,200\\}$.\nEvery nondegenerate row is retained, including failed sufficient power\ncertificates. The two $H=40$ directions are degenerate and have no risk bound.\nThe first certified average-readout grid point for this prescribed family is\n$H=100$, or 26 seconds including the prefix. This is neither a sequential\nstopping time nor an optimum over calendars.\nThe declared 400-row family is not completely certified; this closed subgrid\ndoes not complete that calculation.\n\n\\begin{figure*}[t]\n\\centering\n\\IfFileExists{d2a_readout_figure_v1.pdf}{%\n\\includegraphics[width=\\textwidth]{d2a_readout_figure_v1.pdf}\n}{\\fbox{\\parbox{.94\\textwidth}{Finite certificate figure: prescribed\nterminal-balanced family, complete declared subgrid through $H=200$.\nAverage readout first meets the stated grid target at $H=100$;\nthe point readout's sufficient power bound is zero at all plotted points.\nNeither this statement nor the optional illustration asserts actual power\nzero, a continuous stopping time or a global optimum.}}}\n\\caption{Finite certificates for paired readouts of a prescribed\nterminal-balanced calendar family. The frozen nonlinear example uses four\nhealthy prefix slots, 0.25-second slots and the fixed template\n$f(t)=0.0003(t-1)_+$. Each horizon has its own declared calendar, shared\nby its two readouts. (a) Uniform protected-power lower bounds of the\nprescribed statistics; all plotted false-alarm upper bounds are below\n$10^{-3}$. The first certified average-readout grid point in this family is\n$H=100$. The point bounds are zero because the sufficient certificate gives\nno positive guarantee; actual power is not asserted to be zero.\n(b) Complete-history Gaussian-comparator variance upper bounds for these\nunstandardized statistics. Directions use the prescribed rational norm\nscaling, while the statistics are not divided by their standard deviations.\nTheir weights depend on the horizon and readout; the variance ratio alone\ndoes not quantify universal readout improvement. The true nonlinear\nstatistics are controlled separately through remainder and event allowances.\nThe two $H=40$ directions have no risk certificate and are omitted from the\nnumeric axes. Lines only connect certified grid values; these are bounds,\nnot measured frequencies or confidence intervals. This finite comparison\ndoes not instantiate the linear asymptotic theorem or complete the\nremaining full-grid calculation.}\n\\label{sf:readout-figure}\n\\end{figure*}",
+    "math_layout_checks": [
+      {
+        "identifier": "sf:plant",
+        "match": true
+      },
+      {
+        "identifier": "sf:path",
+        "match": true
+      },
+      {
+        "identifier": "sf:predictor",
+        "match": true
+      },
+      {
+        "identifier": "sf:interval",
+        "match": true
+      },
+      {
+        "identifier": "sf:information",
+        "match": true
+      },
+      {
+        "identifier": "sf:penalty",
+        "match": true
+      },
+      {
+        "identifier": "sf:positive",
+        "match": true
+      },
+      {
+        "identifier": "sf:upper",
+        "match": true
+      },
+      {
+        "identifier": "sf:capacity-bound",
+        "match": true
+      },
+      {
+        "identifier": "nearest-pair separation",
+        "match": true
+      },
+      {
+        "identifier": "common-matrix example",
+        "match": true
+      },
+      {
+        "identifier": "matrix gap penalties",
+        "match": true
+      },
+      {
+        "identifier": "scalar finite sums",
+        "match": true
+      },
+      {
+        "identifier": "plateau candidate set",
+        "match": true
+      },
+      {
+        "identifier": "near-unit limit",
+        "match": true
+      },
+      {
+        "identifier": "nonlinear threshold and gap",
+        "match": true
+      },
+      {
+        "identifier": "sf:gamma",
+        "match": true
+      },
+      {
+        "identifier": "sf:affine",
+        "match": true
+      },
+      {
+        "identifier": "sf:support",
+        "match": true
+      },
+      {
+        "identifier": "sf:dual",
+        "match": true
+      },
+      {
+        "identifier": "macro inequality",
+        "match": true
+      },
+      {
+        "identifier": "sf:block",
+        "match": true
+      },
+      {
+        "identifier": "packed block asymptotics",
+        "match": true
+      },
+      {
+        "identifier": "local dual levels",
+        "match": true
+      },
+      {
+        "identifier": "observable repair definitions",
+        "match": true
+      },
+      {
+        "identifier": "observable repair bounds",
+        "match": true
+      },
+      {
+        "identifier": "sf:positive-support",
+        "match": true
+      },
+      {
+        "identifier": "repair energy",
+        "match": true
+      },
+      {
+        "identifier": "exact two-gap loss",
+        "match": true
+      },
+      {
+        "identifier": "sf:slope-loss",
+        "match": true
+      },
+      {
+        "identifier": "zero-penalty length and positive tail",
+        "match": true
+      },
+      {
+        "identifier": "sf:zero-positive-case",
+        "match": true
+      },
+      {
+        "identifier": "complete zero-case path",
+        "match": true
+      },
+      {
+        "identifier": "late constant-score cross",
+        "match": true
+      },
+      {
+        "identifier": "sf:zero-preserved-case",
+        "match": true
+      }
+    ],
+    "all_35_equal": true,
+    "added_labels": [
+      "sf:readout-figure"
+    ],
+    "deleted_labels": [],
+    "labels_count": 49,
+    "labels_unique": true,
+    "dangling_refs": [],
+    "bib_order_unchanged": true,
+    "bib_count": 13,
+    "missing_cites": [],
+    "host_controls": {
+      "tabs": 0,
+      "isolatedCR": 0,
+      "other_low": 0
+    },
+    "compile_source_hash_matches": true,
+    "compile_pdf_actual_hash_matches": true,
+    "full_log_actual_hash_matches": true,
+    "compiler_receipt_summary": {
+      "exit_code": 0,
+      "pages": 11,
+      "overfull": 0,
+      "fonts": 28,
+      "embedded": true
+    },
+    "canonical_ignored": "Whitespace; control-space; quad/qquad and thin spacing; alignment ampersands/row breaks; layout environments; labels/notag. No math symbols or numbers suppressed.",
+    "all_documented_inverse_edits_match_baseline": true,
+    "table_six_cells_identical": true,
+    "restored_source_length": 59013
+  },
+  "result": {
+    "candidate_to_host_one_approved_figure_text_replacement": true,
+    "independently_equal_ordered_math_displays": 35,
+    "candidate_inverse_to_r5_matches_actual_snapshot": true,
+    "six_table_numeric_cells_unchanged": true,
+    "added_labels": [
+      "sf:readout-figure"
+    ],
+    "deleted_labels": [],
+    "labels": 49,
+    "bibkeys": 13,
+    "bib_order_unchanged": true,
+    "theorem_or_quantifier_changes": false,
+    "figure_scope_preserved": true,
+    "source_pdf_full_log_binding_matched": true
+  },
+  "figure_scope": {
+    "family": "prescribed terminal_balanced",
+    "declared_H": [
+      40,
+      60,
+      80,
+      100,
+      120,
+      160,
+      200
+    ],
+    "classified_rows": 14,
+    "plotted_rows": 12,
+    "H40_direction_degenerate_no_risk": true,
+    "average_first_certified_grid_H": 100,
+    "endpoint_seconds": 26,
+    "point_certificate_zero_not_actual_power_zero": true,
+    "variance": "Gaussian comparator bound for unstandardized prescribed statistic, with rational Euclidean direction scaling",
+    "no_linear_asymptotic_instantiation": true,
+    "no_full400_complete_claim": true,
+    "paired_calendar_within_each_horizon_not_sequential_stopping": true
+  },
+  "inherited_actual_compiler_receipt": {
+    "exit_code": 0,
+    "pages": 11,
+    "overfull": 0,
+    "embedded_font_streams": 28,
+    "root_all_11_pages_visual_read": true,
+    "native_editor_platform_failure_separate": true,
+    "fonts_warning_free_claim": false
+  },
+  "rereviewer_operations": {
+    "compiler_invoked": false,
+    "PDF_rendered": false,
+    "all_11_pages_visual_reread": false,
+    "actual_PDF_and_log_hashes_read": true,
+    "full_proofs_reread": false,
+    "old_math_or_D2_checks_rerun": false,
+    "root_sources_modified": false
+  },
+  "limitations": [
+    "True author metadata/bios/photos absent; page count excludes them.",
+    "Full400 and four full-text comparisons remain incomplete.",
+    "Local source/PDF integration acceptance does not establish final actual ZIP/TAC readiness."
+  ]
+}

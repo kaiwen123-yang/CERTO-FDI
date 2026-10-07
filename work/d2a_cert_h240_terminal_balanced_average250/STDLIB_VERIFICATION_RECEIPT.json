@@ -1,0 +1,66 @@
+{
+  "status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+  "case": "D2A_H240_TERMINAL_BALANCED_AVERAGE250",
+  "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+  "numpy_loaded": false,
+  "scipy_loaded": false,
+  "projection_KKT_exact": true,
+  "actual_protocol_exact": true,
+  "integer_interval_recursions_rechecked": true,
+  "Abel_and_supersolutions_rechecked": true,
+  "uniform_mean_event_risk_recomputed": true,
+  "case_result_sha256": "8a5de29f45e0eb84de4acb27758b5d795bc4fc73c702287fac7b6b99577db8b1",
+  "prior_case_result_sha256_before_review_binding": "8a5de29f45e0eb84de4acb27758b5d795bc4fc73c702287fac7b6b99577db8b1",
+  "scientific_target_status": "CERTIFIED_TARGET_PASS",
+  "independent_point_mean_proof_review_completed": true,
+  "mathematical_mean_support_review_status": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+  "independent_mean_math_review": {
+    "status": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+    "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "report_path": "outputs/d2a_mean_risk_review_v1.md",
+    "report_sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+    "mean_function_after_scope_binding_sha256": "a6e618bddb0157dc8c48d59c219114f22cc73b4b16bc0d11f1f9814991306391",
+    "maximum_H_post_slots": 600,
+    "maximum_total_seconds": "151",
+    "actual_template_fault_max": "9/200",
+    "fixed_template": "f(t)=3/10000*max(t-1,0), H0 f=0, h=1/1000, delta=1/4, 4 healthy prefix slots",
+    "original_physical_fault_allowance_unchanged": "3/4",
+    "mirror_equilibrium_inclusion_plus_max_ratio": "102094608476524939210343028899/336142366500000000000000000000",
+    "mirror_equilibrium_inclusion_minus_max_ratio": "204198972606288391933745457097/672284733000000000000000000000",
+    "source": "Independent review report section4: 16 saved beta cells, outward inverse, original Es; no new large adjoint verification",
+    "wide_fault_0_75_mirror_containment_accepted": false,
+    "inherited_conditions": [
+      "nonlinear remainder and event implications",
+      "rho-P/positive convolution certificates",
+      "segment component return",
+      "deterministic paths independent of innovations"
+    ],
+    "risk_implementation_followup": "new wrapper returns conservative1 if a positive Mills score floors to0 on 1e-8 grid; boundary test passed; inherited source unchanged",
+    "actual_case_fault_max": "9/500",
+    "scope": "H0 f=0; H1 frozen 0.0003*(t-1)+ template, H<=600, actual f<=0.045; original beta box/rate; inherited nonlinear/event/contraction assumptions",
+    "general_wide_f_0_75_mirror_coverage_claimed": false
+  },
+  "artifact_sha256": {
+    "ACTUAL_PROTOCOL.json": {
+      "sha256": "b1f7a0c0bedd8a08cf61e42a56fbc4f8983b4827507b0ab2c23239ae6637a3b6",
+      "bytes": 88826
+    },
+    "PROJECTION_CERTIFICATE.json": {
+      "sha256": "4194abd73e477905ec016baecddea657a84597cde7e4d300dfd8e8b29faab0a5",
+      "bytes": 16119
+    },
+    "DIRECTION.json": {
+      "sha256": "70357af6cb3c26c8bc30f14b01cd7a8bcdcde631fed2ea2ebc3b2a03e1a2a6d0",
+      "bytes": 20477
+    },
+    "audit\\D2A_H240_TERMINAL_BALANCED_AVERAGE250_DIRECTION_CERTIFICATE.json": {
+      "sha256": "94ae291421b7c3f5b62c4721a68426792e0015bbfb5b760d20a9b29b73c7ea09",
+      "bytes": 25520
+    },
+    "audit\\D2A_H240_TERMINAL_BALANCED_AVERAGE250_ADJOINT_JET.json.gz": {
+      "sha256": "9368f969c15f87a52154f738d2771873ffab1b30d078857921b53778c2dab280",
+      "bytes": 148351721
+    }
+  },
+  "elapsed_wall_seconds": 143.4893348000005
+}

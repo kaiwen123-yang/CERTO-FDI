@@ -1,0 +1,177 @@
+\section{Fixed-History Mechanisms}
+\begin{proposition}[Three explicit projections]\label{prop:history}
+For a fixed calendar, $G=0$ exactly when $s\in\K_\pi(B,r)$. On post-onset slots $1,\ldots,d$, with no prefix, put $v_0=\min(\eta,r)$. If $B\ge\eta(d+1)/2+v_0(d-1)/2$, then $s_j=\eta j$ has projection
+\begin{equation}
+ z_j^*=\eta\bar j+\min(\eta,r)(j-\bar j),\quad\bar j=(d+1)/2,
+\end{equation}
+and information
+\begin{equation}
+ G_d=\frac{(\eta-r)_+^2d(d^2-1)}{24\sigma^2}.\label{eq:linear}
+\end{equation}
+With constant nuisance ($r=0$), $B\ge\rho d/(n_0+d)$, $n_0$ zero-target prefix observations and $d$ subsequent observations of height $\rho$,
+\begin{equation}
+ G=\frac{\rho^2n_0d}{2\sigma^2(n_0+d)}.\label{eq:prefix}
+\end{equation}
+For two observations of target $(0,\rho)$ separated by $g_s$ slots, $B\ge\rho$,
+\begin{equation}
+ G=\frac{(\rho-rg_s)_+^2}{4\sigma^2}.\label{eq:gap}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The zero-information assertion is membership in a closed convex set. If $\eta\le r$, the linear target is feasible. If $\eta>r$, for any feasible $z$ the sequence $z_j-rj$ is nonincreasing. Its inner product with the increasing, zero-sum sequence $j-\bar j$ is nonpositive; this is the projection variational inequality for the stated $z^*$. Summing $(j-\bar j)^2=d(d^2-1)/12$ proves \eqref{eq:linear}. For \eqref{eq:prefix}, subtract the mean of the $n_0+d$ entries. For \eqref{eq:gap}, the closest pair is centered at $\rho/2$ with separation $\min(\rho,rg_s)$.\end{proof}
+
+For fixed finite $B$, a growing target eventually exceeds the box even if $\eta\le r$. The rate condition alone therefore does not decide whether moving is necessary. With a fixed prefix and $B=\infty$, \eqref{eq:linear} gives the leading no-movement information: its ratio to the full-calendar oracle tends to $(\eta-r)_+^2/(4\eta^2)$. A constant fault can be distinguishable from the prefix even when its post-onset-only history is not.
+
+For fixed sample target values and covariance, lengthening a gap only expands the health class. If $q_i$ is the signed multiplier of its difference constraint in the objective $\frac12\norm{s-z}^2$, the derivative of $G$ with respect to that gap, when it exists, is $-r|q_i|/\sigma^2$. For progressive targets the total time derivative also includes the changing fault values; the gap derivative alone is not a progressive-fault scheduling gradient.
+
+\section{Constant-Amplitude Scheduling}
+\begin{theorem}[Best long-run information rate]\label{thm:constant}
+Let $a_j=\rho>0$, $B\ge\rho$, $r>0$, $k\ge1$, and $n_0$ be fixed. Define
+\begin{align}
+ A_\rho&=\pos{\rho-r(k+1)/2},\\
+ e_i(n)&=\pos{A_\rho-r\min(i,n-1-i)},\\
+ Q(n)&=\sum_{i=0}^{n-1}e_i(n)^2,\\
+ \mathcal J_*&=\max_{n\ge1}\frac{Q(n)}{2\sigma^2\delta(n+k)}.\label{eq:constant_rate}
+\end{align}
+Then
+\begin{equation}
+ \lim_{H\to\infty}\frac{\max_{\pi\in\PiH}G_H^B(\pi)}{(H+n_0)\delta}
+ =\mathcal J_*.
+\end{equation}
+A repeated equal-hold calendar $\pi_*$ satisfies
+\begin{equation}
+ G_H^B(\pi_*)\ge\mathcal J_*(H+n_0)\delta-C
+\end{equation}
+with a constant independent of $H$. If $A_\rho>0$, an even maximizer exists in $1\le n\le2\lceil A_\rho/r\rceil$. The rate increases from $n$ to $n+1$ precisely when
+\begin{equation}
+ (n+k)[Q(n+1)-Q(n)]\ge Q(n).\label{eq:marginal}
+\end{equation}
+The sign of this comparison changes at most once.
+\end{theorem}
+\begin{proof}
+The full cyclic KKT, all-calendar upper construction, and matching open-history dual are given in Appendix A. Those arguments retain the prefix and establish the bounded gap.\end{proof}
+For fixed $k,\rho$ and $r\downarrow0$, \eqref{eq:marginal} yields $n_*\sim\sqrt{2k\rho/r}$. The information saturation length is instead of order $\rho/r$. For $\rho=.5,r=.1,k=2,\delta=1,\sigma=.4$, the optimal rate is $37/192$ at $n=4$; waiting until saturation at $n=8$ gives $21/160$, a $46.8\%$ rate difference. This example illustrates the marginal rule rather than establishing it. For $\mathcal J_*>0$, the corresponding long-horizon planning approximation is $H_{\rm plan}\approx\Lambda_{\alpha,\beta_{\rm miss}}/(\mathcal J_*\delta)$ slots, or $T_{\rm plan}\approx\Lambda_{\alpha,\beta_{\rm miss}}/\mathcal J_*$ seconds. Near the finite-prefix or zero-rate regime, use the exact projection instead.
+
+For comparison, when $r=0$ and $B\ge\rho$, the exact finite-$H$ optimum is the better of staying and one balanced switch. Let $n=H-k>0$ and $p_n=n\bmod2$. The two informations are
+\begin{equation}
+ \frac{\rho^2Hn_0}{2\sigma^2(H+n_0)},\qquad
+ \frac{\rho^2}{2\sigma^2}\left(n-\frac{p_n}{n_0+n}\right).\label{eq:R0}
+\end{equation}
+Indeed, subtracting the full-history mean leaves $\rho^2[n-(n_+-n_-)^2/(n_0+n)]$. Balance minimizes the second term, one switch can realize it, and further switching reduces $n$. When $n$ is even, moving is strictly preferable exactly when $k<H^2/(n_0+H)$; the parity term in \eqref{eq:R0} is required otherwise.
+
+\section{Sharp Loss for a Progressive Fault}
+We now take $a_j=\rho_0+\eta j$ with $\eta>0$. The full-calendar oracle is cubic, so first-order efficiency alone conceals the scheduling cost.
+
+\subsection{A horizon-dependent deterministic construction}
+Choose $\xi>0$. The achieving construction takes transitions exactly $k$ slots long, a feasible subclass of Definition~\ref{def:calendar}. A symmetric block has an even $n=2m$ and comprises $m$ readings at $+$, a $k$-slot transition, $n$ readings at $-$, a second transition, and $m$ readings at $+$. Its duration is $L=2(n+k)$ slots. Blocks concatenate at task $+$ without an additional transition.
+
+For a planned $H$, first select as many blocks with $n_\ell=2\lceil\xi\ell/2\rceil$ as fit. Distribute the remaining multiples of four slots across these blocks by increasing their $n_\ell$ by even integers as evenly as possible. Fewer than four residual slots are observed at $+$ with zero weight in the constructive certificate. If no block fits, stay. Denote this fully specified calendar by $\pi_H^\xi$. It depends on the planned endpoint and parameters, never on data.
+
+\begin{theorem}[Sharp second-order deficit]\label{thm:sharp}
+Fix $\rho_0\ge0$, $\eta,r>0$, $k\ge1$, $\sigma>0$ and finite $n_0$. With $B=\infty$,
+\begin{equation}
+ \boxed{D_H^{\infty,*}
+ =\frac{\sqrt2}{5\sigma^2}\sqrt{kr}\,\eta^{3/2}H^{5/2}
+ +o(H^{5/2}).}\label{eq:sharp}
+\end{equation}
+The calendar $\pi_H^\xi$ attains this coefficient at $\xi_*=2k\eta/r$. For every fixed $\xi>0$ its deficit obeys
+\begin{equation}
+ 2\sigma^2 D_H^{\infty}(\pi_H^\xi)
+ \le\frac15\left(\frac{2k\eta^2}{\sqrt\xi}+r\eta\sqrt\xi\right)H^{5/2}
+ +O(H^2).\label{eq:upper}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Appendix B first proves the schedule-uniform converse coefficient $2\sqrt2/5$ in the normalization $2\sigma^2D_H/(\sqrt{kr}\eta^{3/2}H^{5/2})$. It then proves \eqref{eq:upper} with a local exact projection residual on each symmetric block. Their combination at $\xi=2k\eta/r$ gives \eqref{eq:sharp}.\end{proof}
+
+The local mechanism is useful for implementation. With $c_0=(k+1)/2$ and center amplitude $a$, the local constant-target projection has levels $r(c_0+j)$ with the signs prescribed in Appendix B. Its loss is
+\begin{equation}
+ L_c(a,n)=ar\,n(n+2k)-4r^2\sum_{j=0}^{n/2-1}(c_0+j)^2.\label{eq:Lc}
+\end{equation}
+The projection residual $w$ has zero sum and satisfies $\sum_iw_i\epsilon_i(t_i-c)=0$. Thus it can be used for the affine target without changing its dual pairing. Concatenation refers to these \emph{dual directions}, not to the local primal optimizers. The only support relation needed is
+\begin{equation}
+ h_{\K_{\rm whole}}(w)\le\sum_\ell h_{\K_\ell}(w_\ell),\label{eq:support}
+\end{equation}
+which follows by restricting every global feasible path to a block. Adjacent local primal optimizers need not themselves join within the rate budget.
+
+For blocks satisfying $a_\ell\ge r(k+n_\ell-1)/2$, there is a closed finite-$H$ information lower bound without solving a QP:
+\begin{equation}
+ G_H^\infty(\pi_H^\xi)\ge\frac1{2\sigma^2}
+ \sum_{\ell\ \mathrm{admissible}}
+ \bigl[2n_\ell a_\ell^2-L_c(a_\ell,n_\ell)\bigr].\label{eq:closedG}
+\end{equation}
+Zero-weight early blocks and the prefix remain in the actual experiment.
+
+\begin{remark}[Tuning, necessity, and planned horizons]
+At $\xi=\lambda\xi_*$, the proved upper coefficient relative to the sharp one is
+\begin{equation}
+ \mathcal R(\lambda)=\tfrac12(\lambda^{-1/2}+\lambda^{1/2}).\label{eq:robust}
+\end{equation}
+A factor-two schedule tuning error gives $\mathcal R\approx1.061$ and a factor-four error gives $1.25$. This bounds calendar tuning loss; it does not validate a detector using an incorrect fault template. For regular families $n(t)\asymp t^a$, a local balance suggests loss orders $H^{3-a}$ and $H^{2+a}$, and hence the exponent $a=1/2$. This is a design heuristic; the proved statements are the schedule-uniform converse and the achieving construction in Theorem~\ref{thm:sharp}, not a classification of every efficient run sequence.
+
+The construction has $n(t)\sim\sqrt{2k a(t)/(R\delta)}$, the constant-amplitude rule evaluated at the local growing amplitude. The sharp planned-horizon coefficient is proved for terminal-balanced calendars. An anytime rule with an unfinished last block retains the known $O(H^{5/2})$ guarantee; its sharp coefficient at arbitrary stopping times is not asserted.
+\end{remark}
+
+\begin{corollary}[Second-order planned detection time]\label{cor:delay}
+For fixed $\beta_{\rm miss}\in(0,1)$ define
+\begin{equation}
+ H_{\alpha,\beta_{\rm miss}}^*=
+ \min\{H:\exists\pi\in\PiH,\ \mathcal B_\pi(\alpha)\ge1-\beta_{\rm miss}\}.
+\end{equation}
+Define the exact Gaussian requirement and its cubic reference horizon by
+\begin{align}
+ \Lambda_{\alpha,\beta_{\rm miss}}&=\tfrac12
+ (z_{1-\alpha}+z_{1-\beta_{\rm miss}})^2,\nonumber\\
+ H_\Lambda&=(6\sigma^2\Lambda_{\alpha,\beta_{\rm miss}}/\eta^2)^{1/3}.
+\end{align}
+Under Theorem~\ref{thm:sharp}, as $\alpha\downarrow0$,
+\begin{equation}
+ H_{\alpha,\beta_{\rm miss}}^*
+ =H_\Lambda+\frac{2\sqrt2}{5}\sqrt{kr/\eta}\,H_\Lambda^{1/2}
+ +o(H_\Lambda^{1/2}).\label{eq:delay}
+\end{equation}
+In physical time, $T_\Lambda=\delta H_\Lambda=[6\sigma^2\delta\Lambda_{\alpha,\beta_{\rm miss}}/\kappa^2]^{1/3}$ and the correction is
+$(2\sqrt2/5)\sqrt{\tau_mR/\kappa}\sqrt{T_\Lambda}+o(\sqrt{T_\Lambda})$.
+\end{corollary}
+\begin{proof}
+Equation~\eqref{eq:power} requires $G_H^*\ge\Lambda_{\alpha,\beta_{\rm miss}}$. Substitute $G_H^*=\eta^2H^3/(6\sigma^2)-C H^{5/2}+o(H^{5/2})$ and set $H=H_\Lambda+u\sqrt{H_\Lambda}$. Matching the $H_\Lambda^{5/2}$ terms gives $u=C/[3\eta^2/(6\sigma^2)]$. The oracle's quadratic term and rounding are lower order. Optimal information is nondecreasing in $H$, which justifies inversion. The exact threshold improves finite-tail use without turning the asymptotic expansion into a finite-horizon error bound.\end{proof}
+The penalty is a square-root function of healthy drift during one transition relative to fault growth over the observation horizon. This is a high-probability planned-time statement, not a mean alarm delay or ARL result. Summable testing levels, for example proportional to $\alpha/(H+1)^2$, control anytime false alarms for a single predetermined calendar and preserve its first-order time law. Such a scan does not physically implement all horizon-dependent calendars simultaneously.
+For unknown onset, a fixed-hold periodic calendar is an onset-independent default. For each fixed onset and finite hold $n$, a positive affine growth eventually retains the observed-slot fraction $n/(n+k)$ of the full-calendar oracle in this ideal path model; the finite initial phase changes only boundary terms. A scan over onset and length uses one physically fixed calendar and summable levels. Neither this observation nor alpha spending transfers the sharp planned-horizon coefficient to an adaptive or unknown-onset design.
+
+\section{Fixed Finite Healthy Bounds}
+\begin{theorem}[Bounded switching advantage]\label{thm:finite}
+Fix $B,r,\eta>0$, $k\ge1$, $\rho_0\ge0$ and finite $n_0$. Define the full polynomial
+\begin{align}
+ P_B(H)&=\frac1{2\sigma^2}\sum_{j=1}^H(2Ba_j-B^2)\nonumber\\
+ &=\frac{B\eta}{2\sigma^2}H^2+
+ \frac{2B\rho_0+B\eta-B^2}{2\sigma^2}H.\label{eq:PB}
+\end{align}
+Then
+\begin{equation}
+ D_H^{B,*}=P_B(H)+O(1),\label{eq:finite}
+\end{equation}
+and a parameter-dependent constant $C_B$, independent of $H$, satisfies
+\begin{equation}
+ 0\le\max_{\pi\in\PiH}G_H^B(\pi)-G_H^B(\mathrm{stay})\le C_B.\label{eq:regret}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Appendix C constructs one capped rate-limited healthy tracker over the full history, preserving the free terminal value. Its possible losses relative to $P_B$ have a finite total independent of the calendar. The no-movement projection has the same polynomial up to a bounded early correction.\end{proof}
+
+For any fixed calendar, $\K_\pi(B,r)\subseteq\K_\pi(\infty,r)$ implies $G_H^B(\pi)\ge G_H^\infty(\pi)$ and $D_H^B(\pi)\le D_H^\infty(\pi)$. Hence the constructive finite-$H$ bound from the unbounded-level experiment is conservative for the same finite-box calendar; the asymptotic sharp coefficient alone is not a finite-$H$ upper error bar. Its inverse bound is specific to the unbounded class; the finite-box inverse is Theorem~\ref{thm:finite}.
+
+The result allows a finite, potentially large benefit from early switching. It neither identifies the earliest optimal stopping amplitude nor makes staying optimal for every finite experiment. An informative local comparison is $\sqrt{2kr}\,a^{3/2}$ versus $2Ba$, which suggests the amplitude scale $a\asymp B^2/(kr)$. That comparison is a design heuristic, not an exact crossing threshold. Integrating the local saving balance suggests the dimensional proxy $B^5/(k^2r^2\eta\sigma^2)$ for transient advantage. It is neither the uniform constant $C_B$ nor a certified finite-horizon bound. In particular, the finite-$B$ and $B\to\infty$ asymptotics cannot be interchanged. With $r=0$, a constant healthy parameter remains shared indefinitely, so Theorem~\ref{thm:finite} is inapplicable.
+
+\begin{table}[t]
+\caption{Design conclusions within the specified experiment}
+\label{tab:design}\centering\small
+\begin{tabular}{p{.22\columnwidth}p{.68\columnwidth}}
+\toprule
+Regime & Consequence\\\midrule
+Constant fault, $r=0$ & Stay or one balanced switch, with the exact parity correction in \eqref{eq:R0}.\\
+Constant fault, $r>0$ & Repeat a maximizer of \eqref{eq:constant_rate}; switch by marginal information, not saturation.\\
+Growing fault, $B=\infty$ & Symmetric growing-hold blocks attain the sharp loss and \eqref{eq:delay}.\\
+Growing fault, fixed $B$ & Switching may be valuable over the intended finite horizon; eventually staying has the exact quadratic baseline. Choose a stopping stage by finite-calendar information, not a universal threshold.\\\bottomrule
+\end{tabular}
+\end{table}
+

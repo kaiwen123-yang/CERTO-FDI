@@ -1,0 +1,379 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newtheorem{theorem}{Theorem}
+\title{Sharp controlled-memory loss for a fixed-order plant\\with full-state readings and one scalar healthy path}
+\author{Research working proof, version 1.1}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Frozen model and scope.}
+Let
+\[
+x_j=A x_{j-1}+B_u u_j+B(a_j^h+g_j b_j^h)+w_j,\qquad
+u_j=-Kx_{j-1},\qquad A_K=A-B_uK .
+\]
+The dimension is fixed, all matrices and the controller are known,
+$B\ne0$, $Q\succ0$, $w_j$ are independent $N(0,Q)$, and $A_K$ is strictly
+discrete-time stable. It need not be normal or satisfy $\|A_K\|<1$.
+The initial state $x_{-n_0}=0$ is known, $n_0\ge1$ fixed.
+Prefix states at $j=-n_0+1,\ldots,0$ are all read at task $g=+1$ and
+$a_j=0$. Thereafter the known template is $a_j=\rho_0+\eta j$,
+$\rho_0\ge0$, $\eta>0$. Each hypothesis selects its own unrestricted-level
+scalar healthy path of rate at most $r/2$, so their actual difference class
+is $\mathcal Z_H=\{z:|\Delta z_j|\le r\}$, $r>0$.
+The planned horizon and calendar are deterministic. Holds read the complete
+state at task $g=\pm1$; changes exclude at least $k\ge1$ consecutive state
+readings. During excluded slots $g_j$ is known and $|g_j|\le1$.
+No state, noise or healthy level is reset.
+The diagnostic protocol does not read fast internal states or control commands.
+This is not a vector-nuisance or partial-state-observation theorem.
+
+Take a fixed square factor $Q=LL^\top$, $f=L^{-1}B$ and
+$F=\|f\|^2=B^\top Q^{-1}B>0$.
+Write $a_f=(f a_j)_j$ and $H_gz=(f g_j z_j)_j$.
+For a genuine interval between two consecutive retained states, of length $m$,
+the conditional innovation has covariance and whitened-input map
+\[
+W_m=\sum_{r=0}^{m-1}A_K^rQ(A_K^r)^\top\succeq Q,\qquad
+H_m=[A_K^{m-1}L,\ldots,L],\qquad T_m=W_m^{-1/2}H_m .
+\]
+The predictor uses the actual preceding retained state, or known initial state:
+\[
+x_{t_i}-A_K^m x_{t_{i-1}}
+=\sum_{j=t_{i-1}+1}^{t_i}A_K^{t_i-j}B(a_j^h+g_jb_j^h)
++\sum_{j=t_{i-1}+1}^{t_i}A_K^{t_i-j}w_j .
+\]
+The input intervals use disjoint original innovations; $T_mT_m^\top=I_d$.
+Stacking yields $TT^\top=I$, $P=T^\top T$ an orthogonal projector, and
+\[
+G_{K,H}(\pi)=\tfrac12\inf_{z\in\mathcal Z_H}\|P(a_f-H_gz)\|^2,\qquad
+O_H=\tfrac F2\sum_{j=1}^H a_j^2,\qquad
+D_{K,H}^*=O_H-\sup_\pi G_{K,H}(\pi).
+\]
+The full state covariance contains all cross-block terms. The conditional
+transformation, rather than an artificial output initialization, gives this
+projection. Full-record fault, health and noise share the common invertible
+dynamic map, so the whole full-record experiment and its oracle are
+control-neutral.
+
+\begin{theorem}[Fixed-order controlled-memory deficit]\label{thm:main}
+Fix the preceding contract. For $m=k+1$, define
+\[
+M_m=\sum_{r=0}^{m-1}A_K^rB,\qquad
+\beta_K(k)=mF-M_m^\top W_m^{-1}M_m>0.
+\]
+Then
+\begin{equation}\label{eq:sharp}
+D_{K,H}^*=\frac{\sqrt2}{5}\sqrt{F\beta_K(k)r}\,\eta^{3/2}H^{5/2}
++o(H^{5/2}).
+\end{equation}
+A terminal-balanced symmetric calendar achieves the coefficient at
+$\xi_*=2\beta_K(k)\eta/(Fr)$. For every fixed $\xi>0$ it satisfies
+\begin{equation}\label{eq:upper}
+D_{K,H}(\pi_H^\xi)\le\frac1{10}
+\left(\frac{2\beta_K(k)\eta^2}{\sqrt\xi}+Fr\eta\sqrt\xi\right)H^{5/2}
++O(H^2).
+\end{equation}
+All constants are for the fixed plant, controller and process covariance.
+This is leading-coefficient sharpness, not matching $H^2$ terms or a
+controller-uniform statement without uniform stability/transient assumptions.
+\end{theorem}
+
+\begin{proof}
+\paragraph{Strict gap loss and its tail.}
+For one input span of length $m$, set $P_m=H_m^\top W_m^{-1}H_m$ and
+$d_m=\mathbf1_m\otimes f$.
+Its squared-input-information loss at constant amplitude $a$ is
+$a^2d_m^\top(I-P_m)d_m=\beta_K(m-1)a^2$.
+If $m\ge2$ and this coefficient were zero, then $d_m\in\operatorname{range}H_m^\top$.
+Thus $H_m^\top y=d_m$ for some $y$. Its last two input blocks require
+$L^\top y=f$ and $L^\top A_K^\top y=f$.
+The first gives $y=Q^{-1}B\ne0$; the second gives
+$A_K^\top Q^{-1}B=Q^{-1}B$, an eigenvalue-one contradiction.
+Hence $\beta_K(\ell)>0$ for $\ell\ge1$.
+Nested state deletion in the same initialized full experiment shows
+$\beta_K(\ell)$ is nondecreasing in $\ell$.
+
+Strict stability gives
+$S_B=\sum_{r\ge0}\|A_K^rB\|<\infty$.
+Set $C_K=\|Q^{-1}\|S_B^2$.
+Since $\|M_m\|\le S_B$ and $W_m^{-1}\preceq Q^{-1}$,
+$\beta_K(\ell)\ge(\ell+1)F-C_K$ and $\beta_K(\ell)/\ell\to F$.
+Thus $b_K=\inf_{\ell\ge k}\beta_K(\ell)/\ell>0$.
+For example, with $L_0=\max(k,\lceil2C_K/F\rceil)$,
+monotonicity and the tail bound give
+$b_K\ge\min(F/2,\beta_K(k)/L_0)>0$.
+
+\paragraph{Affine non-reflection cross.}
+Let $h_j=j-(m+1)/2$, $d_h=(h_jf)_j$, and
+$N_m=H_m d_h=\sum_jh_jA_K^{m-j}B$.
+The centered constant--slope loss coefficient is
+\[
+L_{1,m}=d_m^\top(I-P_m)d_h=-M_m^\top W_m^{-1}N_m .
+\]
+The unprojected inner product is zero because $\sum_jh_j=0$.
+Also $L_{2,m}=d_h^\top(I-P_m)d_h\ge0$ and
+$\|N_m\|\le(m/2)S_B$, so $|L_{1,m}|\le mC_K/2$.
+For affine input $x_j=(A+\eta h_j)f$, $A\ge0$,
+\begin{equation}\label{eq:affine}
+\| (I-P_m)x\|^2
+=\beta_K(m-1)A^2+2\eta A L_{1,m}+\eta^2L_{2,m}
+\ge\beta_K(m-1)A^2-C_K\eta A m .
+\end{equation}
+No reflection or normality has been assumed.
+The true non-singleton intervals are disjoint; their total length is at most
+$H$ and their center amplitudes at most $\rho_0+\eta H$.
+Consequently their total negative cross cost is bounded uniformly over
+calendars by $E_H=C_K\eta(\rho_0+\eta H)H=O(H^2)$.
+
+\paragraph{Full-history calendar-uniform converse.}
+Replacing terminal moves without later readings by holding preserves the old
+data and adds readings. Data processing for each full healthy pair and then
+an infimum shows that the optimal calendar can end with a retained state
+at $H$. Prefix states are all read, so every non-singleton interval is
+post-onset and internal.
+
+Fix $\varepsilon\in(0,1)$ and divide the late interval into complete macros
+of length $L=\lfloor H^{3/4}\rfloor$.
+On each clipped observed run of length $n$ use one scalar signed tent
+$z_i=g_i r\min(i,n-1-i)$.
+Set it to zero on missing inputs, right-first retained inputs, run endpoints,
+prefix, macro joins and unused tail. This is one full rate-$r$ path, realized
+by $z/2,-z/2$ under the two hypotheses.
+Writing $h=gz$, every non-singleton input span has residual $a-h=a$.
+If $T$ is the sum of its actual gap norm losses, orthogonal decomposition gives
+\begin{equation}\label{eq:converse}
+2D_{K,H}(\pi)\ge F\sum_j(2a_jh_j-h_j^2)+T .
+\end{equation}
+No stationary endpoint or prefix replacement is needed.
+
+In a macro let its minimum amplitude be $A$, its number of missing slots $d$,
+its clipped run count $M$ and lengths $n_i$, with $\sum n_i=L-d$.
+Put $C=r(2A-rL/2)/4>0$ for large $H$.
+Tent area and height give saving at least $C\sum n_i^2-2CL$.
+There are $M-1$ complete actual gaps wholly within the macro, each with length
+at least $k$ and center amplitude at least $A$.
+Equation \eqref{eq:affine} and monotonicity give
+\[
+T\ge\sum_{\rm macros}\beta_K(k)A^2(M-1)-E_H.
+\]
+For each gap its missing amplitudes are at most twice its input-center
+amplitude; hence the same $T$ also satisfies
+\[
+T\ge(b_K/4)\sum_{\rm macros}A^2d-E_H .
+\]
+Crossing gaps contribute no complete-gap count but each missing node is
+assigned once in this second budget.
+
+Fix $\theta\in(0,1)$ and split the same global $T$ before applying its bounds.
+Set $W=(1-\theta)\beta_K(k)$.
+For $M>0$, Cauchy and AM--GM lower-bound a macro contribution by
+\[
+FC(L-d)^2/M+WA^2M+\theta b_KA^2d/4-WA^2-2FCL
+\ge2A\sqrt{FCW}(L-d)+\theta b_KA^2d/4-WA^2-2FCL.
+\]
+The condition $A\ge32FWr/(\theta^2b_K^2)$ absorbs its missing-slot term,
+uniformly on late macros. For $M=0,d=L$, the dead budget gives the same
+bound $2A\sqrt{FCW}L-WA^2-2FCL$ without division by zero.
+The cross error is paid once after the convex split.
+
+As $A=\Theta(H)$ and $C=(rA/2)(1+O(H^{-1/4}))$, the leading sum is
+$\sqrt{2FrW}\sum A^{3/2}L$.
+Coefficient, rounding and incomplete Riemann-block errors are $O(H^{9/4})$,
+$\sum A^2=O(H^{9/4})$, $\sum CL=O(H^2)$ and $E_H=O(H^2)$.
+All constants are calendar-independent.
+The Riemann sum equals
+$(2/5)\eta^{3/2}(1-\varepsilon^{5/2})H^{5/2}+o(H^{5/2})$.
+Taking the optimal deficit before the limit and then
+$\varepsilon,\theta\downarrow0$ proves
+\begin{equation}\label{eq:lower}
+\liminf D_{K,H}^*/H^{5/2}\ge
+\frac{\sqrt2}{5}\sqrt{F\beta_K(k)r}\,\eta^{3/2}.
+\end{equation}
+
+\paragraph{Packing and genuine singleton joins.}
+A symmetric block with even $n=2h$ has $h$ reads at $+$, $k$ missing slots,
+$n$ reads at $-$, $k$ missing slots and $h$ reads at $+$.
+With budget $H-1$, fit the maximal number of blocks with
+$\bar n_\ell=2\lceil\xi\ell/2\rceil$; evenly distribute remaining multiples of
+four slots, adding two to $n_\ell$ per unit and using a fixed left-to-right
+tie rule. Observe the last one to four states at $+$.
+Every block padding is $O(1)$ and
+\[
+M=\sqrt{H/\xi}+O(1),\quad n_\ell=\xi\ell+O(1),\quad
+A_\ell=\rho_0+\eta(x_\ell+c_\ell)=\eta\xi\ell^2+O(\ell+1).
+\]
+At an artificial join both adjacent states are actually read, so the next
+conditional input interval is a singleton.
+The global input projector therefore splits into its genuine block spans.
+It does not reset any state or make output covariances independent.
+
+\paragraph{Vector auxiliary and one scalar weighted constraint.}
+On active blocks, $A\ge r(k+n-1)/2$, use $c_0=(k+1)/2$ and local levels
+\[
+z_i^{+,L}=r(c_0+h-i),\quad
+z_i^-=-r[c_0+\min(i-1,n-i)],\quad
+z_i^{+,R}=r(c_0+i-1).
+\]
+Held white auxiliary inputs are $U_j=f(A-g_jz_j^{loc})$ and missing ones $fA$.
+On inactive blocks, prefix and tail set $U=0$.
+Only uniformly finitely many early blocks are inactive.
+Local levels generate a dual rather than a claimed global primal path.
+
+The baseline scalar direction has $\lambda_j^0=(g_jf)^\top U_j$ on holds
+and zero on missing inputs. It has zero mass and support
+\begin{equation}\label{eq:baseline}
+h_\ell^0=F\left\{\frac{Ar}{2}n(n+2k)
+-4r^2\sum_{j=0}^{n/2-1}(c_0+j)^2\right\}.
+\end{equation}
+Partial sums have the correct left-positive/right-negative signs,
+are zero at the negative center and at the end, and the local levels
+saturate $\Delta z=-r\Delta t\,\operatorname{sign}(Q)$ wherever $Q\ne0$.
+Missing zero weights preserve the physical gap span $k+1$.
+Summation by parts and fourfold layer counting prove \eqref{eq:baseline}.
+
+Write $h_\ell=(g_jf)_j$, $p_\ell=P_\ell h_\ell$, and
+\[
+N_\ell=h_\ell^\top P_\ell U_\ell,\quad
+D_\ell=\|p_\ell\|^2,\quad \alpha_\ell=N_\ell/D_\ell,\quad
+v_\ell=P_\ell U_\ell-\alpha_\ell p_\ell .
+\]
+Apart from two gap-right inputs, the other $2n-2$ held inputs are singletons
+with projection $I_d$ and $\|h_j\|^2=F$.
+Thus $D_\ell\ge F(2n-2)\ge Fn$.
+The difference $(h_j^\top(P_\ell U)_j)_j-\lambda^0$ lies in two fixed
+spans only. In each span,
+$\sum_j|h_j^\top(PU)_j|\le\sqrt{mF}\|PU\|\le mFA$;
+the baseline right-held point contributes at most $FA$.
+With $C_k=2(k+2)$ this gives
+\[
+|N_\ell|\le C_kFA,\quad |\alpha_\ell|\le C_kA/n,\quad
+h_\ell^\top v_\ell=0,\quad P_\ell v_\ell=v_\ell,\quad
+\|v_\ell-P_\ell U_\ell\|^2=N_\ell^2/D_\ell\le C_k^2FA^2/n .
+\]
+The repaired mass is one scalar constraint, exactly matching one unrestricted
+scalar healthy level. It is not a coordinatewise vector-nuisance constraint.
+
+For $\delta\lambda_j=h_j^\top v_j-\lambda_j^0$,
+$\sum\delta\lambda_j=0$ and
+$\sum|h_j^\top p_j|\le\|h_\ell\|\|p_\ell\|\le L_\ell F$.
+Hence $\|\delta\lambda_\ell\|_1\le C_k(k+3)FA$.
+The full scalar rate class has support $r\sum|Q_j|$ for a zero-mass vector;
+each partial sum is at most half its $L_1$ norm.
+A length-$L_\ell$ block correction therefore costs
+at most $r(L_\ell-1)\|\delta\lambda_\ell\|_1/2=O(FrA(n+k))$.
+Summation and restriction of the full path class give
+\begin{equation}\label{eq:support}
+h_{\mathcal Z}(\lambda)\le\sum h_\ell^0+O(H^2)
+\le\frac{Fr}{2}\sum A_\ell n_\ell^2+O(H^2).
+\end{equation}
+The assembled $v$ lies in $\operatorname{range}P$ and
+$\sum_j(g_jf)^\top v_j=0$ exactly.
+
+\paragraph{Observable dual and energy costs.}
+The real conditional-innovation direction is $Tv$ and has noise variance
+$\|v\|^2$. Fenchel's inequality gives
+$G\ge a_f^\top v-\|v\|^2/2-h_{\mathcal Z}(\lambda)$, thus
+\begin{equation}\label{eq:dual}
+2D_{K,H}(\pi)\le
+\|(I-P)a_f\|^2+\|Pa_f-v\|^2+2h_{\mathcal Z}(\lambda).
+\end{equation}
+On active inputs, auxiliary scalar errors are at most $(\eta+r)(n_\ell+k)$.
+The at most four tail errors are $O(H)$, prefix errors zero, and inactive
+blocks contribute $O(1)$.
+Therefore $\|a_f-U\|^2=O(H^2)$ and, by contraction and repair,
+\[
+\|Pa_f-v\|^2\le2\|a_f-U\|^2+2C_k^2F\sum A_\ell^2/n_\ell=O(H^2).
+\]
+The two input-gap centers lie at offsets $1/2\pm(n_\ell+k)/2$.
+With fixed $\beta=\beta_K(k)$ and fixed $L_1,L_2$ from \eqref{eq:affine},
+their exact oracle norm loss is
+\[
+2\beta(A_\ell+\eta/2)^2+\frac{\beta\eta^2}{2}(n_\ell+k)^2
++4\eta(A_\ell+\eta/2)L_1+2\eta^2L_2 .
+\]
+Consequently $\|(I-P)a_f\|^2=2\beta\sum A_\ell^2+O(H^{3/2})$.
+The non-reflection cross has been retained, not asserted zero.
+
+Substituting in \eqref{eq:support}--\eqref{eq:dual} gives
+$2D\le2\beta\sum A_\ell^2+Fr\sum A_\ell n_\ell^2+O(H^2)$.
+Power summation yields
+$\sum A_\ell^2=\eta^2H^{5/2}/(5\sqrt\xi)+O(H^2)$ and
+$\sum A_\ell n_\ell^2=\eta\sqrt\xi H^{5/2}/5+O(H^2)$.
+This proves \eqref{eq:upper}. Minimizing at
+$\xi_*=2\beta\eta/(Fr)$ matches \eqref{eq:lower}, proving \eqref{eq:sharp}.
+\end{proof}
+
+\paragraph{Same-pole physical controller example.}
+Take
+\[
+A_{\rm plant}=\operatorname{diag}(4/5,3/5),\quad B_u=I_2,\quad
+B=(1,2)^\top,\quad
+Q=\begin{pmatrix}1&1/3\\1/3&5/9\end{pmatrix}.
+\]
+Then $F=29/4$.
+The gains $K_d=\operatorname{diag}(3/10,7/20)$ and
+$K_n=\left(\begin{smallmatrix}3/10&-2\\0&7/20\end{smallmatrix}\right)$
+give closed-loop matrices
+$\operatorname{diag}(1/2,1/4)$ and
+$\left(\begin{smallmatrix}1/2&2\\0&1/4\end{smallmatrix}\right)$,
+with the same eigenvalues, common physical inputs and common $Q$.
+At $k=1$ their exact coefficients are
+$\beta_{K_d}=1343/344$ and $\beta_{K_n}=18007/10456$.
+The ratio of matched deficit coefficients is their square-root ratio,
+approximately $0.664$.
+This compares the declared ideal fixed-gain family, not actuator-constrained
+finite-horizon controller optima.
+
+\paragraph{A necessary covariance boundary.}
+If $Q$ is allowed singular, strict positivity need not hold.
+For $A_K=\left(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\right)$,
+$B=(0,1)^\top$ and $Q=BB^\top$, the state is
+$x_j=(v_{j-1},v_j)$ with scalar input innovation $v_j$.
+One retained $x_{\ell+2}$ recovers both inputs after deleting $x_{\ell+1}$,
+so the gap loss is zero despite strict plant stability.
+This lies outside the positive-definite-$Q$ theorem.
+
+\paragraph{Evidence, compilation and remaining scope.}
+The standard-library Fraction script
+\texttt{outputs/m2\_controlled\_memory\_checks\_v1.py} and JSON report compare
+150 initialized full-state retained subsets against exact joint covariance
+inversion, check 68 full repaired calendars, and 413 local repair/support
+certificates, including nonnormal and rotating 2D models and a 3D Jordan model.
+These finite checks support implementation, not the universal proof.
+This working theorem needs independent review.
+Arbitrary vector nuisance, partial states, unknown plants, singular process
+covariance, unbounded controller-family transients, measurement noise,
+saturation, hardware validity, and general controller optimization remain
+outside its scope. The overall research goal is not complete.
+\paragraph{Compilation status.}
+The built-in compiler returned the platform error
+\texttt{Unable to find standard directories for platform}, without source
+diagnostics. Compilation is unverified; no replacement runtime was installed.
+
+\paragraph{Version 1.1 editorial and coverage clarification.}
+The original version 1 and its independent-review binding are preserved.
+The half-hold is $h=n/2$, while a true gap input span remains $m=k+1$.
+Both $+\to-$ and $-\to+$ exact-$k$ bounded profiles are known and reusable,
+and can be concatenated with holds at arbitrary planned start times.
+Without that operational assumption the lower bound remains valid, but
+the attaining family is not automatically available.
+The optimal information uses $\sup_\pi$ and does not require finite-horizon
+attainment. Scalar $gz$ and $gv$ mean $\operatorname{diag}(g)z$ and
+$\operatorname{diag}(g)v$, respectively.
+
+The old full-calendar checks all had zero repair energy under mirrored
+profiles. Six new asymmetric cases in
+\texttt{outputs/memory\_asymmetric\_repair\_checks\_v1.py}
+and its JSON report have nonzero mass, nonzero repair coefficient and
+strictly positive repair energy. They also verify the actual initialized
+retained-state pullback and statistic variance. No old table was rerun.
+For the scalar case $c=-1/2,k=1,n=4,A=10,r=1$, the two missing profiles
+$1/3,-2/3$ give $N=8/15$, $D=383/45$, $\alpha=24/383$ and
+repair energy $64/1915$. Unrepaired support is infinite; repaired mass is zero.
+The model binding for this independent version is
+\texttt{m2\_problem\_contract\_v1\_1.md}.
+
+\end{document}

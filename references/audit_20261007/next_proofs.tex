@@ -1,0 +1,352 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\ip}[2]{\left\langle#1,#2\right\rangle}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\op}{\mathrm{op}}
+\title{CERTO-FDI: the next proof obligations\\Finite-history nonlinear expansion and calibrated separation}
+\author{Research continuation from the shared dialogue}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a constructive, conditional bridge from a sampled nonlinear closed loop to a finite-history linear--quadratic Gaussian detector, and an unconditional risk bound with a certified third-order remainder. We also correct the normalization and two-sided risk requirements of the proposed D2-a horizon protocol. These are mathematical results under explicit hypotheses. They do not certify the numerical six-joint D1.b model: the required derivative enclosures and homotopy tubes have not been supplied. Inspection and execution of the recovered local R1 evidence archive are reported separately; passing an inherited verifier does not close these new proof obligations. D2-a can proceed using its existing first-order comparison and deterministic error certificates; completion of the second-order route is not a prerequisite.
+\end{abstract}
+
+\section{Scope and experiment}
+Fix, before seeing diagnostic data, a finite horizon, a deterministic calendar, a readout operator, and deterministic weights. Under hypothesis $j\in\{0,1\}$, let $\theta\in\Theta_j$ denote the entire admissible physical and nuisance path. Each hypothesis may choose its own path. All bounds below must hold uniformly over the indicated class. Deterministic paths may vary in time; they need not be constant. They must not be chosen as functions of the diagnostic innovations.
+
+The state includes every persistent controller and filter state. All innovations from the actual initialization through the final readout, including moves, are retained. A deterministic mode switch is represented by a time-dependent map; a reset, if physically present, must be included in that map. There is no artificial covariance or filter reset at a window boundary. The observation convention (point at slot end or mean of 250 fast reads) is part of the experiment.
+
+\section{A constructive third-order remainder}
+Write the actual sampled model as
+\begin{equation}\label{eq:model}
+ x_{n+1}=F_n(x_n,u_n;\theta),\qquad
+ y_n=H_n(x_n,u_n;\theta),\qquad 0\le n<N.
+\end{equation}
+The inputs $u_n$ collect encoder and transducer innovations, including any feedthrough. On a common probability space, $u_n=L_n Z$, where $Z\sim N(0,I_d)$ contains the full innovation history. The matrices $L_n$ may select and scale components. This notation permits correlation caused by repeated use of the same innovation.
+
+For a realized history $u$, introduce $x_n(\lambda)$ by replacing $u_n$ with $\lambda u_n$, $0\le\lambda\le1$, and hold $x_0$ fixed. Put $x_n^0=x_n(0)$. This is the actual deterministic zero-innovation response, including the fault, nuisance path, moves, and initialization; it is not automatically a nominal equilibrium.
+
+\begin{theorem}[Recursive uniform Taylor certificate]\label{thm:taylor}
+Suppose there is an event $\mathcal G$ of probability at least $1-\delta$, and deterministic bounds $r_n$, with the following properties, uniformly in $\theta$:
+\begin{enumerate}
+\item On $\mathcal G$, $\norm{u_n}\le r_n$. For every such history and every $\lambda\in[0,1]$, $(x_n(\lambda),\lambda u_n)$ lies in a certified domain $\mathcal D_n$.
+\item $F_n,H_n$ are $C^3$ on an open neighborhood of these domains. In the product norm $\norm{(a,b)}=\norm a+\norm b$, certified operator bounds on $\mathcal D_n$ are
+\begin{align*}
+\norm{D_xF_n}&\le A_n,&\norm{D_uF_n}&\le B_n,
+&\norm{D^2F_n}&\le M_{2,n},&\norm{D^3F_n}&\le M_{3,n},\\
+\norm{D_xH_n}&\le C_n,&\norm{D^2H_n}&\le J_{2,n},
+&\norm{D^3H_n}&\le J_{3,n}.
+\end{align*}
+\end{enumerate}
+Define $U_0=V_0=W_0=0$ and recursively
+\begin{align}
+ U_{n+1}&=A_nU_n+B_nr_n,\label{eq:u}\\
+ V_{n+1}&=A_nV_n+M_{2,n}(U_n+r_n)^2,\label{eq:v}\\
+ W_{n+1}&=A_nW_n+3M_{2,n}(U_n+r_n)V_n
+                  +M_{3,n}(U_n+r_n)^3.\label{eq:w}
+\end{align}
+For $T=\sum_{n=0}^{N-1}a_n^\top y_n$, the exact expansion is
+\begin{equation}\label{eq:expand}
+ T=c+b^\top Z+Z^\top QZ+R_3,\qquad Q=Q^\top,
+\end{equation}
+where $c=T(0)$ and $b,Q$ are obtained from the first and second variations at $\lambda=0$. On $\mathcal G$,
+\begin{align}
+ |R_3|&\le e_3:=\frac16\sum_{n=0}^{N-1}\norm{a_n}_*
+ \left[C_nW_n+3J_{2,n}(U_n+r_n)V_n
+                      +J_{3,n}(U_n+r_n)^3\right].\label{eq:e3}
+\end{align}
+Here $\norm{\cdot}_*$ is the dual norm of the output norm. These are finite-horizon bounds; no horizon-independent constant is asserted.
+\end{theorem}
+
+\begin{proof}
+Differentiate the recursion along the homotopy. With
+$p_n=(x_n'(\lambda),u_n)$ and $q_n=(x_n''(\lambda),0)$, the chain rule gives
+\begin{align}
+ x_{n+1}'&=D_xF_n\,x_n'+D_uF_n\,u_n,\label{eq:first}\\
+ x_{n+1}''&=D_xF_n\,x_n''+D^2F_n[p_n,p_n],\label{eq:second}\\
+ x_{n+1}'''&=D_xF_n\,x_n'''+3D^2F_n[p_n,q_n]
+                                    +D^3F_n[p_n,p_n,p_n].\label{eq:third}
+\end{align}
+All derivatives of $F_n$ in these equations are evaluated at
+$(x_n(\lambda),\lambda u_n;\theta)$. Since the initial condition is independent of $\lambda$, its three derivatives vanish. Induction using the product norm proves $\norm{x_n'}\le U_n$, $\norm{x_n''}\le V_n$, and $\norm{x_n'''}\le W_n$ throughout the homotopy. Applying the same chain rule to $H_n$ yields
+\[
+\norm{y_n'''}\le C_nW_n+3J_{2,n}(U_n+r_n)V_n
+                              +J_{3,n}(U_n+r_n)^3.
+\]
+At zero innovation, \eqref{eq:first} is linear in $Z$, and \eqref{eq:second} is homogeneous quadratic in $Z$. Therefore $T'(0)=b^\top Z$ and $T''(0)/2=Z^\top QZ$, replacing $Q$ with its symmetric part if necessary. Taylor's integral formula gives
+\[
+R_3=\frac12\int_0^1(1-\lambda)^2T'''(\lambda)\,d\lambda.
+\]
+The output bound, the dual-norm inequality, and
+$\frac12\int_0^1(1-\lambda)^2d\lambda=1/6$ prove \eqref{eq:e3}.
+\end{proof}
+
+\begin{remark}[What must actually be certified]\label{rem:obligations}
+A tube only for the endpoint $\lambda=1$ does not establish the first assumption. A robust tube valid for every input in a star-shaped bounded innovation set does, because $\lambda u$ remains in that set. A numerical-integrator map certifies that discrete model; an exact continuous-time plant additionally requires a flow enclosure or a separately budgeted integration error. State-triggered switching, active saturation, or an unmodeled reset may invalidate the $C^3$ hypothesis. A bounded comparison defect from an earlier first-order construction is not automatically a third-order remainder. If retained as an additional model error, it needs its own bound and must not be silently identified with $R_3$.
+\end{remark}
+
+The theorem is constructive but its scalar norm recursions can be loose. Componentwise interval recursions or certified weighted norms can improve them without changing the proof. Gaussian tails provide finite $r_n$ at a specified event budget; for example, if $\mathcal G=\{\max_{i\le d}|Z_i|\le q\}$, then $\Prob(\mathcal G^c)\le2d[1-\Phi(q)]$. This is a sufficient bound, not a replacement for a tighter already-valid event certificate. No conditioning on $\mathcal G$ is needed below.
+
+\subsection{A model-specific simplification and a new point-readout bound}
+Inspection of the recovered R1 source shows that, during the frozen-inertia hold,
+the selected output is exactly linear in the scaled state:
+\[
+ Y_{4,n}=C_4X_n+D_4\nu_n+\zeta_n,\qquad
+ C_4=-M_{0,4:}[40I,80I,80I].
+\]
+Thus the hold output has zero second and third derivatives. For a componentwise bound
+$|\partial_\lambda^3X_n|\le\mathcal W_n$, Theorem~\ref{thm:taylor} simplifies to
+\[
+ |R_3|\le\frac16\sum_{n\text{ read in hold}}|a_n|\,|C_{4,n}|\mathcal W_n.
+\]
+This does not make the state evolution linear: the controller still contains nonlinear gravity compensation, and moves have additional nonlinear terms. The required $\mathcal W_n$ remains uncomputed.
+
+\begin{proposition}[Point output inherited from the admission tube]\label{prop:point}
+Let $n=0$ denote movement end and hold start. Suppose the inherited admission event gives, for $n\ge1000$ in its certified time domain,
+\[
+ |X_n-X_n^g|\le\rho^n H(r_e)+\rho^{n-1000}H(r_4)+H_aW_{\rm tail},
+ \quad \rho=197/200,
+\]
+where all vectors on the right are nonnegative. The true and comparison outputs share the same current innovations. Then
+\[
+ |Y_{4,n}-Y^g_{4,n}|\le
+ \epsilon_{\rm pt}(n):=|C_4|
+ [\rho^nH(r_e)+\rho^{n-1000}H(r_4)+H_aW_{\rm tail}].
+\]
+This bound is nonincreasing in $n$ on its certified domain.
+\end{proposition}
+\begin{proof}
+The common feedthrough and transducer innovations cancel in the difference, leaving
+$Y_{4,n}-Y^g_{4,n}=C_4(X_n-X_n^g)$. Apply the componentwise triangle inequality.
+Monotonicity follows from $0<\rho<1$ and nonnegative coefficients.
+\end{proof}
+
+Using the stored rational interval coefficients, exact rational inversion of the metric $P$, and upward-rounded square roots gives the new conditional bound
+\[
+ \epsilon_{\rm pt}(n)\le
+ \frac{3399888498583189}{10^{18}}\ {m N\,m},\qquad n\ge1500,
+\]
+within the inherited event and time domain. With the convention that the first complete admitted slot ends at $n=1750$, the bound is
+$3329342838665834/10^{18}\ {\rm N\,m}$.
+The conservative $n\ge1500$ version tolerates a one-fast-sample endpoint convention difference. It does not shorten the requirement to complete an admitted slot before moving again. The reproducible source calculation is supplied as \texttt{post\_move\_point\_support.py}; it is pinned to the audited R1 archive hash. This is a first-order comparison-error bound, not an $R_3$ bound or a point-readout risk certificate.
+
+\section{The correct linear--quadratic tail}
+\begin{lemma}[A signed quadratic form with a linear term]\label{lem:tail}
+For $Z\sim N(0,I_d)$, $Q=Q^\top$, and
+\[
+ S=b^\top Z+Z^\top QZ-\tr Q,\quad
+ V=\norm b^2+2\norm Q_F^2,\quad L=\norm Q_\op,
+\]
+we have $\E S=0$ and $\operatorname{Var}(S)=V$. For $x>0$, let
+$\psi(x)=\sqrt{2Vx}+2Lx$. Then
+\begin{equation}\label{eq:tail}
+ \Prob(S>\psi(x))\le e^{-x},\qquad
+ \Prob(S<-\psi(x))\le e^{-x}.
+\end{equation}
+If $V>0$, the strict inequalities may be replaced by non-strict ones.
+\end{lemma}
+
+\begin{proof}
+Odd centered Gaussian moments vanish, so the linear and centered quadratic terms have zero covariance, although they need not be independent. Diagonalization of $Q$ and the fourth Gaussian moment give the stated variance. Completing the square in the Gaussian integral yields, whenever $I-2tQ\succ0$,
+\begin{equation}\label{eq:mgf}
+ \log\E e^{tS}=-t\tr Q-\tfrac12\log\det(I-2tQ)
+       +\tfrac12t^2 b^\top(I-2tQ)^{-1}b.
+\end{equation}
+For an eigenvalue $\lambda_i$ and $2|t|L<1$, the absolutely convergent logarithm series gives
+\[
+-t\lambda_i-\tfrac12\log(1-2t\lambda_i)
+ =\sum_{k\ge2}\frac{2^{k-1}}{k}(t\lambda_i)^k
+ \le\frac{t^2\lambda_i^2}{1-2|t|L}.
+\]
+Also $b^\top(I-2tQ)^{-1}b\le\norm b^2/(1-2|t|L)$. Hence
+\begin{equation}\label{eq:subgamma}
+ \log\E e^{tS}\le \frac{Vt^2}{2(1-2|t|L)}.
+\end{equation}
+For $V>0$, set $a=\sqrt{2x/V}$ and $t=a/(1+2La)$ in the Chernoff bound for the upper tail. Substitution gives
+$t\psi(x)-Vt^2/[2(1-2Lt)]=x$. Apply the same argument to $-S$ for the lower tail. If $V=0$, then $b=Q=0$ and the strict-tail assertions hold directly. A nonconstant polynomial of a Gaussian vector has no atoms, which justifies the non-strict formulation when $V>0$.
+\end{proof}
+
+\section{From a remainder to uniform hypothesis-testing risk}
+For each $j,\theta$, suppose the same observable statistic admits
+\[
+ T=m_{j,\theta}+S_{j,\theta}+R_{j,\theta},\qquad
+ m_{j,\theta}=c_{j,\theta}+\tr Q_{j,\theta},
+\]
+where $S$ satisfies Lemma~\ref{lem:tail}. Assume
+$\Prob_{j,\theta}(\mathcal G_{j,\theta}^c)\le\delta_j$ and
+$|R_{j,\theta}|\le e_{j,\theta}$ on that event. All numerical, physical-model, and Taylor errors included in $e$ must be identified. In general $m$ is the mean of the quadratic approximation, not the true mean of $T$.
+
+\begin{theorem}[A protected quadratic detector]\label{thm:risk}
+Let $0<\delta_0<\alpha<1$ and $0<\delta_1<\beta<1$; zero $\delta_j$ is also allowed. Set
+\[
+ x_0=\log\frac1{\alpha-\delta_0},\qquad
+ x_1=\log\frac1{\beta-\delta_1},
+\]
+and define
+\begin{align*}
+ U_0&=\sup_{\theta\in\Theta_0}
+       \{m_{0,\theta}+e_{0,\theta}+\psi_{0,\theta}(x_0)\},\\
+ L_1&=\inf_{\theta\in\Theta_1}
+       \{m_{1,\theta}-e_{1,\theta}-\psi_{1,\theta}(x_1)\}.
+\end{align*}
+If $U_0<L_1$, choose any deterministic $t\in(U_0,L_1)$ and reject the null when $T>t$. Then
+\[
+\sup_{\theta\in\Theta_0}\Prob_{0,\theta}(T>t)\le\alpha,
+\qquad
+\sup_{\theta\in\Theta_1}\Prob_{1,\theta}(T\le t)\le\beta.
+\]
+No independence between $R$, $S$, and the good event is required.
+\end{theorem}
+
+\begin{proof}
+On $\mathcal G_{0,\theta}$, $T>t$ implies
+$S_{0,\theta}>t-m_{0,\theta}-e_{0,\theta}>
+\psi_{0,\theta}(x_0)$. By the union bound its probability is at most
+$e^{-x_0}+\delta_0=\alpha$. On $\mathcal G_{1,\theta}$,
+$T\le t$ implies $S_{1,\theta}\le t-m_{1,\theta}+e_{1,\theta}
+<-\psi_{1,\theta}(x_1)$. The same argument gives $\beta$.
+The bounds were taken under the original probability laws, not Gaussian laws conditioned on a tube event.
+\end{proof}
+
+\begin{remark}[The nonzero deterministic response matters]\label{rem:mean}
+For $X=\mu+\sigma Z$, $X^2=\mu^2+2\mu\sigma Z+\sigma^2Z^2$ and
+$\operatorname{Var}(X^2)=4\mu^2\sigma^2+2\sigma^4$. Expansion at the actual deterministic response keeps the first term. Simply treating a centered quadratic residual as Gaussian can also give an invalid tail. Theorem~\ref{thm:risk} solves these logical issues but does not guarantee a tighter numerical certificate than an existing deterministic-error method.
+\end{remark}
+
+\section{The D2-a certificate that can be used now}
+The first-order comparison already pursued in the dialogue has the simpler form
+\[
+ T=\mu_{j,\theta}+G_{j,\theta}+R_{j,\theta},\quad
+ G_{j,\theta}\sim N(0,V_{j,\theta}),\quad
+ V_{j,\theta}\le V_j^+,
+\]
+with deterministic uniform bounds $V_j^+>0$, null mean
+$\mu_{0,\theta}\le\overline\mu_0$, alternative mean
+$\mu_{1,\theta}\ge\underline\mu_1$, and
+$|R_{j,\theta}|\le b_j$ off an event of probability at most $\delta_j$.
+The means, variance, and error bound must describe the same comparison construction. Let $z_p=\Phi^{-1}(p)$.
+
+\begin{corollary}[Two-sided protected separation]\label{cor:gaussian}
+Suppose $0<\alpha-\delta_0<1/2$ and $0<\beta-\delta_1<1/2$.
+For the threshold
+\begin{equation}\label{eq:threshold}
+ t=\overline\mu_0+b_0+z_{1-\alpha+\delta_0}\sqrt{V_0^+},
+\end{equation}
+the false-alarm probability is at most $\alpha$. A sufficient condition for power at least $1-\beta$ is
+\begin{equation}\label{eq:separation}
+\boxed{\;
+\underline\mu_1-\overline\mu_0
+\ge b_0+b_1+
+z_{1-\alpha+\delta_0}\sqrt{V_0^+}+
+z_{1-\beta+\delta_1}\sqrt{V_1^+}.
+\;}
+\end{equation}
+\end{corollary}
+\begin{proof}
+On the null good event, rejection implies a Gaussian upper-tail excursion of at least $z_{1-\alpha+\delta_0}\sqrt{V_0^+}>0$.
+Increasing a Gaussian variance increases this positive upper tail, so its probability is bounded by $\alpha-\delta_0$. Under the alternative, \eqref{eq:separation} implies
+$\underline\mu_1-b_1-t\ge z_{1-\beta+\delta_1}\sqrt{V_1^+}>0$.
+Non-rejection on the good event therefore requires the corresponding negative-tail excursion. Adding the two event budgets separately proves the assertions, including a zero actual variance by direct evaluation.
+\end{proof}
+
+If $a=\underline\mu_1-b_1-t>0$, a direct power lower bound is
+$[\Phi(a/\sqrt{V_1^+})-\delta_1]_+$. For $a<0$, substituting an upper variance into this expression has the wrong order; a positive lower variance or a different bound is required. Rational quantiles and certified Mills bounds may replace the exact quantiles conservatively. To claim a strict false-alarm bound below $10^{-3}$, leave explicit slack in the numerical tail budget.
+
+\section{Projection normalization and an invariant regime diagnostic}
+\begin{proposition}[The raw residual produces a squared gap]\label{prop:projection}
+Let the ideal mean sets be $\mathcal C_0$ and $s+\mathcal C_1$, where
+$\mathcal C_0,\mathcal C_1\subset\R^m$ are nonempty compact convex sets.
+Let $K=\mathcal C_0-\mathcal C_1$, $p=\operatorname{proj}_K(s)$, and $v=s-p$. For $d=\norm v>0$,
+\begin{align}
+\inf_{y\in s+\mathcal C_1}v^\top y-
+\sup_{y\in\mathcal C_0}v^\top y&=d^2,\label{eq:rawgap}\\
+\inf_{y\in s+\mathcal C_1}(v/d)^\top y-
+\sup_{y\in\mathcal C_0}(v/d)^\top y&=d.\label{eq:unitgap}
+\end{align}
+\end{proposition}
+\begin{proof}
+Projection optimality states $\ip{v}{z-p}\le0$ for all $z\in K$.
+Thus the support function satisfies $h_K(v)=\ip vp$.
+The left side of \eqref{eq:rawgap} equals
+$\ip vs-h_K(v)=\ip v{s-p}=\norm v^2$.
+Division by $d$ proves \eqref{eq:unitgap}.
+\end{proof}
+
+Consequently, a condition written as
+$\operatorname{dist}(s,K)>b+z\sqrt V$ is not valid if $b,V$ were computed for the unnormalized statistic $v^\top Y$; its ideal gap is $d^2$.
+Using the unit direction $w=v/d$, with all error and variance terms recomputed or rescaled, gives the valid sufficient condition
+\begin{equation}\label{eq:distancegap}
+ d-\Delta_{\mathrm{dyn}}\ge
+ b_0+b_1+z_{1-\alpha+\delta_0}\sqrt{V_0^+}
+            +z_{1-\beta+\delta_1}\sqrt{V_1^+},
+\end{equation}
+provided the actual comparison mean gap is at least $d-\Delta_{\mathrm{dyn}}$.
+Here $\Delta_{\mathrm{dyn}}\ge0$ is a separately certified mean-gap loss; a nodal design direction does not establish this bound for averaged continuous-path means. If $d=0$, the normalized direction is undefined. This only invalidates that direction's separation certificate; it does not prove that the full colored experiment has zero information.
+
+An absolute threshold decomposition into $\overline\mu_0$, $b_0$, and $z\sqrt V$ depends on the arbitrary origin of $T$: replacing $T$ by $T+c$ changes the first component without changing either risk. A physically meaningful diagnostic should instead use the mean gap and both risk budgets in \eqref{eq:separation}.
+For a symmetric difference class containing zero, the normalized ideal signal $g=w^\top s$ and health loss $h_K(w)$ satisfy
+\[
+ d=g-h_K(w).
+\]
+The additive sufficient budget is then
+\begin{equation}\label{eq:budget}
+ g\ge h_K(w)+\Delta_{\mathrm{dyn}}+b_0+b_1+
+ z_{1-\alpha+\delta_0}\sqrt{V_0^+}
+ +z_{1-\beta+\delta_1}\sqrt{V_1^+}.
+\end{equation}
+These terms and their ratios to $g>0$ are invariant under a common deterministic translation of the observations. Their relative sizes describe this fixed design; they do not by themselves prove a universal regime theorem or optimality over readout operators.
+
+\section{What a first-success horizon proves}
+For a prespecified finite grid $\mathcal H$ and prespecified calendar family, define
+\[
+ H_{\mathrm{cert}}=\min\{H\in\mathcal H:
+ \text{the calendar is feasible and its complete risk certificate passes}\}.
+\]
+This is a design-time certificate horizon, not a random stopping time or a minimax lower bound. To establish the minimum, evaluate all earlier grid entries or prove their failure; checking only the immediate predecessor is insufficient without monotonicity. Failed sufficient conditions are certificate failures, not proofs of physical impossibility. Infeasible calendars must be reported separately from valid calendars whose risk certificates fail.
+
+If the detector is actually inspected at several horizons, fixed-horizon risk bounds do not provide an anytime guarantee. One valid construction uses a common good event of failure probability $\delta$ and tail budgets $\alpha_H$ satisfying $\delta+\sum_H\alpha_H\le\alpha$. This is different from choosing a single horizon before data collection.
+
+In the dialogue's ideal, amplitude-unrestricted drift model, a claimed sharp expansion has the form
+\[
+ G_*(H)=A H^3-BH^{5/2}+o(H^{5/2}),\quad
+ A=\frac{\eta^2}{6\sigma^2},\quad
+ B=\frac{\sqrt2}{5\sigma^2}\sqrt{kr}\,\eta^{3/2}.
+\]
+Its formal inversion at a large target $\Lambda$ gives
+\[
+ H_\Lambda=(\Lambda/A)^{1/3},\qquad
+ H\approx H_\Lambda+\frac{2\sqrt2}{5}
+                  \sqrt{kr/\eta}\sqrt{H_\Lambda}.
+\]
+This substitution is a comparison prediction for D2-a, not a certified law for its finite-box, colored, sampled experiment. A robust actual-direction variance ratio near one compares parameter uncertainty with a nominal colored model; it does not establish whiteness. A marginal per-slot standard deviation likewise does not determine all directional variances. Fixed amplitude bounds eventually change the ideal asymptotics. Three completed blocks are a prespecified example-selection criterion, not a proof that an asymptotic constant applies.
+
+\section{Concrete obligations remaining for the six-joint model}
+\begin{enumerate}
+\item The R1 archive has now been recovered, its expected hash matched, and its unmodified standard-library verifier rerun successfully from a fresh extraction under WSL. Retain this exact input identity; the separate verification report states the covered cases and limitations.
+\item For D2-a, retain the frozen physical parameters and calendars, specify every family member and tie-break rule before computation, and use Corollary~\ref{cor:gaussian} with whole-path mean support, full-history actual-direction covariance, segment-specific errors, and calendar-count event budgets. Proposition~\ref{prop:point} supplies a post-move point error bound under the inherited admission contract; verify its time and event scope for each new calendar. The point covariance, mean support, and complete horizon scan remain to be computed.
+\item For D1.b, compute the true zero-innovation trajectory and first/second variation of the actual sampled maps. Certify the scaled-innovation tube and derivative bounds of Theorem~\ref{thm:taylor} for every claimed path/calendar class. Supply numerical bounds for $b,Q,e_3,\delta_j$; until then, the six-joint D1.b certificate remains open.
+\item Compare valid first-order and second-order risk certificates before data. Choose the tighter valid one without assuming that the quadratic route improves the result. Do not double-count a defect already represented in the exact Taylor expansion.
+\end{enumerate}
+
+\section*{Source and literature boundary}
+The research chronology comes from the public shared dialogue:
+\href{https://chatgpt.com/share/6ac5b054-cb1c-83ea-b356-82b799adea48}{shared conversation, 52 user--assistant rounds}.
+Convex composite testing and affine detectors are established subjects; the present note does not claim that closest-pair separation is new. See Goldenshluger, Juditsky and Nemirovski,
+\href{https://arxiv.org/abs/1311.6765}{Hypothesis testing by convex optimization} (2015), and Juditsky and Nemirovski,
+\href{https://arxiv.org/abs/1604.02576}{Hypothesis Testing via Affine Detectors} (2016).
+For related quadratic-form concentration, see Hsu, Kakade and Zhang,
+\href{https://arxiv.org/abs/1110.2842}{A tail inequality for quadratic forms of subgaussian random vectors} (2012).
+The signed quadratic-plus-linear bound needed here is proved explicitly above, rather than attributed to a positive-semidefinite quadratic theorem with different hypotheses. These references provide context, not an exhaustive originality review.
+\end{document}

@@ -1,0 +1,627 @@
+{
+  "schema": "citation-preflight-source-support-v1",
+  "date": "2026-10-07",
+  "scope": "Finite source-bound bibliography and claim-interface preflight; not exhaustive novelty, whole-paper reproof or author-code reproduction.",
+  "baseline": {
+    "path": "outputs/certo_fdi_control_memory_draft_v1.tex",
+    "revision": 4,
+    "declared_sha256": "70dc68db61599470cb6cd82ff6a2f83bcd30cdd4db89675e8074eab4e146f302",
+    "observed_sha256": "70dc68db61599470cb6cd82ff6a2f83bcd30cdd4db89675e8074eab4e146f302",
+    "binding_matches": true
+  },
+  "local_scan": {
+    "cite_commands": 10,
+    "cite_key_occurrences": 11,
+    "unique_cite_keys": 10,
+    "bib_entries": 10,
+    "undefined_keys": [],
+    "duplicate_bib_keys": [],
+    "citation_placeholders": []
+  },
+  "verified_fragment": {
+    "path": "outputs/submission_bibliography_verified_v1.tex",
+    "sha256": "cf0ce385edee79785471d656f4113dd32fd0c88d3ea8e1f5fae174e2cf67671a",
+    "keys": [
+      "controlled",
+      "markov",
+      "switchcost",
+      "multipleplays",
+      "zonotope",
+      "convex",
+      "allan",
+      "ossenkopf",
+      "kim",
+      "closedset",
+      "feedback2012",
+      "robustfeedback2012",
+      "switchback"
+    ],
+    "all_baseline_keys_retained": true,
+    "new_keys": [
+      "multipleplays",
+      "ossenkopf",
+      "switchcost"
+    ],
+    "duplicate_keys": []
+  },
+  "review_method": "Reused existing primary PDFs and prior targeted reviews; this turn checked metadata, first-page identities and exact cited locators. Full-source availability is not a claim of line-by-line or all-theorem review.",
+  "metadata_method": "Primary arXiv version records, cached publisher-layout/official-conference PDFs, publisher page, and publisher-deposited Crossref metadata; secondary search results were discovery pointers only.",
+  "edition_rule": "Cite actual read arXiv versions. Related journal DOI/venue metadata do not promote an unreviewed publisher edition into the reviewed scope.",
+  "source_receipts": [
+    {
+      "path": "outputs/manuscript_revision_4_receipt.json",
+      "sha256": "bd2c1ef129ae21a2e88c05636eafc17a6ae1792c313fa0322d33f1c9099c73c3"
+    },
+    {
+      "path": "outputs/novelty_matrix.csv",
+      "sha256": "d34f2e7a98e47973b46d8288caad9bb82c82f652f8ae0719de5c1311dfc9306d"
+    },
+    {
+      "path": "outputs/novelty_control_memory_collision_v1.md",
+      "sha256": "df0d892080901a0c0c1b1653baedd5eac0305e1aa61eec8daf2bb93bbb59e890"
+    },
+    {
+      "path": "outputs/feedback_prior_art_fulltext_review_v1.md",
+      "sha256": "3175f0be8dc0c407fc382ad3663c36975d2956f808b0b554d143c2f496b5a5df"
+    },
+    {
+      "path": "outputs/feedback_local_library_lookup_v1.md",
+      "sha256": "ac2efb5ee00a4f7255036228bc74002363e8040d01c0516631947c154026e21f"
+    },
+    {
+      "path": "work/literature_20261007/download_manifest.json",
+      "sha256": "01b079438a353d8fd461d58efe2b0fc2947d2e199ed39bc2c65d95d3062ca5bb"
+    },
+    {
+      "path": "work/literature_control_extension/receipt.json",
+      "sha256": "f4bdd2ab5f2814f8b96d92faf864f4e5ace6824015782f0d39e7ce3068e94d62"
+    },
+    {
+      "path": "work/literature_feedback2012/p1_crossref.json",
+      "sha256": "09da41d47f8d7069a3208d65dcff78149eb8f129e715572867c98f6bd615161e"
+    },
+    {
+      "path": "work/literature_feedback2012/p2_crossref.json",
+      "sha256": "827d956743eb9c06bdcc1f731ad27edd805d804ec99e3de8f15a41e474bdf286"
+    },
+    {
+      "path": "work/citation_preflight_v1/kim_publisher_deposited_metadata.json",
+      "sha256": "48912a0cbec20e031b0f83d17f32e544e03f357e02dd3518344e7da26a3d1800"
+    }
+  ],
+  "entries": [
+    {
+      "cite_key": "controlled",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Controlled Sensing for Multihypothesis Testing",
+        "authors": [
+          "Sirin Nitinawarat",
+          "George K. Atia",
+          "Venugopal V. Veeravalli"
+        ],
+        "year": 2013,
+        "reviewed_edition": "Author-hosted publisher-layout article, IEEE TAC 58(10), 2451-2464",
+        "venue": "IEEE Transactions on Automatic Control",
+        "volume": "58",
+        "issue": "10",
+        "pages": "2451-2464",
+        "doi": "10.1109/TAC.2013.2261188",
+        "arxiv": null,
+        "primary_sources": [
+          "https://vvv.ece.illinois.edu/papers/journal/niti-atia-veer-tac-2013.pdf"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/nitinawarat_tac2013.pdf",
+      "pdf_sha256": "45b0fc075e760db157945292f34f911c5fefbf1d2486986a0c8fe6de698551a6",
+      "primary_full_text_url": "https://vvv.ece.illinois.edu/papers/journal/niti-atia-veer-tac-2013.pdf",
+      "exact_locator_in_reviewed_edition": "Secs. II-III; PDF pp.2-5 / printed pp.2452-2455; Proposition 1; Theorems 1-2",
+      "revision_4_citation_lines": [
+        83
+      ],
+      "supports": "Known controlled observation laws; fixed-sample and sequential multihypothesis testing are established.",
+      "does_not_establish": "The source does not supply the current complete rate-limited healthy-path and true-blackout sharp deficit theorem.",
+      "note": null
+    },
+    {
+      "cite_key": "markov",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Controlled Sensing for Sequential Multihypothesis Testing with Controlled Markovian Observations and Non-Uniform Control Cost",
+        "authors": [
+          "Sirin Nitinawarat",
+          "Venupogal V. Veeravalli"
+        ],
+        "year": 2014,
+        "reviewed_edition": "arXiv:1310.1844v2, registered 2014-06-28",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "1310.1844v2",
+        "primary_sources": [
+          "https://arxiv.org/abs/1310.1844v2"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/markov_1310.1844.pdf",
+      "pdf_sha256": "ba0dfdaf42a5bfd8c1cb7979018d6a864f331d6f2b1a3454ad85576744288beb",
+      "primary_full_text_url": "https://arxiv.org/pdf/1310.1844v2",
+      "exact_locator_in_reviewed_edition": "Sec.3, Eqs.(3.1)-(3.2), PDF pp.6-7; Theorems 4.1-4.2, pp.8-10; Theorem 5.1, p.11",
+      "revision_4_citation_lines": [
+        85
+      ],
+      "supports": "Controlled Markovian observations and nonuniform control costs in sequential simple-hypothesis testing are established.",
+      "does_not_establish": "Finite fully observed state and known positive time-homogeneous transition laws are substantive conditions; this does not directly cover the retained-state experiment with two unrestricted-level healthy paths.",
+      "note": "Official arXiv record and cached PDF spell the second given name Venupogal; the TAC2013 author PDF spells Venugopal. Bibliography uses initials V. V. and does not silently claim an identity correction."
+    },
+    {
+      "cite_key": "switchcost",
+      "in_revision_4_bibliography": false,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Active Search with a Cost for Switching Actions",
+        "authors": [
+          "Nidhin Koshy Vaidhiyan",
+          "Rajesh Sundaresan"
+        ],
+        "year": 2015,
+        "reviewed_edition": "arXiv:1505.02358v1, registered 2015-05-10",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "1505.02358v1",
+        "primary_sources": [
+          "https://arxiv.org/abs/1505.02358v1"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/switch_1505.02358.pdf",
+      "pdf_sha256": "b3a1a27c46b4f8b6ddcd759a3fa53119bce708744d4c781df0e8c6b07f8bc899",
+      "primary_full_text_url": "https://arxiv.org/pdf/1505.02358v1",
+      "exact_locator_in_reviewed_edition": "Sec.II-A/B, PDF pp.2-4; assumptions (I),(IIb); Proposition 5; Theorem 6, Eqs.(8)-(12)",
+      "revision_4_citation_lines": [],
+      "supports": "Sequential active search can account for additive monetary switching charges while preserving its first-order asymptotic cost rate.",
+      "does_not_establish": "The error-probability limit precedes the sluggish-parameter limit. A fixed sluggish parameter alone is not the exact asymptotic optimum; ordinary observations are not replaced by fixed-k plant-state blackout spans.",
+      "note": "Proposed addition. The official record says presented at ITA2015; no unreviewed conference edition or conference DOI is substituted."
+    },
+    {
+      "cite_key": "multipleplays",
+      "in_revision_4_bibliography": false,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Anomaly Search with Multiple Plays under Delay and Switching Costs",
+        "authors": [
+          "Tidhar Lambez",
+          "Kobi Cohen"
+        ],
+        "year": 2021,
+        "reviewed_edition": "arXiv:2108.03082v1, registered 2021-08-06",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "2108.03082v1",
+        "primary_sources": [
+          "https://arxiv.org/abs/2108.03082v1"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/switch_2108.03082.pdf",
+      "pdf_sha256": "c6564863d056acfce172b2b9c0ad144ee986351b678dd6c766c07cf2a1ad45ba",
+      "primary_full_text_url": "https://arxiv.org/pdf/2108.03082v1",
+      "exact_locator_in_reviewed_edition": "Sec.II, PDF pp.4-5, Eqs.(1)-(3); Sec.III-C, Theorem 1, p.12, Eq.(20)",
+      "revision_4_citation_lines": [],
+      "supports": "Known iid normal/anomalous laws, consecutive controlled sensing and sequential Bayes risk with switching cost are established.",
+      "does_not_establish": "The theorem requires the switching-cost scaling s=O(c). Machine coordination/idle times do not identify the current deterministic true-blackout input-clock contract.",
+      "note": "Proposed addition. arXiv lists related publisher DOI 10.1109/TSP.2021.3136810; publisher edition not substituted or claimed reviewed."
+    },
+    {
+      "cite_key": "zonotope",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Input design for guaranteed fault diagnosis using zonotopes",
+        "authors": [
+          "Joseph K. Scott",
+          "Rolf Findeisen",
+          "Richard D. Braatz",
+          "Davide M. Raimondo"
+        ],
+        "year": 2014,
+        "reviewed_edition": "Author-hosted publisher-layout article, Automatica 50(6), 1580-1589",
+        "venue": "Automatica",
+        "volume": "50",
+        "issue": "6",
+        "pages": "1580-1589",
+        "doi": "10.1016/j.automatica.2014.03.016",
+        "arxiv": null,
+        "primary_sources": [
+          "https://web.mit.edu/braatzgroup/input_design_for_guaranteed_fault_diagnosis_using_zonotopes.pdf",
+          "https://www.sciencedirect.com/science/article/pii/S0005109814001083"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/scott_zonotope2014.pdf",
+      "pdf_sha256": "3aa9ddb81150d4e043d9a56a147ac00bcd2ed80a5972bd91d546af37e80c0637",
+      "primary_full_text_url": "https://web.mit.edu/braatzgroup/input_design_for_guaranteed_fault_diagnosis_using_zonotopes.pdf",
+      "exact_locator_in_reviewed_edition": "Sec.2, PDF p.2 / print p.1581; Sec.3.2 and Theorem 3, p.3 / p.1582; Sec.5, pp.4-5 / pp.1583-1584",
+      "revision_4_citation_lines": [
+        93
+      ],
+      "supports": "Guaranteed diagnosis via separation of coupled complete output-history sets under bounded initial/process/measurement uncertainty and constrained input design.",
+      "does_not_establish": "Marginal product sets cannot replace coupled histories. Bounded-noise zero-error guarantees do not transfer to Gaussian positive-risk tolerances or the present unbounded initial healthy level.",
+      "note": null
+    },
+    {
+      "cite_key": "convex",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Hypothesis testing by convex optimization",
+        "authors": [
+          "Alexander Goldenshluger",
+          "Anatoli Juditsky",
+          "Arkadi Nemirovski"
+        ],
+        "year": 2016,
+        "reviewed_edition": "arXiv:1311.6765v7, registered 2016-02-23; PDF front matter dated 2016-02-24",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "1311.6765v7",
+        "primary_sources": [
+          "https://arxiv.org/abs/1311.6765v7"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/convex_1311.6765.pdf",
+      "pdf_sha256": "dbc82a4a5779e982c450716e61b398128d041ee33e5fb6399667a5cd5c225577",
+      "primary_full_text_url": "https://arxiv.org/pdf/1311.6765v7",
+      "exact_locator_in_reviewed_edition": "Secs.2.1-2.3.1, PDF pp.3-6; Theorem 2.1 p.4; common-covariance Gaussian Eq.(7) and closest-pair discussion p.6",
+      "revision_4_citation_lines": [
+        100,
+        285
+      ],
+      "supports": "Closest convex Gaussian mean sets yield an affine detector; the fixed-calendar statistical interface is established.",
+      "does_not_establish": "The cited presentation assumes compact convex mean sets. The manuscript supplies its own closed-polyhedral attainment and asymmetric uniform-power argument; the source is not a verbatim theorem for these unbounded sets or the sharp calendar law.",
+      "note": "Registered title uses Hypothesis; cached PDF title uses Hypotheses. Registered author is A. Juditski; cached PDF spells Anatoli Juditsky. Fragment uses registered title and full-PDF author spelling. Official record links EJS9(2):1645-1712 (2015); that publisher edition is not substituted or claimed reviewed."
+    },
+    {
+      "cite_key": "allan",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Optimization of radio astronomical observations using Allan variance measurements",
+        "authors": [
+          "R. Schieder",
+          "C. Kramer"
+        ],
+        "year": 2001,
+        "reviewed_edition": "arXiv:astro-ph/0105071v1, registered 2001-05-04",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "astro-ph/0105071v1",
+        "primary_sources": [
+          "https://arxiv.org/abs/astro-ph/0105071v1"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/schieder_astro-ph0105071.pdf",
+      "pdf_sha256": "2dfd2343243337c3aabd6cc7b2b8bfb4adb820db61c6d5a6871b7bee9e3f518a",
+      "primary_full_text_url": "https://arxiv.org/pdf/astro-ph/0105071v1",
+      "exact_locator_in_reviewed_edition": "Sec.4.1, cached PDF pp.5-7; Eqs.(15)-(17); real dead-time observing variance, optimum phase length and efficiency",
+      "revision_4_citation_lines": [
+        108
+      ],
+      "supports": "Allan-variance observing designs account for elapsed physical dead time and stochastic instrumental drift.",
+      "does_not_establish": "Its stochastic drift-spectrum/variance objective does not establish a universal deterministic Lipschitz-adversary Gaussian-information deficit.",
+      "note": "Actual cached PDF has 12 pages; official record comments say 11 pages. Locators refer to cached bytes. Related DOI 10.1051/0004-6361:20010611 is publication metadata only; publisher edition not substituted."
+    },
+    {
+      "cite_key": "ossenkopf",
+      "in_revision_4_bibliography": false,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "The stability of spectroscopic instruments: A unified Allan variance computation scheme",
+        "authors": [
+          "Volker Ossenkopf"
+        ],
+        "year": 2007,
+        "reviewed_edition": "arXiv:0712.4335v1, registered 2007-12-28; regenerated PDF front matter dated 2021-01-12",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "0712.4335v1",
+        "primary_sources": [
+          "https://arxiv.org/abs/0712.4335v1"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/ossenkopf_0712.4335.pdf",
+      "pdf_sha256": "67be5ae3f51e118e33f4e0c9ae4101c0f7d4823a8d70f2dc3e1460f0116c9cd1",
+      "primary_full_text_url": "https://arxiv.org/pdf/0712.4335v1",
+      "exact_locator_in_reviewed_edition": "Sec.5, cached PDF pp.10-11; Eqs.(23)-(27); symmetric reference-source-source-reference phases and phase-length optimum including dead time",
+      "revision_4_citation_lines": [],
+      "supports": "Symmetric drift compensation and phase-length optimization with real instrumental dead time predate the present calendar theorem.",
+      "does_not_establish": "The stochastic spectral model and total-variance objective are not the current deterministic complete-path adversary or a proof of its sharp coefficient.",
+      "note": "Proposed addition. Related A&A479:915-926 (2008), DOI10.1051/0004-6361:20079188 is publisher metadata. Only cached arXiv edition was used for the technical locator; generated-header2021 is not the publication year."
+    },
+    {
+      "cite_key": "kim",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Optimum input design for fault detection and diagnosis: Model-based prediction and statistical distance measures",
+        "authors": [
+          "Kwang-Ki K. Kim",
+          "Davide M. Raimondo",
+          "Richard D. Braatz"
+        ],
+        "year": 2013,
+        "reviewed_edition": "2013 ECC conference full text, printed pp.1940-1945, six PDF pages",
+        "venue": "2013 European Control Conference (ECC)",
+        "volume": null,
+        "issue": null,
+        "pages": "1940-1945",
+        "doi": "10.23919/ECC.2013.6669785",
+        "arxiv": null,
+        "primary_sources": [
+          "https://skoge.folk.ntnu.no/prost/proceedings/ecc-2013/data/papers/1214.pdf",
+          "https://api.crossref.org/works/10.23919/ECC.2013.6669785"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_control_extension/kim_ecc2013.pdf",
+      "pdf_sha256": "26786822156dc8350928d7798bd5e98afe8c126007791278df07215b36c8df3e",
+      "primary_full_text_url": "https://skoge.folk.ntnu.no/prost/proceedings/ecc-2013/data/papers/1214.pdf",
+      "exact_locator_in_reviewed_edition": "Sec.III, Eqs.(4)-(5); Sec.IV, Eqs.(9)-(16); Sec.V-C, PDF pp.4-6 / print pp.1943-1945; Eqs.(20)-(25); Remark3 p.5 / p.1944",
+      "revision_4_citation_lines": [
+        118
+      ],
+      "supports": "Affine-feedback Gaussian input design propagates both means and covariances and imposes input/state moment constraints; general closed-loop statistical diagnosis is prior art.",
+      "does_not_establish": "Algorithm1 cannot directly optimize (K_t,nu_t) jointly; Remark3 separates gain design, and the conclusion describes local input optima. Do not attribute the current global sharp calendar law or uniform joint asymptotic bridge to this source.",
+      "note": "DOI verified this turn in IEEE publisher-deposited metadata (publisher=IEEE, primary resource=document/6669785). DOI addition does not change the already-read conference edition. Full paper ends at1945; targeted earlier audit pp.1940-1944 was not the article page range."
+    },
+    {
+      "cite_key": "closedset",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Closed-loop input design for guaranteed fault diagnosis using set-valued observers",
+        "authors": [
+          "Davide M. Raimondo",
+          "Giuseppe Roberto Marseglia",
+          "Richard D. Braatz",
+          "Joseph K. Scott"
+        ],
+        "year": 2016,
+        "reviewed_edition": "Author-hosted publisher-layout article, Automatica74, 107-117",
+        "venue": "Automatica",
+        "volume": "74",
+        "issue": null,
+        "pages": "107-117",
+        "doi": "10.1016/j.automatica.2016.07.033",
+        "arxiv": null,
+        "primary_sources": [
+          "https://web.mit.edu/braatzgroup/Raimondo_Automatica_2016.pdf"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_control_extension/raimondo_automatica2016.pdf",
+      "pdf_sha256": "cf26542d1749811684b7a77123883aa399b59c31d9f7a4f2ea199a6528a8df84",
+      "primary_full_text_url": "https://web.mit.edu/braatzgroup/Raimondo_Automatica_2016.pdf",
+      "exact_locator_in_reviewed_edition": "Sec.2.2, Eqs.(10)-(13), PDF p.3 / print p.109; Theorem1, Eqs.(19)-(20), p.4 / p.110; Lemma3, Theorems4-5, Algorithm1, p.5 / p.111; appendix pp.9-10 / pp.115-116",
+      "revision_4_citation_lines": [
+        120
+      ],
+      "supports": "Set-valued observers retain prior output/input history, and moving-horizon input design preserves bounded-uncertainty diagnosis guarantees.",
+      "does_not_establish": "Conservative observers provide sufficient implications; the converse requires an exact observer. This is not Gaussian minimax power or the deterministic full-calendar sharp deficit.",
+      "note": null
+    },
+    {
+      "cite_key": "feedback2012",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Effects of feedback on active fault detection",
+        "authors": [
+          "Alireza Esna Ashari",
+          "Ramine Nikoukhah",
+          "Stephen L. Campbell"
+        ],
+        "year": 2012,
+        "reviewed_edition": "Published article identity verified; original article full text not obtained",
+        "venue": "Automatica",
+        "volume": "48",
+        "issue": "5",
+        "pages": "866-872",
+        "doi": "10.1016/j.automatica.2012.02.020",
+        "arxiv": null,
+        "primary_sources": [
+          "https://www.sciencedirect.com/science/article/pii/S0005109812000714",
+          "https://sites.google.com/site/aliesnaashari/publica",
+          "https://api.crossref.org/works/10.1016/j.automatica.2012.02.020"
+        ]
+      },
+      "full_text_status": "NOT_OBTAINED",
+      "citation_support_status": "IDENTITY_TOPIC_ONLY_FULL_TEXT_GAP",
+      "cached_pdf": null,
+      "pdf_sha256": null,
+      "primary_full_text_url": null,
+      "exact_locator_in_reviewed_edition": null,
+      "revision_4_citation_lines": [
+        124
+      ],
+      "supports": "The paper exists and explicitly concerns feedback effects in active fault detection.",
+      "does_not_establish": "System assumptions, information access, full theorem/proof coverage and direct M2 exclusion remain UNREVIEWED_FOR_M2. Introduction/conclusion/section snippets are not a theorem.",
+      "note": null
+    },
+    {
+      "cite_key": "robustfeedback2012",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Active Robust Fault Detection in Closed-Loop Systems: Quadratic Optimization Approach",
+        "authors": [
+          "Alireza Esna Ashari",
+          "Ramine Nikoukhah",
+          "Stephen L. Campbell"
+        ],
+        "year": 2012,
+        "reviewed_edition": "Published article identity verified; original article full text not obtained",
+        "venue": "IEEE Transactions on Automatic Control",
+        "volume": "57",
+        "issue": "10",
+        "pages": "2532-2544",
+        "doi": "10.1109/TAC.2012.2188430",
+        "arxiv": null,
+        "primary_sources": [
+          "https://sites.google.com/site/aliesnaashari/publica",
+          "https://api.crossref.org/works/10.1109/TAC.2012.2188430",
+          "https://ieeecss.org/sites/ieeecss/files/documents/pcd/CSS-Digest-Oct2012.pdf"
+        ]
+      },
+      "full_text_status": "NOT_OBTAINED",
+      "citation_support_status": "IDENTITY_TOPIC_ONLY_FULL_TEXT_GAP",
+      "cached_pdf": null,
+      "pdf_sha256": null,
+      "primary_full_text_url": null,
+      "exact_locator_in_reviewed_edition": null,
+      "revision_4_citation_lines": [
+        124
+      ],
+      "supports": "The paper exists and explicitly concerns robust active fault detection in closed-loop systems.",
+      "does_not_establish": "No primary article model/theorem/proof locator is available. Direct coverage of the M2 theorem cannot be confirmed or ruled out from title/digest/metadata.",
+      "note": "Campbell directory page592-605 is inconsistent with publisher metadata and Esna Ashari directory; do not propagate that error. Identity support uses existing primary receipts, not a renewed full-text request."
+    },
+    {
+      "cite_key": "switchback",
+      "in_revision_4_bibliography": true,
+      "in_verified_fragment": true,
+      "metadata": {
+        "title": "Design and Analysis of Switchback Experiments",
+        "authors": [
+          "Iavor Bojinov",
+          "David Simchi-Levi",
+          "Jinglong Zhao"
+        ],
+        "year": 2025,
+        "reviewed_edition": "arXiv:2009.00148v4, registered 2025-09-17; original v1 2020-08-31",
+        "venue": null,
+        "volume": null,
+        "issue": null,
+        "pages": null,
+        "doi": null,
+        "arxiv": "2009.00148v4",
+        "primary_sources": [
+          "https://arxiv.org/abs/2009.00148v4"
+        ]
+      },
+      "full_text_status": "CACHED_PRIMARY_FULL_TEXT_TARGETED_LOCATOR_REVIEW",
+      "citation_support_status": "SUPPORTED_WITH_STATED_SCOPE",
+      "cached_pdf": "work/literature_20261007/switchback_2009.00148v4.pdf",
+      "pdf_sha256": "eae4c62f93ecd1258e97b50477dac06fa5a62a56122562fa05980579d4b724bb",
+      "primary_full_text_url": "https://arxiv.org/pdf/2009.00148v4",
+      "exact_locator_in_reviewed_edition": "Assumptions1-3, PDF pp.6-7,12; Theorem2 p.13; corresponding proof pp.56-57",
+      "revision_4_citation_lines": [
+        130
+      ],
+      "supports": "Fixed-horizon minimax switchback design with known carryover, randomized assignment and worst-case causal-estimation error is established.",
+      "does_not_establish": "Randomization points do not all imply an actual switch. Bounded potential outcomes and Horvitz-Thompson mean-squared-error objectives differ from two Gaussian full-drift-path hypotheses; finite comparisons do not establish historical priority.",
+      "note": null
+    },
+    {
+      "cite_key": null,
+      "in_revision_4_bibliography": false,
+      "in_verified_fragment": false,
+      "legacy_matrix_id": "L14",
+      "metadata": {
+        "title": "Trend robust two-level factorial designs",
+        "authors": [
+          "Ching-Shui Cheng",
+          "David M. Steinberg"
+        ],
+        "legacy_verified_identity": "Biometrika78(2)(1991):325-336; DOI10.1093/biomet/78.2.325",
+        "primary_sources": [
+          "https://academic.oup.com/biomet/article-abstract/78/2/325/232157"
+        ]
+      },
+      "full_text_status": "NOT_OBTAINED",
+      "citation_support_status": "UNRESOLVED_FULL_TEXT_COMPARISON_GAP_NOT_IMPORTED_AS_M2_EXCLUSION",
+      "cached_pdf": null,
+      "pdf_sha256": null,
+      "exact_locator_in_reviewed_edition": null,
+      "supports": "Identity and topic only, as documented in the original finite audit.",
+      "does_not_establish": "The original matrix binds M0; no theorem-level M2 comparison is inferred or retroactively certified.",
+      "legacy_contract": "outputs/problem_contract_v1.md",
+      "legacy_contract_sha256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef"
+    },
+    {
+      "cite_key": null,
+      "in_revision_4_bibliography": false,
+      "in_verified_fragment": false,
+      "legacy_matrix_id": "L15",
+      "metadata": {
+        "title": "Minimum Cost Trend-Free Run Orders of Fractional Factorial Designs",
+        "authors": [
+          "D. C. Coster",
+          "Ching-Shui Cheng"
+        ],
+        "legacy_verified_identity": "Annals of Statistics16(1988):1188-1205; DOI10.1214/aos/1176350955",
+        "primary_sources": [
+          "https://projecteuclid.org/journals/annals-of-statistics/volume-16/issue-3/Minimum-Cost-Trend-Free-Run-Orders-of-Fractional-Factorial-Designs/10.1214/aos/1176350955.full"
+        ]
+      },
+      "full_text_status": "NOT_OBTAINED",
+      "citation_support_status": "UNRESOLVED_FULL_TEXT_COMPARISON_GAP_NOT_IMPORTED_AS_M2_EXCLUSION",
+      "cached_pdf": null,
+      "pdf_sha256": null,
+      "exact_locator_in_reviewed_edition": null,
+      "supports": "Identity and topic only, as documented in the original finite audit.",
+      "does_not_establish": "The original matrix binds M0; no theorem-level M2 comparison is inferred or retroactively certified.",
+      "legacy_contract": "outputs/problem_contract_v1.md",
+      "legacy_contract_sha256": "99519b20be43dd2cd6a3690c86217bf574b5ef72c46e189f7622c108c2b0b7ef"
+    }
+  ],
+  "summary": {
+    "verified_fragment_entries": 13,
+    "cached_full_text_entries_with_targeted_support": 11,
+    "fragment_identity_topic_only_entries_with_full_text_gaps": 2,
+    "additional_uncited_legacy_full_text_gaps": 2,
+    "new_primary_full_texts_downloaded_this_turn": 0,
+    "new_metadata_request": "One IEEE publisher-deposited Crossref exact-DOI record for Kim2013; version-page and publisher bibliographic checks otherwise.",
+    "frozen_matrix_modified": false,
+    "main_manuscript_modified_by_this_agent": false
+  },
+  "minimum_remaining_work": [
+    "Integrate the three optional neighboring citations with their supported comparison sentences and order bibliography by first appearance.",
+    "Keep Esna2012 identities/topic acknowledgments separate from UNREVIEWED_FOR_M2 theorem coverage.",
+    "Obtain a legitimately readable complete source before asserting theorem-level exclusion for either Esna2012 paper or Cheng-Steinberg1991/Coster-Cheng1988.",
+    "If choosing publisher editions for currently cited preprints, explicitly compare the relied-on result/locator with that edition before changing the source-review identity."
+  ]
+}

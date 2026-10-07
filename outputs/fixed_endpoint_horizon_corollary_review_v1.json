@@ -1,0 +1,170 @@
+{
+  "date": "2026-10-07",
+  "verdict": "ACCEPTED_WITH_FIXED_SCOPE_QUALIFIERS",
+  "blockingFindings": [],
+  "sourceBindings": {
+    "fixed_endpoint_horizon_corollary_v1.md": "47e9f15a41e90ce71c262dce4c725ec3cc7bda41760fc865bb8d5302ce5ade0e",
+    "fixed_endpoint_horizon_corollary_v1.tex": "d60b75fb81d3bb1da1e2e507588d41cd8442cb4531b222b8cf13a24fae853287",
+    "fixed_endpoint_horizon_corollary_v1.json": "9b20b8c19ff51aa1402fb93cbaba43a29252f4712c88e98c29cc8a9abce3a088",
+    "certo_fdi_control_memory_draft_v1.tex": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca",
+    "m2s_singular_memory_theorem_v1.md": "8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431",
+    "m2s_recoverable_order_v1.md": "5b04f87f23fbfe1d2bc1fb1fbb791e783a47e029c7cdf130e1c000dd22d0f4f1",
+    "compact_controller_uniform_bridge_v1.md": "89762501f1272eb8b0ed5150985225655e62f0681d24c62c41729750dbcdf351"
+  },
+  "readScope": {
+    "candidate": "Complete MD, TeX, JSON",
+    "actualDependency": "R7 model, two-regime theorem and explicit upper, Gaussian uniform-risk interface, profile-aware zero calendar upper, compact SPD uniform statement and proof",
+    "existingProofs": "Previously independently accepted exact versions hash-bound; no old checks rerun"
+  },
+  "reviewGates": [
+    {
+      "id": "R1",
+      "status": "PASS",
+      "claim": "Actual-calendar test feasibility",
+      "reason": "Full free-level healthy paths realize closest pair; common-support Gaussian interface iff G>=Lambda with alpha+miss<1. Upper uses actual explicit calendar and strict margin; no unattained sup equality."
+    },
+    {
+      "id": "R2",
+      "status": "PASS",
+      "claim": "Oracle integer overshoot",
+      "reason": "Exact cubic; O_n-Lambda in [0,F(rho0+eta*n)^2/2); uniform sqrt(n) increment error O(n^2), fixed-L error O(n)."
+    },
+    {
+      "id": "R3",
+      "status": "PASS",
+      "claim": "Every earlier endpoint",
+      "reason": "G<=O excludes H<n. Same convergent-sequence tail error excludes all integers from n through n+floor((C/B-delta)*sqrt(n)); no monotonicity assumption."
+    },
+    {
+      "id": "R4",
+      "status": "PASS",
+      "claim": "Positive endpoint coefficient",
+      "reason": "Explicit xi*=2 beta eta/(Fr), strict upper margin B delta n^(5/2)+O(n^2). coefficient 2C/(F eta^2)=(2sqrt(2)/5)sqrt(beta*r/(F eta))."
+    },
+    {
+      "id": "R5",
+      "status": "PASS",
+      "claim": "Zero O(1), not Theta(1)",
+      "reason": "Actual profile-aware calendar has fixed M0H^2 upper; fixed L=floor(M0/B)+1 works. Exact allowed copy-plant sequence has zero integer excess."
+    },
+    {
+      "id": "R6",
+      "status": "PASS",
+      "claim": "Joint compact common-SPD",
+      "reason": "Uniform joint tail and common oracle supply all-controller lower. Fixed near-inf K_delta and its explicit calendar supply actual upper; alpha limit before delta down. No min/continuity/robust unknown-K assertion."
+    },
+    {
+      "id": "R7",
+      "status": "PASS",
+      "claim": "Fixed miss and risk scale",
+      "reason": "Mills self-derivation valid, Lambda~log(1/alpha), Hor~(6log/(F eta^2))^(1/3). Scope exact fixed-endpoint linear experiment."
+    }
+  ],
+  "independentCounterexampleAudit": {
+    "sameModel": true,
+    "P2Identity": true,
+    "prefixIncluded": true,
+    "terminalReadLegal": true,
+    "calendarDoesNotRequireMinimumTwoHoldSlots": true,
+    "cumulativeG": 3,
+    "NBound": "6H",
+    "DBound": "H/2",
+    "repairCoefficientBound": 12,
+    "partialScalarMassBound": "18(t+1)",
+    "energyBound": "36H",
+    "supportBound": "(9/100)(H^2+H)",
+    "totalDeficitBound": "(9/100)H^2+(3609/100)H",
+    "strictThresholdInteger": 226,
+    "thresholdSequence": "Lambda_H=H^3/6+H/12",
+    "result": "H_diag(alpha_H)=H_or(alpha_H)=H",
+    "purpose": "Refutes universal positive-constant/Theta(1) strengthening only."
+  },
+  "freshTinyArithmetic": {
+    "energyLinearCoefficient": "36",
+    "supportQuadraticCoefficient": "9/100",
+    "coefficientSquared": "8/25",
+    "toyNormalizedStrictFactorAt226": "7/100",
+    "symbolicProofPrimary": true,
+    "noEnumerationAsUniversalProof": true
+  },
+  "staticChecks": {
+    "labelCount": 14,
+    "unique": true,
+    "hostCollisions": [],
+    "unresolvedRefs": [],
+    "invalidLowControls": [],
+    "tabs": 0,
+    "isolatedCR": 0,
+    "noDocumentClass": true,
+    "compilationAttempted": false,
+    "compilePassAsserted": false
+  },
+  "scopePreserved": [
+    "Fixed known Schur controller and Gaussian factor",
+    "B in range(G), nonzero; exact common support",
+    "Full input-clock healthy class on both sides, unrestricted level",
+    "Fixed r eta rho0 prefix k plant/noise and miss tolerance",
+    "Offline controller/calendar/endpoint/test selection, causal feedback during innovations",
+    "Joint family only compact common SPD with bounded k and repeatable profiles"
+  ],
+  "exclusions": [
+    "Sequential/ARL/expected stop",
+    "Adaptive calendar or unknown onset",
+    "Unknown-controller robust test",
+    "Rank-changing singular family uniformity",
+    "Nonlinear D2 domain extrapolation",
+    "Goal/TAC-readiness/full400/finalZIP acceptance"
+  ],
+  "mutations": {
+    "onlyReviewMDAndJSON": true,
+    "sourceModified": false,
+    "candidateModified": false,
+    "rootClaimsModified": false,
+    "scienceRun": false,
+    "oldChecksRerun": false,
+    "compilerRun": false,
+    "sdkOrHardwareRun": false
+  },
+  "reviewMarkdownSHA256": "de520083bc5ea064cbb9aa0abe4139dad4dadd7db9565e9274ba9e318d9bc290",
+  "finalRevisionAddendum": {
+    "status": "ACCEPTED_WITH_SAME_FIXED_SCOPE_QUALIFIERS",
+    "originalInputBindingsPreserved": true,
+    "priorReviewHashes": {
+      "md": "96b550bc572756d646bd989af8ff1e24f2bca4f8462c525dc9b163b685c883da",
+      "json": "95803e0753589ced1cac35eedce7aa7abb03018e663255a51385f1e71353a887"
+    },
+    "finalInputBindings": {
+      "fixed_endpoint_horizon_corollary_v1.md": "47e9f15a41e90ce71c262dce4c725ec3cc7bda41760fc865bb8d5302ce5ade0e",
+      "fixed_endpoint_horizon_corollary_v1.tex": "d60b75fb81d3bb1da1e2e507588d41cd8442cb4531b222b8cf13a24fae853287",
+      "fixed_endpoint_horizon_corollary_v1.json": "9b20b8c19ff51aa1402fb93cbaba43a29252f4712c88e98c29cc8a9abce3a088",
+      "certo_fdi_control_memory_draft_v1.tex": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca"
+    },
+    "oldSnapshotHashes": {
+      "tex": "1992ab48efc850e4fd01ac11bc7260d6dc849f44dfc5696ed8b63ee2efdad2e0",
+      "json": "a3d814e8e1297f014186aff1b712bdd10b134dbf2748c561d53e39c6540f2117"
+    },
+    "actualDiffScope": [
+      "Three display formulas reflowed only",
+      "Local a rename to alpha_rep at every occurrence",
+      "Explicit already-reviewed Lambda_H cubic identity"
+    ],
+    "canonicalAfterUndoRenameAndExplicitIdentityEqual": true,
+    "candidateJSONChangedFields": [
+      "fragmentSHA256"
+    ],
+    "staticChecks": {
+      "labelCount": 14,
+      "unique": true,
+      "hostCollisions": [],
+      "unresolvedRefs": [],
+      "invalidLowControls": [],
+      "tabs": 0,
+      "isolatedCR": 0
+    },
+    "noScopeOrQuantifierChange": true,
+    "compilerRun": false,
+    "oldProofOrChecksRerun": false,
+    "scienceRun": false,
+    "hostModified": false
+  }
+}

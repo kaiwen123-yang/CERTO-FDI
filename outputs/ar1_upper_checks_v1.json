@@ -1,0 +1,425 @@
+{
+  "scope": "Exact global colored dual and support checks; no reset and no numerical projection. Asymptotic proof is separate.",
+  "checks": {
+    "full_signed_zero": 39,
+    "precision_pair_decomposition": 39,
+    "support_bound": 39,
+    "covariance_variance_identity": 30,
+    "dual_deficit_identity": 39,
+    "oracle_gap_identity": 39,
+    "iid_local_support": 410
+  },
+  "finite_cases": [
+    {
+      "rho": "-4/5",
+      "k": 1,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 3,
+      "dual_deficit_upper": "63025126/90405",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-4/5",
+      "k": 1,
+      "H": 64,
+      "blocks": 5,
+      "active_blocks": 5,
+      "dual_deficit_upper": "1223043463/301350",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-4/5",
+      "k": 2,
+      "H": 32,
+      "blocks": 2,
+      "active_blocks": 1,
+      "dual_deficit_upper": "373220569/448350",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-4/5",
+      "k": 2,
+      "H": 64,
+      "blocks": 4,
+      "active_blocks": 3,
+      "dual_deficit_upper": "6631015549/1345050",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-4/5",
+      "k": 3,
+      "H": 32,
+      "blocks": 1,
+      "active_blocks": 0,
+      "dual_deficit_upper": "444568/441",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-4/5",
+      "k": 3,
+      "H": 64,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "17198711669/3237675",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 1,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "8351039/36750",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 1,
+      "H": 64,
+      "blocks": 5,
+      "active_blocks": 4,
+      "dual_deficit_upper": "24259484/18375",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 2,
+      "H": 32,
+      "blocks": 2,
+      "active_blocks": 1,
+      "dual_deficit_upper": "2397981/8575",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 2,
+      "H": 64,
+      "blocks": 4,
+      "active_blocks": 3,
+      "dual_deficit_upper": "42241244/25725",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 3,
+      "H": 32,
+      "blocks": 1,
+      "active_blocks": 0,
+      "dual_deficit_upper": "49912/147",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "-1/2",
+      "k": 3,
+      "H": 64,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "72875941/41650",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 1,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "16894/245",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 1,
+      "H": 64,
+      "blocks": 6,
+      "active_blocks": 5,
+      "dual_deficit_upper": "104631/245",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 2,
+      "H": 32,
+      "blocks": 2,
+      "active_blocks": 1,
+      "dual_deficit_upper": "229757/2450",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 2,
+      "H": 64,
+      "blocks": 4,
+      "active_blocks": 3,
+      "dual_deficit_upper": "1294471/2450",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 3,
+      "H": 32,
+      "blocks": 1,
+      "active_blocks": 0,
+      "dual_deficit_upper": "5720/49",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "0",
+      "k": 3,
+      "H": 64,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "688684/1225",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 1,
+      "H": 32,
+      "blocks": 5,
+      "active_blocks": 5,
+      "dual_deficit_upper": "100729/3675",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 1,
+      "H": 64,
+      "blocks": 10,
+      "active_blocks": 10,
+      "dual_deficit_upper": "209611/1470",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 2,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "112303/3150",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 2,
+      "H": 64,
+      "blocks": 6,
+      "active_blocks": 5,
+      "dual_deficit_upper": "1884662/11025",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 3,
+      "H": 32,
+      "blocks": 2,
+      "active_blocks": 1,
+      "dual_deficit_upper": "927749/24990",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "1/2",
+      "k": 3,
+      "H": 64,
+      "blocks": 4,
+      "active_blocks": 3,
+      "dual_deficit_upper": "4172876/20825",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 1,
+      "H": 32,
+      "blocks": 5,
+      "active_blocks": 5,
+      "dual_deficit_upper": "149293/4410",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 1,
+      "H": 64,
+      "blocks": 10,
+      "active_blocks": 10,
+      "dual_deficit_upper": "1791556/12915",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 2,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "7578656/231525",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 2,
+      "H": 64,
+      "blocks": 7,
+      "active_blocks": 6,
+      "dual_deficit_upper": "32896118/231525",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 3,
+      "H": 32,
+      "blocks": 3,
+      "active_blocks": 2,
+      "dual_deficit_upper": "306163624/9713025",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    },
+    {
+      "rho": "4/5",
+      "k": 3,
+      "H": 64,
+      "blocks": 6,
+      "active_blocks": 5,
+      "dual_deficit_upper": "554423509/3885210",
+      "signed_zero": true,
+      "full_covariance_retained": true
+    }
+  ],
+  "larger_schedule_checks": [
+    {
+      "rho": "-1/2",
+      "k": 1,
+      "H": 256,
+      "blocks": 14,
+      "active_blocks": 13,
+      "dual_deficit_upper": "923917517/375",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "923917517/393216000",
+      "candidate_coefficient": "54/25"
+    },
+    {
+      "rho": "-1/2",
+      "k": 1,
+      "H": 1024,
+      "blocks": 30,
+      "active_blocks": 29,
+      "dual_deficit_upper": "28680952321/375",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "28680952321/12582912000",
+      "candidate_coefficient": "54/25"
+    },
+    {
+      "rho": "-1/2",
+      "k": 1,
+      "H": 4096,
+      "blocks": 62,
+      "active_blocks": 61,
+      "dual_deficit_upper": "896242254889/375",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "896242254889/402653184000",
+      "candidate_coefficient": "54/25"
+    },
+    {
+      "rho": "0",
+      "k": 1,
+      "H": 256,
+      "blocks": 14,
+      "active_blocks": 14,
+      "dual_deficit_upper": "533492",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "133373/262144",
+      "candidate_coefficient": "2/5"
+    },
+    {
+      "rho": "0",
+      "k": 1,
+      "H": 1024,
+      "blocks": 30,
+      "active_blocks": 30,
+      "dual_deficit_upper": "15387688",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "1923461/4194304",
+      "candidate_coefficient": "2/5"
+    },
+    {
+      "rho": "0",
+      "k": 1,
+      "H": 4096,
+      "blocks": 62,
+      "active_blocks": 62,
+      "dual_deficit_upper": "462022992",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "28876437/67108864",
+      "candidate_coefficient": "2/5"
+    },
+    {
+      "rho": "1/2",
+      "k": 1,
+      "H": 256,
+      "blocks": 14,
+      "active_blocks": 14,
+      "dual_deficit_upper": "77421197/750",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "77421197/786432000",
+      "candidate_coefficient": "2/75"
+    },
+    {
+      "rho": "1/2",
+      "k": 1,
+      "H": 1024,
+      "blocks": 30,
+      "active_blocks": 30,
+      "dual_deficit_upper": "106270651/50",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "106270651/1677721600",
+      "candidate_coefficient": "2/75"
+    },
+    {
+      "rho": "1/2",
+      "k": 1,
+      "H": 4096,
+      "blocks": 62,
+      "active_blocks": 62,
+      "dual_deficit_upper": "36375245381/750",
+      "signed_zero": true,
+      "full_covariance_retained": true,
+      "normalized_upper": "36375245381/805306368000",
+      "candidate_coefficient": "2/75"
+    }
+  ],
+  "status": "PASS"
+}

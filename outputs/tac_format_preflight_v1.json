@@ -1,0 +1,343 @@
+{
+  "schema": "tac-format-preflight-v1",
+  "checked_date": "2026-10-07",
+  "scope": "Finite official-format and author-metadata checklist; actual compilation/layout acceptance remains with root. No paper submission or installed tooling.",
+  "primary_sources": [
+    {
+      "url": "https://www.ieeecss.org/publication/transactions-automatic-control/author-info",
+      "title": "Author Information | IEEE Control Systems Society",
+      "checked_date": "2026-10-07",
+      "relevant_sections": [
+        "Template note",
+        "1",
+        "2",
+        "A",
+        "C"
+      ]
+    },
+    {
+      "url": "https://ieeecss.org/publication/transactions-automatic-control",
+      "title": "Transactions on Automatic Control | IEEE Control Systems Society",
+      "checked_date": "2026-10-07",
+      "relevant_sections": [
+        "General Information"
+      ]
+    }
+  ],
+  "local_read_bindings": [
+    {
+      "path": "outputs/tac_venue_check_20261007.md",
+      "sha256": "d5e0035f5aa942de7740c3f5c0217494701581661796b5fa41452756756567b4"
+    },
+    {
+      "path": "outputs/citation_preflight_v1.md",
+      "sha256": "2fa6f30ee61081c5c47d629f6e44071354096a8a516a2b42578c2f128c3e39f6"
+    },
+    {
+      "path": "outputs/tac_format_preflight_v1.md",
+      "sha256": "c1b10f5eec6cd636913de3ffdfefd16bfe18e8777af71b62f610fa76e653fee8"
+    }
+  ],
+  "rules": [
+    {
+      "id": "F01",
+      "item": "full_paper_layout",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "format": "IEEE journal double-column",
+        "spacing": "single-spaced",
+        "template": "standard Transactions template",
+        "template_alteration": "normal parameters only"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info",
+        "https://ieeecss.org/publication/transactions-automatic-control"
+      ],
+      "locator": [
+        "AI template note; Sec.1",
+        "TAC General Information"
+      ]
+    },
+    {
+      "id": "F02",
+      "item": "full_paper_page_budget",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "normal_pages": 12,
+        "maximum_pages": 16,
+        "bios_photos_included": true,
+        "overlength_charge_after_pages": 12
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info",
+        "https://ieeecss.org/publication/transactions-automatic-control"
+      ],
+      "locator": [
+        "AI Sec.1",
+        "TAC General Information"
+      ],
+      "pdf_acceptance": "Count the complete main PDF and retain room for actual author photos/bios."
+    },
+    {
+      "id": "F03",
+      "item": "full_paper_bios_photos",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "required": true,
+        "position": "end of paper",
+        "within_page_limit": true
+      },
+      "sources": [
+        "https://ieeecss.org/publication/transactions-automatic-control"
+      ],
+      "locator": [
+        "General Information"
+      ]
+    },
+    {
+      "id": "F04",
+      "item": "appendix_reference_pages",
+      "status": "CONSERVATIVE_APPLICATION_OF_GLOBAL_LIMIT_NO_SEPARATE_EXEMPTION_FOUND",
+      "value": {
+        "count_complete_main_pdf": true,
+        "explicit_appendix_exception_found": false,
+        "explicit_reference_exception_found": false
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info",
+        "https://ieeecss.org/publication/transactions-automatic-control"
+      ],
+      "locator": [
+        "AI Sec.1",
+        "TAC General Information"
+      ],
+      "qualification": "Neither read page separately names appendices or references as excluded pages. This is an execution rule for the total-paper limit, not an invented verbatim itemized rule."
+    },
+    {
+      "id": "F05",
+      "item": "full_paper_abstract",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "maximum_words": 300,
+        "single_paragraph": true,
+        "equations_allowed": false,
+        "references_allowed": false,
+        "footnotes_allowed": false
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.C.1"
+      ]
+    },
+    {
+      "id": "F06",
+      "item": "title",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "symbols_allowed": false
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.C.1"
+      ]
+    },
+    {
+      "id": "F07",
+      "item": "first_page_author_information",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "author_names": true,
+        "affiliations": true,
+        "each_author_contact_fields": [
+          "mailing address",
+          "telephone",
+          "email",
+          "fax"
+        ],
+        "correspondence_address": true,
+        "optional_support_acknowledgment_footnote": true
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.C.1"
+      ]
+    },
+    {
+      "id": "F08",
+      "item": "anonymity",
+      "status": "AUTHOR_INFORMATION_REQUIRED_NO_ANONYMOUS_INSTRUCTION_FOUND",
+      "value": {
+        "anonymous_instruction_found_on_read_pages": false,
+        "first_page_author_names_required": true,
+        "peer_review_blinding_classification": "NOT_INFERRED"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.C.1"
+      ],
+      "qualification": "Do not label the journal double-blind or remove author metadata on the basis of an unsupported assumption."
+    },
+    {
+      "id": "F09",
+      "item": "body_and_references",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "introduction": "purpose and contribution",
+        "conclusion_if_appropriate": [
+          "advantages",
+          "limitations",
+          "possible applications"
+        ],
+        "references": "complete IEEE style; numbered square brackets; separate end bibliography"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.C.2-3"
+      ]
+    },
+    {
+      "id": "F10",
+      "item": "supporting_files",
+      "status": "DIRECT_UPLOAD_PERMISSION_SCOPE_LIMITED",
+      "value": {
+        "supporting_files_allowed": true,
+        "cover_message_allowed": true,
+        "file_size_limit": "NOT_STATED_ON_READ_PAGES",
+        "file_type_limits": "NOT_STATED_ON_READ_PAGES",
+        "review_or_archival_guarantee": "NOT_STATED_ON_READ_PAGES",
+        "permission_to_exclude_load_bearing_proofs_for_page_compliance": "NOT_STATED_ON_READ_PAGES"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.A"
+      ],
+      "qualification": "Upload availability alone does not establish adequate proof coverage or exempt main-paper pages."
+    },
+    {
+      "id": "F11",
+      "item": "paper_size_and_pdf_inspection",
+      "status": "DIRECT_OFFICIAL_RULE",
+      "value": {
+        "standard_US_paper_inches": [
+          8.5,
+          11
+        ],
+        "inspect_converted_pdf": true
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.A"
+      ]
+    },
+    {
+      "id": "F12",
+      "item": "portal_latex_conversion",
+      "status": "CONDITIONAL_OFFICIAL_UPLOAD_RULE",
+      "value": {
+        "applies_only_if": "PaperPlaza automatic conversion from LaTeX",
+        "archive": "single ZIP with source/images/style files",
+        "main_filename": "root.tex",
+        "path_and_archive_name": "ASCII"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.A"
+      ],
+      "qualification": "This does not require renaming the current editor artifact before choosing an upload route."
+    },
+    {
+      "id": "F13",
+      "item": "own_pdf_pdfLaTeX_note",
+      "status": "CONDITIONAL_OFFICIAL_UPLOAD_RULE",
+      "value": {
+        "applies_only_if": "own PDF created using pdfLaTeX",
+        "preamble_instruction": "\\pdfminorversion=4",
+        "tectonic_specific_rule": "NOT_STATED_ON_READ_PAGES"
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info"
+      ],
+      "locator": [
+        "Sec.A"
+      ],
+      "qualification": "Preserve the stated engine condition; do not generalize it to all compilers or claim a current portal check has occurred."
+    },
+    {
+      "id": "F14",
+      "item": "technical_note_alternative",
+      "status": "DIRECT_OFFICIAL_RULE_NOT_CURRENT_TYPE_SELECTION",
+      "value": {
+        "normal_pages": 6,
+        "maximum_pages": 8,
+        "maximum_abstract_words": 75,
+        "photos_bios_allowed": false,
+        "double_column": true
+      },
+      "sources": [
+        "https://www.ieeecss.org/publication/transactions-automatic-control/author-info",
+        "https://ieeecss.org/publication/transactions-automatic-control"
+      ],
+      "locator": [
+        "AI Sec.2 and Sec.C.1",
+        "TAC General Information"
+      ]
+    }
+  ],
+  "author_metadata": {
+    "observed_header_placeholder": {
+      "line": 9,
+      "text": "\\author{Author information to be supplied}"
+    },
+    "observed_header_is_a_snapshot_not_final_pdf_acceptance": true,
+    "status": "USER_INPUT_REQUIRED_BEFORE_REAL_SUBMISSION",
+    "fields": [
+      "author identities/order",
+      "affiliations",
+      "contact and correspondence details",
+      "actual photos and bios",
+      "funding/support",
+      "applicable prior conference/submission history"
+    ],
+    "authorship_and_history_not_inferred": true,
+    "distinct_from_technical_proof_or_literature_gaps": true
+  },
+  "root_pdf_acceptance_checklist": [
+    "Complete main PDF <=16 pages; count appendices/references as part of the PDF, and reserve capacity for required author bios/photos.",
+    "Normal IEEE journal two-column single-spaced/US Letter layout; no non-normal template shrinking.",
+    "One-paragraph abstract <=300 words; no equations, references or footnotes; symbol-free title.",
+    "Check actual author/affiliation/contact metadata before real submission, plus end bios/photos.",
+    "Readable complete proof material and end bibliography; visual verification of equations, captions, column boundaries and clipping.",
+    "Apply any portal-conversion or pdfLaTeX-specific upload condition only to the route actually chosen."
+  ],
+  "not_certified": [
+    "actual final PDF page count",
+    "final visual layout",
+    "an actual submission portal upload",
+    "complete author metadata",
+    "supplement evaluation or archival policy beyond upload availability",
+    "exhaustive novelty or acceptance readiness"
+  ],
+  "literature_gap_boundary": {
+    "previous_four_full_text_gaps": "Preserved; not re-searched or closed in this task.",
+    "eleven_cached_full_texts": "Not re-audited."
+  },
+  "readiness_assessment": "Official format rules verified. Final submission readiness remains unconfirmed until root PDF acceptance and genuine author information are complete.",
+  "top_remaining_format_risk": "Page count without actual bios/photos is not the final Full Paper page count.",
+  "next_step": "Finish root PDF acceptance, then replace administrative placeholders with user-supplied information."
+}

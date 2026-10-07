@@ -1,0 +1,18 @@
+\section{Scope and Implementation Decisions}\label{sec:scope}
+The result is a planned assessment of a specified additive alternative at a declared onset and covariance. A torque-loading fixture can generate that alternative for a synchronized self-test.  A fixed periodic calendar can serve an unknown-onset scan with preassigned error allocation, but the present sharp planned-horizon theorem does not supply an ARL or Lorden optimum.
+
+\paragraph{Observation information.}
+The scalar experiment applies to a monitor supplied one torque residual, rather than to an estimator with all control signals. In the ideal-actuation simulator, exact command access gives a noiseless effort signal; all six effort channels also reveal an unconfounded fraction $1-\chi=94.24\%$ in the present geometry. Those interfaces should use their additional information. A full-rank nuisance matrix could remove the latter component, but its vector path class requires its own analysis. 
+
+\paragraph{Unmodeled parity.}
+The task contrast separates task-odd healthy effects from a task-even additive bias. Multiplicative actuator faults can reverse with gravity and remain confounded with load. Output-side static friction, sensor zero drift, and off-axis center-of-mass errors can contain task-even healthy components. Their amplitude and rate sets must be included before deploying a test; under the current scalar class they are excluded. For the planar map, a 2 cm off-axis offset produces a 30\% parity defect, not an admissible small-error validation. Mirror-compatible fixed offsets consume a finite amplitude budget or must be calibrated. Underestimating any health envelope can invalidate false-alarm protection.
+
+\paragraph{Randomized and adaptive schedules.}
+The converse chooses a health path after a deterministic calendar is specified. If health instead commits before a random calendar, the order changes: for path loss $L$,
+\begin{equation}
+ \inf_z\E_\pi L(\pi,z)\ \ge\ \E_\pi\inf_z L(\pi,z).
+\end{equation}
+For example, $(1-z)^2$ and $(-1-z)^2$, chosen with equal probability over $z\in[-1,1]$, give $1$ on the left and $0$ on the right. Thus neither the sharp constant nor its exponent is established here for that randomized game or for measurement-adaptive control. Classical active testing \cite{chernoff,naghshvar} provides the appropriate wider perspective.
+
+\paragraph{Practical use.}
+Specify the monitored channel and verify the parity of its healthy and fault regressors. Certify transition, effort and residual-error bounds and choose a sampling covariance. Use upper health bounds and a specified fault alternative to generate a deterministic constant-hold, symmetric or switch-then-stay calendar. Compute its full-history projection and guarded power, including any prefix and all transition exclusions. Accept a plan only if the guarded power meets the requirement; tune or lengthen the plan using this finite calculation rather than an asymptotic time alone. For a pure growth ray, a detector built at $\kappa_{\min}$ has nondecreasing guaranteed power as growth increases, but its calendar need not remain optimal. Choose an admitted error budget jointly with the exclusion duration using Proposition~\ref{prop:controller}; then evaluate the complete plan. The declared noise variances are synthetic readout scenarios. Hardware use requires both residual-error and noise-bandwidth calibration, including a justification for the independent sampling interval. All compared admission budgets require a common prefix already admitted at their error level.

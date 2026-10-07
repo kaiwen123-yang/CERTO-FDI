@@ -1,0 +1,382 @@
+% Paper section fragment, not a standalone document.
+% Requires amsmath, amssymb, amsthm and a theorem environment in the host.
+% Integrated from the version-bound lower/upper proofs, 2026-10-07.
+% No claim of completed M1 realizability, novelty audit, D2-a, or TAC readiness.
+
+\section{Sharp information loss in the stationary AR(1) experiment}
+\label{sec:ar1-sharp}
+
+We use raw observations
+\begin{equation}\label{eq:ar1-raw-model}
+ Y_i=s_i b^h(t_i)+\mathbf1_{\{h=1\}}a_{t_i}+\epsilon_{t_i},
+ \qquad s_i\in\{-1,1\},
+\end{equation}
+where the noise is common, known and stationary Gaussian with
+$\operatorname{Cov}(\epsilon_j,\epsilon_\ell)=\sigma^2\rho^{|j-\ell|}$,
+$\sigma>0$ and $|\rho|<1$. A fixed healthy prefix at task $+$ consists of
+$n_0\ge1$ slots $j=-n_0+1,\ldots,0$. The known post-onset horizon is $H$;
+$a_j=0$ on the prefix and $a_j=\rho_0+\eta j$ for $1\le j\le H$,
+where $\rho_0\ge0$ and $\eta>0$. The calendar is deterministic and selected
+before observing noise. Holding supplies one reading per slot. A change of
+task excludes at least $k\ge1$ consecutive slots. Longer moves, consecutive
+moves and empty round trips are allowed. There is no imposed terminal task.
+
+The two hypotheses choose their own full healthy paths, each with rate at
+most $r/2$ and unrestricted level. Their difference $z=b^0-b^1$ has the exact
+retained-node class
+\begin{equation}\label{eq:ar1-trace}
+ K_\pi=\{z:|z_{i+1}-z_i|\le r(t_{i+1}-t_i)\},\qquad r>0.
+\end{equation}
+Indeed, any node vector in this class has a rate-$r$ piecewise linear
+extension, and $z/2,-z/2$ realize the two original paths.
+For $R_\pi=\{t_1<\cdots<t_N\}$, let $C_\pi$ be the principal submatrix of the
+single stationary full covariance and $S_\pi=\operatorname{diag}(s_i)$.
+No noise state is reset during missing observations. Define
+\begin{align}\label{eq:ar1-information}
+ G_H(\pi)&=\tfrac12\inf_{z\in K_\pi}
+ (a_R-S_\pi z)^\top C_\pi^{-1}(a_R-S_\pi z),\nonumber\\
+ O_H&=\tfrac12a_{\rm full}^\top C_{\rm full}^{-1}a_{\rm full},\qquad
+ D_H^*=O_H-\max_{\pi\in\Pi_H}G_H(\pi).
+\end{align}
+These are Gaussian half-Mahalanobis informations. Under task demodulation,
+both the mean and covariance must transform; retaining $C_\pi$ while changing
+only the target does not represent \eqref{eq:ar1-raw-model}.
+
+\begin{theorem}[Fixed-parameter AR(1) sharp deficit]\label{thm:ar1-sharp}
+Fix $\rho_0\ge0$, $\eta,r>0$, $k\ge1$, $\sigma>0$, $|\rho|<1$ and a fixed
+$n_0\ge1$. Put
+\begin{equation}\label{eq:ar1-nu-beta}
+ \nu=\frac{1-\rho}{\sigma^2(1+\rho)},\qquad
+ \beta_k=(k+1)\nu-\frac{1-\rho^{k+1}}{\sigma^2(1+\rho^{k+1})}>0.
+\end{equation}
+Then
+\begin{equation}\label{eq:ar1-main}
+ D_H^*=\frac{\sqrt2}{5}\sqrt{\nu\beta_k r}\,\eta^{3/2}H^{5/2}
+ +o(H^{5/2}).
+\end{equation}
+The symmetric terminal-balanced calendar described in the proof, with
+$\xi_*=2\beta_k\eta/(\nu r)$, attains the coefficient.
+For every fixed $\xi>0$ its finite-horizon deficit obeys
+\begin{equation}\label{eq:ar1-calendar-upper}
+ D_H(\pi_H^\xi)\le\frac1{10}
+ \left(\frac{2\beta_k\eta^2}{\sqrt\xi}+\nu r\eta\sqrt\xi\right)H^{5/2}
+ +O(H^2).
+\end{equation}
+This is a first-deficit-coefficient statement. It does not match the
+$H^2$-order term or allow channel parameters to vary with $H$ toward the
+stability or nondegeneracy boundary.
+\end{theorem}
+
+\begin{proof}
+We prove a calendar-uniform converse and a full-history achieving dual.
+
+\paragraph{Exact marginal information and missing-gap identities.}
+Write $Q_R(x)=x_R^\top C_R^{-1}x_R$ and $q_R=Q_R/2$.
+Iteration of the AR(1) recursion yields independent $d$-step innovation
+sums of variance $\sigma^2(1-\rho^{2d})$, so
+\begin{equation}\label{eq:ar1-markov}
+ Q_R(x)=\frac{x_{t_1}^2}{\sigma^2}
+ +\sum_{i=2}^N\frac{(x_{t_i}-\rho^{t_i-t_{i-1}}x_{t_{i-1}})^2}
+ {\sigma^2(1-\rho^{2(t_i-t_{i-1})})}.
+\end{equation}
+An internal gap containing $\ell$ missing nodes, with span $m=\ell+1$,
+replaces $m$ one-step terms by one $m$-step term. Hence its full-minus-marginal
+quadratic loss is local and positive semidefinite; losses over internal gaps
+add exactly even when gaps share a retained endpoint. At constant contrast
+$A$ its squared-Mahalanobis loss is $\beta_\ell A^2$, with
+\begin{equation}\label{eq:ar1-all-beta}
+ \beta_\ell=(\ell+1)\nu-w_{\ell+1}/\sigma^2,\qquad
+ w_m=\frac{1-\rho^m}{1+\rho^m}.
+\end{equation}
+For a local affine vector $a_j=A+\eta(j-c)$ centered between the retained
+endpoints, reflection invariance of both full and endpoint marginal
+precision makes the constant--slope cross term zero. The resulting loss is
+\begin{equation}\label{eq:ar1-affine-gap}
+ \Delta q_{\rm gap}(a)=\tfrac12\beta_\ell A^2+\tfrac12\eta^2E_\ell,
+ \qquad E_\ell\ge0.
+\end{equation}
+For completeness, if $M$ denotes its quadratic loss matrix and $J$ reflects
+the local indices, then $JMJ=M$, $J\mathbf1=\mathbf1$ and $Jh=-h$ for
+$h_j=j-c$. Thus $\mathbf1^\top Mh=0$ and $E_\ell=h^\top Mh\ge0$.
+Positivity follows also by completing the square after marginalizing the
+missing coordinates.
+
+Let $A_m=\sum_{j=0}^{m-1}\rho^j$ and $B_m=\sum_{j=0}^{m-1}\rho^{2j}$.
+Algebra gives $\beta_\ell/\nu=m-A_m^2/B_m>0$, since equality in
+Cauchy--Schwarz requires $\rho=1$ for $m\ge2$.
+Nested deletion in a fixed larger complete sequence shows that
+$\beta_\ell$ is nondecreasing in $\ell$. Since $\beta_\ell/\ell\to\nu>0$,
+\begin{equation}\label{eq:ar1-bstar}
+ b_*:=\inf_{\ell\ge k}\beta_\ell/\ell>0.
+\end{equation}
+At each post-onset gap its left endpoint has nonnegative affine amplitude.
+Every missing amplitude is therefore at most twice its center amplitude.
+Writing $\mathcal D_\pi$ for all missing nodes gives
+\begin{equation}\label{eq:ar1-dead-budget}
+ T:=2\sum_{\rm gaps}\Delta q_{\rm gap}(a)
+ \ge\frac{b_*}{4}\sum_{j\in\mathcal D_\pi}a_j^2.
+\end{equation}
+
+\paragraph{Uniform prefix and terminal reduction.}
+The stationary full precision has absolute row sums at most
+$C_\rho=(1+|\rho|)/[\sigma^2(1-|\rho|)]$. Thus its norm is at most
+$C_\rho$, and covariance principal-submatrix interlacing gives
+$\|C_R^{-1}\|\le C_\rho$ for every calendar.
+Extend the target affinely to the fixed prefix and temporarily write
+$\widetilde O,\widetilde G,\widetilde D$ for the modified experiment.
+The target changes in only $n_0$ fixed coordinates, by white norm $O(1)$.
+Distance to a set is 1-Lipschitz, and $0$ is feasible, so its distance is
+at most the target white norm $O(H^{3/2})$.
+The squared-distance inequality therefore gives, uniformly in the calendar,
+$\widetilde D-D=O(H^{3/2})$.
+A terminal sequence of moves without a later reading is dominated by
+continuing to observe the preceding task. Data processing for every common
+full path, followed by an infimum over that class, preserves this order.
+Thus the optimal calendar may be assumed to observe slot $H$.
+With the retained prefix, every post-onset missing interval is internal.
+Prefix gaps never arise, and the first possible gap has left index $0$ and
+amplitude $\rho_0\ge0$, as used in \eqref{eq:ar1-dead-budget}.
+
+\paragraph{One full-history adversarial path.}
+Fix $\varepsilon\in(0,1)$ and split the late interval
+$[\lceil\varepsilon H\rceil,H]$ into complete macroblocks of length
+$L=\lfloor H^{3/4}\rfloor$. On each clipped observed run of length $n$ use
+$z_i=s_i r\min(i,n-1-i)$, $i=0,\ldots,n-1$.
+All missing nodes, run endpoints, macroblock boundaries, prefix and unused
+tail have $z=0$. Piecewise-linear interpolation forms a single legal
+rate-$r$ full path, not separate paths with reset levels.
+Set $h=s z$ on reads and zero on missing slots.
+It is nonnegative and globally rate-$r$, and $x=a-h$ equals $a$ on every gap
+including its two retained endpoints.
+
+Expanding \eqref{eq:ar1-markov} on the complete contiguous record gives
+\begin{equation}\label{eq:ar1-full-energy}
+ q_{\rm full}(x)=\tfrac\nu2\sum x_j^2
+ +\frac{c_\rho}{2}(x_{\rm first}^2+x_{\rm last}^2)
+ +\frac{d_\rho}{2}\sum(\Delta x_j)^2,
+\end{equation}
+where $c_\rho=\rho/[\sigma^2(1+\rho)]$ and
+$d_\rho=\rho/[\sigma^2(1-\rho^2)]$.
+The global endpoints of $h$ vanish, so the endpoint terms cancel between
+$a$ and $a-h$. Their slope-energy difference is $O(H)$, uniformly over
+the calendar, even when $\rho<0$.
+Evaluating the above legal path and subtracting its exact gap losses yields
+\begin{equation}\label{eq:ar1-adversarial}
+ 2\widetilde D_H(\pi)\ge
+ \nu\sum_{R_\pi}(2a_jh_j-h_j^2)+T-O(H).
+\end{equation}
+
+\paragraph{Calendar-uniform macroblock balance.}
+In a macroblock let $A$ be the minimum amplitude, $d$ the number of missing
+slots, $m$ the number of clipped observed runs and $n_i$ their lengths.
+Then $\sum n_i=L-d$. For large $H$, uniformly in late macroblocks,
+$A=\Theta(H)$ and
+$C=r(2A-rL/2)/4>0$.
+The tent height is at most $rL/2$ and its area satisfies
+$\sum_{j=0}^{n-1}\min(j,n-1-j)\ge(n^2-2n)/4$. Consequently
+\begin{equation}\label{eq:ar1-tent-area}
+ \sum_{\rm macro}(2ah-h^2)\ge C\sum_i n_i^2-2CL.
+\end{equation}
+For $m>0$, Cauchy--Schwarz gives $\sum n_i^2\ge(L-d)^2/m$.
+The $m-1$ gaps between clipped runs lie wholly in that macroblock, have
+length at least $k$ and center amplitude at least $A$. By
+\eqref{eq:ar1-affine-gap} and monotonicity,
+$T\ge\sum_{\rm macros}\beta_kA^2(m-1)$.
+For $m=0$ this last term is negative and remains a valid weaker bound.
+Equation~\eqref{eq:ar1-dead-budget} also gives
+$T\ge(b_*/4)\sum_{\rm macros}A^2d$.
+Gaps crossing macro boundaries are absent from the first bound but their
+missing nodes are assigned once in the second.
+
+Fix $\theta\in(0,1)$ and split the same global $T$ into
+$(1-\theta)T+\theta T$ before applying these two bounds.
+Put $W=(1-\theta)\beta_k$. For $m>0$, the macroblock contribution to
+\eqref{eq:ar1-adversarial} is at least
+\[
+ \nu C(L-d)^2/m+WA^2m+\theta b_*A^2d/4-WA^2-2\nu CL.
+\]
+AM--GM bounds the first two terms below by
+$2A\sqrt{\nu CW}(L-d)$. Because $C\le rA/2$,
+$A\ge32\nu Wr/(\theta^2b_*^2)$ suffices for
+$\theta b_*A^2/4\ge2A\sqrt{\nu CW}$.
+This holds uniformly for all late macroblocks as $H\to\infty$.
+It absorbs the missing-slot subtraction. If $m=0$ and $d=L$, the same
+absorption applied directly to the dead term gives the identical bound
+\begin{equation}\label{eq:ar1-macro-bound}
+ 2A\sqrt{\nu CW}\,L-WA^2-2\nu CL.
+\end{equation}
+This argument needs no run-length regularity, sparse-switch assumption or
+upper bound on missing-gap length.
+
+Now $C=(rA/2)(1+O(H^{-1/4}))$. The accumulated $WA^2$ terms are
+$O(H^3/L)=O(H^{9/4})$, the $CL$ terms are $O(H^2)$, and the coefficient and
+Riemann-sum errors are $O(H^{9/4})$. The final incomplete macroblock also
+affects that Riemann sum by at most $O(H^{3/2}L)=O(H^{9/4})$.
+All constants are calendar-independent for fixed $\varepsilon,\theta$.
+Moreover
+\[
+ \sum_{\rm macros}A^{3/2}L=
+ \frac25\eta^{3/2}(1-\varepsilon^{5/2})H^{5/2}+o(H^{5/2}).
+\]
+Taking the infimum deficit before the limit, returning from
+$\widetilde D$ to $D$, and then sending $\varepsilon,\theta$ to zero proves
+\begin{equation}\label{eq:ar1-converse-final}
+ \liminf_{H\to\infty}D_H^*/H^{5/2}
+ \ge\frac{\sqrt2}{5}\sqrt{\nu\beta_k r}\,\eta^{3/2}.
+\end{equation}
+
+\paragraph{Terminal-balanced achieving calendar.}
+For fixed $\xi>0$, a symmetric block with $n=2m$ comprises $m$ reads at
+$+$, $k$ missing slots, $n$ reads at $-$, $k$ missing slots and $m$ reads at
+$+$. Its duration is $L=2(n+k)$ and center is $c=(L+1)/2$.
+With budget $H-1$, fit the maximal number $M$ of blocks with base
+$\bar n_\ell=2\lceil\xi\ell/2\rceil$. Distribute remaining multiples of four
+evenly over these blocks, with each unit increasing $n_\ell$ by two and a
+fixed left-to-right tie rule. Leave one to four final observed slots at $+$.
+If no block fits, stay. Since base cumulative duration is $\xi M^2+O(M)$
+and the next block has duration $O(M)$, each added $n_\ell$ is $O(1)$.
+Thus, writing $x_\ell$ for its start,
+\begin{equation}\label{eq:ar1-block-scales}
+ M=\sqrt{H/\xi}+O(1),\quad n_\ell=\xi\ell+O(1),\quad
+ a_\ell=\rho_0+\eta(x_\ell+c_\ell)=\eta\xi\ell^2+O(\ell+1).
+\end{equation}
+These are realizable physical blocks, concatenating at task $+$ without
+additional movements. Reserving the final reading avoids a partially
+completed long terminal block.
+
+\paragraph{A full raw dual with exact signed moment.}
+For any $\lambda$ with zero sum, the unrestricted-level rate class has support
+\begin{equation}\label{eq:ar1-support}
+ h_{K_\pi}(\lambda)=r\sum_i(t_{i+1}-t_i)
+ \left|\sum_{j\le i}\lambda_j\right|;
+\end{equation}
+this follows by summation by parts and independent bounded increments.
+For nonzero sum its support is infinite.
+Let $P=C_R^{-1}$ for the single complete retained calendar, and construct a
+global auxiliary raw vector $u$. On the prefix and final one to four reads
+put $u=0$. On an active block, defined by
+$a_\ell\ge r(k+n_\ell-1)/2$, put $u_i=a_\ell-s_i z_i^{\rm loc}$, with
+$c_0=(k+1)/2$ and local levels
+\begin{align}\label{eq:ar1-local-levels}
+ z_i^{+,L}&=r(c_0+m-i),&1\le i\le m,\nonumber\\
+ z_i^-&=-r[c_0+\min(i-1,n-i)],&1\le i\le n,\\
+ z_i^{+,R}&=r(c_0+i-1),&1\le i\le m.\nonumber
+\end{align}
+On inactive blocks set $u=0$. Only a uniformly finite initial set can be
+inactive because $a_\ell$ grows quadratically and its threshold linearly.
+These local levels are a device for constructing a dual; they need not join
+to a feasible global primal healthy path.
+
+Each active block has $0\le u_i\le a_\ell$, equal gap endpoint values
+$W_\ell=a_\ell-rc_0$, and $\sum s_i u_i=0$.
+The local direction $s_i u_i$ has support
+\begin{equation}\label{eq:ar1-local-support}
+ h_\ell^0=\frac{a_\ell r}{2}n_\ell(n_\ell+2k)
+ -4r^2\sum_{j=0}^{n_\ell/2-1}(c_0+j)^2.
+\end{equation}
+To check this, its partial sums are nonnegative before the middle of the
+negative run and nonpositive afterward, returning to zero at that midpoint
+and at the block end. Whenever a partial sum $Q_i\ne0$, the local nodes obey
+$\Delta z_i^{\rm loc}=-r\Delta t_i\operatorname{sign}(Q_i)$.
+The central flat edge has $Q_i=0$, and a gap edge has $\Delta t_i=k+1$.
+Hence \eqref{eq:ar1-support} is attained. The fourfold multiplicity of each
+level gives $\sum s_i z_i^{\rm loc}=rn(n+2k)/2$ and
+$\sum(z_i^{\rm loc})^2=4r^2\sum(c_0+j)^2$, proving
+\eqref{eq:ar1-local-support}.
+
+Let $\mathbf e_i$ denote coordinate basis vectors. Expand
+\eqref{eq:ar1-markov} to write the full retained precision as $\nu I$,
+consecutive-read edge matrices
+$d_\rho(\mathbf e_i-\mathbf e_j)(\mathbf e_i-\mathbf e_j)^\top$, a matrix
+\[
+ \begin{pmatrix}\mathcal A_m&-\gamma_m\\-\gamma_m&\mathcal A_m\end{pmatrix},\quad
+ \mathcal A_m=\frac1{\sigma^2(1-\rho^{2m})}-\frac1{\sigma^2(1+\rho)},\quad
+ \gamma_m=\frac{\rho^m}{\sigma^2(1-\rho^{2m})},
+\]
+at each actual gap with $m=k+1$, and only two global endpoint corrections
+$c_\rho$. There are no stationary initializations at artificial block joins.
+Put $\delta_m=\mathcal A_m-\gamma_m
+=1/[\sigma^2(1+\rho^m)]-1/[\sigma^2(1+\rho)]$.
+Every consecutive-read edge has equal task signs; every actual gap has
+opposite signs and equal $u$ endpoint values. Since global first and last
+$u$ are zero, the exact vector identity is
+\begin{equation}\label{eq:ar1-exact-zero-moment}
+ SPu=\nu Su+
+ \sum_{\Delta t=1}s_i d_\rho(u_i-u_j)(\mathbf e_i-\mathbf e_j)
+ +\sum_{\rm gaps}\delta_m W_\ell s_{\rm left}
+ (\mathbf e_{\rm left}-\mathbf e_{\rm right}).
+\end{equation}
+Every correction is a zero-mass pair, so $\sum SPu=0$ exactly.
+All statements hold for negative $\rho$ as well; estimates below take
+absolute values where needed.
+
+\paragraph{True cross-block covariance and support remainder.}
+Choose the raw direction $v=Pu$. The quadratic Fenchel inequality implies
+$G\ge v^\top a_R-v^\top Cv/2-h_{K_\pi}(Sv)$.
+Here $v^\top Cv=u^\top Pu$ exactly, using the full retained covariance.
+Writing $e=a_R-u$ and $O_{\rm obs}=a_R^\top Pa_R/2$ gives
+\begin{equation}\label{eq:ar1-dual-deficit}
+ D_H(\pi)\le O_H-O_{\rm obs}+e^\top Pe/2+h_{K_\pi}(SPu).
+\end{equation}
+The actual direction $v$ may have nonzero prefix and tail weights; zero
+auxiliary values do not discard observations.
+Support sublinearity, restriction of the full healthy class to each block,
+and support $r\Delta t|c|$ for a pair $c(\mathbf e_i-\mathbf e_j)$ give
+\begin{equation}\label{eq:ar1-support-bound}
+ h_{K_\pi}(SPu)\le\nu\sum_{\rm active}h_\ell^0
+ +r|d_\rho|\sum_{\Delta t=1}|u_i-u_j|
+ +r(k+1)|\delta_m|\sum_{\rm gaps}|W_\ell|.
+\end{equation}
+Within blocks the total variation is at most $2r\sum n_\ell$, and all joins
+add at most $2\sum a_\ell$. Also $\sum_{\rm gaps}|W_\ell|\le2\sum a_\ell$.
+Thus the two correction terms are $O(H^{3/2})$.
+Equation~\eqref{eq:ar1-local-support}, after discarding its negative square
+term, gives
+\begin{equation}\label{eq:ar1-support-leading}
+ h_{K_\pi}(SPu)\le\frac{\nu r}{2}\sum a_\ell n_\ell^2+O(H^2),
+\end{equation}
+since $\sum a_\ell n_\ell=O(H^2)$. No equality of global and independently
+optimized local supports has been assumed.
+
+\paragraph{Affine remainder and exact oracle cost.}
+On active blocks $e_i=\eta(t_i-c_\ell)+s_i z_i^{\rm loc}$, so
+$|e_i|\le(\eta+r)(n_\ell+k)$. The precision norm bound established above
+and the at most four tail errors give
+\[
+ e^\top Pe\le C_\rho\{2(\eta+r)^2\sum n_\ell(n_\ell+k)^2
+ +4(\rho_0+\eta H)^2+O(1)\}=O(H^2).
+\]
+Inactive blocks contribute only $O(1)$, and prefix errors are zero.
+The two gaps in a block have centers at distances $\pm(n_\ell+k)/2$ from
+its center. By \eqref{eq:ar1-affine-gap}, their full oracle loss is exactly
+\[
+ O_H-O_{\rm obs}=\sum_\ell\left\{\beta_k a_\ell^2
+ +\frac{\beta_k\eta^2}{4}(n_\ell+k)^2+\eta^2E_k\right\}
+ =\beta_k\sum a_\ell^2+O(H^{3/2}).
+\]
+These are all actual internal post-onset gaps; there is no initial or terminal
+missing record in the construction.
+Substitution in \eqref{eq:ar1-dual-deficit} yields
+$D_H(\pi_H^\xi)\le\beta_k\sum a_\ell^2+(\nu r/2)\sum a_\ell n_\ell^2+O(H^2)$.
+Using \eqref{eq:ar1-block-scales} and
+$\sum_{\ell\le M}\ell^4=M^5/5+O(M^4)$ gives
+\[
+ \sum a_\ell^2=\frac{\eta^2}{5\sqrt\xi}H^{5/2}+O(H^2),\qquad
+ \sum a_\ell n_\ell^2=\frac{\eta\sqrt\xi}{5}H^{5/2}+O(H^2).
+\]
+This proves \eqref{eq:ar1-calendar-upper}.
+Its coefficient is minimized at $\xi_*=2\beta_k\eta/(\nu r)$, giving the
+right side of \eqref{eq:ar1-converse-final}. Combining the two proves
+\eqref{eq:ar1-main} under the stated common contract.
+\end{proof}
+
+\paragraph{Scope of the result.}
+At $\rho=0$ the coefficient reduces to
+$\sqrt2\sqrt{kr}\eta^{3/2}/(5\sigma^2)$, with the two-sided difference rate
+$r$ rather than a one-sided healthy rate. The oracle and achieved experiment
+share physical time, raw observation channel, stationary initialization and
+the complete nuisance class. The result concerns a known planned horizon,
+not an anytime sharp coefficient, a sequential ARL statement, a fixed finite
+amplitude box, or a physically free choice of noise correlation.
+The physical map from a controlled plant to this experiment and its feasible
+task class requires an additional, separately stated model.

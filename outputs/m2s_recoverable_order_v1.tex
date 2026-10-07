@@ -1,0 +1,191 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,geometry}
+\geometry{margin=1in}
+\newtheorem{theorem}{Theorem}
+\newcommand{\ip}[2]{\langle #1,#2\rangle}
+\begin{document}
+\title{Recoverable common-noise input models: deficit order $H^2$}
+\author{Independent M2S supplement v1}
+\date{2026-10-07}
+\maketitle
+This standalone supplement preserves the frozen M2S v1 model and theorem.
+Its full proof and exact source bindings are in
+\texttt{m2s\_recoverable\_order\_v1.md}.
+Compilation must be verified independently of the mathematical checks.
+
+Fix a strictly stable matrix $A_K$, a full-column noise factor
+$G\in\mathbb R^{d\times p}$, and $0\ne B\in\operatorname{range}G$.
+Write $f=G^\dagger B$, $F=\|f\|^2>0$.
+The known initialized plant is
+$x_j=A_Kx_{j-1}+B(a_j^h+g_jb_j^h)+G\xi_j$,
+with independent standard Gaussian $\xi_j$.
+The fixed prefix is fully read, $a=0,g=1$; afterwards
+$a_j=\rho_0+\eta j$, $\rho_0\ge0$, $\eta>0$.
+Held tasks have $g=\pm1$, missing profiles satisfy $|g|\le1$.
+Both complete healthy paths have rate at most $r/2$, $r>0$,
+and unbounded initial level. The upper bound assumes known bidirectional
+exact-$k$ moves, reusable and concatenable with holds.
+Calendars and profiles are chosen offline.
+
+For each actual input interval of length $m$, set
+\[
+H_m=[A_K^{m-1}G,\ldots,G],\quad W_m=H_mH_m^\top,\quad
+P_m=H_m^\top W_m^\dagger H_m .
+\]
+The frozen common-support proof identifies the actual retained-state
+experiment with the disjoint latent-input projection $P$.
+In particular, it retains cross-block state covariance and does not reset
+the plant at artificial boundaries. Put
+\[
+\theta=(fa_j)_j,\quad H_gz=(fg_jz_j)_j,\quad
+G_H(\pi)=\frac12\inf_{|\Delta z|\le r}\|P(\theta-H_gz)\|^2,
+\quad O_H=\frac12\|\theta\|^2,\quad
+D_H^*=O_H-\sup_\pi G_H(\pi).
+\]
+The information is KL, hence the factor $1/2$.
+
+\begin{theorem}
+Under this fixed contract, if
+$\beta_k=(k+1)F-M_{k+1}^\top W_{k+1}^\dagger M_{k+1}=0$,
+where $M_m=\sum_{q=0}^{m-1}A_K^qB$, then there are fixed
+$0<c<C<\infty$ and $H_0$ such that
+$cH^2\le D_H^*\le CH^2$ for every integer $H\ge H_0$.
+No sharp $H^2$ constant is asserted.
+\end{theorem}
+
+\begin{proof}
+The frozen projection lemmas give $\beta_0=0$, monotonicity,
+$\beta_\ell/\ell\to F>0$, and
+\[
+L_z=\max\{m:\beta_{m-1}=0\}<\infty,\quad
+b_+=\inf_{m>L_z}\frac{\beta_{m-1}}m>0,\quad
+P_m(\mathbf1_m\otimes f)=\mathbf1_m\otimes f
+\ \Longleftrightarrow\ m\le L_z .
+\]
+Here $L_z\ge k+1\ge2$. For an affine span with center amplitude $A\ge0$,
+\[
+\|(I-P_m)\theta_m\|^2
+\ge \beta_{m-1}A^2-C_K\eta Am ,
+\]
+where $C_K<\infty$ is a fixed plant constant. This bound does not
+require reflection symmetry.
+
+For the upper bound choose fixed $L>n_0+k+2$ and maintain
+$M_t=\sum_{j=-n_0+1}^t g_j$.
+Hold the current sign $s$ until $sM_t\ge L$.
+When at least $k+2$ slots remain, execute an exact-$k$ move and flip
+the sign; otherwise hold to $H$.
+Threshold overshoot is less than one; a move changes $M$ by at most $k$.
+All complete opposite hold runs have lengths between
+$2L-k$ and $2L+k+2$, the initial run is at least $L-n_0>2$,
+and a skipped final move adds at most $k+1$ holds.
+Thus $|M_t|\le L+k+2$ and every post hold run has at least two slots
+for large $H$. If $N_h,N_m$ are held-input and move counts, then
+$H=N_h+kN_m$, $N_h\ge2N_m$.
+The true singleton count is $S=N_h-N_m\ge H/(k+2)$:
+the right retained point of a gap is not a singleton.
+
+Let $m=k+1$. Since its constant mode is preserved, only the affine
+slope is lost in an exact gap:
+\[
+E=\|(I-P)\theta\|^2
+\le N_m\eta^2F\,m(m^2-1)/12=O(H).
+\]
+Put $h=(g_jf)_j$, $w=P\theta$, $p=Ph$, and
+$\lambda_j=h_j^\top w_j$.
+On singletons $\lambda_j=Fg_ja_j$; on the fixed-length gaps the
+error in this equality is uniformly bounded independently of $a_j$.
+The post cumulative $S_t=\sum_{j=1}^t g_j$ is bounded, so Abel's identity
+\[
+\sum_{j=1}^t g_ja_j=a_tS_t-\eta\sum_{j=1}^{t-1}S_j
+\]
+shows that all partial $\lambda$ sums are $O(t+1)$ and
+$N=\sum_j\lambda_j=O(H)$.
+Singletons give $D=\|p\|^2\ge FS\ge FH/(k+2)$, while
+$D\le F(H+n_0)$.
+Define $\alpha=N/D=O(1)$ and $v=w-\alpha p$.
+Then $Pv=v$, $\sum_jh_j^\top v_j=0$, and orthogonality gives
+\[
+\|\theta-v\|^2=E+\alpha^2D=O(H).
+\]
+The per-input scalar correction $h_j^\top p_j$ is uniformly bounded
+because every gap has fixed length. Thus repaired partial masses
+remain $O(t+1)$.
+The complete Lipschitz class with free level has support
+\[
+h_{\mathcal Z}(\lambda')
+=r\sum_{t=-n_0+1}^{H-1}
+ \left|\sum_{j=-n_0+1}^t\lambda'_j\right|=O(H^2),
+\qquad \lambda'_j=h_j^\top v_j .
+\]
+The zero total mass is essential. The range condition makes $v$
+an observable statistic of the actual retained states.
+The dual inequality
+\[
+O_H-G_H(\pi)\le
+\frac12\|\theta-v\|^2+h_{\mathcal Z}(\lambda')
+\]
+proves the upper bound.
+
+For the lower bound terminal unread moves are dominated by holding,
+so it suffices to treat endpoint-$H$ calendars, whose true intervals
+cover all post inputs. Set
+$\varepsilon=(4L_z+2)^{-1}$, $J_0=\lceil\varepsilon H\rceil$.
+If some positive-penalty span ends at $t\ge J_0$, its center satisfies
+$A\ge\eta\varepsilon H/2$ even for long spans.
+For large $H$, the affine inequality and $\beta_{m-1}\ge b_+m$ imply
+\[
+O_H-G_H(\pi)\ge\frac12\|(I-P)\theta\|^2
+\ge \frac{b_+\eta^2\varepsilon^2}{16}H^2 .
+\]
+Here $z=0$ bounds the profiled information by the observed oracle.
+
+Otherwise every span ending at $t\ge J_0$ has length at most $L_z$
+and preserves its constant mode. There are at least
+$(1-\varepsilon)H/L_z-O(1)$ such late spans, with center amplitude
+at least $\eta\varepsilon H/2$ for large $H$.
+Choose the complete legal path $z_j=(r/2)g_j$.
+It obeys $|\Delta z|\le r$ and is realizable by the two rate-$r/2$
+healthy paths. Write
+$\widetilde h_j=(r/2)fg_j^2$.
+For a late zero-penalty span,
+\[
+\ip{P_m\theta_m}{P_m\widetilde h_m}
+=\frac r2 FA\sum_qg_q^2+
+\eta\ip{P_m(f\,\text{centered time})}{P_m\widetilde h_m}
+\ge \frac r2 FA-C_0 .
+\]
+The last retained input has $g^2=1$; the slope term is uniformly
+bounded since $m\le L_z$. No entrywise positivity of $P_m$ is assumed.
+Thus the total late cross is at least
+$rF\eta\varepsilon(1-\varepsilon)H^2/(4L_z)-O(H)$.
+Early intervals contain only inputs before $J_0$; contraction and
+Cauchy give total early cross at least
+$-(r/2)F\eta\varepsilon^2H^2-O(H)$.
+Also $\|P\widetilde h\|^2\le r^2F(H+n_0)/4=O(H)$.
+Evaluation at this single legal full path yields
+\[
+\begin{split}
+O_H-G_H(\pi)&\ge
+\frac12\|(I-P)\theta\|^2+
+\ip{P\theta}{P\widetilde h}-\frac12\|P\widetilde h\|^2\\
+&\ge \frac{rF\eta}{2}
+ \left[\frac{\varepsilon(1-\varepsilon)}{2L_z}
+       -\varepsilon^2\right]H^2-O(H)
+=\frac{rF\eta\varepsilon}{8L_z}H^2-O(H).
+\end{split}
+\]
+Both cases are uniform in the calendar. Taking a smaller positive
+constant than the minimum of the two displayed coefficients proves
+the lower bound, and completes the theorem.
+\end{proof}
+
+The standalone exact checks are
+\texttt{outputs/m2s\_recoverable\_order\_checks\_v1.py}
+and its JSON report. They cover six new balanced calendars and
+nineteen exact lower-coefficient identities, without rerunning the
+frozen M2S table. The separate asymmetric-repair supplement covers
+six genuinely nonzero repairs. These finite checks support, but do
+not replace, the all-calendar proof.
+\end{document}
+

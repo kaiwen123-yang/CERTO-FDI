@@ -1,0 +1,345 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\sig}{\sigma}
+\title{Stationary AR(1) information under missing observations:\\ exact identities and the full-history profiling boundary}
+\author{Research working note, version 1}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Scope.}
+The Gaussian, Markov and Schur identities below are tools, not claims of a
+new control-theoretic contribution. The sharp minimax coefficient conjecture
+is not proved or disproved by this note. The companion Chinese note gives
+the research contract and remaining obligations.
+
+Let $n\ge1$, $\sig>0$, $|\rho|<1$, and let stationary Gaussian noise satisfy
+$\epsilon_i=\rho\epsilon_{i-1}+\xi_i$, where
+$\epsilon_1\sim N(0,\sig^2)$ and the independent innovations have variance
+$\sig^2(1-\rho^2)$. For a deterministic retained set
+$R=\{t_1<\cdots<t_p\}\subset\{1,\ldots,n\}$, its marginal covariance is
+$C_R=(\sig^2\rho^{|t_i-t_j|})$. For any deterministic mean contrast $x$ write
+\begin{equation}\label{eq:contract}
+ Q_R(x)=x_R^\top C_R^{-1}x_R,\qquad G_R(x)=\tfrac12Q_R(x).
+\end{equation}
+Here $G$ is Gaussian pairwise KL and $Q$ is squared Mahalanobis distance;
+both are zero for $R=\varnothing$. Define Fisher (not half-KL) coefficients
+\begin{equation}\label{eq:coefficients}
+ w_d=\frac{1-\rho^d}{1+\rho^d},\quad
+ \nu=\frac{w_1}{\sig^2},\quad
+ \beta(k)=\frac{(k+1)w_1-w_{k+1}}{\sig^2}.
+\end{equation}
+
+\begin{lemma}[Marginal energy]\label{lem:marginal}
+For $p\ge1$, $d_j=t_j-t_{j-1}$,
+\begin{equation}\label{eq:marginal}
+ Q_R(x)=\frac{x_{t_1}^2}{\sig^2}
+ +\sum_{j=2}^p\frac{(x_{t_j}-\rho^{d_j}x_{t_{j-1}})^2}
+ {\sig^2(1-\rho^{2d_j})}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Iteration gives
+$\epsilon_{i+d}=\rho^d\epsilon_i+\sum_{h=1}^d\rho^{d-h}\xi_{i+h}$.
+The second term is independent of the noise history through $i$, and has
+variance $\sig^2(1-\rho^2)\sum_{h=0}^{d-1}\rho^{2h}
+=\sig^2(1-\rho^{2d})$. Innovation sums over disjoint retained intervals are
+independent. Thus the marginal density factors into one stationary initial
+density and these transition densities. Their triangular whitening maps the
+mean contrast to $x_{t_1}/\sig$ and
+$(x_{t_j}-\rho^{d_j}x_{t_{j-1}})/(\sig\sqrt{1-\rho^{2d_j}})$.
+The squared norm of this vector is $Q_R$, proving the result, including
+negative $\rho$ since all variances remain positive.
+\end{proof}
+
+\begin{lemma}[Constant contrasts, all boundary cases]\label{lem:constant}
+If $x=a\one$, deleting one internal gap of $k\ge0$ samples with its endpoints
+retained loses $a^2\beta(k)$ in $Q$, or $a^2\beta(k)/2$ in KL. More generally,
+for nonempty $R$, set $p_0=t_1-1$, $p_1=n-t_p$ and
+$k_j=t_{j+1}-t_j-1$. Then
+\begin{equation}\label{eq:multi}
+ Q_{[n]}(a\one)-Q_R(a\one)
+ =a^2\left\{\nu(p_0+p_1)+\sum_{j=1}^{p-1}\beta(k_j)\right\}.
+\end{equation}
+For empty $R$ the loss is $a^2[\sig^{-2}+(n-1)\nu]$.
+Moreover $\beta(0)=0$, $\beta(k)>0$ for $k\ge1$, and at $\rho=0$ it equals
+$k/\sig^2$. No separation condition on distinct gaps is needed.
+\end{lemma}
+\begin{proof}
+A $d$-step term in \eqref{eq:marginal} at constant contrast is
+$a^2(1-\rho^d)^2/[\sig^2(1-\rho^{2d})]=a^2w_d/\sig^2$.
+The full record therefore has energy $a^2[\sig^{-2}+(n-1)\nu]$.
+Replacing $m=k+1$ one-step transitions by one $m$-step transition gives
+$a^2(mw_1-w_m)/\sig^2$. Since
+$n-1=p_0+p_1+\sum_j(k_j+1)$, subtraction proves \eqref{eq:multi}.
+The empty case follows from zero observed information.
+
+For strict positivity, let $P$ be the precision of the local complete
+$m+1$ observations; $M$ indexes the $k$ missing interior entries and $E$ the
+two endpoints. Completing the square gives
+\begin{equation}\label{eq:schur}
+ Q_{\rm local}(v)-Q_E(v_E)
+ =(v_M+P_{MM}^{-1}P_{ME}v_E)^\top P_{MM}
+ (v_M+P_{MM}^{-1}P_{ME}v_E).
+\end{equation}
+Here $P_{MM}$ is positive definite. Every interior row of $P$ applied to
+$a\one$ gives
+$a(1-\rho)^2/[\sig^2(1-\rho^2)]=a\nu\ne0$ for $a\ne0$.
+Thus the right side is strictly positive whenever $k\ge1$.
+The $k=0$ and $\rho=0$ claims follow directly from \eqref{eq:coefficients}.
+\end{proof}
+
+\begin{lemma}[Local loss for any contrast]\label{lem:local}
+For an internal gap from $\ell$ to $\ell+m$, the exact quadratic loss is
+\begin{equation}\label{eq:loss}
+ L_{\ell,m}(x)=
+ \sum_{h=1}^m\frac{(x_{\ell+h}-\rho x_{\ell+h-1})^2}{\sig^2(1-\rho^2)}
+ -\frac{(x_{\ell+m}-\rho^m x_\ell)^2}{\sig^2(1-\rho^{2m})}.
+\end{equation}
+This is positive semidefinite and zero when $m=1$.
+For nonempty $R$, total loss is the sum of these internal losses, the prefix
+\begin{equation}\label{eq:prefix}
+ \frac{x_1^2-x_{t_1}^2}{\sig^2}
+ +\sum_{i=2}^{t_1}\frac{(x_i-\rho x_{i-1})^2}{\sig^2(1-\rho^2)},
+\end{equation}
+and the suffix sum over $i=t_p+1,\ldots,n$ of the same one-step terms.
+\end{lemma}
+\begin{proof}
+Subtract \eqref{eq:marginal} for retained data from its full-record version.
+Every unaffected one-step term cancels; each retained-to-retained gap leaves
+\eqref{eq:loss}. The initial and final parts give \eqref{eq:prefix} and the
+suffix. Positivity of each local loss follows by completing the square as in
+\eqref{eq:schur} for its local missing subset. For $m=1$ the two terms are
+identical. This proof permits gaps sharing a single retained endpoint.
+\end{proof}
+
+Put $c_\rho=\rho/[\sig^2(1+\rho)]$ and
+$d_\rho=\rho/[\sig^2(1-\rho^2)]$.
+\begin{lemma}[Retained-block boundary identity]\label{lem:block}
+For each internal missing gap with span $m\ge2$, let its retained endpoints
+have contrast $u,v$ and set
+\begin{equation}\label{eq:boundary}
+ B_m(u,v)=\left[\frac1{\sig^2(1-\rho^{2m})}
+ -\frac1{\sig^2(1+\rho)}\right](u^2+v^2)
+ -\frac{2\rho^muv}{\sig^2(1-\rho^{2m})}.
+\end{equation}
+For every nonempty retained set,
+\begin{equation}\label{eq:block}
+ Q_R(x)=\nu\sum_{i\in R}x_i^2+c_\rho(x_{t_1}^2+x_{t_p}^2)
+ +d_\rho\sum_{i,i+1\in R}(x_{i+1}-x_i)^2+\sum_{\rm gaps}B_m(u,v).
+\end{equation}
+The individual boundary terms need not be nonnegative for negative $\rho$.
+\end{lemma}
+\begin{proof}
+Expanding \eqref{eq:marginal} on a contiguous interval $I$ gives
+\begin{equation}\label{eq:contiguous}
+ Q_I(x)=\nu\sum_{i\in I}x_i^2+c_\rho(x_{\min I}^2+x_{\max I}^2)
+ +d_\rho\sum_{i,i+1\in I}(x_{i+1}-x_i)^2.
+\end{equation}
+Indeed, its interior diagonal coefficient is
+$\nu+2d_\rho=(1+\rho^2)/[\sig^2(1-\rho^2)]$, its endpoint coefficient is
+$\nu+d_\rho+c_\rho=1/[\sig^2(1-\rho^2)]$, and its adjacent cross coefficient
+is $-2d_\rho$. For a singleton $\nu+2c_\rho=\sig^{-2}$, so the identity
+also covers singleton blocks. Sum \eqref{eq:contiguous} over maximal retained
+blocks. Every later block's artificial initial term $v^2/\sig^2$ must be
+replaced by $(v-\rho^m u)^2/[\sig^2(1-\rho^{2m})]$. Together with its two
+internal endpoint corrections this yields
+$c_\rho u^2+(c_\rho-\sig^{-2})v^2+
+(v-\rho^m u)^2/[\sig^2(1-\rho^{2m})]$, which expands to
+\eqref{eq:boundary}. The first and last corrections remain explicit.
+\end{proof}
+In particular,
+\begin{equation}\label{eq:sign}
+ B_m(A,-A)-B_m(A,A)=\frac{4\rho^m A^2}{\sig^2(1-\rho^{2m})}.
+\end{equation}
+
+\begin{lemma}[Near-constant local bound]\label{lem:smooth}
+Suppose $|x_{\ell+h}-x_\ell|\le Lh$ for $h=0,\ldots,m$ and let $A=x_\ell$.
+Set
+$C_\rho=(1+|\rho|)/[\sig^2(1-|\rho|)]$,
+$S_m=m(m+1)(2m+1)/6$ and $D_m=C_\rho L^2S_m$. Then
+\begin{equation}\label{eq:smooth}
+ |L_{\ell,m}(x)-\beta(m-1)A^2|
+ \le2|A|\sqrt{\beta(m-1)D_m}+D_m.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The local loss matrix $M$ from \eqref{eq:schur} satisfies $0\preceq M\preceq P$.
+The full local precision has absolute interior row sum $C_\rho$ and endpoint
+row sum $1/[\sig^2(1-|\rho|)]$, hence norm at most $C_\rho$.
+For $m=1$ the loss is zero. Otherwise write $x=A\one+\delta$.
+Then $\delta^\top M\delta\le C_\rho\sum_h\delta_h^2\le D_m$ and
+$\one^\top M\one=\beta(m-1)$ by Lemma~\ref{lem:constant}.
+Positive semidefinite Cauchy--Schwarz gives
+$|\one^\top M\delta|\le\sqrt{\beta(m-1)D_m}$.
+Expanding $x^\top Mx$ and bounding its cross and remainder terms proves
+\eqref{eq:smooth}.
+\end{proof}
+
+\begin{theorem}[Conditional full-history profiling bridge]\label{thm:bridge}
+Fix $K\ge1$, $A_0,L\ge0$. Let a nonempty full-history class $X_n\subset\R^n$
+satisfy for every $x\in X_n$,
+$|x_i|\le A_0n$ and $|x_{i+1}-x_i|\le L$.
+Assume $1,n\in R$, and every internal gap length $k_j$ is between $1$ and $K$.
+There are $J$ such gaps, with left endpoints $\ell_j$. Define
+\begin{equation}\label{eq:surrogate}
+ T_R(x)=\nu\sum_{i=1}^n x_i^2-\sum_{j=1}^J\beta(k_j)x_{\ell_j}^2,
+ \quad \beta_*=(K+1)\nu,\quad D_*=C_\rho L^2S_{K+1}.
+\end{equation}
+Uniformly over all these calendars and all $x\in X_n$,
+\begin{align}\label{eq:uniform}
+ |Q_R(x)-T_R(x)|&\le E_n,\\
+ E_n&=2|c_\rho|A_0^2n^2+|d_\rho|(n-1)L^2
+ +J\{2A_0n\sqrt{\beta_*D_*}+D_*\}.\nonumber
+\end{align}
+Consequently,
+\begin{equation}\label{eq:inf}
+ \left|\inf_{x\in X_n}\tfrac12Q_R(x)-\inf_{x\in X_n}\tfrac12T_R(x)\right|
+ \le\tfrac12E_n=O(n^2)=o(n^{5/2}).
+\end{equation}
+The bound is uniform over $|\rho|\le q<1$, $\sig\ge\sig_{\min}>0$ for fixed
+$K,A_0,L$.
+\end{theorem}
+\begin{proof}
+Use \eqref{eq:contiguous} on the full interval. Its difference from
+$\nu\sum_i x_i^2$ is bounded by
+$2|c_\rho|A_0^2n^2+|d_\rho|(n-1)L^2$.
+Since both ends are retained, Lemma~\ref{lem:local} subtracts only the internal
+losses. Apply Lemma~\ref{lem:smooth} to each. Because $w_m>0$,
+$0\le\beta(k_j)=m_j\nu-w_{m_j}/\sig^2\le(K+1)\nu=\beta_*$,
+and $D_{m_j}\le D_*$. Summation proves \eqref{eq:uniform}.
+The pointwise bounds $T_R-E_n\le Q_R\le T_R+E_n$, when infimized over the
+same nonempty $X_n$, prove \eqref{eq:inf}; no attainment or exchange of
+blockwise infima is required. Finally $J\le n$ and all displayed constants
+are bounded on the stated channel class.
+\end{proof}
+
+\paragraph{Nuisance quantifiers.}
+For the raw model $Y_i=s_i b_i+\mathbf1_{\rm alt}a_i+\epsilon_i$, define the
+actual difference image
+$\mathcal Z_n=\{b_0-b_1:b_0\in\mathcal B_{0,n},b_1\in\mathcal B_{1,n}\}$.
+Profiled pairwise KL is
+$\inf_{z\in\mathcal Z_n}Q_R(a-sz)/2$, always using a single full-history pair.
+A Lipschitz constraint on $z$ does not imply the hypothesis of
+Theorem~\ref{thm:bridge} for $x=a-sz$. Neither does an unbounded-amplitude
+nuisance class imply its envelope hypothesis. Restricting the class requires
+a separate justified argument. The geometric infimum is not automatically
+the minimax testing risk. Under task demodulation $D_s$, covariance must also
+become $D_sC_RD_s$.
+
+\begin{theorem}[Raw full-class boundary bridge]\label{thm:raw}
+Suppose $|a_{i+1}-a_i|\le\eta$ and every full-history path in the actual
+nonempty class $\mathcal Z_n$ satisfies $|z_{i+1}-z_i|\le r$.
+No amplitude bound is imposed. Write $x=a-sz$, $s_i\in\{-1,1\}$.
+Let $E$ consist of successive retained pairs $(\ell,\ell+m)$ for which
+$m\ge2$ or the task signs differ. With $B_m$ defined by
+\eqref{eq:boundary}, also for $m=1$, set
+\begin{equation}\label{eq:rawsurrogate}
+ S_R(z)=\nu\sum_{i\in R}x_i^2+c_\rho(x_{t_1}^2+x_{t_p}^2)
+ +\sum_{(\ell,\ell+m)\in E}B_m(x_\ell,x_{\ell+m}).
+\end{equation}
+For every $z\in\mathcal Z_n$,
+\begin{align}\label{eq:rawerror}
+ Q_R(x)-S_R(z)
+ &=d_\rho\sum_{\substack{i,i+1\in R\\s_i=s_{i+1}}}
+ [\Delta a_i-s_i\Delta z_i]^2,\\
+ |Q_R(x)-S_R(z)|&\le |d_\rho|(n-1)(\eta+r)^2.\nonumber
+\end{align}
+Consequently the infima of $Q_R(a-sz)/2$ and $S_R(z)/2$ over this same
+full-history class differ by at most $|d_\rho|(n-1)(\eta+r)^2/2=O(n)$.
+The bound is uniform for $|\rho|\le q<1$ and $\sig\ge\sig_{\min}>0$.
+\end{theorem}
+\begin{proof}
+The proof of Lemma~\ref{lem:block} permits splitting a contiguous retained
+block at an adjacent task change. Substituting $m=1$ into
+\eqref{eq:boundary} yields $B_1(u,v)=d_\rho(u-v)^2$.
+Thus the only remaining within-block differences in \eqref{eq:block} have
+identical task signs. For those edges,
+$\Delta x_i=\Delta a_i-s_i\Delta z_i$, proving \eqref{eq:rawerror}.
+Every square is at most $(\eta+r)^2$ and there are at most $n-1$ such edges.
+Taking infima in the pointwise bounds over the same nonempty class proves
+the result. No attainment or amplitude envelope is needed. In particular
+$Q_R\ge0$ and the bounded difference ensure $S_R$ has a finite lower bound
+on that class, even if its unrestricted matrix is not positive semidefinite.
+For $\rho\ge0$, $S_R\le Q_R$; for $\rho<0$ the inequality reverses.
+The uniformity follows from the displayed formula for $d_\rho$.
+\end{proof}
+This surrogate retains all task and missing-observation endpoint products;
+it cannot be reduced further to scalar constant-gap penalties without a
+new argument. Such endpoint terms can contribute at order $n^{5/2}$.
+
+\begin{lemma}[Affine gap reflection]\label{lem:reflection}
+For one internal gap with span $m=k+1$, let $h_j=j-m/2$, $j=0,\ldots,m$.
+If its local contrast is $x=A\one+\eta h$, then
+\begin{equation}\label{eq:reflection}
+ L(x)=\beta(k)A^2+\eta^2 E_k,\qquad E_k\ge0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let $M$ be the local loss matrix and $J$ the reflection matrix.
+Stationary covariance depends only on index distance, hence $JCJ=C$ and
+$JC^{-1}J=C^{-1}$. The endpoint marginal precision, embedded into the full
+local dimension, also commutes with $J$. Their difference is $M$, so
+$JMJ=M$. Since $J\one=\one$ and $Jh=-h$,
+$\one^\top Mh=-\one^\top Mh=0$.
+Lemma~\ref{lem:constant} gives $\one^\top M\one=\beta(k)$.
+Expand the quadratic and set $E_k=h^\top Mh\ge0$ by local loss positivity.
+For $k=0$ the loss matrix is zero.
+\end{proof}
+To apply this identity to a raw zero-endpoint tent construction, $z$ must
+vanish on the entire local $m+1$ slots, including both retained endpoints;
+vanishing only on missing slots is insufficient.
+
+\begin{proposition}[Failure of an all-path constant-gap bridge]\label{prop:counter}
+For $\sig=1$, $\rho=1/2$, $k=1$, there exist legal raw full-history contrasts
+with rate-zero nuisance and $J=\sqrt H$ gaps in horizon $n=H$, along square
+integers, such that replacing each exact gap loss by
+$\beta(1)x_\ell^2$ gives quadratic error $(8/5)H^{5/2}$, or KL error
+$(4/5)H^{5/2}$.
+\end{proposition}
+\begin{proof}
+For sufficiently large square $H$, delete the separated internal samples
+$g_j=\lfloor jH/(J+1)\rfloor$, $j=1,\ldots,J$. Set $z_i=H$, $a_i=0$ and let
+the task sign flip immediately after each missing sample, which retains the
+preceding task. Then $x_i=-s_iH$ is a contrast in the raw model, with the same
+raw covariance and one full-history rate-zero nuisance. Every gap has local
+contrast $(A,A,-A)$ with $A=\pm H$. Its two full transition terms equal
+$A^2/3+3A^2$, whereas its retained two-step term equals $5A^2/3$.
+Its exact loss is therefore $5H^2/3$. Since
+$\beta(1)=2/3-3/5=1/15$, the difference is $8H^2/5$ per gap.
+Lemma~\ref{lem:local} adds these differences exactly. Substituting $J=\sqrt H$
+and dividing by two proves both asserted errors.
+\end{proof}
+
+\paragraph{What this counterexample does not show.}
+For zero signal the legal nuisance $z=0$ makes profiled KL zero. Thus the
+example disproves an all-path uniform replacement, not the conjectured
+coefficient after profiling. If the oracle does not define tasks during
+missing samples, the full-record loss needs a separate definition; the
+retained-data identity \eqref{eq:block} remains valid.
+
+\paragraph{Computational support.}
+The standard-library Fraction program
+\texttt{outputs/ar1\_information\_checks\_v1.py} compares covariance inversion,
+Markov energy, constant multigap loss and arbitrary-contrast block identity
+for all retained subsets of $n=1,\ldots,8$ and
+$\rho\in\{-4/5,-1/2,0,1/2,4/5\}$: 2550 exact checks for each comparison,
+plus 2550 raw full-class bridge checks, 35 smooth-gap checks,
+35 affine-reflection checks and three raw-jump examples. All passed.
+The saved report is \texttt{outputs/ar1\_information\_checks\_v1.json}.
+Run the script with standard Python from the repository root.
+These finite checks validate implementation; the universal claims rely on
+the proofs above. No mechanical scan or sharp calendar theorem is claimed.
+\paragraph{Compilation status.}
+The built-in compiler reported the platform error
+\texttt{Unable to find standard directories for platform}, without source
+diagnostics. Compilation is unverified; this does not affect the exact Python
+checks. No alternative TeX runtime was installed.
+\end{document}

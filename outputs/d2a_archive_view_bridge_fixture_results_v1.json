@@ -1,0 +1,145 @@
+{
+  "status": "PASS_REAL_TINY_ZIP_IO_BRIDGE_FIXTURES",
+  "fixture_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_io_fixture_37b9c58d",
+  "tests": [
+    {
+      "name": "real ZIP presence, central-directory size and receipt/manifest SHA mapping",
+      "pass": true
+    },
+    {
+      "name": "Windows relative query separators normalized",
+      "pass": true
+    },
+    {
+      "name": "availability never opens witness body",
+      "pass": true
+    },
+    {
+      "name": "scope does not claim large payload hash/arithmetic",
+      "pass": true
+    },
+    {
+      "name": "manifest cannot supply absent real member",
+      "pass": true
+    },
+    {
+      "name": "central member without manifest mapping rejected",
+      "pass": true
+    },
+    {
+      "name": "external manifest hash mismatch",
+      "pass": true
+    },
+    {
+      "name": "receipt-to-manifest payload hash mismatch",
+      "pass": true
+    },
+    {
+      "name": "actual member size disagrees with manifest/receipt",
+      "pass": true
+    },
+    {
+      "name": "caller wrong size binding",
+      "pass": true
+    },
+    {
+      "name": "unsafe central-directory namespace",
+      "pass": true
+    },
+    {
+      "name": "Windows device namespace rejected",
+      "pass": true
+    },
+    {
+      "name": "Windows trailing-space alias rejected",
+      "pass": true
+    },
+    {
+      "name": "unsafe witness query namespace",
+      "pass": true
+    },
+    {
+      "name": "case/name mismatch",
+      "pass": true
+    },
+    {
+      "name": "same-size body corruption deliberately not certified/detected by presence view",
+      "pass": true
+    },
+    {
+      "name": "recipe small metadata selected/extracted/hashed from actual ZIP",
+      "pass": true
+    },
+    {
+      "name": "recipe metadata leaf Windows readonly attribute set",
+      "pass": true
+    },
+    {
+      "name": "v2 reads actual archived original small metadata",
+      "pass": true
+    },
+    {
+      "name": "presence works with no extracted/dummy witness",
+      "pass": true
+    },
+    {
+      "name": "immutable metadata view remains byte-identical",
+      "pass": true
+    },
+    {
+      "name": "replay metadata rewrites cannot mutate archived original view",
+      "pass": true
+    },
+    {
+      "name": "actual-ZIP availability survives real isolated replay-witness removal",
+      "pass": true
+    },
+    {
+      "name": "filesystem default matches original contained is_file semantics",
+      "pass": true
+    },
+    {
+      "name": "filesystem missing agrees with original",
+      "pass": true
+    },
+    {
+      "name": "v1/v2 metadata self-tests unchanged",
+      "pass": true
+    },
+    {
+      "name": "immutable baseline preserved: d2a_full_grid_acceptance_v1.py",
+      "pass": true
+    },
+    {
+      "name": "immutable baseline preserved: package_full_d2a_release_v1.py",
+      "pass": true
+    },
+    {
+      "name": "immutable baseline preserved: full_d2a_release_contract_v1.md",
+      "pass": true
+    },
+    {
+      "name": "immutable baseline preserved: full_d2a_release_contract_v1.json",
+      "pass": true
+    }
+  ],
+  "test_count": 30,
+  "fixture_witness_uncompressed_bytes": 46,
+  "real_large_witness_bytes_read": 0,
+  "science_or_R1_executed": false,
+  "live_tables_locks_PID_main_or_v1_sources_modified": false,
+  "metadata_view_source": "Only actual tiny ZIP member bytes; no worktree fallback/no dummy gzip.",
+  "large_payload_hash_or_arithmetic_certified": false,
+  "source_sha256": {
+    "d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+    "d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+    "package_full_d2a_release_v2.py": "1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307",
+    "d2a_archive_view_bridge_fixtures_v1.py": "5f262131a8d111cb233707428a695e5b3443565c46328e2965483d5f223b4961"
+  },
+  "baseline_sha256": {
+    "d2a_full_grid_acceptance_v1.py": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+    "package_full_d2a_release_v1.py": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920",
+    "full_d2a_release_contract_v1.md": "d633636c7d145b88de4c324d0dd772addef0afac8c700dbae43ccb462834dd80",
+    "full_d2a_release_contract_v1.json": "b822b2aae5296f10a6bf82ace28629b647e3ea1ef0080e06315f354dcd40b2f6"
+  }
+}

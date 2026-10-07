@@ -1,0 +1,253 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\one}{\mathbf1}
+\newcommand{\R}{\mathbb R}
+\title{A matching full-history dual construction for stationary AR(1) drift diagnosis}
+\author{Research working proof, version 1}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\paragraph{Contract and status.}
+Use the raw two-task experiment
+$Y_i=s_i b^h(t_i)+\one_{h=1}a_{t_i}+\epsilon_{t_i}$,
+with a fixed healthy prefix of $n_0\ge1$ observations at task $+$,
+$a_j=0$ on that prefix and $a_j=\rho_0+\eta j$ thereafter.
+The horizon $H$ and calendar are deterministic and known in advance.
+Task changes delete $k\ge1$ consecutive samples. Noise is common known
+stationary Gaussian with covariance $\sigma^2\rho^{|i-j|}$.
+All parameters are fixed, $|\rho|<1$, $\sigma>0$, $\rho_0\ge0$, $\eta,r>0$.
+The actual two-sided difference class has unrestricted level and rate $r$;
+on retained nodes $R=\{t_1<\cdots<t_N\}$ it is
+$K=\{z:|z_{i+1}-z_i|\le r(t_{i+1}-t_i)\}$.
+Let $C=C_R$, $P=C^{-1}$, $S=\operatorname{diag}(s_i)$ and
+\[
+ G=\tfrac12\inf_{z\in K}(a_R-Sz)^\top P(a_R-Sz),\quad
+ O=\tfrac12a_{\rm full}^\top C_{\rm full}^{-1}a_{\rm full},\quad D=O-G.
+\]
+This note proves a matching achieving upper bound, pending independent
+review. It does not establish physical control realizability or novelty.
+Every covariance calculation uses the single full retained covariance.
+
+Put
+\begin{equation}\label{eq:coeff}
+ \nu=\frac{1-\rho}{\sigma^2(1+\rho)},\quad
+ w_m=\frac{1-\rho^m}{1+\rho^m},\quad
+ \beta=(k+1)\nu-w_{k+1}/\sigma^2>0.
+\end{equation}
+
+\begin{theorem}[Matching attaining calendar]\label{thm:upper}
+For every fixed $\xi>0$, the calendar constructed below satisfies
+\begin{equation}\label{eq:main}
+ D_H(\pi_H^\xi)\le
+ \frac1{10}\left(\frac{2\beta\eta^2}{\sqrt\xi}
+ +\nu r\eta\sqrt\xi\right)H^{5/2}+O(H^2).
+\end{equation}
+Consequently, at $\xi_*=2\beta\eta/(\nu r)$,
+\begin{equation}\label{eq:optimized}
+ \limsup_{H\to\infty}\frac{D_H^*}{H^{5/2}}
+ \le\frac{\sqrt2}{5}\sqrt{\nu\beta r}\,\eta^{3/2}.
+\end{equation}
+\end{theorem}
+
+\paragraph{Support and dual convention.}
+For $\sum_i\lambda_i=0$, summation by parts and independent increment
+constraints give exactly
+\begin{equation}\label{eq:support}
+ h_K(\lambda)=r\sum_{i=1}^{N-1}(t_{i+1}-t_i)
+ \left|\sum_{j\le i}\lambda_j\right|.
+\end{equation}
+For nonzero total mass, constant paths make the support infinite.
+Fenchel's quadratic inequality gives, for every raw direction $v$,
+\begin{equation}\label{eq:dual}
+ G\ge v^\top a_R-\tfrac12v^\top Cv-h_K(Sv).
+\end{equation}
+We choose $v=Pu$ for a global auxiliary vector $u$. Then
+$v^\top Cv=u^\top Pu$ exactly, including all cross-block covariance.
+Writing $e=a_R-u$ and $O_{\rm obs}=a_R^\top Pa_R/2$ yields
+\begin{equation}\label{eq:deficit}
+ D\le O-O_{\rm obs}+\tfrac12e^\top Pe+h_K(SPu).
+\end{equation}
+
+\paragraph{Terminal-balanced packing.}
+A block with even $n=2m$ consists of $m$ reads at $+$, a $k$-sample gap,
+$n$ reads at $-$, a second $k$-sample gap, and $m$ reads at $+$.
+Its length is $L=2(n+k)$ and local center $c=(L+1)/2$.
+Its retained times are
+\[
+ \{1,\ldots,m\}\cup\{m+k+1,\ldots,3m+k\}
+ \cup\{3m+2k+1,\ldots,L\}.
+\]
+With budget $H-1$, fit the maximal number $M$ of blocks with base
+$\bar n_\ell=2\lceil\xi\ell/2\rceil$.
+Distribute the remaining multiples of four slots evenly over those blocks,
+adding two to $n_\ell$ for each assigned unit; distribute residual units in
+the fixed left-to-right order. The final one to four slots are observed at
+$+$, with auxiliary vector zero. The original prefix is observed with
+auxiliary vector zero. For small horizons with no fitting block, stay.
+Since base cumulative duration is $\xi M^2+O(M)$ and the next block has
+length $O(M)$, the added $n_\ell$ is uniformly $O(1)$, and
+\begin{equation}\label{eq:scales}
+ M=\sqrt{H/\xi}+O(1),\quad n_\ell=\xi\ell+O(1),\quad
+ a_\ell=\rho_0+\eta(x_\ell+c_\ell)=\eta\xi\ell^2+O(\ell+1),
+\end{equation}
+where $x_\ell$ is the onset-relative block start. Blocks concatenate at task
+$+$ without another movement. The reserved terminal observation is essential
+for the exact signed moment below.
+
+\paragraph{Local auxiliary vector.}
+Put $c_0=(k+1)/2$ and define the following local nodes:
+\begin{align}\label{eq:z}
+ z_i^{+,L}&=r(c_0+m-i),&&1\le i\le m,\nonumber\\
+ z_i^-&=-r[c_0+\min(i-1,n-i)],&&1\le i\le n,\\
+ z_i^{+,R}&=r(c_0+i-1),&&1\le i\le m.\nonumber
+\end{align}
+For blocks with $a_\ell\ge r(k+n_\ell-1)/2$, set
+$u_i=a_\ell-s_i z_i$; call these blocks active.
+For all other blocks, set $u_i=0$. Only a uniformly finite initial set can
+be inactive, by \eqref{eq:scales}. These local $z_i$ generate a dual vector;
+they are not asserted to form a feasible global primal path.
+On an active block, $0\le u_i\le a_\ell$ and $\sum s_i u_i=0$.
+At both endpoints of each actual gap, $u=W=a_\ell-rc_0$.
+
+\begin{lemma}[Local support certificate]\label{lem:local}
+For an active block, $\lambda_i^0=s_i u_i$ has local support
+\begin{equation}\label{eq:localsupport}
+ h_\ell^0=\frac{a_\ell r}{2}n_\ell(n_\ell+2k)
+ -4r^2\sum_{j=0}^{n_\ell/2-1}(c_0+j)^2.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The threshold ensures nonnegative residuals on positive runs and nonpositive
+residuals on the negative run. Their partial sums start nonnegative, decrease
+to zero at the negative run's midpoint, become nonpositive and return to zero.
+Whenever a partial sum $Q_i$ is nonzero, the local nodes in \eqref{eq:z}
+satisfy $\Delta z_i=-r\Delta t_i\operatorname{sign}(Q_i)$.
+The central flat edge has $Q_i=0$; at a movement edge $\Delta t_i=k+1$.
+Thus \eqref{eq:support} is attained by these local nodes.
+The fourfold layer multiplicity gives
+$\sum s_i z_i=r n(n+2k)/2$ and
+$\sum z_i^2=4r^2\sum_{j=0}^{n/2-1}(c_0+j)^2$.
+Consequently $(\lambda^0)^\top z=a\sum s_i z_i-\sum z_i^2$
+equals \eqref{eq:localsupport}.
+\end{proof}
+
+\paragraph{Global precision, not block initialization.}
+Define
+$d_\rho=\rho/[\sigma^2(1-\rho^2)]$ and
+$c_\rho=\rho/[\sigma^2(1+\rho)]$.
+The exact marginal Markov precision decomposes into $\nu I$, consecutive
+retained-edge matrices $d_\rho(e_i-e_j)(e_i-e_j)^\top$, one gap matrix
+\[
+ \begin{pmatrix} A_m&-\gamma_m\\-\gamma_m&A_m\end{pmatrix},\quad
+ A_m=\frac1{\sigma^2(1-\rho^{2m})}-\frac1{\sigma^2(1+\rho)},\quad
+ \gamma_m=\frac{\rho^m}{\sigma^2(1-\rho^{2m})},
+\]
+at each actual gap, $m=k+1$, and only the two global endpoint corrections
+$c_\rho$. This follows by expanding the exact marginal likelihood
+$x_{t_1}^2/\sigma^2+\sum_{j>1}(x_{t_j}-\rho^{t_j-t_{j-1}}x_{t_{j-1}})^2/
+[\sigma^2(1-\rho^{2(t_j-t_{j-1})})]$.
+There is no correction for initializing an artificial symmetric block.
+For equal gap endpoint values $W$, the gap matrix maps to
+$\delta_m W(1,1)$, where
+\begin{equation}\label{eq:delta}
+ \delta_m=A_m-\gamma_m
+ =\frac1{\sigma^2(1+\rho^m)}-\frac1{\sigma^2(1+\rho)}
+ =\tfrac12(w_m/\sigma^2-\nu).
+\end{equation}
+Every consecutive retained edge has identical task signs, and every gap
+has opposite task signs. The global first and last values of $u$ are zero.
+It follows that the exact full vector identity is
+\begin{equation}\label{eq:pairidentity}
+ SPu=\nu Su+
+ \sum_{\Delta t=1}s_i d_\rho(u_i-u_j)(e_i-e_j)
+ +\sum_{\rm gaps}\delta_m W s_{\rm left}(e_{\rm left}-e_{\rm right}).
+\end{equation}
+Every correction is a zero-mass pair, and $Su$ has zero mass on each block.
+Therefore $\sum SPu=0$ exactly, for either sign of $\rho$.
+The actual weights $v=Pu$ can be nonzero on prefix and tail observations;
+zero auxiliary values do not delete those observations.
+
+\paragraph{Full-history support bound.}
+Restriction of the full class to each block, sublinearity and the pair
+support formula give
+\begin{equation}\label{eq:supportbound}
+ h_K(SPu)\le\nu\sum_{\rm active}h_\ell^0
+ +r|d_\rho|\sum_{\Delta t=1}|u_i-u_j|
+ +r(k+1)|\delta_m|\sum_{\rm gaps}|W|.
+\end{equation}
+Inside blocks, the total consecutive-edge variation is at most
+$2r\sum n_\ell$. Joins between blocks, prefix and final zero auxiliary
+values add at most $2\sum a_\ell$, since $0\le u\le a_\ell$.
+Furthermore $\sum_{\rm gaps}|W|\le2\sum a_\ell$.
+Thus both correction sums are $O(H^{3/2})$.
+Dropping the negative square term in \eqref{eq:localsupport}, and using
+$\sum a_\ell n_\ell=O(H^2)$, yields
+\begin{equation}\label{eq:supportmain}
+ h_K(SPu)\le\frac{\nu r}{2}\sum a_\ell n_\ell^2+O(H^2).
+\end{equation}
+
+\paragraph{Affine error and oracle gap costs.}
+On active blocks,
+$e_i=\eta(t_i-c_\ell)+s_i z_i$, so
+$|e_i|\le(\eta+r)(n_\ell+k)$.
+The full stationary precision has absolute row sums at most
+$C_\rho=(1+|\rho|)/[\sigma^2(1-|\rho|)]$; principal covariance interlacing
+therefore gives $\|P_R\|\le C_\rho$ for every retained set.
+The at most four tail errors are $O(H)$, prefix errors zero, and inactive
+blocks contribute $O(1)$. Hence
+\begin{equation}\label{eq:affineerror}
+ e^\top Pe\le C_\rho\left[2(\eta+r)^2\sum n_\ell(n_\ell+k)^2
+ +4(\rho_0+\eta H)^2+O(1)\right]=O(H^2).
+\end{equation}
+For an affine signal on one gap, reflection invariance of its PSD loss
+matrix gives exact KL loss
+$\beta A^2/2+\eta^2E_k/2$, $E_k\ge0$, where $A$ is gap-center amplitude.
+The two gap centers of block $\ell$ lie at distances
+$\pm(n_\ell+k)/2$ from its center. Thus the full-minus-observed oracle
+information is exactly
+\begin{equation}\label{eq:oracleloss}
+ O-O_{\rm obs}=\sum_\ell\left[\beta a_\ell^2
+ +\frac{\beta\eta^2}{4}(n_\ell+k)^2+\eta^2E_k\right]
+ =\beta\sum a_\ell^2+O(H^{3/2}).
+\end{equation}
+Every actual gap is internal and after onset. No prefix or terminal gap
+has been assigned the internal-gap coefficient.
+
+\begin{proof}[Proof of Theorem~\ref{thm:upper}]
+Combine \eqref{eq:deficit}, \eqref{eq:supportmain},
+\eqref{eq:affineerror} and \eqref{eq:oracleloss} to obtain
+$D\le\beta\sum a_\ell^2+(\nu r/2)\sum a_\ell n_\ell^2+O(H^2)$.
+Using \eqref{eq:scales} and $\sum_{\ell\le M}\ell^4=M^5/5+O(M^4)$ gives
+\[
+ \sum a_\ell^2=\frac{\eta^2}{5\sqrt\xi}H^{5/2}+O(H^2),\qquad
+ \sum a_\ell n_\ell^2=\frac{\eta\sqrt\xi}{5}H^{5/2}+O(H^2).
+\]
+This proves \eqref{eq:main}. The positive terms are minimized at
+$\xi=2\beta\eta/(\nu r)$, with value
+$\sqrt2\sqrt{\nu\beta r}\eta^{3/2}/5$.
+Since $D_H^*\le D_H(\pi_H^\xi)$, \eqref{eq:optimized} follows.
+All remainders are for fixed parameters. This does not claim matching
+$H^2$-order terms or allow poles approaching the unit circle with $H$.
+\end{proof}
+
+\paragraph{Checks and limits.}
+The standard-library Fraction script
+\texttt{outputs/ar1\_upper\_checks\_v1.py} verifies 39 full-calendar signed
+moments, pair identities, supports, deficit identities and oracle gap costs;
+30 cases also compute the complete covariance action $C_Rv=u$ exactly.
+It checks 410 local support certificates. Calculations use $\sigma=1$,
+$n_0=3$, positive, negative and zero correlations, $k=1,2,3$, and horizons
+up to 4096. The saved report is
+\texttt{outputs/ar1\_upper\_checks\_v1.json}. These calculations support the
+implementation; the asymptotic result follows from the proof, not a fit.
+The converse requires its own review. Even if the two bounds are accepted,
+physical control realizability and novelty remain separate obligations.
+\paragraph{Compilation status.}
+The built-in compiler returned the platform error
+\texttt{Unable to find standard directories for platform} without source
+diagnostics. Compilation is unverified. No replacement TeX runtime was
+installed; the exact Python checks passed independently.
+\end{document}

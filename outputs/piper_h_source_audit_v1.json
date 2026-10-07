@@ -1,0 +1,71 @@
+{
+  "status": "READONLY_OFFICIAL_SOURCE_AND_PREPARATION_PROTOCOL",
+  "repository": "https://github.com/agilexrobotics/pyAgxArm",
+  "commit": "841a625f5f4920e776f20b934eb13048b747e6d0",
+  "source_files": [
+    {
+      "path": "docs/piper/firmware_reference.md",
+      "bytes": 18682,
+      "sha256": "1c3b72a5fa3bc72c328a8f7f2c0721f14bcfe758df3f9c4cc996be240c112175",
+      "read_scope": "Firmware/mode/model/scaling sections.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/docs/piper/firmware_reference.md"
+    },
+    {
+      "path": "docs/piper/piper_api.md",
+      "bytes": 182084,
+      "sha256": "951cca4e8c1e063cab54c449aee47c6cb47641ecdb045a2e5a2fb52c676b35b8",
+      "read_scope": "Model, firmware and feedback/API locator sections only.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/docs/piper/piper_api.md"
+    },
+    {
+      "path": "pyAgxArm/api/constants.py",
+      "bytes": 6643,
+      "sha256": "1b4b8c03f75a333cb9c18057b4cc2ad6294bc8f3cb2a168ed434b513d075bf4f",
+      "read_scope": "PiPER_H per-model torque coefficient tables.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/api/constants.py"
+    },
+    {
+      "path": "pyAgxArm/protocols/can_protocol/drivers/piper/default/driver.py",
+      "bytes": 108120,
+      "sha256": "a674e189af802ce4ec8cd950758a8f177df09835f4e9937e9487a53ed0c9b2e0",
+      "read_scope": "get_joint_angles, get_motor_states, move_mit and cache boundaries.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/piper/default/driver.py"
+    },
+    {
+      "path": "pyAgxArm/protocols/can_protocol/drivers/piper/default/parser.py",
+      "bytes": 42662,
+      "sha256": "9d5d87726840465c510cc42cfe8f2c62d27bcaa35997731d767f3bb3d72aa7c7",
+      "read_scope": "decode_high_spd and motor CAN ID mapping.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/piper/default/parser.py"
+    },
+    {
+      "path": "pyAgxArm/protocols/can_protocol/drivers/core/table_driven.py",
+      "bytes": 2413,
+      "sha256": "a896d6cc1dd9d2f940e718112871162c363ee85dccae1c152b4288adc9a30d3d",
+      "read_scope": "Cache creation and RX frame timestamp assignment.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/drivers/core/table_driven.py"
+    },
+    {
+      "path": "pyAgxArm/protocols/can_protocol/msgs/piper/default/feedback/arm_feedback_high_spd.py",
+      "bytes": 3521,
+      "sha256": "b596d00e1f22908f7d0f2665fcf239c325d705385de5943930b318df0ed0a253",
+      "read_scope": "CAN frame layout and legacy unit comments.",
+      "primary_url": "https://github.com/agilexrobotics/pyAgxArm/blob/841a625f5f4920e776f20b934eb13048b747e6d0/pyAgxArm/protocols/can_protocol/msgs/piper/default/feedback/arm_feedback_high_spd.py"
+    }
+  ],
+  "hardware_connected": false,
+  "SDK_imported_or_installed": false,
+  "actual_H_firmware_verified": false,
+  "scope": "Targeted document/source interface review; not whole SDK review or execution.",
+  "statistical_evidence_example": {
+    "assumptions": "Independent predeclared Bernoulli healthy trials; zero errors; one-sided 95% confidence",
+    "minimum_n": 2995,
+    "upper_at_n": 0.0009997444209011424,
+    "upper_at_n_minus_one": 0.00100007816984667
+  },
+  "limitations": [
+    "Timestamp origin is backend-dependent; not verified on actual hardware.",
+    "Feedback torque is a configured current conversion, not independent sensing.",
+    "Async/cache data do not establish the full-state/common-support theorem contract."
+  ]
+}

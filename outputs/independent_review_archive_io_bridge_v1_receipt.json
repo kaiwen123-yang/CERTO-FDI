@@ -1,0 +1,154 @@
+{
+  "status": "PASS_INDEPENDENT_BOUNDED_ARCHIVE_IO_AND_COVERAGE_REVIEW",
+  "tests": [
+    {
+      "name": "actual member, manifest binding and exact uncompressed size accepted",
+      "pass": true
+    },
+    {
+      "name": "Windows query separators normalize without changing archive namespace",
+      "pass": true
+    },
+    {
+      "name": "presence view never reads witness body",
+      "pass": true
+    },
+    {
+      "name": "presence scope declines payload hash and scientific arithmetic",
+      "pass": true
+    },
+    {
+      "name": "manifest entry cannot create an absent actual ZIP member",
+      "pass": true
+    },
+    {
+      "name": "real member without manifest entry is unavailable",
+      "pass": true
+    },
+    {
+      "name": "independent manifest SHA mismatch rejects",
+      "pass": true
+    },
+    {
+      "name": "receipt SHA disagreement rejects",
+      "pass": true
+    },
+    {
+      "name": "receipt size disagreement rejects",
+      "pass": true
+    },
+    {
+      "name": "actual central-directory size mismatch rejects",
+      "pass": true
+    },
+    {
+      "name": "unsafe ZIP namespace rejects: traversal",
+      "pass": true
+    },
+    {
+      "name": "unsafe ZIP namespace rejects: device",
+      "pass": true
+    },
+    {
+      "name": "unsafe ZIP namespace rejects: trailing_dot",
+      "pass": true
+    },
+    {
+      "name": "unsafe ZIP namespace rejects: drive",
+      "pass": true
+    },
+    {
+      "name": "casefold duplicate rejects",
+      "pass": true
+    },
+    {
+      "name": "symlink central member rejects",
+      "pass": true
+    },
+    {
+      "name": "unsafe witness query rejects",
+      "pass": true
+    },
+    {
+      "name": "same-size corruption is intentionally accepted only for presence",
+      "pass": true
+    },
+    {
+      "name": "separate full payload extractor rejects same-size corruption",
+      "pass": true
+    },
+    {
+      "name": "filesystem default retains original contained is_file semantics",
+      "pass": true
+    },
+    {
+      "name": "filesystem containment remains enforced",
+      "pass": true
+    },
+    {
+      "name": "complete synthetic 400 logical rows / 3 science rows / 2 cases passes inventory",
+      "pass": true
+    },
+    {
+      "name": "science omitted from canonical set fails before extraction",
+      "pass": true
+    },
+    {
+      "name": "current-case witness cannot fall into shared hash-only payloads",
+      "pass": true
+    },
+    {
+      "name": "immutable metadata derives from actual ZIP bytes and excludes witness files",
+      "pass": true
+    },
+    {
+      "name": "actual CSV/direction/CASE bytes bind complete logical inventory",
+      "pass": true
+    },
+    {
+      "name": "coherent manifest-only forged identity fails actual metadata binding",
+      "pass": true
+    },
+    {
+      "name": "separate replay write/removal does not alter immutable archive metadata",
+      "pass": true
+    },
+    {
+      "name": "complete synthetic receipt set passes coverage only",
+      "pass": true
+    },
+    {
+      "name": "missing fresh replay fails coverage despite all metadata present",
+      "pass": true
+    },
+    {
+      "name": "duplicated replay cannot replace missing canonical identity",
+      "pass": true
+    },
+    {
+      "name": "fresh replay directory must bind its canonical identity",
+      "pass": true
+    },
+    {
+      "name": "pure coverage gates do not mutate supplied manifest",
+      "pass": true
+    }
+  ],
+  "test_count": 33,
+  "failed": 0,
+  "fixture_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_bridge_independent_review_3f66cbf5",
+  "actual_coverage_zip_bytes": 450561,
+  "fixture_payload_is_science": false,
+  "science_or_R1_executed": false,
+  "real_large_witness_bytes_read": 0,
+  "live_science_files_modified": false,
+  "frozen_author_outputs_modified": false,
+  "scientific_ready": false,
+  "synthetic_receipts_are_actual_scientific_replays": false,
+  "source_sha256": {
+    "d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+    "d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+    "d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+    "package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953"
+  }
+}

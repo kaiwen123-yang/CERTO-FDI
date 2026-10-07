@@ -1,0 +1,711 @@
+{
+  "schema": "github-final-stop-publication-supplement-v1",
+  "status": "PASS_ACTUAL_NEW_COMPLETED_CASE_BYTE_SUPPLEMENT_FINAL_STOP",
+  "scope": "FINAL_STOP_NEW_COMPLETED_CASE_BYTE_SUPPLEMENT_NOT_FULL400_OR_NEW_SCIENCE_REPLAY",
+  "source_sha256": "59eb0889d9159de25daa954d6fd05877f619c51e1883d4f37750176c2917966e",
+  "observed_utc": "2026-10-07T11:43:42.673869+00:00",
+  "scientific_ready": false,
+  "full400": false,
+  "old_1111_inventory_sha256": "30792da4d9d45e6bda040a606741d3ca4a392450d27f58397846e256e58fdd9f",
+  "old_1111_materials_modified": false,
+  "latest_stop_table_sha256": "2d6eb3f0beba4be3ff1040a3bb5d3d24785e8fcb23610c67f2af169bfcd7a5fa",
+  "risk_counts": {
+    "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+    "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 98,
+    "CERTIFIED_TARGET_PASS": 57,
+    "NOT_RUN": 171
+  },
+  "old_canonical_cases": 136,
+  "new_canonical_cases": 3,
+  "total_canonical_cases": 139,
+  "new_CASEs": [
+    {
+      "directory": "work/d2a_cert_h400_fixed20_average250",
+      "case": "D2A_H400_FIXED20_AVERAGE250",
+      "status": "CERTIFIED_TARGET_PASS",
+      "case_result_sha256": "44b65b62165a68884b2538ee67015886de1e9c23b48ae7970f2799df94fa74c6",
+      "selected_receipt_sha256": "e5aa47589fcf9dfbe0f059cad5243bad9dd8b8926a89b6c0c51cb9c9b7e2f749",
+      "logical_rows": [
+        {
+          "H_post_slots": "400",
+          "family": "fixed20",
+          "stage_endpoint": "",
+          "readout": "average250",
+          "risk_status": "CERTIFIED_TARGET_PASS"
+        }
+      ],
+      "payload_bytes": 252262503,
+      "files": [
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/ACTUAL_PROTOCOL.json",
+          "bytes": 155875,
+          "expected_sha256": "1374c142eb3c819809f467a3531ea952a0ce556fee9335666a67258142066547",
+          "mtime_ns": 1791371023375633700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/audit/D2A_H400_FIXED20_AVERAGE250_ADJOINT_JET.json.gz",
+          "bytes": 251801346,
+          "expected_sha256": "327a597138d53fce99bd518cd7ae40d82ed76edc86abf2d1915a97502ab297b6",
+          "mtime_ns": 1791371083739133400,
+          "metadata_in_Git": false
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/audit/D2A_H400_FIXED20_AVERAGE250_DIRECTION_CERTIFICATE.json",
+          "bytes": 25812,
+          "expected_sha256": "046b970a96efb7dfe7b517cd81e0f9be5d205b1d3d78f718f98236d0e1497e20",
+          "mtime_ns": 1791371294489032200,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/audit/D2A_H400_FIXED20_AVERAGE250_DIRECTION_VERIFY.json",
+          "bytes": 378,
+          "expected_sha256": "4e05add97ab9380794adbddb5de79946c3489d001eafb31753c38f255a3be099",
+          "mtime_ns": 1791371524965002700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/CASE_RESULT.json",
+          "bytes": 196224,
+          "expected_sha256": "44b65b62165a68884b2538ee67015886de1e9c23b48ae7970f2799df94fa74c6",
+          "mtime_ns": 1791371294874344900,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/DIRECTION.json",
+          "bytes": 37124,
+          "expected_sha256": "c1654764dfa7cdabb41d4177cd9e9248b191bdfa9a0e123fcfb5cf7bc4336347",
+          "mtime_ns": 1791371023376639300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/generate_attempt_1791371023097911400.log",
+          "bytes": 2430,
+          "expected_sha256": "0c462872830f6f8219bd018838db0826bb84ef436595036d8d6ae9a60226dc85",
+          "mtime_ns": 1791371294887249100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/generate_batch_stdout.log",
+          "bytes": 2404,
+          "expected_sha256": "32d790eff1e7f1dfa9347c754f22c7dc2239c5deb993a32e82805ace5ce8bd55",
+          "mtime_ns": 1791371295917592300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/PROJECTION_CERTIFICATE.json",
+          "bytes": 28968,
+          "expected_sha256": "9aa0ad8c94202ecbd86c1928876cf2191a6dcb5fbccea5dfe226d18cd69698d1",
+          "mtime_ns": 1791371023376639300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/STDLIB_VERIFICATION_RECEIPT.json",
+          "bytes": 3514,
+          "expected_sha256": "e5aa47589fcf9dfbe0f059cad5243bad9dd8b8926a89b6c0c51cb9c9b7e2f749",
+          "mtime_ns": 1791371525693561500,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/stdlib_verify_attempt_1791371295917592300.log",
+          "bytes": 3888,
+          "expected_sha256": "03c2666293345d6c9b027cd057596ec8768638bbbcbe58363d53ac876dbea753",
+          "mtime_ns": 1791371525694562500,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/stdlib_verify_batch_stdout.log",
+          "bytes": 3877,
+          "expected_sha256": "af49755de4002f84d08525b0187530ef5715871cf3123b3bdf833732baebe4fb",
+          "mtime_ns": 1791371525714585300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_average250/SUMMARY.json",
+          "bytes": 663,
+          "expected_sha256": "19ddda8a056f85048c2003139ac7e65d5bee3596ed13a387f066ff80079bbf03",
+          "mtime_ns": 1791371294875340600,
+          "metadata_in_Git": true
+        }
+      ]
+    },
+    {
+      "directory": "work/d2a_cert_h400_fixed20_point_last_fast_read",
+      "case": "D2A_H400_FIXED20_POINT_LAST_FAST_READ",
+      "status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "case_result_sha256": "65f69bd833197834e752305c0815c9d327e23c4fb15d2a57852732526b4953eb",
+      "selected_receipt_sha256": "9d3809b3a0765870059f89a3ae7d6aa3bdd539658048d95bd46555cdb384a337",
+      "logical_rows": [
+        {
+          "H_post_slots": "400",
+          "family": "fixed20",
+          "stage_endpoint": "",
+          "readout": "point_last_fast_read",
+          "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET"
+        }
+      ],
+      "payload_bytes": 256041959,
+      "files": [
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/ACTUAL_PROTOCOL.json",
+          "bytes": 156382,
+          "expected_sha256": "bf52cd407f8f71c4e76a1a40f27e05f5151735d0d918b55c40edcaf73bdd1f0e",
+          "mtime_ns": 1791371526048097700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/audit/D2A_H400_FIXED20_POINT_LAST_FAST_READ_ADJOINT_JET.json.gz",
+          "bytes": 255584017,
+          "expected_sha256": "65d6a2ce5c0799a3e6521540600c3f32c866f22f915960bfff9e790c5348d290",
+          "mtime_ns": 1791371587020603800,
+          "metadata_in_Git": false
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/audit/D2A_H400_FIXED20_POINT_LAST_FAST_READ_DIRECTION_CERTIFICATE.json",
+          "bytes": 26041,
+          "expected_sha256": "34f5111a3e1cd0137a8641ff55c501270c94e99501afd1714605c8cae1ee924e",
+          "mtime_ns": 1791371798467988800,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/audit/D2A_H400_FIXED20_POINT_LAST_FAST_READ_DIRECTION_VERIFY.json",
+          "bytes": 378,
+          "expected_sha256": "c22714d5e6861219657cac81c8147e2104ceec25979c5c5efc537886685c0f77",
+          "mtime_ns": 1791372011688321400,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/CASE_RESULT.json",
+          "bytes": 192111,
+          "expected_sha256": "65f69bd833197834e752305c0815c9d327e23c4fb15d2a57852732526b4953eb",
+          "mtime_ns": 1791371798857261100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/DIRECTION.json",
+          "bytes": 37104,
+          "expected_sha256": "97512c9cd8deba2190a050e45ea340d695d3332be991f8f88d736fdee82175e7",
+          "mtime_ns": 1791371526049239700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/generate_attempt_1791371525771945400.log",
+          "bytes": 2496,
+          "expected_sha256": "855297f0c0031c54370aa08c59c116e7d7b99a893dc0f7d21d3d4a163fc89d5d",
+          "mtime_ns": 1791371798860371300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/generate_batch_stdout.log",
+          "bytes": 2470,
+          "expected_sha256": "cfebfc8f9df43814520eb8274bd50c8dff7112518100365ab0bea0748fe1f042",
+          "mtime_ns": 1791371799872738700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/PROJECTION_CERTIFICATE.json",
+          "bytes": 28817,
+          "expected_sha256": "936e61c063f8308c6366666d3b5605a78209371280aced4aed7f80c4c6b6863f",
+          "mtime_ns": 1791371526048097700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/STDLIB_VERIFICATION_RECEIPT.json",
+          "bytes": 3562,
+          "expected_sha256": "9d3809b3a0765870059f89a3ae7d6aa3bdd539658048d95bd46555cdb384a337",
+          "mtime_ns": 1791372012394998300,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/stdlib_verify_attempt_1791371799873250500.log",
+          "bytes": 3935,
+          "expected_sha256": "d0599a98c3b1fb9b26d01e2a5fb1302be83b92aa2a4b9257709d81216f7a7577",
+          "mtime_ns": 1791372012395998600,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/stdlib_verify_batch_stdout.log",
+          "bytes": 3924,
+          "expected_sha256": "0bc7855ca6dc06b145e81759c121ac284d897151d5e16cc08badb823f5b1706f",
+          "mtime_ns": 1791372012417118100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/SUMMARY.json",
+          "bytes": 722,
+          "expected_sha256": "dd05c6ef28fcda0a47baf0508e3cb4ab05de145b107fafb039d505fd7d03c569",
+          "mtime_ns": 1791371798857911500,
+          "metadata_in_Git": true
+        }
+      ]
+    },
+    {
+      "directory": "work/d2a_cert_h400_fixed40_average250",
+      "case": "D2A_H400_FIXED40_AVERAGE250",
+      "status": "CERTIFIED_TARGET_PASS",
+      "case_result_sha256": "1873326dc5814e755fa3e9b44537e3b02bf1474aa1e89b6fbd16926a9715edbf",
+      "selected_receipt_sha256": "37050d5693cd4cbdcc467d5c9420e2896c7db53b23a03e886411e3ba2e117779",
+      "logical_rows": [
+        {
+          "H_post_slots": "400",
+          "family": "fixed40",
+          "stage_endpoint": "",
+          "readout": "average250",
+          "risk_status": "CERTIFIED_TARGET_PASS"
+        }
+      ],
+      "payload_bytes": 255854674,
+      "files": [
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/ACTUAL_PROTOCOL.json",
+          "bytes": 188776,
+          "expected_sha256": "bf1ff09601478bbd21cd37725f99c1c30c14afff11fc78374ba3287365695ecc",
+          "mtime_ns": 1791372012806014400,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/audit/D2A_H400_FIXED40_AVERAGE250_ADJOINT_JET.json.gz",
+          "bytes": 255319737,
+          "expected_sha256": "dc23f2e21efcaa5178153dd8cbc8070df6c50353ad5a07cedc323e79d1a406a4",
+          "mtime_ns": 1791372076551039700,
+          "metadata_in_Git": false
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/audit/D2A_H400_FIXED40_AVERAGE250_DIRECTION_CERTIFICATE.json",
+          "bytes": 25442,
+          "expected_sha256": "3df896cda42ecbddcbcede9f4921c0c81286f77105cd60e1a450349940f5b42a",
+          "mtime_ns": 1791372306179347100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/audit/D2A_H400_FIXED40_AVERAGE250_DIRECTION_VERIFY.json",
+          "bytes": 378,
+          "expected_sha256": "84608c0d35ab3b34857fd47d48d5633b1d39faed087cf0d06227ccc992a1fbdf",
+          "mtime_ns": 1791372559785600000,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/CASE_RESULT.json",
+          "bytes": 226199,
+          "expected_sha256": "1873326dc5814e755fa3e9b44537e3b02bf1474aa1e89b6fbd16926a9715edbf",
+          "mtime_ns": 1791372308126302100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/DIRECTION.json",
+          "bytes": 42784,
+          "expected_sha256": "08a4e8619d171a29e95f2a49cd7c40189ff1d00e2e2363a79fdae196724566c8",
+          "mtime_ns": 1791372012807012700,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/generate_attempt_1791372012469498100.log",
+          "bytes": 2461,
+          "expected_sha256": "bbe8ad8b7ed12b4f77221c927b35c8f48d2d642139a97dca1629465a46274a1b",
+          "mtime_ns": 1791372308128928500,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/generate_batch_stdout.log",
+          "bytes": 2435,
+          "expected_sha256": "5e4eb2664f27a0a482e0d406b9473e4b4f24d5c06501a70406153b301626de21",
+          "mtime_ns": 1791372309196889200,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/PROJECTION_CERTIFICATE.json",
+          "bytes": 34530,
+          "expected_sha256": "28fec8ff606f57f6871b50ee02b11d5a78042f7b67796243306a1b46bcd8c232",
+          "mtime_ns": 1791372012806014400,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/STDLIB_VERIFICATION_RECEIPT.json",
+          "bytes": 3513,
+          "expected_sha256": "37050d5693cd4cbdcc467d5c9420e2896c7db53b23a03e886411e3ba2e117779",
+          "mtime_ns": 1791372562123400800,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/stdlib_verify_attempt_1791372309198057200.log",
+          "bytes": 3884,
+          "expected_sha256": "8d55dd09eb9686580c4ea9c676964cf39d09da50a887c5ebdbde4e13571916e4",
+          "mtime_ns": 1791372562124002600,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/stdlib_verify_batch_stdout.log",
+          "bytes": 3873,
+          "expected_sha256": "213c06126778ad66315cff121199b8e32da9b434e5e4c7e1c928a4d1af6e17e0",
+          "mtime_ns": 1791372562144925100,
+          "metadata_in_Git": true
+        },
+        {
+          "path": "work/d2a_cert_h400_fixed40_average250/SUMMARY.json",
+          "bytes": 662,
+          "expected_sha256": "aaf9adf38edd45e495100da6bb1d4ec3af23e527c55d78d3032c99613ef4f1b7",
+          "mtime_ns": 1791372308126302100,
+          "metadata_in_Git": true
+        }
+      ]
+    }
+  ],
+  "stage_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\github_publication_stop_supplement_20261007",
+  "metadata_stage_files": [
+    {
+      "path": "work/d2a_cert_review_bound_table.csv",
+      "bytes": 2085594,
+      "sha256": "2d6eb3f0beba4be3ff1040a3bb5d3d24785e8fcb23610c67f2af169bfcd7a5fa",
+      "scope": "LATEST_FINAL_STOP_DATED_SNAPSHOT_NOT_FULL400"
+    },
+    {
+      "path": "work/d2a_cert_review_bound_table_receipt.json",
+      "bytes": 2086,
+      "sha256": "732c021670680af17cbb36e99c732bad5325d2d29e248b8ca684b90da9faf9c1",
+      "scope": "LATEST_FINAL_STOP_DATED_SNAPSHOT_NOT_FULL400"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/ACTUAL_PROTOCOL.json",
+      "bytes": 155875,
+      "sha256": "1374c142eb3c819809f467a3531ea952a0ce556fee9335666a67258142066547",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/audit/D2A_H400_FIXED20_AVERAGE250_DIRECTION_CERTIFICATE.json",
+      "bytes": 25812,
+      "sha256": "046b970a96efb7dfe7b517cd81e0f9be5d205b1d3d78f718f98236d0e1497e20",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/audit/D2A_H400_FIXED20_AVERAGE250_DIRECTION_VERIFY.json",
+      "bytes": 378,
+      "sha256": "4e05add97ab9380794adbddb5de79946c3489d001eafb31753c38f255a3be099",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/CASE_RESULT.json",
+      "bytes": 196224,
+      "sha256": "44b65b62165a68884b2538ee67015886de1e9c23b48ae7970f2799df94fa74c6",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/DIRECTION.json",
+      "bytes": 37124,
+      "sha256": "c1654764dfa7cdabb41d4177cd9e9248b191bdfa9a0e123fcfb5cf7bc4336347",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/generate_attempt_1791371023097911400.log",
+      "bytes": 2430,
+      "sha256": "0c462872830f6f8219bd018838db0826bb84ef436595036d8d6ae9a60226dc85",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/generate_batch_stdout.log",
+      "bytes": 2404,
+      "sha256": "32d790eff1e7f1dfa9347c754f22c7dc2239c5deb993a32e82805ace5ce8bd55",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/PROJECTION_CERTIFICATE.json",
+      "bytes": 28968,
+      "sha256": "9aa0ad8c94202ecbd86c1928876cf2191a6dcb5fbccea5dfe226d18cd69698d1",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/STDLIB_VERIFICATION_RECEIPT.json",
+      "bytes": 3514,
+      "sha256": "e5aa47589fcf9dfbe0f059cad5243bad9dd8b8926a89b6c0c51cb9c9b7e2f749",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/stdlib_verify_attempt_1791371295917592300.log",
+      "bytes": 3888,
+      "sha256": "03c2666293345d6c9b027cd057596ec8768638bbbcbe58363d53ac876dbea753",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/stdlib_verify_batch_stdout.log",
+      "bytes": 3877,
+      "sha256": "af49755de4002f84d08525b0187530ef5715871cf3123b3bdf833732baebe4fb",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_average250/SUMMARY.json",
+      "bytes": 663,
+      "sha256": "19ddda8a056f85048c2003139ac7e65d5bee3596ed13a387f066ff80079bbf03",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/ACTUAL_PROTOCOL.json",
+      "bytes": 156382,
+      "sha256": "bf52cd407f8f71c4e76a1a40f27e05f5151735d0d918b55c40edcaf73bdd1f0e",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/audit/D2A_H400_FIXED20_POINT_LAST_FAST_READ_DIRECTION_CERTIFICATE.json",
+      "bytes": 26041,
+      "sha256": "34f5111a3e1cd0137a8641ff55c501270c94e99501afd1714605c8cae1ee924e",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/audit/D2A_H400_FIXED20_POINT_LAST_FAST_READ_DIRECTION_VERIFY.json",
+      "bytes": 378,
+      "sha256": "c22714d5e6861219657cac81c8147e2104ceec25979c5c5efc537886685c0f77",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/CASE_RESULT.json",
+      "bytes": 192111,
+      "sha256": "65f69bd833197834e752305c0815c9d327e23c4fb15d2a57852732526b4953eb",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/DIRECTION.json",
+      "bytes": 37104,
+      "sha256": "97512c9cd8deba2190a050e45ea340d695d3332be991f8f88d736fdee82175e7",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/generate_attempt_1791371525771945400.log",
+      "bytes": 2496,
+      "sha256": "855297f0c0031c54370aa08c59c116e7d7b99a893dc0f7d21d3d4a163fc89d5d",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/generate_batch_stdout.log",
+      "bytes": 2470,
+      "sha256": "cfebfc8f9df43814520eb8274bd50c8dff7112518100365ab0bea0748fe1f042",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/PROJECTION_CERTIFICATE.json",
+      "bytes": 28817,
+      "sha256": "936e61c063f8308c6366666d3b5605a78209371280aced4aed7f80c4c6b6863f",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/STDLIB_VERIFICATION_RECEIPT.json",
+      "bytes": 3562,
+      "sha256": "9d3809b3a0765870059f89a3ae7d6aa3bdd539658048d95bd46555cdb384a337",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/stdlib_verify_attempt_1791371799873250500.log",
+      "bytes": 3935,
+      "sha256": "d0599a98c3b1fb9b26d01e2a5fb1302be83b92aa2a4b9257709d81216f7a7577",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/stdlib_verify_batch_stdout.log",
+      "bytes": 3924,
+      "sha256": "0bc7855ca6dc06b145e81759c121ac284d897151d5e16cc08badb823f5b1706f",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed20_point_last_fast_read/SUMMARY.json",
+      "bytes": 722,
+      "sha256": "dd05c6ef28fcda0a47baf0508e3cb4ab05de145b107fafb039d505fd7d03c569",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/ACTUAL_PROTOCOL.json",
+      "bytes": 188776,
+      "sha256": "bf1ff09601478bbd21cd37725f99c1c30c14afff11fc78374ba3287365695ecc",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/audit/D2A_H400_FIXED40_AVERAGE250_DIRECTION_CERTIFICATE.json",
+      "bytes": 25442,
+      "sha256": "3df896cda42ecbddcbcede9f4921c0c81286f77105cd60e1a450349940f5b42a",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/audit/D2A_H400_FIXED40_AVERAGE250_DIRECTION_VERIFY.json",
+      "bytes": 378,
+      "sha256": "84608c0d35ab3b34857fd47d48d5633b1d39faed087cf0d06227ccc992a1fbdf",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/CASE_RESULT.json",
+      "bytes": 226199,
+      "sha256": "1873326dc5814e755fa3e9b44537e3b02bf1474aa1e89b6fbd16926a9715edbf",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/DIRECTION.json",
+      "bytes": 42784,
+      "sha256": "08a4e8619d171a29e95f2a49cd7c40189ff1d00e2e2363a79fdae196724566c8",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/generate_attempt_1791372012469498100.log",
+      "bytes": 2461,
+      "sha256": "bbe8ad8b7ed12b4f77221c927b35c8f48d2d642139a97dca1629465a46274a1b",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/generate_batch_stdout.log",
+      "bytes": 2435,
+      "sha256": "5e4eb2664f27a0a482e0d406b9473e4b4f24d5c06501a70406153b301626de21",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/PROJECTION_CERTIFICATE.json",
+      "bytes": 34530,
+      "sha256": "28fec8ff606f57f6871b50ee02b11d5a78042f7b67796243306a1b46bcd8c232",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/STDLIB_VERIFICATION_RECEIPT.json",
+      "bytes": 3513,
+      "sha256": "37050d5693cd4cbdcc467d5c9420e2896c7db53b23a03e886411e3ba2e117779",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/stdlib_verify_attempt_1791372309198057200.log",
+      "bytes": 3884,
+      "sha256": "8d55dd09eb9686580c4ea9c676964cf39d09da50a887c5ebdbde4e13571916e4",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/stdlib_verify_batch_stdout.log",
+      "bytes": 3873,
+      "sha256": "213c06126778ad66315cff121199b8e32da9b434e5e4c7e1c928a4d1af6e17e0",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "work/d2a_cert_h400_fixed40_average250/SUMMARY.json",
+      "bytes": 662,
+      "sha256": "aaf9adf38edd45e495100da6bb1d4ec3af23e527c55d78d3032c99613ef4f1b7",
+      "scope": "NEW_ACCEPTED_CASE_SMALL_METADATA"
+    },
+    {
+      "path": "outputs/github_final_stop_supplement_v1.py",
+      "bytes": 13044,
+      "sha256": "59eb0889d9159de25daa954d6fd05877f619c51e1883d4f37750176c2917966e",
+      "scope": "PUBLICATION_ONLY_BUILDER_NO_SCIENCE_OR_REMOTE"
+    },
+    {
+      "path": "work/github_final_stop_supplement_builder_v1.py",
+      "bytes": 13044,
+      "sha256": "59eb0889d9159de25daa954d6fd05877f619c51e1883d4f37750176c2917966e",
+      "scope": "PUBLICATION_ONLY_BUILDER_NO_SCIENCE_OR_REMOTE"
+    }
+  ],
+  "cancelled_stop_index": {
+    "scope": "USER_CANCELLED_PENDING_STDLIB_SITE_INDEX_NOT_SCIENCE_FAILURE_OR_PASS",
+    "directory": "work/d2a_cert_h400_fixed40_point_last_fast_read",
+    "strict_rows": [
+      {
+        "H_post_slots": "400",
+        "family": "fixed40",
+        "stage_endpoint": "",
+        "readout": "point_last_fast_read",
+        "risk_status": "NOT_RUN",
+        "certificate_reference": ""
+      }
+    ],
+    "matched_current_pass_receipt": false,
+    "included_in_science_assets": false,
+    "files": [
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/ACTUAL_PROTOCOL.json",
+        "bytes": 189068,
+        "mtime_ns": 1791372563129474700
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/audit/D2A_H400_FIXED40_POINT_LAST_FAST_READ_ADJOINT_JET.json.gz",
+        "bytes": 261260028,
+        "mtime_ns": 1791372624237482500
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/audit/D2A_H400_FIXED40_POINT_LAST_FAST_READ_DIRECTION_CERTIFICATE.json",
+        "bytes": 25584,
+        "mtime_ns": 1791372849618089600
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/CASE_RESULT.json",
+        "bytes": 224593,
+        "mtime_ns": 1791372849960754700
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/DIRECTION.json",
+        "bytes": 42093,
+        "mtime_ns": 1791372563131086500
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/generate_attempt_1791372562209898800.log",
+        "bytes": 2505,
+        "mtime_ns": 1791372849973559300
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/generate_batch_stdout.log",
+        "bytes": 2479,
+        "mtime_ns": 1791372850942012700
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/PROJECTION_CERTIFICATE.json",
+        "bytes": 33844,
+        "mtime_ns": 1791372563130009400
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/stdlib_verify_attempt_1791372850943106200.log",
+        "bytes": 314,
+        "mtime_ns": 1791372972753955700
+      },
+      {
+        "path": "work/d2a_cert_h400_fixed40_point_last_fast_read/SUMMARY.json",
+        "bytes": 719,
+        "mtime_ns": 1791372849961754400
+      }
+    ],
+    "generated_CASE_present": true,
+    "full_STDLIB_receipt_present": false
+  },
+  "latest_stop_status": {
+    "scope": "FINAL_STOP_PUBLICATION_SNAPSHOT_NOT_COMPLETE_SCIENCE",
+    "observed_utc": "2026-10-07T11:43:42.673869+00:00",
+    "goal_status": "PAUSED_NOT_FALSE_COMPLETED",
+    "user_requested_task_end": true,
+    "background_science_and_publisher_stopped": true,
+    "actual_process_check": {
+      "actual_CIM_related_processes": [],
+      "science_PIDs_checked": [
+        62844,
+        10032,
+        75228
+      ],
+      "all_absent": true
+    },
+    "older_snapshot_utc": "2026-10-07T11:11:00.612216+00:00",
+    "older_snapshot_preserved": true,
+    "latest_stop_table_sha256": "2d6eb3f0beba4be3ff1040a3bb5d3d24785e8fcb23610c67f2af169bfcd7a5fa",
+    "rows": 400,
+    "risk_counts": {
+      "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+      "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 98,
+      "CERTIFIED_TARGET_PASS": 57,
+      "NOT_RUN": 171
+    },
+    "new_canonical_cases": 3,
+    "total_old_and_new_canonical_cases": 139,
+    "full400": false,
+    "scientific_ready": false,
+    "this_is_live_table": false,
+    "cancelled_pending_case_scientific_status": "NOT_RUN; not relabelled FAIL/PASS",
+    "new_CASEs_receipt_binding_accepted": true
+  },
+  "asset": {
+    "path": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\github_publication_stop_supplement_20261007\\release_assets\\D2A_UNFINISHED_COLD_CASES_011_FINAL_STOP.zip",
+    "bytes": 764192249,
+    "sha256": "a836017ed5ca1048297556c1ace4cc76ec4d66a8e6698b8f3c7e7123b4d57151",
+    "manifest_sha256": "36d64afd421bad92ccb9a2508cca9cf86e0a069522a7ad142a24eb71a647eaec",
+    "actual_payloads_fully_hashed": 39,
+    "actual_ZIP_reopened_member_SHA_and_CRC_checked": true
+  },
+  "original_selected_source_tree_stat_and_prior_hash_bindings_unchanged": true,
+  "actual_CIM_no_science_before_after": true,
+  "science_R1_theory_or_remote_actions_performed": false,
+  "root_code_claims_ledger_master_or_old_publication_modified": false
+}

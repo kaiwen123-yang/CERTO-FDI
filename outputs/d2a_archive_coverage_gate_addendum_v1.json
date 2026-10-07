@@ -1,0 +1,53 @@
+{
+  "schema": "d2a-archive-coverage-gate-addendum-v1",
+  "date": "2026-10-07",
+  "status": "PASS_LIMITED_PURE_COVERAGE_AND_REAL_TINY_ZIP_FIXTURES",
+  "scientific_ready": false,
+  "full400_scientific_replay_executed": false,
+  "full_archive_built": false,
+  "real_large_witness_bytes_read": 0,
+  "R1_bootstrap_executed": false,
+  "original_gap_confirmed": true,
+  "current_source_sha256": {
+    "d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+    "package_full_d2a_release_v2.py": "97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f",
+    "d2a_archive_coverage_gate_fixtures_v1.py": "314030b67dac31624f74cd014d7332d4b67fd1a2e250ea28e90037061903793c"
+  },
+  "initial_recipe_history": {
+    "path": "references/release_recipe_history/1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307.py",
+    "sha256": "1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307"
+  },
+  "initial_IO_artifacts_preserved_sha256": {
+    "d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+    "d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+    "d2a_archive_view_bridge_fixtures_v1.py": "5f262131a8d111cb233707428a695e5b3443565c46328e2965483d5f223b4961",
+    "d2a_archive_view_bridge_fixture_results_v1.json": "625125c7f29daf9552c33ee77f365ad7429694f7600326298a789e6bace16ee1",
+    "d2a_archive_view_bridge_v1.md": "54af455b080ba1a27d6beec5c8deef35bf24c22128bc9407a5a1a7013b2915c5",
+    "d2a_archive_view_bridge_v1.json": "8509c76ca634578e0d1fbb1f8b71f3b66350dba3f44a266105d0504bdc4ff9f8"
+  },
+  "v1_artifacts_preserved_sha256": {
+    "d2a_full_grid_acceptance_v1.py": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+    "package_full_d2a_release_v1.py": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920",
+    "full_d2a_release_contract_v1.md": "d633636c7d145b88de4c324d0dd772addef0afac8c700dbae43ccb462834dd80",
+    "full_d2a_release_contract_v1.json": "b822b2aae5296f10a6bf82ace28629b647e3ea1ef0080e06315f354dcd40b2f6"
+  },
+  "fixture": {
+    "path": "outputs/d2a_archive_coverage_gate_fixture_results_v1.json",
+    "sha256": "909a1c3a10bcfbfd141b7e00d2b3c143db5896f33c3a5b68297038076a8c9180",
+    "status": "PASS_REAL_TINY_ZIP_AND_PURE_REPLAY_COVERAGE_FIXTURES",
+    "checks": 22,
+    "failures": 0,
+    "actual_tiny_zip_bytes": 450561,
+    "synthetic_rows": 400,
+    "synthetic_science_rows": 3,
+    "synthetic_cases": 2,
+    "synthetic_receipt_records_are_real_replays": false
+  },
+  "coverage_gates": [
+    "manifest exact row0..399/logical keys/science identities/case row sets/directories/payload bindings before shared extraction",
+    "actual immutable ZIP CSV/direction/CASE identity and directory bindings before shared extraction/R1/replay",
+    "fresh independent case replay result identity set exactly all canonical science cases"
+  ],
+  "report_md_sha256": "d732fd68ce9614d1ddea159674ebca66489aa1042b9584eea6c6c134790cdbf7",
+  "original_live_or_main_modified": false
+}

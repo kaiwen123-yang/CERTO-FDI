@@ -1,0 +1,22 @@
+COMPONENT RETURN 0.9992296120705464 0.020673009387977087 cross_cov_bound 2e-22
+EVENT 42500 1 2.7958963758826002e-11
+EVENT 250000 20 1.6562525430386437e-10
+EVENT 76000 10 5.067372780749528e-11
+RISK same42.5s fixed contrast with certified tight variance t 0.005924777294457681 z 31.845269798029936 event 2.7958963758826002e-11 power 0.999999999972041
+RISK H300 with4 no-fault prefix slots and10 transfers t 0.004021093561282144 z 164.02237133019722 event 5.067372780749528e-11 power 0.9999999999493263
+PASS 48 exact Abel cases, 184-node KKT, prefix and provenance checks
+{
+  "status": "PASS",
+  "input_hashes": 395,
+  "analytic_model_rebuilt_exactly": true,
+  "inherited_nonlinear_verifiers_rerun": true,
+  "logical_scalar_coefficient_checks": 25596000,
+  "all_input_hashes_unchanged_after": true,
+  "no_memory_truncation": true,
+  "no_Gaussian_reset": true,
+  "new_exact_Abel_cases": 48,
+  "nodal_KKT_nodes": 184,
+  "risk_cases": 2,
+  "full_scope": "actual fixed directions only; finite deterministic calendars; source and move component induction; no claim of colored sharp minimax constants",
+  "runtime_seconds": 192.002
+}

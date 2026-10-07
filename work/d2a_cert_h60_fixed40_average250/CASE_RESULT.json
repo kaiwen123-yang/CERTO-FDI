@@ -1,0 +1,1293 @@
+{
+  "case": "D2A_H60_FIXED40_AVERAGE250",
+  "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+  "calendar": {
+    "H_post_slots": 60,
+    "family": "fixed40",
+    "stage_endpoint": null,
+    "T_fast_steps": 16000,
+    "prefix_slots": 4,
+    "moves": [
+      [
+        11000,
+        12500
+      ]
+    ],
+    "observations": [
+      {
+        "relative_node": -3,
+        "slot_zero_based": 0,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 0,
+        "point_hold_age_steps": 249,
+        "average_indices": [
+          0,
+          250
+        ],
+        "point_index": 249,
+        "point_sample_time_s": "249/1000",
+        "available_time_s": "1/4",
+        "sample_average_time_s": "249/2000",
+        "continuous_slot_midpoint_s": "1/8"
+      },
+      {
+        "relative_node": -2,
+        "slot_zero_based": 1,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 250,
+        "point_hold_age_steps": 499,
+        "average_indices": [
+          250,
+          500
+        ],
+        "point_index": 499,
+        "point_sample_time_s": "499/1000",
+        "available_time_s": "1/2",
+        "sample_average_time_s": "749/2000",
+        "continuous_slot_midpoint_s": "3/8"
+      },
+      {
+        "relative_node": -1,
+        "slot_zero_based": 2,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 500,
+        "point_hold_age_steps": 749,
+        "average_indices": [
+          500,
+          750
+        ],
+        "point_index": 749,
+        "point_sample_time_s": "749/1000",
+        "available_time_s": "3/4",
+        "sample_average_time_s": "1249/2000",
+        "continuous_slot_midpoint_s": "5/8"
+      },
+      {
+        "relative_node": 0,
+        "slot_zero_based": 3,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 750,
+        "point_hold_age_steps": 999,
+        "average_indices": [
+          750,
+          1000
+        ],
+        "point_index": 999,
+        "point_sample_time_s": "999/1000",
+        "available_time_s": "1",
+        "sample_average_time_s": "1749/2000",
+        "continuous_slot_midpoint_s": "7/8"
+      },
+      {
+        "relative_node": 1,
+        "slot_zero_based": 4,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 1000,
+        "point_hold_age_steps": 1249,
+        "average_indices": [
+          1000,
+          1250
+        ],
+        "point_index": 1249,
+        "point_sample_time_s": "1249/1000",
+        "available_time_s": "5/4",
+        "sample_average_time_s": "2249/2000",
+        "continuous_slot_midpoint_s": "9/8"
+      },
+      {
+        "relative_node": 2,
+        "slot_zero_based": 5,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 1250,
+        "point_hold_age_steps": 1499,
+        "average_indices": [
+          1250,
+          1500
+        ],
+        "point_index": 1499,
+        "point_sample_time_s": "1499/1000",
+        "available_time_s": "3/2",
+        "sample_average_time_s": "2749/2000",
+        "continuous_slot_midpoint_s": "11/8"
+      },
+      {
+        "relative_node": 3,
+        "slot_zero_based": 6,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 1500,
+        "point_hold_age_steps": 1749,
+        "average_indices": [
+          1500,
+          1750
+        ],
+        "point_index": 1749,
+        "point_sample_time_s": "1749/1000",
+        "available_time_s": "7/4",
+        "sample_average_time_s": "3249/2000",
+        "continuous_slot_midpoint_s": "13/8"
+      },
+      {
+        "relative_node": 4,
+        "slot_zero_based": 7,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 1750,
+        "point_hold_age_steps": 1999,
+        "average_indices": [
+          1750,
+          2000
+        ],
+        "point_index": 1999,
+        "point_sample_time_s": "1999/1000",
+        "available_time_s": "2",
+        "sample_average_time_s": "3749/2000",
+        "continuous_slot_midpoint_s": "15/8"
+      },
+      {
+        "relative_node": 5,
+        "slot_zero_based": 8,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 2000,
+        "point_hold_age_steps": 2249,
+        "average_indices": [
+          2000,
+          2250
+        ],
+        "point_index": 2249,
+        "point_sample_time_s": "2249/1000",
+        "available_time_s": "9/4",
+        "sample_average_time_s": "4249/2000",
+        "continuous_slot_midpoint_s": "17/8"
+      },
+      {
+        "relative_node": 6,
+        "slot_zero_based": 9,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 2250,
+        "point_hold_age_steps": 2499,
+        "average_indices": [
+          2250,
+          2500
+        ],
+        "point_index": 2499,
+        "point_sample_time_s": "2499/1000",
+        "available_time_s": "5/2",
+        "sample_average_time_s": "4749/2000",
+        "continuous_slot_midpoint_s": "19/8"
+      },
+      {
+        "relative_node": 7,
+        "slot_zero_based": 10,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 2500,
+        "point_hold_age_steps": 2749,
+        "average_indices": [
+          2500,
+          2750
+        ],
+        "point_index": 2749,
+        "point_sample_time_s": "2749/1000",
+        "available_time_s": "11/4",
+        "sample_average_time_s": "5249/2000",
+        "continuous_slot_midpoint_s": "21/8"
+      },
+      {
+        "relative_node": 8,
+        "slot_zero_based": 11,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 2750,
+        "point_hold_age_steps": 2999,
+        "average_indices": [
+          2750,
+          3000
+        ],
+        "point_index": 2999,
+        "point_sample_time_s": "2999/1000",
+        "available_time_s": "3",
+        "sample_average_time_s": "5749/2000",
+        "continuous_slot_midpoint_s": "23/8"
+      },
+      {
+        "relative_node": 9,
+        "slot_zero_based": 12,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 3000,
+        "point_hold_age_steps": 3249,
+        "average_indices": [
+          3000,
+          3250
+        ],
+        "point_index": 3249,
+        "point_sample_time_s": "3249/1000",
+        "available_time_s": "13/4",
+        "sample_average_time_s": "6249/2000",
+        "continuous_slot_midpoint_s": "25/8"
+      },
+      {
+        "relative_node": 10,
+        "slot_zero_based": 13,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 3250,
+        "point_hold_age_steps": 3499,
+        "average_indices": [
+          3250,
+          3500
+        ],
+        "point_index": 3499,
+        "point_sample_time_s": "3499/1000",
+        "available_time_s": "7/2",
+        "sample_average_time_s": "6749/2000",
+        "continuous_slot_midpoint_s": "27/8"
+      },
+      {
+        "relative_node": 11,
+        "slot_zero_based": 14,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 3500,
+        "point_hold_age_steps": 3749,
+        "average_indices": [
+          3500,
+          3750
+        ],
+        "point_index": 3749,
+        "point_sample_time_s": "3749/1000",
+        "available_time_s": "15/4",
+        "sample_average_time_s": "7249/2000",
+        "continuous_slot_midpoint_s": "29/8"
+      },
+      {
+        "relative_node": 12,
+        "slot_zero_based": 15,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 3750,
+        "point_hold_age_steps": 3999,
+        "average_indices": [
+          3750,
+          4000
+        ],
+        "point_index": 3999,
+        "point_sample_time_s": "3999/1000",
+        "available_time_s": "4",
+        "sample_average_time_s": "7749/2000",
+        "continuous_slot_midpoint_s": "31/8"
+      },
+      {
+        "relative_node": 13,
+        "slot_zero_based": 16,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 4000,
+        "point_hold_age_steps": 4249,
+        "average_indices": [
+          4000,
+          4250
+        ],
+        "point_index": 4249,
+        "point_sample_time_s": "4249/1000",
+        "available_time_s": "17/4",
+        "sample_average_time_s": "8249/2000",
+        "continuous_slot_midpoint_s": "33/8"
+      },
+      {
+        "relative_node": 14,
+        "slot_zero_based": 17,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 4250,
+        "point_hold_age_steps": 4499,
+        "average_indices": [
+          4250,
+          4500
+        ],
+        "point_index": 4499,
+        "point_sample_time_s": "4499/1000",
+        "available_time_s": "9/2",
+        "sample_average_time_s": "8749/2000",
+        "continuous_slot_midpoint_s": "35/8"
+      },
+      {
+        "relative_node": 15,
+        "slot_zero_based": 18,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 4500,
+        "point_hold_age_steps": 4749,
+        "average_indices": [
+          4500,
+          4750
+        ],
+        "point_index": 4749,
+        "point_sample_time_s": "4749/1000",
+        "available_time_s": "19/4",
+        "sample_average_time_s": "9249/2000",
+        "continuous_slot_midpoint_s": "37/8"
+      },
+      {
+        "relative_node": 16,
+        "slot_zero_based": 19,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 4750,
+        "point_hold_age_steps": 4999,
+        "average_indices": [
+          4750,
+          5000
+        ],
+        "point_index": 4999,
+        "point_sample_time_s": "4999/1000",
+        "available_time_s": "5",
+        "sample_average_time_s": "9749/2000",
+        "continuous_slot_midpoint_s": "39/8"
+      },
+      {
+        "relative_node": 17,
+        "slot_zero_based": 20,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 5000,
+        "point_hold_age_steps": 5249,
+        "average_indices": [
+          5000,
+          5250
+        ],
+        "point_index": 5249,
+        "point_sample_time_s": "5249/1000",
+        "available_time_s": "21/4",
+        "sample_average_time_s": "10249/2000",
+        "continuous_slot_midpoint_s": "41/8"
+      },
+      {
+        "relative_node": 18,
+        "slot_zero_based": 21,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 5250,
+        "point_hold_age_steps": 5499,
+        "average_indices": [
+          5250,
+          5500
+        ],
+        "point_index": 5499,
+        "point_sample_time_s": "5499/1000",
+        "available_time_s": "11/2",
+        "sample_average_time_s": "10749/2000",
+        "continuous_slot_midpoint_s": "43/8"
+      },
+      {
+        "relative_node": 19,
+        "slot_zero_based": 22,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 5500,
+        "point_hold_age_steps": 5749,
+        "average_indices": [
+          5500,
+          5750
+        ],
+        "point_index": 5749,
+        "point_sample_time_s": "5749/1000",
+        "available_time_s": "23/4",
+        "sample_average_time_s": "11249/2000",
+        "continuous_slot_midpoint_s": "45/8"
+      },
+      {
+        "relative_node": 20,
+        "slot_zero_based": 23,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 5750,
+        "point_hold_age_steps": 5999,
+        "average_indices": [
+          5750,
+          6000
+        ],
+        "point_index": 5999,
+        "point_sample_time_s": "5999/1000",
+        "available_time_s": "6",
+        "sample_average_time_s": "11749/2000",
+        "continuous_slot_midpoint_s": "47/8"
+      },
+      {
+        "relative_node": 21,
+        "slot_zero_based": 24,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 6000,
+        "point_hold_age_steps": 6249,
+        "average_indices": [
+          6000,
+          6250
+        ],
+        "point_index": 6249,
+        "point_sample_time_s": "6249/1000",
+        "available_time_s": "25/4",
+        "sample_average_time_s": "12249/2000",
+        "continuous_slot_midpoint_s": "49/8"
+      },
+      {
+        "relative_node": 22,
+        "slot_zero_based": 25,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 6250,
+        "point_hold_age_steps": 6499,
+        "average_indices": [
+          6250,
+          6500
+        ],
+        "point_index": 6499,
+        "point_sample_time_s": "6499/1000",
+        "available_time_s": "13/2",
+        "sample_average_time_s": "12749/2000",
+        "continuous_slot_midpoint_s": "51/8"
+      },
+      {
+        "relative_node": 23,
+        "slot_zero_based": 26,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 6500,
+        "point_hold_age_steps": 6749,
+        "average_indices": [
+          6500,
+          6750
+        ],
+        "point_index": 6749,
+        "point_sample_time_s": "6749/1000",
+        "available_time_s": "27/4",
+        "sample_average_time_s": "13249/2000",
+        "continuous_slot_midpoint_s": "53/8"
+      },
+      {
+        "relative_node": 24,
+        "slot_zero_based": 27,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 6750,
+        "point_hold_age_steps": 6999,
+        "average_indices": [
+          6750,
+          7000
+        ],
+        "point_index": 6999,
+        "point_sample_time_s": "6999/1000",
+        "available_time_s": "7",
+        "sample_average_time_s": "13749/2000",
+        "continuous_slot_midpoint_s": "55/8"
+      },
+      {
+        "relative_node": 25,
+        "slot_zero_based": 28,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 7000,
+        "point_hold_age_steps": 7249,
+        "average_indices": [
+          7000,
+          7250
+        ],
+        "point_index": 7249,
+        "point_sample_time_s": "7249/1000",
+        "available_time_s": "29/4",
+        "sample_average_time_s": "14249/2000",
+        "continuous_slot_midpoint_s": "57/8"
+      },
+      {
+        "relative_node": 26,
+        "slot_zero_based": 29,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 7250,
+        "point_hold_age_steps": 7499,
+        "average_indices": [
+          7250,
+          7500
+        ],
+        "point_index": 7499,
+        "point_sample_time_s": "7499/1000",
+        "available_time_s": "15/2",
+        "sample_average_time_s": "14749/2000",
+        "continuous_slot_midpoint_s": "59/8"
+      },
+      {
+        "relative_node": 27,
+        "slot_zero_based": 30,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 7500,
+        "point_hold_age_steps": 7749,
+        "average_indices": [
+          7500,
+          7750
+        ],
+        "point_index": 7749,
+        "point_sample_time_s": "7749/1000",
+        "available_time_s": "31/4",
+        "sample_average_time_s": "15249/2000",
+        "continuous_slot_midpoint_s": "61/8"
+      },
+      {
+        "relative_node": 28,
+        "slot_zero_based": 31,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 7750,
+        "point_hold_age_steps": 7999,
+        "average_indices": [
+          7750,
+          8000
+        ],
+        "point_index": 7999,
+        "point_sample_time_s": "7999/1000",
+        "available_time_s": "8",
+        "sample_average_time_s": "15749/2000",
+        "continuous_slot_midpoint_s": "63/8"
+      },
+      {
+        "relative_node": 29,
+        "slot_zero_based": 32,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 8000,
+        "point_hold_age_steps": 8249,
+        "average_indices": [
+          8000,
+          8250
+        ],
+        "point_index": 8249,
+        "point_sample_time_s": "8249/1000",
+        "available_time_s": "33/4",
+        "sample_average_time_s": "16249/2000",
+        "continuous_slot_midpoint_s": "65/8"
+      },
+      {
+        "relative_node": 30,
+        "slot_zero_based": 33,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 8250,
+        "point_hold_age_steps": 8499,
+        "average_indices": [
+          8250,
+          8500
+        ],
+        "point_index": 8499,
+        "point_sample_time_s": "8499/1000",
+        "available_time_s": "17/2",
+        "sample_average_time_s": "16749/2000",
+        "continuous_slot_midpoint_s": "67/8"
+      },
+      {
+        "relative_node": 31,
+        "slot_zero_based": 34,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 8500,
+        "point_hold_age_steps": 8749,
+        "average_indices": [
+          8500,
+          8750
+        ],
+        "point_index": 8749,
+        "point_sample_time_s": "8749/1000",
+        "available_time_s": "35/4",
+        "sample_average_time_s": "17249/2000",
+        "continuous_slot_midpoint_s": "69/8"
+      },
+      {
+        "relative_node": 32,
+        "slot_zero_based": 35,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 8750,
+        "point_hold_age_steps": 8999,
+        "average_indices": [
+          8750,
+          9000
+        ],
+        "point_index": 8999,
+        "point_sample_time_s": "8999/1000",
+        "available_time_s": "9",
+        "sample_average_time_s": "17749/2000",
+        "continuous_slot_midpoint_s": "71/8"
+      },
+      {
+        "relative_node": 33,
+        "slot_zero_based": 36,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 9000,
+        "point_hold_age_steps": 9249,
+        "average_indices": [
+          9000,
+          9250
+        ],
+        "point_index": 9249,
+        "point_sample_time_s": "9249/1000",
+        "available_time_s": "37/4",
+        "sample_average_time_s": "18249/2000",
+        "continuous_slot_midpoint_s": "73/8"
+      },
+      {
+        "relative_node": 34,
+        "slot_zero_based": 37,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 9250,
+        "point_hold_age_steps": 9499,
+        "average_indices": [
+          9250,
+          9500
+        ],
+        "point_index": 9499,
+        "point_sample_time_s": "9499/1000",
+        "available_time_s": "19/2",
+        "sample_average_time_s": "18749/2000",
+        "continuous_slot_midpoint_s": "75/8"
+      },
+      {
+        "relative_node": 35,
+        "slot_zero_based": 38,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 9500,
+        "point_hold_age_steps": 9749,
+        "average_indices": [
+          9500,
+          9750
+        ],
+        "point_index": 9749,
+        "point_sample_time_s": "9749/1000",
+        "available_time_s": "39/4",
+        "sample_average_time_s": "19249/2000",
+        "continuous_slot_midpoint_s": "77/8"
+      },
+      {
+        "relative_node": 36,
+        "slot_zero_based": 39,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 9750,
+        "point_hold_age_steps": 9999,
+        "average_indices": [
+          9750,
+          10000
+        ],
+        "point_index": 9999,
+        "point_sample_time_s": "9999/1000",
+        "available_time_s": "10",
+        "sample_average_time_s": "19749/2000",
+        "continuous_slot_midpoint_s": "79/8"
+      },
+      {
+        "relative_node": 37,
+        "slot_zero_based": 40,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 10000,
+        "point_hold_age_steps": 10249,
+        "average_indices": [
+          10000,
+          10250
+        ],
+        "point_index": 10249,
+        "point_sample_time_s": "10249/1000",
+        "available_time_s": "41/4",
+        "sample_average_time_s": "20249/2000",
+        "continuous_slot_midpoint_s": "81/8"
+      },
+      {
+        "relative_node": 38,
+        "slot_zero_based": 41,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 10250,
+        "point_hold_age_steps": 10499,
+        "average_indices": [
+          10250,
+          10500
+        ],
+        "point_index": 10499,
+        "point_sample_time_s": "10499/1000",
+        "available_time_s": "21/2",
+        "sample_average_time_s": "20749/2000",
+        "continuous_slot_midpoint_s": "83/8"
+      },
+      {
+        "relative_node": 39,
+        "slot_zero_based": 42,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 10500,
+        "point_hold_age_steps": 10749,
+        "average_indices": [
+          10500,
+          10750
+        ],
+        "point_index": 10749,
+        "point_sample_time_s": "10749/1000",
+        "available_time_s": "43/4",
+        "sample_average_time_s": "21249/2000",
+        "continuous_slot_midpoint_s": "85/8"
+      },
+      {
+        "relative_node": 40,
+        "slot_zero_based": 43,
+        "task": 1,
+        "source_segment": true,
+        "hold_start_age_steps": 10750,
+        "point_hold_age_steps": 10999,
+        "average_indices": [
+          10750,
+          11000
+        ],
+        "point_index": 10999,
+        "point_sample_time_s": "10999/1000",
+        "available_time_s": "11",
+        "sample_average_time_s": "21749/2000",
+        "continuous_slot_midpoint_s": "87/8"
+      },
+      {
+        "relative_node": 53,
+        "slot_zero_based": 56,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 1500,
+        "point_hold_age_steps": 1749,
+        "average_indices": [
+          14000,
+          14250
+        ],
+        "point_index": 14249,
+        "point_sample_time_s": "14249/1000",
+        "available_time_s": "57/4",
+        "sample_average_time_s": "28249/2000",
+        "continuous_slot_midpoint_s": "113/8"
+      },
+      {
+        "relative_node": 54,
+        "slot_zero_based": 57,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 1750,
+        "point_hold_age_steps": 1999,
+        "average_indices": [
+          14250,
+          14500
+        ],
+        "point_index": 14499,
+        "point_sample_time_s": "14499/1000",
+        "available_time_s": "29/2",
+        "sample_average_time_s": "28749/2000",
+        "continuous_slot_midpoint_s": "115/8"
+      },
+      {
+        "relative_node": 55,
+        "slot_zero_based": 58,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 2000,
+        "point_hold_age_steps": 2249,
+        "average_indices": [
+          14500,
+          14750
+        ],
+        "point_index": 14749,
+        "point_sample_time_s": "14749/1000",
+        "available_time_s": "59/4",
+        "sample_average_time_s": "29249/2000",
+        "continuous_slot_midpoint_s": "117/8"
+      },
+      {
+        "relative_node": 56,
+        "slot_zero_based": 59,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 2250,
+        "point_hold_age_steps": 2499,
+        "average_indices": [
+          14750,
+          15000
+        ],
+        "point_index": 14999,
+        "point_sample_time_s": "14999/1000",
+        "available_time_s": "15",
+        "sample_average_time_s": "29749/2000",
+        "continuous_slot_midpoint_s": "119/8"
+      },
+      {
+        "relative_node": 57,
+        "slot_zero_based": 60,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 2500,
+        "point_hold_age_steps": 2749,
+        "average_indices": [
+          15000,
+          15250
+        ],
+        "point_index": 15249,
+        "point_sample_time_s": "15249/1000",
+        "available_time_s": "61/4",
+        "sample_average_time_s": "30249/2000",
+        "continuous_slot_midpoint_s": "121/8"
+      },
+      {
+        "relative_node": 58,
+        "slot_zero_based": 61,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 2750,
+        "point_hold_age_steps": 2999,
+        "average_indices": [
+          15250,
+          15500
+        ],
+        "point_index": 15499,
+        "point_sample_time_s": "15499/1000",
+        "available_time_s": "31/2",
+        "sample_average_time_s": "30749/2000",
+        "continuous_slot_midpoint_s": "123/8"
+      },
+      {
+        "relative_node": 59,
+        "slot_zero_based": 62,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 3000,
+        "point_hold_age_steps": 3249,
+        "average_indices": [
+          15500,
+          15750
+        ],
+        "point_index": 15749,
+        "point_sample_time_s": "15749/1000",
+        "available_time_s": "63/4",
+        "sample_average_time_s": "31249/2000",
+        "continuous_slot_midpoint_s": "125/8"
+      },
+      {
+        "relative_node": 60,
+        "slot_zero_based": 63,
+        "task": -1,
+        "source_segment": false,
+        "hold_start_age_steps": 3250,
+        "point_hold_age_steps": 3499,
+        "average_indices": [
+          15750,
+          16000
+        ],
+        "point_index": 15999,
+        "point_sample_time_s": "15999/1000",
+        "available_time_s": "16",
+        "sample_average_time_s": "31749/2000",
+        "continuous_slot_midpoint_s": "127/8"
+      }
+    ],
+    "completed_symmetric_blocks": 0,
+    "blocks": [],
+    "validation_errors": [],
+    "physical_contract_validated": true,
+    "elapsed_seconds": "16",
+    "postfault_horizon_seconds": "15"
+  },
+  "readout": "average250",
+  "status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+  "arithmetic_risk_target_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+  "shared_mean_review_status": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+  "failure_classification": [
+    "RISK_TARGET_NOT_MET"
+  ],
+  "uniform_mean": {
+    "scope": "each full deterministic beta path; H0 f=0, H1 frozen ramp; independent nuisance choices; inherited comparison/event assumptions",
+    "uniformity_source": "inherited equilibrium, rate-only/entry mean tubes and rho-P contraction; new output/support algebra",
+    "health_support_per_hypothesis": "26847063902374309211/10000000000000000000000",
+    "mean_dynamic_loss_per_hypothesis": "1191012752837671421/5000000000000000000000",
+    "fault_signal_for_exact_sampled_times": "38655253574712/5901991929739435",
+    "mean_H0_upper": "7307272352012413013/2500000000000000000000",
+    "mean_H1_lower": "10702134297358927711569825861346469/2950995964869717500000000000000000000",
+    "error_H0": "26417703277857655859861663450814082538197/73774899121742937500000000000000000000000000",
+    "error_H1": "26417703277857655859861663450814082538197/73774899121742937500000000000000000000000000",
+    "mean_details": [
+      {
+        "source": true,
+        "earliest_age_steps": 10500,
+        "l1": "1119122692000000/1180398385947887",
+        "mean_per_read_radius": "1256223796021396619/10000000000000000000000",
+        "continuous_to_sampled_ramp_allowance": "3/20000000",
+        "method": "inherited average momentum/gradient support plus sampled-ramp centering allowance"
+      },
+      {
+        "source": false,
+        "earliest_age_steps": 1500,
+        "l1": "1119122692000000/1180398385947887",
+        "mean_per_read_radius": "251245107596826347/2000000000000000000000",
+        "continuous_to_sampled_ramp_allowance": "3/20000000",
+        "method": "inherited average momentum/gradient support plus sampled-ramp centering allowance"
+      }
+    ],
+    "health_dual_scale_factor": "20706543986599984326335454234025711/20706543986600000000000000000000000",
+    "actual_difference_box": "20706543986599984326335454234025711/625000000000000000000000000000000000",
+    "actual_difference_rate_per_slot": "20706543986599984326335454234025711/50000000000000000000000000000000000000",
+    "projection_rounding_support_allowance": "14349634982713789138150469784179817723/461093119510893359375000000000000000000000000000",
+    "two_hypothesis_budgets_paid": true,
+    "point_uses_average_cancellation": false,
+    "independent_mean_math_review": {
+      "status": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+      "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+      "report_path": "outputs/d2a_mean_risk_review_v1.md",
+      "report_sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+      "mean_function_after_scope_binding_sha256": "a6e618bddb0157dc8c48d59c219114f22cc73b4b16bc0d11f1f9814991306391",
+      "maximum_H_post_slots": 600,
+      "maximum_total_seconds": "151",
+      "actual_template_fault_max": "9/200",
+      "fixed_template": "f(t)=3/10000*max(t-1,0), H0 f=0, h=1/1000, delta=1/4, 4 healthy prefix slots",
+      "original_physical_fault_allowance_unchanged": "3/4",
+      "mirror_equilibrium_inclusion_plus_max_ratio": "102094608476524939210343028899/336142366500000000000000000000",
+      "mirror_equilibrium_inclusion_minus_max_ratio": "204198972606288391933745457097/672284733000000000000000000000",
+      "source": "Independent review report section4: 16 saved beta cells, outward inverse, original Es; no new large adjoint verification",
+      "wide_fault_0_75_mirror_containment_accepted": false,
+      "inherited_conditions": [
+        "nonlinear remainder and event implications",
+        "rho-P/positive convolution certificates",
+        "segment component return",
+        "deterministic paths independent of innovations"
+      ],
+      "risk_implementation_followup": "new wrapper returns conservative1 if a positive Mills score floors to0 on 1e-8 grid; boundary test passed; inherited source unchanged",
+      "actual_case_fault_max": "9/2000",
+      "scope": "H0 f=0; H1 frozen 0.0003*(t-1)+ template, H<=600, actual f<=0.045; original beta box/rate; inherited nonlinear/event/contraction assumptions",
+      "general_wide_f_0_75_mirror_coverage_claimed": false
+    }
+  },
+  "uniform_variance": {
+    "scope": "16000 fast steps, 1 transfers; command/discrepancy comparator; ALL deterministic beta paths |beta|<=.02, |betadot|<=.001; physical joint4 fixed direction; source zero Gaussian initial state; movement and settling not reset",
+    "method": "piecewise degree-8 adjoint jets + exact lattice recursion checks + common M-matrix convolution supersolutions + optimally anchored signed Abel bound",
+    "status": "PASS",
+    "counts": {
+      "logical_scalar_recursions": 3456000,
+      "exact_zero_recursions": 1718376,
+      "nonzero_or_forced_recursions": 1737624
+    },
+    "move_intervals": [
+      [
+        11000,
+        12500
+      ]
+    ],
+    "noise_sensor_variance": "557336139819350021600000/1393340349548376793823479764769",
+    "nominal_variance_interval": [
+      "195046257201657167553152859606352692748119542489857736969253020286311917172934543998873000429619166936668475084016725926112631305007746121194768069945466910074887443583025863833836458698906105880688384307457095910990850712787205429361873572125617651184445847073348147695983754757734692360337562591943542149225456362218710048036215868696715911921370395299992220713437516842971980885118807828844454769/120939091510138196848379190542373740208181991147712205265569527990690831337714349739080584685071187916008212684897592872965878824074399055165192027025257514537993457523291348101142212743830027996639055172659770791925586278632412371881979558679778434274971570066185367058926654373871154782052219429650759859994763045776267063047271221876144409179687500000000000000000000000000000000000000000000000000000000",
+      "1538587820024975198490731015375414996957317671912942094929161886413127097277383001714339121200583346476181819565511583561506526102596156777635020120648280736135611915130706263750788373647796579414981197832970531620764890382205662204891655231652885009052816618582917202379837299570184568639616258319418522294941098149204321554912518183302692828937765301484276245765503994848883255259104941489/953968543968815627675096847659014379891697719250647852743703055054757143906980677144142202063602195976891124186331928621587633966958134548031717519329946355044673890496336567675143427963431633307211970212302837262387810246026287970363570984147214601619814113537064409269697223088770888648228393758010668079805327579379081726074218750000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "variance_lower": "429338072336772841119042391261663722893993361452826306920667249295603628227720163593077278208647932342372883273540025056688176006478865102880579021424594153761125345101197625924644234770028668580412038485428368387696942910898530824254458296812361726767193374190783201605451086903407697250486313921109294304676840977334809888519695000734783981755957343060887924164149853019447009264703110382049340582438929/266954533423194844308585576511492729406468656378296982071918370356594292193616001383244000806883667040723434367316809084489580685956877587891166727409221485151619844198350861441215137354543996492173065458671036915401457385650647390668467531975608886758794388129767536757010345654651104106668735785939309927694562674105327459983527660369873046875000000000000000000000000000000000000000000000000000000000000000000",
+    "variance_upper": "13232490706228634120912329690570404026418302912277299685399697449829332836048424776808943446848278120346042859818392529663998373613962833442457397331455034085690492448834375771209561627315369520052705154718276157853934902037504433376467085671704953058827090249213436240551072906801927766188891423737980127935611618438190939669834441529017355698013685620029965286314352603440360475221700832209/8181740420467240153682845923034710064275223806430301226847779773199218157692012848363791028923037201209969284475632510269840881114574613138986311989763468483827024540430315154397531134727186610150118989422862599173846474610051990194801851144650345639402589412529618734603882816388897264375877193404162923684452835004776716232299804687500000000000000000000000000000000000000000000000000000000000000",
+    "std_lower": "3170451102269/2500000000000000",
+    "std_upper": "1271738884726147/1000000000000000000",
+    "variance_ratio_lower": "21037565544501869214833077171821522421805674711188489039112695215484577783158288016060786632223748684776271280403461227777720624317464390041148372049805113534295141909958683670307567503731404760440189885785990050997150202634028010388468456543805724611592475335348376878667103258266977165273829382134355420929165207889405684537465055036004415106041909809983508284043342797952903453970452408720417688539507521/21097044357367623141257854342857587246117547506038360837851217859896460202049219625891916851427604500010176311928820688957398795671723337025493334262196956394429027907707591143159866223061793872111675792439031112949677249896030590649443060679142112389291244044924374234789692599152185204884535172644906666317015318048530596523536483176527396059674944191726322139972636410509696642166537488210196418601922500",
+    "variance_ratio_upper": "2115579165893514016635669217773864553336682720113958081681767004526351746483467996154325137138387417284779021105418338989359593281841632229235794842084649489569283187466500530563036238271903855804663468557761635055034841896753440593530735045904584292099180158111001717729657168824581561957968186203570629984415354932746091795769629640154066940112032358887269457340708927124476669848703361436372399580481/2109620317893123924254901329502310724763660971570301283059440667416749696142460027891810372646760909587006226508724907616834220194963782046842611444530170099369982589794007743226775137287368441205525564669455949373277041309506413923978024556110680515210966281945333565479760291459658432569411076994461351886022536013757567879559710835823679303341542195564715859236540182173584945253445025476781622781504",
+    "constant_parameter_lift_error": "263731180053669/250000000000000000",
+    "all_path_lift_error": "138687649174303501/1000000000000000000",
+    "nominal_polynomial_energy": "4412213528078137636328343534928089494297384418783650636824660435299419473872395811/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+    "signed_polynomial_energy_budget": "4249157959255297290996289805482000356977820829360411880414077338387142452079981539/2786680699096753587646959529538000000000000000000000000000000000000000000000000000",
+    "monomial_budgets": [
+      {
+        "degree": 1,
+        "sum": "-36901826017443807709678687576827153609319669518363417549728875960550013938371/27866806990967535876469595295380000000000000000000000000000000000000000000000",
+        "absolute_sum": "16295786585864688249878849334948581287296994381438962362508165076485874509294859/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10983,
+        "abel_tail_prefix_sum": "673055772516383775748535404557512163231345909023788425971094713410148569616685819/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "abel_bound": "9898512276877335703168207298764300565561263288614642813403313703547652054209435819/6966701747741883969117398823845000000000000000000000000000000000000000000000000000",
+        "used_bound": "9898512276877335703168207298764300565561263288614642813403313703547652054209435819/6966701747741883969117398823845000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 2,
+        "sum": "62264601809642996619168753198223711945681880501334748071364998678366920528029/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "365488944493530372646848666047073774976652622099595857164799070073265462071453/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10987,
+        "abel_tail_prefix_sum": "87244333270972592912961663032841049251559597263915491197293988307888705154359679/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_bound": "709890351367402559104649195015078168708378402277262971910943975091557910434649679/6966701747741883969117398823845000000000000000000000000000000000000000000000000000",
+        "used_bound": "709890351367402559104649195015078168708378402277262971910943975091557910434649679/6966701747741883969117398823845000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 3,
+        "sum": "-14728177705917226099405542205574986505850055873761813010272972056319522289/8708377184677354961396748529806250000000000000000000000000000000000000000000",
+        "absolute_sum": "507690830481285285538404361287147326924913747876996728073272475038807903669/43541885923386774806983742649031250000000000000000000000000000000000000000000",
+        "abel_anchor": 10989,
+        "abel_tail_prefix_sum": "825598935752049010919266354844917887631112604267291154027753088581541944944493/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "abel_bound": "14259338971989927912282232828994742867573382511811323870301636910800243666033479/6966701747741883969117398823845000000000000000000000000000000000000000000000000000",
+        "used_bound": "14259338971989927912282232828994742867573382511811323870301636910800243666033479/6966701747741883969117398823845000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 4,
+        "sum": "8958042381621163066874219045738143509231798441248588609130201542981486513/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "absolute_sum": "89178045897125595173300333393633321401086547095370429812532423213176227761/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "abel_anchor": 10990,
+        "abel_tail_prefix_sum": "50460518236441049330645836499837790417515899083671488914918652961296295809361/1393340349548376793823479764769000000000000000000000000000000000000000000000000",
+        "abel_bound": "229621365868864310668130217414600660602151867908643261097522683820926026069361/6966701747741883969117398823845000000000000000000000000000000000000000000000000000",
+        "used_bound": "229621365868864310668130217414600660602151867908643261097522683820926026069361/6966701747741883969117398823845000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 5,
+        "sum": "-240990318116731033398912230458335471962899127838022222841022818651560031/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "777669911769781688466827204196598053016680122632548195642131480615548947/139334034954837679382347976476900000000000000000000000000000000000000000000000",
+        "abel_anchor": 10991,
+        "abel_tail_prefix_sum": "342435283797392287920409614467588186053667539028337369060961199874618048757/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_bound": "1306396556264316421516058536300930073905264050380426260425052474480858172757/2786680699096753587646959529538000000000000000000000000000000000000000000000000000",
+        "used_bound": "1306396556264316421516058536300930073905264050380426260425052474480858172757/2786680699096753587646959529538000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 6,
+        "sum": "2990680417072627267530977585433997742284533490050649013264535636901043/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "84217800839945644027321242593135413768719290678673735341788718324455347/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10991,
+        "abel_tail_prefix_sum": "1091991762637135069919805461001246517814110786999766436524197774776176733/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "abel_bound": "10752676330592973378586860346588733909153666086125921842733932416581137699/1741675436935470992279349705961250000000000000000000000000000000000000000000000000",
+        "used_bound": "10752676330592973378586860346588733909153666086125921842733932416581137699/1741675436935470992279349705961250000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 7,
+        "sum": "-35389958649096482673941847281784866254635289603661561629118078502347/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "1819135116136644110756950289626034528017878286129946837664962759934151/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10992,
+        "abel_tail_prefix_sum": "27409215623996584160731371175726268503532149673087691588383794560180821/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "abel_bound": "545764095858940915864538071047932542071077943748229457409867346944735747/6966701747741883969117398823845000000000000000000000000000000000000000000000000000",
+        "used_bound": "545764095858940915864538071047932542071077943748229457409867346944735747/6966701747741883969117398823845000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 8,
+        "sum": "117206966802025514013162282368633048904534164899694186183911291053/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "absolute_sum": "390837767290341117710920348719695154567508273929864990103872057649/6966701747741883969117398823845000000000000000000000000000000000000000000000",
+        "abel_anchor": 10992,
+        "abel_tail_prefix_sum": "306848385344775950369890426503524025125916472067371119633285952667101/278668069909675358764695952953800000000000000000000000000000000000000000000000",
+        "abel_bound": "775676252552878006422539555978056220744053131666147864368931116879101/696670174774188396911739882384500000000000000000000000000000000000000000000000000",
+        "used_bound": "775676252552878006422539555978056220744053131666147864368931116879101/696670174774188396911739882384500000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 9,
+        "sum": "-461105342179346272442181745891321201332084191275067659169305741/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "867150495870617228091700523711351121526515938975968271411007890633/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 14244,
+        "abel_tail_prefix_sum": "4422803646414771718373405635098904326566705153766311771664899767421/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_bound": "49027339661319870914204285633716562965742030209398159128370212726789/13933403495483767938234797647690000000000000000000000000000000000000000000000000000",
+        "used_bound": "49027339661319870914204285633716562965742030209398159128370212726789/13933403495483767938234797647690000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 10,
+        "sum": "-522719543058390975231490203304332793098205574156822994104773157/1393340349548376793823479764769000000000000000000000000000000000000000000000000",
+        "absolute_sum": "35294536769818536150176004595858377858748600035560812386476441843/1393340349548376793823479764769000000000000000000000000000000000000000000000000",
+        "abel_anchor": 10943,
+        "abel_tail_prefix_sum": "210961413365968840579738723205757220632453507332438448849112784111/348335087387094198455869941192250000000000000000000000000000000000000000000000",
+        "abel_bound": "472321184895164328195483824857923617181556294410849945901499362611/696670174774188396911739882384500000000000000000000000000000000000000000000000000",
+        "used_bound": "472321184895164328195483824857923617181556294410849945901499362611/696670174774188396911739882384500000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 11,
+        "sum": "-3858881472277904739035996630362405343031276090502931957898147/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "absolute_sum": "336570156990648891587784418705950378503368039640169295724488303/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10993,
+        "abel_tail_prefix_sum": "1794470428243426851947249438452380763852791775024527930754507193/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "abel_bound": "39033582072067219066599726974788215117537089977784467027790314123/3483350873870941984558699411922500000000000000000000000000000000000000000000000000",
+        "used_bound": "39033582072067219066599726974788215117537089977784467027790314123/3483350873870941984558699411922500000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 12,
+        "sum": "212298232890414896415923570543385497130257446893158482162137/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "absolute_sum": "613423370274586614004555020417836884689519413562174919595683/69667017477418839691173988238450000000000000000000000000000000000000000000000",
+        "abel_anchor": 10980,
+        "abel_tail_prefix_sum": "1196232601531540212695793683216931364024872787682573193550538041/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_bound": "7834662462402918566405852460518504034679767300910889223894354123/3483350873870941984558699411922500000000000000000000000000000000000000000000000000",
+        "used_bound": "7834662462402918566405852460518504034679767300910889223894354123/3483350873870941984558699411922500000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 13,
+        "sum": "-8480435854209659858251432779458710945506171332130916173731/139334034954837679382347976476900000000000000000000000000000000000000000000000",
+        "absolute_sum": "4304998193533160049605338305023641538886155544186999485969/27866806990967535876469595295380000000000000000000000000000000000000000000000",
+        "abel_anchor": 10964,
+        "abel_tail_prefix_sum": "11893731837051432066770278073528485998534338579414953092025079/139334034954837679382347976476900000000000000000000000000000000000000000000000",
+        "abel_bound": "324227230965861814033042270545044536891069828175012713670946027/2786680699096753587646959529538000000000000000000000000000000000000000000000000000",
+        "used_bound": "324227230965861814033042270545044536891069828175012713670946027/2786680699096753587646959529538000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 14,
+        "sum": "2606404518941345826320662693787722065648139866282547767673/1393340349548376793823479764769000000000000000000000000000000000000000000000000",
+        "absolute_sum": "3692653638975138106766853878979711297215624644274704817603/1393340349548376793823479764769000000000000000000000000000000000000000000000000",
+        "abel_anchor": 10960,
+        "abel_tail_prefix_sum": "731966451396462498666163644548765277109472506607670455964503/278668069909675358764695952953800000000000000000000000000000000000000000000000",
+        "abel_bound": "10336574197657929143304470899416801071062587278818788727097521/2786680699096753587646959529538000000000000000000000000000000000000000000000000000",
+        "used_bound": "3692653638975138106766853878979711297215624644274704817603/1393340349548376793823479764769000000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 15,
+        "sum": "-5508973009813122444483887976705264543558235001023090863/139334034954837679382347976476900000000000000000000000000000000000000000000000",
+        "absolute_sum": "29702516440914752270167245905863414514364336584707055879/696670174774188396911739882384500000000000000000000000000000000000000000000000",
+        "abel_anchor": 10946,
+        "abel_tail_prefix_sum": "9675493901845646897754746777106453924525708387011825481349/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "abel_bound": "56571346754602552915683680214845684491368300166150930759047/696670174774188396911739882384500000000000000000000000000000000000000000000000000",
+        "used_bound": "29702516440914752270167245905863414514364336584707055879/696670174774188396911739882384500000000000000000000000000000000000000000000000"
+      },
+      {
+        "degree": 16,
+        "sum": "90129092837830688385443210841352116185902976609674669/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "absolute_sum": "90129092837830688385443210841352116185902976609674669/174167543693547099227934970596125000000000000000000000000000000000000000000000",
+        "abel_anchor": 10944,
+        "abel_tail_prefix_sum": "202695247746254347641694897528758703567372022949460672641/278668069909675358764695952953800000000000000000000000000000000000000000000000",
+        "abel_bound": "382953433421915724412581319211462935939177976168810010641/348335087387094198455869941192250000000000000000000000000000000000000000000000000",
+        "used_bound": "90129092837830688385443210841352116185902976609674669/174167543693547099227934970596125000000000000000000000000000000000000000000000"
+      }
+    ],
+    "max_recursion_defect": "491886061249743045469247085148979551939295977241023/54966583193647069856524467468261718750000000000000000000000000000",
+    "checks": {
+      "move_A_inside_inherited_delta_A": true,
+      "move_B_inside_inherited_delta_B": true,
+      "all_path_variance_within_one_percent": true
+    },
+    "supersolutions": {
+      "common_positive_inverse": [
+        "43898148246913271/10000000000000000",
+        "36865665554078633/10000000000000000",
+        "28869952475520457/10000000000000000",
+        "874323762167543/400000000000000",
+        "1641036464618691/1000000000000000",
+        "6270530540303477/5000000000000000",
+        "10242874824937507/5000000000000000",
+        "228679257273837/125000000000000",
+        "15842156552287083/10000000000000000",
+        "13692315532230011/10000000000000000",
+        "12011996990928993/10000000000000000",
+        "5402641890993761/5000000000000000",
+        "982060407788763/500000000000000",
+        "17626591692236679/10000000000000000",
+        "614860149005177/400000000000000",
+        "2678890077843747/2000000000000000",
+        "11849380469890469/10000000000000000",
+        "10740051749212343/10000000000000000"
+      ],
+      "constant_full_calendar": [
+        "5329069630235803/100000000000000000000",
+        "9363676972524781/200000000000000000000",
+        "9864931047938227/250000000000000000000",
+        "33006384702205369/1000000000000000000000",
+        "27992346467575809/1000000000000000000000",
+        "6107709012759239/250000000000000000000",
+        "1915119324744891/100000000000000000000",
+        "17133896646215697/1000000000000000000000",
+        "14876657685253043/1000000000000000000000",
+        "12897650372340371/1000000000000000000000",
+        "11350729241714979/1000000000000000000000",
+        "5119851639237537/500000000000000000000",
+        "8779098559139603/500000000000000000000",
+        "7851818276999131/500000000000000000000",
+        "13627831722685317/1000000000000000000000",
+        "590394945712517/50000000000000000000",
+        "2596377899087937/250000000000000000000",
+        "93641692324533721/10000000000000000000000"
+      ],
+      "all_admissible_paths": [
+        "98911738007300687/10000000000000000000",
+        "1563057355210579/200000000000000000",
+        "11047602110808791/2000000000000000000",
+        "7035125566565977/2000000000000000000",
+        "19396704126821583/10000000000000000000",
+        "39803605773989153/50000000000000000000",
+        "15942084532681519/5000000000000000000",
+        "25134505070090801/10000000000000000000",
+        "8920822740548861/5000000000000000000",
+        "11458699897013639/10000000000000000000",
+        "63944402287639953/100000000000000000000",
+        "1668023205173493/6250000000000000000",
+        "7100808450629289/2500000000000000000",
+        "1120350999736717/500000000000000000",
+        "3971991888840521/2500000000000000000",
+        "10181709762222507/10000000000000000000",
+        "11332084072808357/20000000000000000000",
+        "23584138992577391/100000000000000000000"
+      ]
+    },
+    "no_memory_truncation": true,
+    "no_covariance_reset": true,
+    "parameter_samples_used_for_certification": 0,
+    "old_three_direction_values_used": false,
+    "cross_task_independence_assumed": false
+  },
+  "event_accounting": {
+    "n_fast_steps": 16000,
+    "transfers": 1,
+    "unique_encoder_nodes": 16001,
+    "fresh_hold_state_nodes": 14502,
+    "per_encoder_node_upper": "139204140938280059607776551320654462457383628500695678848668262735139656153333960076402148750806542864463825516744196965541963738408668444830166218302858529138642857325553444631078232787001252974630010134053180911343040917938841557895785097070884923838099209838712931037245546437186857264245848550663716143142945375597890007758234874957729551225656923111018745122404948110045855841756921482151311308325840845734770518679308002035386986156760213617100278032397948713217176124036903427145919503464828330229886407325102686178525772360207661677099442732661982913519523786055131465332648228383434599031070826299667392126176549758577108778347589580100162886086275142299913933734792463253228716139482546674403747060713335112553576190589921316886147164073251688179169447541739734874067179664388147902097943791148896943428606873295401400868052093330802922947190425743708810300879401321392635527930462242749695540377712656380963756/247193066742748894202767512426126714184036394203477803537655506972866194084343307593573868711732617427027048154916998320151084750171113123835587318057993626419765227786934167103007532776470572353299334498571894125500259977081400063159353324329964847381250730043326812022975022517994581711969342023741711858233466503399396225090459443551618189219898794436290228053892679136848918961576931826502781107037689490893088354920544588829852081189618354403526739180512420232841651252446438556093795171029799043856911226394265990396304173175250795282292630350109660427681236067984613499591715924638962473821658984388763849281082867946958998774683389992148707165795126974196431839303281310130734805571281928218736798183412315470409670392833816323803853773323118828637132916354701432924566379226722512591464641415617315334364123233360718843406784902217347223322092731388189582603793205474864327031251070498453807497607161016259169323869679720278713",
+    "per_hold_state_node_upper": "72892800455896809337098803187610116185784371794751863586494845326650237837219710511542850372590789124952648534843372690180436141054890793834644301949282737051398262448638328829133519935398955353684140349932483827329234619678990616921802458343875408170601307866819652495923264185151660683451513206899336853014170078508443168240973201661526411198212665201267484551003501148805878645171260262185127982197902967740762526745253380096000000000000000000000000000000000000000000000000000000000/785793897868709509027221238976698101431818117891088061125759413088174166297350538204437161706120245168418900404211194819372478351234347809505300971218955974096396577425591047906650961112652557935401916262533217636793204394845736177587303941251790287359246465990784819683177007488629758657321967472536122162402358963140052397482641153915759076888967234255856669841553033286243943774130169822487986929094367163973668610585916469866257668813691247426220895626560433603559740709079885966691414219010612069",
+    "entry_ellipsoid_tail_per_transfer": "23908717398937617261826035338821748006349263126336853627288405008307325256518752798119606026916530517964385642530337457196405103252604742125035248509643201811672464719063180149872122705359322432358810054353437004091241979458209117452715062917053227939214541026956228729465713439986271716155446892780705975051765165474586384016176636062260472844298661214601321230209/107940244265041971821247811599715930401349334015915330683535186863439985214515033800192005178396307812382548501856481513698587537532884375564725962420900224170139504702327034794397961057169739409750718927862961273399057167277909698780083203536579233779441001549152194583807802720282929466744955720020688357786571894237870475568680311734464327776134327897052157811565553469667709",
+    "encoder_failure": "2227405459153419233784032597681792053780595439639631557257540872024969638109496695182510782161655492374285672093423895645636961778277103785727489659064039324747424360066180667541882802824807048847054792154984947762399997727939403767890457338231229666333425456629245609526965988541426903085197822659170122006430268954941838014139516234198630549161736426699410940703601574708843739323952500635903132244521779372602063069387607340568227165494320178087221548796399577360188035160714491737761857974940718112008412403608968081542590883535682794495268183165324388599225900100668158576787704302363337019096164291620977941410950972686992317562339780871182706340266488551940922853690414204514912686947860229337134356718474075135969772625629330991495240772336100262554890330115377497719948941809874754581469198602173499991801138579599717815289701545386177570077994002325084673624371300543603561082415326346237878341583780214751801059756/247193066742748894202767512426126714184036394203477803537655506972866194084343307593573868711732617427027048154916998320151084750171113123835587318057993626419765227786934167103007532776470572353299334498571894125500259977081400063159353324329964847381250730043326812022975022517994581711969342023741711858233466503399396225090459443551618189219898794436290228053892679136848918961576931826502781107037689490893088354920544588829852081189618354403526739180512420232841651252446438556093795171029799043856911226394265990396304173175250795282292630350109660427681236067984613499591715924638962473821658984388763849281082867946958998774683389992148707165795126974196431839303281310130734805571281928218736798183412315470409670392833816323803853773323118828637132916354701432924566379226722512591464641415617315334364123233360718843406784902217347223322092731388189582603793205474864327031251070498453807497607161016259169323869679720278713",
+    "holding_failure": "1057091392211415529006606843826721904926244959767491525731348246927081749115360241838394416103311623890063309052298590752996684917578026292190011666868498252719377602030153044680094306103155650539127403354720880463928560454584721926599979250902881169290060166684618600495879177213069383231413844526454183042411494478529442825830593370495456015196480070748781060958652773659982852112273616322208725997833988838176538162859664518152192000000000000000000000000000000000000000000000000000000000/785793897868709509027221238976698101431818117891088061125759413088174166297350538204437161706120245168418900404211194819372478351234347809505300971218955974096396577425591047906650961112652557935401916262533217636793204394845736177587303941251790287359246465990784819683177007488629758657321967472536122162402358963140052397482641153915759076888967234255856669841553033286243943774130169822487986929094367163973668610585916469866257668813691247426220895626560433603559740709079885966691414219010612069",
+    "entry_ellipsoid_failure": "23908717398937617261826035338821748006349263126336853627288405008307325256518752798119606026916530517964385642530337457196405103252604742125035248509643201811672464719063180149872122705359322432358810054353437004091241979458209117452715062917053227939214541026956228729465713439986271716155446892780705975051765165474586384016176636062260472844298661214601321230209/107940244265041971821247811599715930401349334015915330683535186863439985214515033800192005178396307812382548501856481513698587537532884375564725962420900224170139504702327034794397961057169739409750718927862961273399057167277909698780083203536579233779441001549152194583807802720282929466744955720020688357786571894237870475568680311734464327776134327897052157811565553469667709",
+    "total_failure": "221775318760497928512311264543203147443715232400615623240533605630723115667938407229235963747850318110328054607432165969570216860770644804589613029868533605689082257189853992754940448694955338638313151613059732830298270850994582275589677448091958917661242624793370060414566734580674441850467525516801729046566964321546391578260747844565631519819092997093199746140594708945649229895619448986294770173414984515162898394228005376143628591673696481783092700700083190101727861629070715223832452224510178678435490446306368343666915535523058204596533970775517963895146782989833592298761341350695519810054356116866645903736903887489198290073717878278489283336866258618514397161092800822927259235606253329385680346412426115883033480375319241477050300361745300554294070048224570063613702437667736646583129648389543795225799924302670377800673907239557662889784268064438360972871469697057222599082173380306722674084304712899568927216714874368165803913032808291225108321971981881202355378085236737681650430470917391250726579578527949359553758689541420975875685641809140423800815190987619213220141159609761204629238264759015896259470548948448676127007747817955363573287061961434341238040990980129453866138197830435388680616397028088667322067612869028998344593183588522293396950369863476195406233062927783806363399164501737786798152414459057811665796022163363350895769128737785866473089290099968892694359344705046504587555680651185329567244267909896588266993963387668189020455861298972551689685167448859974499450551700537769147598225489086326392720196196224628741686545537903757094146938000406615810921665086529281528178956161584995826818099937015449902859239477872240279408432866619448528000692257390244216374981984457026324058867942864818586504724820219239021822839139817651327473042232223732519524147494738805193449/20966615650245730691028296781428877252039174135292161752793057558458217375072001182651729376940075050053638492355069699018881820625749039651571759279488791378123800280026374063686308471588450648232149222939116133459605131129198982725994069177813665225958666159798028305873776219576316924379909108960204116393186397559919345024089489164652800152412807393780811126374812589851475765757249173132266858864588680441159417536904735266419813289317224821284055248586033711593942150784482129372497982002629981639525323684688300105061963772323500672192463849681778457107309927026261836716819384899809948820248490278819711479850479837404268707556187451064691951106408726737474880287312007648536198353349636304147060128719900859980602579225051348317049318785596362474132263972412682136977670769329023039526210340229490481795146102411677283744602635108112155643520240665064559173712960434333440446417810284819539492449023025695754782550614971743427126411844500012572283687998146265638126691740360999595757358876735759031743700470735431852385311007101703560688190732216905761795820208865092298519770065855908112989764384319050752781065411594715478680542148196472494833300665306291315430980759740576477581536165403047986805747174596159887321321398007924780863497091036168829081834954062250010649998898081829751999394398440066560443462771824676931025679030981570300101148565758658161644347567666984467662221161674056920168360440407631388058077192614251913762234717642865897968880078533340827897468205957239272111407287718329907981992538352227776392418948421989090333838007073502469390350574271092447272036495365926531318360795220655453718379857005266187739485443357628950832645214941537203934045721618788980718471850730690533345469017130562165946959534028272304775402493672608384886526156331544874550283166782536596380784778721673",
+    "calendar_upper_using_all_elapsed_hold_nodes": "224690771129275689231468528214246937170636775703682305551550529910396533247633988334969600110861040199393696749169608657710558597621153858220410358527401284897699811884227724829353795754521639449864819768380326395727384366442533878998492147045329974349890661921221126038395260186215914075047870555573392614693130586326131544054776997103010447459596840530699245610880746704706634722037118338629422587090592107519628494873034676561717466965583794570681480934186319702726929832965844647567777144091060598032669114728376876496676082775486594910362140864336161227855245000278974005213714643646190455991392164339777296307734129239257664538208542860472787509023183513073293499403916047469436001561631508233454241055871532534826031233531736749327932641934384480368301663298732500617372405642616475740078485203271417023066982015314860247556400987975258322124720670516594680299768956825759445281489267101929988830332140558599798145929739439405256762908875355909125885902640987014586173868323593553597681583916734307207063434772731905882662259700489960647035089403426733681814498007812850517985654211562471283513016526326755663885323830178181289827562526748556308826821014597280141114816256540715477318280322887488849645163835529824123063539643379368080913121622333885599503006386739770655004316474442757024747086000927959071431864529696095521639647891799302353956502680505069796769588157616207745468655967594200178807692226364771942439406803580823298318848695336872919246326282320622807744118433258178432591426491937637172980002845356547592645688701898990303024929188155610880742477737620874576512669626206953704756073749668915752951040221682455351574106819525984250425463009420659019958009999350161593773591908404671090867847740736975692912434682765089389822839139817651327473042232223732519524147494738805193449/20966615650245730691028296781428877252039174135292161752793057558458217375072001182651729376940075050053638492355069699018881820625749039651571759279488791378123800280026374063686308471588450648232149222939116133459605131129198982725994069177813665225958666159798028305873776219576316924379909108960204116393186397559919345024089489164652800152412807393780811126374812589851475765757249173132266858864588680441159417536904735266419813289317224821284055248586033711593942150784482129372497982002629981639525323684688300105061963772323500672192463849681778457107309927026261836716819384899809948820248490278819711479850479837404268707556187451064691951106408726737474880287312007648536198353349636304147060128719900859980602579225051348317049318785596362474132263972412682136977670769329023039526210340229490481795146102411677283744602635108112155643520240665064559173712960434333440446417810284819539492449023025695754782550614971743427126411844500012572283687998146265638126691740360999595757358876735759031743700470735431852385311007101703560688190732216905761795820208865092298519770065855908112989764384319050752781065411594715478680542148196472494833300665306291315430980759740576477581536165403047986805747174596159887321321398007924780863497091036168829081834954062250010649998898081829751999394398440066560443462771824676931025679030981570300101148565758658161644347567666984467662221161674056920168360440407631388058077192614251913762234717642865897968880078533340827897468205957239272111407287718329907981992538352227776392418948421989090333838007073502469390350574271092447272036495365926531318360795220655453718379857005266187739485443357628950832645214941537203934045721618788980718471850730690533345469017130562165946959534028272304775402493672608384886526156331544874550283166782536596380784778721673",
+    "move_innovations_counted_again": false,
+    "independence_used": false,
+    "applicability": "Requires previously verified segment-component return and original nonlinear event implications for this calendar. Per-path uniform statement, not one simultaneous event over all possible load paths."
+  },
+  "protected_risk": {
+    "mean_H0_upper": "7307272352012413013/2500000000000000000000",
+    "mean_H1_lower": "10702134297358927711569825861346469/2950995964869717500000000000000000000",
+    "error_support_H0": "26417703277857655859861663450814082538197/73774899121742937500000000000000000000000000",
+    "error_support_H1": "26417703277857655859861663450814082538197/73774899121742937500000000000000000000000000",
+    "variance_lower": "429338072336772841119042391261663722893993361452826306920667249295603628227720163593077278208647932342372883273540025056688176006478865102880579021424594153761125345101197625924644234770028668580412038485428368387696942910898530824254458296812361726767193374190783201605451086903407697250486313921109294304676840977334809888519695000734783981755957343060887924164149853019447009264703110382049340582438929/266954533423194844308585576511492729406468656378296982071918370356594292193616001383244000806883667040723434367316809084489580685956877587891166727409221485151619844198350861441215137354543996492173065458671036915401457385650647390668467531975608886758794388129767536757010345654651104106668735785939309927694562674105327459983527660369873046875000000000000000000000000000000000000000000000000000000000000000000",
+    "variance_upper": "13232490706228634120912329690570404026418302912277299685399697449829332836048424776808943446848278120346042859818392529663998373613962833442457397331455034085690492448834375771209561627315369520052705154718276157853934902037504433376467085671704953058827090249213436240551072906801927766188891423737980127935611618438190939669834441529017355698013685620029965286314352603440360475221700832209/8181740420467240153682845923034710064275223806430301226847779773199218157692012848363791028923037201209969284475632510269840881114574613138986311989763468483827024540430315154397531134727186610150118989422862599173846474610051990194801851144650345639402589412529618734603882816388897264375877193404162923684452835004776716232299804687500000000000000000000000000000000000000000000000000000000000000",
+    "sd_upper": "1271738884726147/1000000000000000000",
+    "event_failure_per_hypothesis": "221775318760497928512311264543203147443715232400615623240533605630723115667938407229235963747850318110328054607432165969570216860770644804589613029868533605689082257189853992754940448694955338638313151613059732830298270850994582275589677448091958917661242624793370060414566734580674441850467525516801729046566964321546391578260747844565631519819092997093199746140594708945649229895619448986294770173414984515162898394228005376143628591673696481783092700700083190101727861629070715223832452224510178678435490446306368343666915535523058204596533970775517963895146782989833592298761341350695519810054356116866645903736903887489198290073717878278489283336866258618514397161092800822927259235606253329385680346412426115883033480375319241477050300361745300554294070048224570063613702437667736646583129648389543795225799924302670377800673907239557662889784268064438360972871469697057222599082173380306722674084304712899568927216714874368165803913032808291225108321971981881202355378085236737681650430470917391250726579578527949359553758689541420975875685641809140423800815190987619213220141159609761204629238264759015896259470548948448676127007747817955363573287061961434341238040990980129453866138197830435388680616397028088667322067612869028998344593183588522293396950369863476195406233062927783806363399164501737786798152414459057811665796022163363350895769128737785866473089290099968892694359344705046504587555680651185329567244267909896588266993963387668189020455861298972551689685167448859974499450551700537769147598225489086326392720196196224628741686545537903757094146938000406615810921665086529281528178956161584995826818099937015449902859239477872240279408432866619448528000692257390244216374981984457026324058867942864818586504724820219239021822839139817651327473042232223732519524147494738805193449/20966615650245730691028296781428877252039174135292161752793057558458217375072001182651729376940075050053638492355069699018881820625749039651571759279488791378123800280026374063686308471588450648232149222939116133459605131129198982725994069177813665225958666159798028305873776219576316924379909108960204116393186397559919345024089489164652800152412807393780811126374812589851475765757249173132266858864588680441159417536904735266419813289317224821284055248586033711593942150784482129372497982002629981639525323684688300105061963772323500672192463849681778457107309927026261836716819384899809948820248490278819711479850479837404268707556187451064691951106408726737474880287312007648536198353349636304147060128719900859980602579225051348317049318785596362474132263972412682136977670769329023039526210340229490481795146102411677283744602635108112155643520240665064559173712960434333440446417810284819539492449023025695754782550614971743427126411844500012572283687998146265638126691740360999595757358876735759031743700470735431852385311007101703560688190732216905761795820208865092298519770065855908112989764384319050752781065411594715478680542148196472494833300665306291315430980759740576477581536165403047986805747174596159887321321398007924780863497091036168829081834954062250010649998898081829751999394398440066560443462771824676931025679030981570300101148565758658161644347567666984467662221161674056920168360440407631388058077192614251913762234717642865897968880078533340827897468205957239272111407287718329907981992538352227776392418948421989090333838007073502469390350574271092447272036495365926531318360795220655453718379857005266187739485443357628950832645214941537203934045721618788980718471850730690533345469017130562165946959534028272304775402493672608384886526156331544874550283166782536596380784778721673",
+    "threshold_z": "25/8",
+    "threshold": "535250040308626229144641075782191420038197/73774899121742937500000000000000000000000000",
+    "gap_lower": "-147057193076255346107628546349671888788197/36887449560871468750000000000000000000000000",
+    "gap_sign_variance_choice": "lower",
+    "standardized_gap_lower": "-147057193076255346107628546349671888788197/46779942048062835244268195037500000000000",
+    "false_alarm_upper": "202772874601366474016924849877334904065679696536889847602766501336606941468492480992838022970293868448583327182914470382412988619032357640175754840926875720315542489319733937021795720225052249719016508224107481282787269800269557152782698081440146507704731243992550249146917321584363379147068875485951857788015283495037134576264096994940491096621220352726956170585891232947378734687574155724186448384579138018786841037547975050070947168526222887767486392229952607299167869061325980712945120886454121525349994357648956341390511920693340999420248534760704316536822030863263629321992342845714935712350953329450758852569495295822780378089335872567354849940422678019998154903191827009972668631875521709247376561153081477110149987598145619194089451463436194145995626300872493468256699640615309744676066275639326541863211392168326634042470424869590161271773667157997559453784180284004067746737388696337239793907207822077467742764169529234430266323750660462260309030929243746006269747773153393430754305841769909226254401283063280562818264090539226516945091331765144921841849785832037906656298873210643990931389354473080767536690915178618252742751225615473162488038253514470865389872090375867866472929052494974281807759459452600731489150476439110337146549477251063280602893520171344589296416746212322665029689282123619326073564958906984748738346877625003420275633712034545517391716403638944551087133564756366227918923174291508256944573342299023453178506677984737377008405083526612969066092906176127109088010917914132327270611923743520269602647094285759293211161801685999306212664789309147303398889953949220576957554552697138266900456072509307533187459439280568429846330990505762945370184241883629502711007071245254731552017340645101112893106257650465463006649891116733538395868253783582821056822999489446115264435338407981572070701047686828014198599869248081121/209666156502457306910282967814288772520391741352921617527930575584582173750720011826517293769400750500536384923550696990188818206257490396515717592794887913781238002800263740636863084715884506482321492229391161334596051311291989827259940691778136652259586661597980283058737762195763169243799091089602041163931863975599193450240894891646528001524128073937808111263748125898514757657572491731322668588645886804411594175369047352664198132893172248212840552485860337115939421507844821293724979820026299816395253236846883001050619637723235006721924638496817784571073099270262618367168193848998099488202484902788197114798504798374042687075561874510646919511064087267374748802873120076485361983533496363041470601287199008599806025792250513483170493187855963624741322639724126821369776707693290230395262103402294904817951461024116772837446026351081121556435202406650645591737129604343334404464178102848195394924490230256957547825506149717434271264118445000125722836879981462656381266917403609995957573588767357590317437004707354318523853110071017035606881907322169057617958202088650922985197700658559081129897643843190507527810654115947154786805421481964724948333006653062913154309807597405764775815361654030479868057471745961598873213213980079247808634970910361688290818349540622500106499988980818297519993943984400665604434627718246769310256790309815703001011485657586581616443475676669844676622211616740569201683604404076313880580771926142519137622347176428658979688800785333408278974682059572392721114072877183299079819925383522277763924189484219890903338380070735024693903505742710924472720364953659265313183607952206554537183798570052661877394854433576289508326452149415372039340457216187889807184718507306905333454690171305621659469595340282723047754024936726083848865261563315448745502831667825365963807847787216730000000000000000000000000000000000000000",
+    "miss_upper": "1",
+    "power_lower": "0",
+    "target_pass": false
+  },
+  "elapsed_wall_seconds": 23.510210899999947,
+  "original_scientific_source_modified": false,
+  "new_point_mean_algebra_requires_independent_review": false,
+  "independent_mean_math_review": {
+    "status": "ACCEPTED_FROZEN_TEMPLATE_MEAN_RISK_CHAIN",
+    "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "report_path": "outputs/d2a_mean_risk_review_v1.md",
+    "report_sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+    "mean_function_after_scope_binding_sha256": "a6e618bddb0157dc8c48d59c219114f22cc73b4b16bc0d11f1f9814991306391",
+    "maximum_H_post_slots": 600,
+    "maximum_total_seconds": "151",
+    "actual_template_fault_max": "9/200",
+    "fixed_template": "f(t)=3/10000*max(t-1,0), H0 f=0, h=1/1000, delta=1/4, 4 healthy prefix slots",
+    "original_physical_fault_allowance_unchanged": "3/4",
+    "mirror_equilibrium_inclusion_plus_max_ratio": "102094608476524939210343028899/336142366500000000000000000000",
+    "mirror_equilibrium_inclusion_minus_max_ratio": "204198972606288391933745457097/672284733000000000000000000000",
+    "source": "Independent review report section4: 16 saved beta cells, outward inverse, original Es; no new large adjoint verification",
+    "wide_fault_0_75_mirror_containment_accepted": false,
+    "inherited_conditions": [
+      "nonlinear remainder and event implications",
+      "rho-P/positive convolution certificates",
+      "segment component return",
+      "deterministic paths independent of innovations"
+    ],
+    "risk_implementation_followup": "new wrapper returns conservative1 if a positive Mills score floors to0 on 1e-8 grid; boundary test passed; inherited source unchanged",
+    "actual_case_fault_max": "9/2000",
+    "scope": "H0 f=0; H1 frozen 0.0003*(t-1)+ template, H<=600, actual f<=0.045; original beta box/rate; inherited nonlinear/event/contraction assumptions",
+    "general_wide_f_0_75_mirror_coverage_claimed": false
+  },
+  "derived_rebinding_prior_case_sha256": "74fb47e64fbb4c3d2bed35cb629109f181e7202c9274e5708a07d8c433be6665"
+}

@@ -1,0 +1,109 @@
+{
+  "status": "PASS_V2_PACKAGE_FINITE_CHECKS_AND_FIGURE_METADATA",
+  "scope": "Selected payload integrity, 11 exact finite reports and Figure2 metadata only.",
+  "manifest_files": 210,
+  "scripts": 11,
+  "results": [
+    {
+      "script": "outputs/ar1_converse_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.14099999999962165,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/ar1_iid_audit_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.25,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/ar1_information_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.6090000000003783,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/ar1_upper_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.6409999999996217,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/control_memory_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.11000000000058208,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/controller_settling_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.10900000000037835,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/m1_controlled_memory_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.9850000000005821,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/m2_controlled_memory_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.6870000000017171,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/m2s_recoverable_order_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.4529999999977008,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/m2s_singular_memory_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 1.6870000000017171,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    },
+    {
+      "script": "outputs/memory_asymmetric_repair_checks_v1.py",
+      "exit_code": 0,
+      "seconds": 0.09400000000096043,
+      "status": "PASS_EXACT_SAVED_JSON_MATCH",
+      "parse_error": null
+    }
+  ],
+  "figure2_metadata": {
+    "status": "PASS_FIGURE2_SMALL_METADATA_SCOPE",
+    "classified_rows": 14,
+    "numeric_rows": 12,
+    "unplotted_no_certificate_rows": 2,
+    "metadata_leaves": 38,
+    "receipt_status_counts": {
+      "PASS_STDLIB_DERIVED_REBINDING": 6,
+      "PASS_STDLIB_NEW_CASE_VERIFIER": 6
+    },
+    "large_scientific_payloads_checked": false,
+    "D2_scientific_replayed": false
+  },
+  "failures": [],
+  "elapsed_seconds": 6.625,
+  "universal_theorems_reproved": false,
+  "TeX_recompiled": false,
+  "full400_or_large_D2_science_replayed": false,
+  "hardware_operated": false,
+  "archive": "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V2.zip",
+  "archive_sha256": "6ab32cb85ebc7befd6410974b6781d97f5285147f13f19a744d1d7cf03cbb99c",
+  "validation": "ACTUAL_NEW_V2_ZIP_FRESH_EXTRACTION_11_SEPARATE_STDLIB_PROCESSES",
+  "validator_stdout_log": "work\\theory_checkpoint_verify_v2\\verification_results\\validator.stdout.log",
+  "validator_stderr_log": "work\\theory_checkpoint_verify_v2\\verification_results\\validator.stderr.log"
+}

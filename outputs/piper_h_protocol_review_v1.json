@@ -1,0 +1,168 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "status": "ACCEPTED_PREPARATION_WITH_EXPLICIT_PREHARDWARE_CLARIFICATIONS",
+  "scope": "Targeted official-document and static-source review plus independent binomial algebra; not SDK execution, hardware result or whole-source review.",
+  "protocol": {
+    "path": "outputs/piper_h_interface_protocol_v1.md",
+    "sha256": "a58fd4011eb48846e9cb20518d7f07af757f07265bc439a6d02e773794b84f31"
+  },
+  "source_audit": {
+    "path": "outputs/piper_h_source_audit_v1.json",
+    "sha256": "91a2fb9d3d359e04827522e989e96e2e9b0d0e37eda62e71c9f62ce317a14700"
+  },
+  "repository": {
+    "url": "https://github.com/agilexrobotics/pyAgxArm",
+    "commit": "841a625f5f4920e776f20b934eb13048b747e6d0",
+    "head_verified": true,
+    "tracked_tree_clean": true
+  },
+  "evidence": {
+    "commit": "841a625f5f4920e776f20b934eb13048b747e6d0",
+    "original_hash_checks": [
+      {
+        "path": "docs/piper/firmware_reference.md",
+        "match": true,
+        "sha256": "1c3b72a5fa3bc72c328a8f7f2c0721f14bcfe758df3f9c4cc996be240c112175"
+      },
+      {
+        "path": "docs/piper/piper_api.md",
+        "match": true,
+        "sha256": "951cca4e8c1e063cab54c449aee47c6cb47641ecdb045a2e5a2fb52c676b35b8"
+      },
+      {
+        "path": "pyAgxArm/api/constants.py",
+        "match": true,
+        "sha256": "1b4b8c03f75a333cb9c18057b4cc2ad6294bc8f3cb2a168ed434b513d075bf4f"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper/default/driver.py",
+        "match": true,
+        "sha256": "a674e189af802ce4ec8cd950758a8f177df09835f4e9937e9487a53ed0c9b2e0"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper/default/parser.py",
+        "match": true,
+        "sha256": "9d5d87726840465c510cc42cfe8f2c62d27bcaa35997731d767f3bb3d72aa7c7"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/core/table_driven.py",
+        "match": true,
+        "sha256": "a896d6cc1dd9d2f940e718112871162c363ee85dccae1c152b4288adc9a30d3d"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/msgs/piper/default/feedback/arm_feedback_high_spd.py",
+        "match": true,
+        "sha256": "b596d00e1f22908f7d0f2665fcf239c325d705385de5943930b318df0ed0a253"
+      }
+    ],
+    "targeted_additional_sources": [
+      {
+        "path": "pyAgxArm/api/arm_options.py",
+        "sha256": "08634aed799d8945d7f20f65914eaf522e7d33d5aa9ed697a8b0edb213be4de5"
+      },
+      {
+        "path": "pyAgxArm/api/agx_arm_factory.py",
+        "sha256": "7767a81197a28b4e4730bf1bd5e938989a233294e519bd40926a2c972fd19422"
+      },
+      {
+        "path": "pyAgxArm/utiles/validator.py",
+        "sha256": "ed6db9bc4ae52fc85a9e1ce7a7f996af40acac34cd83110868da8c2fcb2d6ff5"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper_h/default/driver.py",
+        "sha256": "016b2f926e957e0a98cfa64bbfc1831704c867891e80ff12e28333c51aabf589",
+        "read_scope": "Entire thin subclass only; no parent version whole-source review"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper_h/versions/v183/driver.py",
+        "sha256": "3205180ac5cdaa9d4c283cc19297efbaff9e52cb631e3c0717d8032b5babaa96",
+        "read_scope": "Entire thin subclass only; no parent version whole-source review"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper_h/versions/v188/driver.py",
+        "sha256": "c202aaaf18eb201bb975bd75578d0dd67a9d9661667bb4c2c7a70b2354d83774",
+        "read_scope": "Entire thin subclass only; no parent version whole-source review"
+      },
+      {
+        "path": "pyAgxArm/protocols/can_protocol/drivers/piper_h/versions/v189/driver.py",
+        "sha256": "2c689dca5ca4c17512ae498a35968501c2f72ca2591e1fc9c68b107d04688e84",
+        "read_scope": "Entire thin subclass only; no parent version whole-source review"
+      }
+    ],
+    "zero_error_binomial": {
+      "strict_2995": true,
+      "2994_not_strict": true,
+      "upper_2995": "0.0009997444209011423176791711437842197966207888428560849291556479793290",
+      "upper_2994": "0.0010000781698466700699416135096380117696004030118359086651117345687311"
+    },
+    "protocol_sha256": "a58fd4011eb48846e9cb20518d7f07af757f07265bc439a6d02e773794b84f31",
+    "source_audit_sha256": "91a2fb9d3d359e04827522e989e96e2e9b0d0e37eda62e71c9f62ce317a14700"
+  },
+  "source_findings": [
+    {
+      "id": "PIPER-R1",
+      "status": "PASS",
+      "topic": "PiPER H model routing",
+      "details": "PIPER_H=piper_h; factory installs per-model torque k/b/c, and all four H driver subclasses inherit corresponding Piper firmware branch with pass."
+    },
+    {
+      "id": "PIPER-R2",
+      "status": "PASS",
+      "topic": "Motor cached feedback",
+      "details": "get_motor_states returns parser cached object or None, updates hz from fps counter; polling is not fresh CAN RX. Timestamp comes from can frame backend."
+    },
+    {
+      "id": "PIPER-R3",
+      "status": "PASS",
+      "topic": "Current-derived torque",
+      "details": "decode_high_spd uses signed 16-bit current*1e-3 and torque=current*(k*b*c) from config, not independent torque sensing. MIT documentation gives PD+t_ff reference, not measured execution."
+    },
+    {
+      "id": "PIPER-R4",
+      "status": "CLARIFY_BEFORE_HARDWARE",
+      "topic": "Aggregate timestamp",
+      "details": "Getter selects joint_12 then joint_34 then joint_56 if present; aggregate timestamp is last selected present cache (joint_56 priority), not necessarily most recently received/max timestamp."
+    },
+    {
+      "id": "PIPER-R5",
+      "status": "CLARIFY_BEFORE_HARDWARE",
+      "topic": "Partially populated aggregate",
+      "details": "List initializes with six zeros and any available pair may make generic numeric Validator pass; aggregate non-None alone does not prove all three pairs received. Preserve per-pair received/sequence/age flags; unreceived joints missing, not numeric zeros."
+    },
+    {
+      "id": "PIPER-R6",
+      "status": "PASS_WITH_COMMON_P_QUALIFIER",
+      "topic": "2995 zero-error example",
+      "details": "Exact Fraction comparisons and 70-digit Decimal support minimal2995 for fixed common Bernoulli error probability, IID trials, fixed threshold and one-sided95% confidence. Not a uniform worst-case PFA guarantee over changing contexts."
+    }
+  ],
+  "binomial": {
+    "alpha": "1/20",
+    "target_p": "1/1000",
+    "formula": "p_upper(N)=1-(1/20)^(1/N)",
+    "minimum_N": 2995,
+    "exact_2995_strict": true,
+    "exact_2994_not_strict": true,
+    "upper_2995": "0.0009997444209011423176791711437842197966207888428560849291556479793290",
+    "upper_2994": "0.0010000781698466700699416135096380117696004030118359086651117345687311",
+    "interpretation": "One-sided zero-count binomial confidence upper endpoint for one fixed p; no claim of empirical hardware calibration or uniform model validation."
+  },
+  "hardware_connected": false,
+  "SDK_imported": false,
+  "SDK_installed": false,
+  "SDK_method_invoked": false,
+  "motion_or_CAN_commands_sent": false,
+  "official_SDK_tests_or_old_science_rerun": false,
+  "whole_source_review": false,
+  "actual_model_firmware_verified": false,
+  "theoretical_bridge": "Asynchronous cached partial outputs and current torque estimate do not establish the main manuscript's full-retained-state/common-support Gaussian contract.",
+  "revision_addendum": {
+    "current_protocol_sha256": "ebf843c1195e9b32a4a945e2575b08c2a84cf666a3c2eb06f4fcf77071643832",
+    "original_protocol_binding_preserved": true,
+    "source_audit_unchanged": true,
+    "review_scope": "Only reread changed aggregate and statistical-conditions paragraphs; no new SDK or binomial execution",
+    "closed_findings": ["PIPER-R4", "PIPER-R5", "PIPER-R6"],
+    "current_revision_status": "ACCEPTED_PREPARATION_3_CLARIFICATIONS_CLOSED"
+  }
+}

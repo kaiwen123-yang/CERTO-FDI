@@ -1,0 +1,132 @@
+{
+  "date": "2026-10-07",
+  "status": "DERIVED_PROOF_DRAFT_PENDING_INDEPENDENT_REVIEW",
+  "sourceSHA256": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca",
+  "fragmentSHA256": "d60b75fb81d3bb1da1e2e507588d41cd8442cb4531b222b8cf13a24fae853287",
+  "role": "A risk interpretation of the already proved information deficit, not an independent principal novelty claim.",
+  "scope": {
+    "model": "Exactly the known fixed finite-dimensional Schur linear experiment: full-column fixed Gaussian factor G; 0!=B in range(G); known initialized full-state prefix; complete retained states; one scalar full-clock rate-r/2 healthy path under each hypothesis with free level; deterministic calendar selected before noise; repeatable known exact-k transitions in both directions.",
+    "missTolerance": "Fixed epsilon_m in (0,1); 0<alpha<1-epsilon_m, then alpha decreases to zero.",
+    "endpoint": "Smallest planned integer post-prefix horizon at which a selected calendar/test meets uniform size<=alpha and power>=1-epsilon_m; not a random stopping time.",
+    "oracle": "Ideal healthy-subtracted complete white record, not composite full-record information.",
+    "controllerFamily": "Joint result only for the existing compact common-SPD family with common force/noise/path/clock/prefix and bounded k(K).",
+    "exclusions": [
+      "No sequential/ARL/E[tau] interpretation",
+      "No adaptive calendars, unknown onset or covariance/model uncertainty",
+      "No nonlinear D2 certificate asymptotic extrapolation beyond H<=600/f<=0.045",
+      "No rank-changing/singular family uniformity",
+      "No new prior-art retrieval or resolution of the four full-text gaps"
+    ]
+  },
+  "definitions": {
+    "Lambda_alpha": "0.5*(z_(1-alpha)+z_(1-epsilon_m))^2",
+    "H_or": "min integer H>=1 such that O_H>=Lambda_alpha",
+    "H_diag": "min integer H>=1 with an actual legal pi and test satisfying the two uniform error budgets",
+    "H_joint": "Same existential endpoint, also permitting a known K from the existing compact family to be chosen before data",
+    "B_or": "F*eta^2/2",
+    "C": "sqrt(2)/5*sqrt(F*beta_k*r)*eta^(3/2)"
+  },
+  "results": {
+    "positive": "H_diag-H_or=(2C/(F eta^2))*sqrt(H_or)+o(sqrt(H_or))=(2sqrt(2)/5)*sqrt(beta_k*r/(F*eta))*sqrt(H_or)+o(sqrt(H_or))",
+    "zero": "0<=H_diag-H_or=O(1), without Theta(1) or a positive universal lower constant",
+    "joint": "H_joint-H_or=(2 inf_K C(K)/(F eta^2))*sqrt(H_or)+o(sqrt(H_or)); infimum need not be attained",
+    "riskScale": "Lambda_alpha~log(1/alpha), H_or~(6log(1/alpha)/(F eta^2))^(1/3); positive endpoint excess has order (log(1/alpha))^(1/6)"
+  },
+  "derivation": [
+    {
+      "step": "Feasibility",
+      "argument": "For each actual calendar, existing Gaussian interface gives feasibility iff G(pi)>=Lambda. Projection contraction with z=0 gives G(pi)<=O_H, excluding all H<H_or. Equality of an unattained supremum with Lambda is never used to assert existence."
+    },
+    {
+      "step": "Oracle rounding",
+      "argument": "n=H_or tends to infinity. O_(n-1)<Lambda<=O_n, so 0<=O_n-Lambda<(F/2)(rho0+eta*n)^2=O(n^2)."
+    },
+    {
+      "step": "Increment",
+      "argument": "Exact cubic polynomial implies O_(n+h)-O_n=B_or*n^2*h+O_M(n^2) uniformly for 0<=h<=M*sqrt(n); fixed integer L improves remainder to O_L(n)."
+    },
+    {
+      "step": "All earlier positive endpoints",
+      "argument": "e_n=sup_(H>=n)|D*_H/H^(5/2)-C| tends to zero. For every integer n<=H<=n+floor((C/B_or-delta)*sqrt(n)), G*_H-Lambda<=-B_or*delta*n^(5/2)+e_n*n^(5/2)+O(n^2)<0. No monotonicity is assumed."
+    },
+    {
+      "step": "Positive existence",
+      "argument": "At H=n+ceil((C/B_or+delta)*sqrt(n)), the explicit xi* calendar has D(pi)<=C H^(5/2)+M H^2 and hence G(pi)-Lambda>=B_or*delta*n^(5/2)+O_delta(n^2)>0. This produces a genuine test and nonempty feasible endpoint set."
+    },
+    {
+      "step": "Zero integer step",
+      "argument": "Use actual profile-aware calendar D(pi)<=M0 H^2. Select fixed integer L with B_or L>M0. Then G_(n+L)(pi)-Lambda>=(B_or L-M0)n^2+O_L(n)>0, giving excess<=L; oracle gives nonnegative excess."
+    },
+    {
+      "step": "Joint",
+      "argument": "Existing family uniform convergence supplies a common H-tail and C_inf>0, excluding all earlier H across K. For fixed delta choose fixed K_delta with C(K_delta)<C_inf+B_or delta/2 and its explicit calendar, yielding strict positive margin at the proposed upper endpoint. Take alpha limit then delta to zero; no min or continuity of k assumed."
+    },
+    {
+      "step": "Mills self-derivation",
+      "argument": "For normal tail I(t), I<=phi(t)/t. Integration by parts gives I=phi/t-int phi/u^2>=phi/t-I/t^2, so t phi/(t^2+1)<=I<=phi/t. Taking logs at t=z_(1-alpha) gives log(1/alpha)=t^2/2+log t+O(1)~t^2/2; fixed miss quantile adds only O(t) to Lambda."
+    }
+  ],
+  "integerRoundingCounterexampleToOverstrength": {
+    "target": "Only the stronger universal positive constant/Theta(1) excess, not the proposed O(1) corollary.",
+    "existingAllowedPlant": "A_K=[[0,1/2],[0,0]], G=B=e2, n0=1, rho0=0, eta=1, r=1/100, k=1, both missing profiles g=0.",
+    "projection": "H2=[e1/2,e2]; P2=I2, beta1=0. The calendar repeats +1,0,-1,0 and replaces a final missing slot by continued holding if H even; every actual interval has length<=2, so P=I on all inputs.",
+    "completeClockBounds": "Prefix g0=1. |S_t|<=3; Abel gives |N|<=6H, D>=H/2, |N/D|<=12. Repaired scalar mass is zero and partial masses <=18(t+1).",
+    "dualBound": "D(pi)<=9H^2/100+3609H/100 < H^2/4 for every H>=226.",
+    "riskSequence": "Lambda_H=O_H-H^2/4=H^3/6+H/12; alpha_H=1-Phi(sqrt(2Lambda_H)-z_(1-epsilon_m)); alpha_H tends down to 0. O_(H-1)<Lambda_H<O_H and an actual calendar has G>Lambda_H, so H_diag(alpha_H)=H_or(alpha_H)=H.",
+    "notPhysicalParameterRescue": "An exact same-model illustration using the previously admitted copy plant, unrelated to changing any frozen nonlinear experiment."
+  },
+  "freshExactSymbolicSupports": {
+    "oracleDiscretePolynomialIdentity": true,
+    "coefficientSquaredRatio": "(2/25)/(1/4)=8/25",
+    "toyThresholdInteger": "16*226-3609=7>0",
+    "noRegressionOrAsymptoticFitting": true,
+    "noOldMatrixOrD2ChecksRerun": true
+  },
+  "staticFragmentChecks": {
+    "newLabels": [
+      "sf:fixed-endpoint-cor",
+      "sf:endpoint-threshold",
+      "sf:endpoint-oracle",
+      "sf:endpoint-positive",
+      "sf:endpoint-zero",
+      "sf:endpoint-joint",
+      "sf:endpoint-oracle-polynomial",
+      "sf:endpoint-overshoot",
+      "sf:endpoint-increment",
+      "sf:endpoint-tail",
+      "sf:endpoint-lower",
+      "sf:endpoint-upper",
+      "sf:endpoint-zero-upper",
+      "sf:endpoint-rounding-example"
+    ],
+    "refsResolveAgainstFragmentPlusHost": true,
+    "uniqueLabels": true,
+    "noPreambleOrStandaloneWrapper": true,
+    "compilationAttempted": false,
+    "newNativeEditorTabOpened": false
+  },
+  "evidenceFiles": [
+    {
+      "path": "outputs/certo_fdi_control_memory_draft_v1.tex",
+      "SHA256": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca"
+    },
+    {
+      "path": "outputs/m2s_singular_memory_theorem_v1.md",
+      "SHA256": "8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431"
+    },
+    {
+      "path": "outputs/m2s_recoverable_order_v1.md",
+      "SHA256": "5b04f87f23fbfe1d2bc1fb1fbb791e783a47e029c7cdf130e1c000dd22d0f4f1"
+    },
+    {
+      "path": "outputs/compact_controller_uniform_bridge_v1.md",
+      "SHA256": "89762501f1272eb8b0ed5150985225655e62f0681d24c62c41729750dbcdf351"
+    },
+    {
+      "path": "outputs/manuscript_revision7_integration_review_v1.md",
+      "SHA256": "dca0253b4a231a9f3d9256c9286dbe06d0a9535b360a67e41ae5b3680e718834"
+    }
+  ],
+  "manuscriptModified": false,
+  "independentAcceptancePending": true
+}

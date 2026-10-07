@@ -1,0 +1,472 @@
+% M2S two-regime section fragment v1, 2026-10-07.
+% No documentclass; requires amsmath, amssymb, amsthm and the existing
+% theorem/proposition environments. All new labels start with m2sreg:.
+% Mathematical dependencies, immutable independently accepted sources:
+% m2s_singular_memory_theorem_v1.md
+% SHA256 8ff2de70274973e4a9e104b26a5bf4be14e0e742998f2c562f6023e6316ab431
+% m2s_recoverable_order_v1.md
+% SHA256 5b04f87f23fbfe1d2bc1fb1fbb791e783a47e029c7cdf130e1c000dd22d0f4f1
+% Their review bindings and finite computational coverage belong in the
+% delivery receipt, not in the reader-facing theorem.
+\section{Common-noise input images and two deficit regimes}
+\label{m2sreg:section}
+
+The positive-definite model admits a fixed-rank extension when the fault
+and the healthy input remain in the process-noise image. Consider the
+same known initialized plant and diagnostic protocol, with
+\begin{equation}\label{m2sreg:plant}
+x_j=A_Kx_{j-1}+B\bigl(\mathbf1_{\{h=1\}}a_j+g_jb_j^h\bigr)+G\xi_j,
+\qquad \xi_j\overset{\mathrm{iid}}{\sim}N(0,I_p).
+\end{equation}
+The dimension is fixed, $A_K$ is known and strictly stable,
+$G\in\mathbb R^{d\times p}$ has full column rank, and
+$0\ne B\in\operatorname{range}G$. Write
+$f=G^\dagger B$ and $F=\|f\|^2>0$.
+The fixed prefix $j=-n_0+1,\ldots,0$ is fully read, with $g=1,a=0$;
+$x_{-n_0}=0$ is known. Afterwards $a_j=\rho_0+\eta j$,
+$\rho_0\ge0,\eta>0$. Each hypothesis has its own complete scalar
+healthy path, with unrestricted level and rate at most $r/2$, $r>0$.
+Thus the actual difference class is
+$\mathcal Z_H=\{z:|\Delta z_j|\le r\}$ on every input slot.
+The diagnostician reads the retained full states, not the excluded fast
+states or control commands. Held tasks have $g=\pm1$ and a reading in
+every slot. Moves exclude at least $k\ge1$ slots; their coefficients
+$|g_j|\le1$ are known in advance. For the upper bounds, known
+exact-$k$ profiles in both directions can be repeatedly concatenated
+with holds at any planned start time. Profiles need not be symmetric.
+The calendar is chosen before the healthy paths and the innovations.
+
+For each true interval of $m$ input slots between consecutive
+retained or initially known states, define
+\begin{equation}\label{m2sreg:interval}
+H_m=[A_K^{m-1}G,\ldots,G],\quad W_m=H_mH_m^\top,\quad
+M_m=\sum_{q=0}^{m-1}A_K^qB,\quad P_m=H_m^\top W_m^\dagger H_m .
+\end{equation}
+A gap of $k$ excluded states has $m=k+1$ inputs, including its right
+retained input. Let $P_\pi$ be the direct sum over the actual input
+intervals, with zero on any unobserved terminal inputs, and put
+$\theta=(fa_j)_j$, $H_gz=(fg_jz_j)_j$.
+Define
+\begin{equation}\label{m2sreg:information}
+G_{K,H}(\pi)=\frac12\inf_{z\in\mathcal Z_H}
+ \|P_\pi(\theta-H_gz)\|^2,\quad
+O_H=\frac F2\sum_{j=1}^Ha_j^2,\quad
+D_{K,H}^*=O_H-\sup_\pi G_{K,H}(\pi).
+\end{equation}
+The factor $1/2$ is the KL convention. The supremum does not require
+finite-horizon attainment.
+
+\begin{theorem}[Fixed-plant two-regime deficit]\label{m2sreg:theorem}
+Under the preceding contract, let
+\[
+\beta_k=(k+1)F-M_{k+1}^\top W_{k+1}^\dagger M_{k+1}\ge0.
+\]
+If $\beta_k>0$, then
+\begin{equation}\label{m2sreg:positive}
+D_{K,H}^*=\frac{\sqrt2}{5}\sqrt{F\beta_k r}\,
+ \eta^{3/2}H^{5/2}+o(H^{5/2}).
+\end{equation}
+The terminal-balanced symmetric calendar attains this coefficient with
+$\xi_*=2\beta_k\eta/(Fr)$.
+If $\beta_k=0$, there are fixed constants $0<c<C<\infty$ and $H_0$
+such that
+\begin{equation}\label{m2sreg:zero}
+cH^2\le D_{K,H}^*\le CH^2,\qquad H\ge H_0 .
+\end{equation}
+No sharp $H^2$ constant is asserted. Both statements are for fixed
+$A_K,G,B$ and the stated complete scalar path class.
+\end{theorem}
+
+\begin{proposition}[Preserved score and finite recovery capacity]
+\label{m2sreg:capacity}
+Let $\mathcal R_m=\operatorname{span}\{G,A_KG,\ldots,A_K^{m-1}G\}$,
+$\mathcal R_\infty=\bigcup_m\mathcal R_m$, and
+$\nu_R=\min\{m:\mathcal R_m=\mathcal R_\infty\}$.
+Then $\beta_k=0$ if and only if there exists $y\in\mathbb R^d$ with
+\begin{equation}\label{m2sreg:score}
+G^\top(A_K^\top)^q y=f,\qquad q=0,\ldots,k.
+\end{equation}
+In that case
+\begin{equation}\label{m2sreg:dimension}
+k<\nu_R\le\dim\mathcal R_\infty-p+1\le d-p+1,
+\qquad k\le d-p.
+\end{equation}
+This preserves the score of a constant scalar shift in the $f$ direction;
+it does not require $P_{k+1}=I_{(k+1)p}$ or recovery of every latent input.
+In particular, $p=d$, equivalently $GG^\top\succ0$, forces
+$\beta_k>0$ for every $k\ge1$ and recovers the positive-definite theorem.
+\end{proposition}
+
+\begin{proof}[Common support, projection, and Proposition~\ref{m2sreg:capacity}]
+Let $\mathcal F_{A_K}$ be the initialized causal map from process
+inputs to states, and $R$ retain the declared states. Their noise map is
+$L_R=R\mathcal F_{A_K}\operatorname{diag}(G)$.
+Every mean under either hypothesis is $L_R\vartheta$ with
+$\vartheta=(f(a_j^h+g_jb_j^h))_j$. All laws consequently have the
+same support $\operatorname{range}L_R$.
+For the reduced SVD $L_R=U_s\Sigma_sV_s^\top$, the data on this support
+are equivalent to $\Sigma_s^{-1}U_s^\top Y$, with standard Gaussian
+noise and mean $V_s^\top\vartheta$. Thus their KL is precisely
+$\|V_s^\top(\vartheta_1-\vartheta_0)\|^2/2$.
+
+The invertible block-triangular predictor transform uses the actual
+previous retained state:
+\[
+x_{t_i}-A_K^{t_i-t_{i-1}}x_{t_{i-1}}
+=\sum_{j=t_{i-1}+1}^{t_i}A_K^{t_i-j}
+ \bigl(B(a_j^h+g_jb_j^h)+G\xi_j\bigr).
+\]
+It changes $L_R$ into disjoint interval maps $H_m$ and preserves its
+rowspace. Therefore $P_m$ is an orthoproject and
+\eqref{m2sreg:information} is the exact profiled KL.
+This uses rowspace invariance, not an invalid congruence rule for
+pseudoinverses. If $U_m$ spans $\operatorname{range}W_m$, the
+nonredundant white rows are
+$(U_m^\top W_mU_m)^{-1/2}U_m^\top H_m$, with identity covariance
+of dimension $\operatorname{rank}W_m$.
+The full record instead recovers
+$G^\dagger(x_j-A_Kx_{j-1})$, giving the stated control-neutral oracle.
+
+We also need a bound valid for all span lengths.
+Cayley--Hamilton makes $\mathcal R_d$ invariant and
+$\mathcal R_m=\mathcal R_d$ for $m\ge d$.
+For such $m$, $W_m\succeq W_d$ with the same kernel, so inverse
+monotonicity on $\mathcal R_d$ gives $W_m^\dagger\preceq W_d^\dagger$.
+Hence
+\begin{equation}\label{m2sreg:gamma}
+\Gamma_K=\max_{1\le m\le d}\|W_m^\dagger\|<\infty,\quad
+\sup_{m\ge1}\|W_m^\dagger\|\le\Gamma_K,\quad
+S_B=\sum_{q\ge0}\|A_K^qB\|<\infty,\quad C_K=\Gamma_KS_B^2 .
+\end{equation}
+The last summability follows from strict stability, without normality
+or $\|A_K\|<1$. The inverse bound does not use $W_1^\dagger$ on
+subspaces reached only later.
+
+With $d_m=\mathbf1_m\otimes f$, $H_md_m=M_m$ and
+\[
+\beta_{m-1}=\|(I-P_m)d_m\|^2.
+\]
+Zero loss is exactly $d_m\in\operatorname{row}H_m$, which is
+\eqref{m2sreg:score}.
+The sequence $\beta_\ell$ is nondecreasing: on a common initialized
+horizon of $m+1$ constant-shift inputs, retaining times $1,m+1$
+has norm loss $\beta_{m-1}$, while deleting the time-$1$ state has
+loss $\beta_m$; rowspace inclusion makes loss nondecreasing.
+Also $0\le M_m^\top W_m^\dagger M_m\le C_K$, so
+\begin{equation}\label{m2sreg:tail}
+\beta_\ell\ge(\ell+1)F-C_K,\qquad \beta_\ell/\ell\longrightarrow F.
+\end{equation}
+
+Before reachability stabilizes, its dimension grows by at least one:
+$\mathcal R_{m+1}=\mathcal R_m$ already implies invariance.
+Since $\dim\mathcal R_1=p$, this proves the upper bounds on $\nu_R$.
+If \eqref{m2sreg:score} holds, set $\zeta=(A_K^\top-I)y$.
+Then $\zeta\perp\mathcal R_k$.
+If $k\ge\nu_R$, this annihilates the invariant reached space, and
+$G^\top(A_K^\top)^q y$ has zero successive differences for every
+$q\ge0$. It remains the nonzero vector $f$, whereas strict stability
+makes it tend to zero. This contradiction proves
+\eqref{m2sreg:dimension}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{m2sreg:theorem}]
+An unread terminal move can be replaced by continued holding.
+The larger experiment dominates the former one, so the supremum can
+be restricted to calendars actually reading time $H$.
+Their post input spans cover $1,\ldots,H$, with prefix singletons.
+
+\paragraph{Affine spans and the positive-penalty branch.}
+For a span of length $m$, write $q_j=j-(m+1)/2$,
+$d_q=(q_jf)_j$, $N_m=\sum_{j=1}^m q_jA_K^{m-j}B$.
+At center amplitude $A\ge0$ its exact oracle norm loss is
+\begin{equation}\label{m2sreg:affine}
+\|(I-P_m)(A d_m+\eta d_q)\|^2
+=\beta_{m-1}A^2+2\eta A L_{1,m}+\eta^2L_{2,m},
+\quad
+L_{1,m}=-M_m^\top W_m^\dagger N_m,\quad L_{2,m}\ge0 .
+\end{equation}
+By \eqref{m2sreg:gamma}, $|L_{1,m}|\le mC_K/2$.
+Thus the negative cross terms over any calendar cost at most
+\begin{equation}\label{m2sreg:crossbudget}
+E_H=C_K\eta(\rho_0+\eta H)H=O(H^2).
+\end{equation}
+No reflection symmetry is needed.
+
+Here are the precise replacements in the proof of
+Theorem~\ref{thm:main}. If $\beta_k>0$,
+$b_K=\inf_{\ell\ge k}\beta_\ell/\ell>0$ by monotonicity and
+\eqref{m2sreg:tail}. A missing input amplitude is at most twice
+its span's center amplitude. Consequently the total oracle norm
+loss $T$ obeys
+\[
+T\ge \frac{b_K}{4}\sum_{j\in\mathcal D_\pi}a_j^2-E_H .
+\]
+For late macros of length $L=\lfloor H^{3/4}\rfloor$, write
+$A$ for the minimum amplitude, $d$ for missing slots, and $M$
+for the number of clipped held runs.
+The complete signed zero-endpoint tents used in the main proof are
+zero on every missing input and its right retained input.
+Their scalar shift $\tau=gz$ is therefore zero in every
+nonsingleton span, and their full-metric saving is exactly
+$F\sum_j(2a_j\tau_j-\tau_j^2)$.
+The other bound on the same $T$ is
+$\sum_{\rm macros}\beta_kA^2(M-1)-E_H$;
+only completely internal gaps are counted here.
+Cross-macro missing slots are allocated once in the former bound.
+
+For fixed $\delta\in(0,1)$ split this same global $T$ before grouping
+by macros, and put $W=(1-\delta)\beta_k$ and
+$C=r(2A-rL/2)/4$. The tent bound, Cauchy and AM--GM give, for $M>0$,
+\[
+\frac{FC(L-d)^2}{M}+WA^2M+
+ \frac{\delta b_K}{4}A^2d-WA^2-2FCL
+\ge 2A\sqrt{FCW}(L-d)+
+ \frac{\delta b_K}{4}A^2d-WA^2-2FCL .
+\]
+For $A\ge32FWr/(\delta^2b_K^2)$ the dead-slot term absorbs
+the subtracted $d$. When $M=0,d=L$, it gives the same bound directly.
+Late amplitudes are of order $H$, so this condition is uniform
+in the calendar. Summation leaves
+$\sqrt{2FrW}\sum A^{3/2}L$ up to $O(H^{9/4})+E_H$ in twice
+the deficit. The Riemann sum over $[\epsilon H,H]$, followed by
+$H\to\infty$ and then $\epsilon,\delta\downarrow0$, gives
+the lower coefficient in \eqref{m2sreg:positive}.
+
+For completeness, the matching construction also remains observable
+at every rank. Its terminal-balanced symmetric blocks have
+half-hold $h=n/2$: $h$ positive reads, $k$ missing slots, $n$
+negative reads, $k$ missing slots, and $h$ positive reads.
+With fixed $\xi>0$, use the main proof's packing in budget $H-1$,
+with evenly distributed padding and one to four final positive reads.
+Then
+\[
+M=\sqrt{H/\xi}+O(1),\quad
+n_\ell=\xi\ell+O(1),\quad
+A_\ell=\eta\xi\ell^2+O(\ell+1).
+\]
+Each artificial join is a true singleton conditional span using the
+previous real state, so no covariance or state initialization is changed.
+On an active block $A\ge r(k+n-1)/2$, use
+\[
+z_i^{+,L}=r(c_0+h-i),\quad
+z_i^-=-r[c_0+\min(i-1,n-i)],\quad
+z_i^{+,R}=r(c_0+i-1),\qquad c_0=(k+1)/2 .
+\]
+Set $U_j=f(A-g_jz_j^{\rm loc})$ on holds and $U_j=fA$ on missing
+inputs. Inactive blocks, prefix and tail have $U=0$.
+The local levels specify an auxiliary dual, not a globally feasible
+healthy path. The baseline scalar weights are
+$\lambda_j^0=F(g_jA-z_j^{\rm loc})$ on holds and zero on missing inputs.
+Their total mass is zero and their exact full-input support is
+\[
+h_\ell^0=F\left[\frac{Ar}{2}n(n+2k)
+ -4r^2\sum_{j=0}^{n/2-1}(c_0+j)^2\right].
+\]
+Zero missing weights retain the physical partial-sum plateau.
+
+Let $\gamma=(g_jf)_j$, $p=P_\ell\gamma$,
+$N=\gamma^\top P_\ell U$, $D=\|p\|^2$ and
+$v_\ell=P_\ell U-(N/D)p$.
+Full-column $G$ gives $P_1=I_p$. The $2n-2$ held singletons and
+contraction on the two fixed-length gaps imply, with $C_k=2(k+2)$,
+\[
+D\ge F(2n-2)\ge Fn,\quad |N|\le C_kFA,\quad
+\gamma^\top v_\ell=0,\quad P_\ell v_\ell=v_\ell,\quad
+\|v_\ell-P_\ell U\|^2=N^2/D\le C_k^2FA^2/n .
+\]
+Indeed each gap contributes at most $(k+1)FA$ in absolute projected
+scalar mass, and at most $FA$ in the baseline.
+The zero-mass correction
+$\lambda_j-\lambda_j^0=\gamma_j^\top(v_\ell)_j-\lambda_j^0$
+has $\ell^1$ norm at most $C_k(k+3)FA$.
+Its complete path support costs at most
+$r(2(n+k)-1)$ times half that norm.
+Hence the assembled observable vector has
+\[
+h_{\mathcal Z}(\lambda)\le\frac{Fr}{2}
+ \sum_\ell A_\ell n_\ell^2+O(H^2),\qquad
+\|P\theta-v\|^2=O(H^2).
+\]
+The latter follows from $\|\theta-U\|^2=O(H^2)$ and the summed
+repair energy. A span's actual predictor statistic has coefficient
+$W_m^\dagger H_mv_m$; its latent coefficient is $P_mv_m=v_m$
+and its variance is $\|v_m\|^2$.
+Thus the dual uses retained states alone even when $W_m$ is singular.
+
+The two gap input centers are $1/2\pm(n+k)/2$ relative to the
+block center. Equation~\eqref{m2sreg:affine} gives their exact
+combined norm loss
+\[
+2\beta_k(A_\ell+\eta/2)^2+
+ \frac{\beta_k\eta^2}{2}(n_\ell+k)^2+
+4\eta(A_\ell+\eta/2)L_{1,k+1}+2\eta^2L_{2,k+1}.
+\]
+Its sum is $2\beta_k\sum A_\ell^2+O(H^{3/2})$.
+The full-input dual inequality consequently gives
+\begin{equation}\label{m2sreg:symmetricupper}
+D_{K,H}(\pi_H^\xi)\le
+\frac1{10}\left(\frac{2\beta_k\eta^2}{\sqrt\xi}
+ +Fr\eta\sqrt\xi\right)H^{5/2}+O_\xi(H^2).
+\end{equation}
+Optimization in fixed $\xi$ proves \eqref{m2sreg:positive}.
+All rank-sensitive replacements have now been supplied: common
+support, the real projection, fixed-plant inverse bounds, and
+singleton coercivity for the scalar mass repair.
+
+\paragraph{Zero penalty: a profile-aware upper bound.}
+Assume $\beta_k=0$ and fix $L>n_0+k+2$.
+Keep the full-input cumulative task coefficient
+$M_t=\sum_{j=-n_0+1}^t g_j$.
+Hold the current sign $s$ until $sM_t\ge L$.
+If at least $k+2$ slots remain, execute the known exact-$k$ move,
+flip $s$, and continue; otherwise hold to $H$.
+This is a deterministic calendar using the known profile at each
+planned start. It balances all input coefficients, including the
+missing ones, rather than just held signs.
+
+The threshold overshoot is less than one and a move changes $M_t$
+by at most $k$. Thus the next opposite hold run reaches its threshold
+after between $2L-k$ and $2L+k+2$ slots.
+The initial run exceeds two slots; a skipped final move adds at most
+$k+1$ holds. For large $H$, every post hold run has at least two
+slots and
+\begin{equation}\label{m2sreg:balance}
+|M_t|\le L+k+2 .
+\end{equation}
+If $N_h,N_m$ count post held inputs and moves, then
+$H=N_h+kN_m$ and $N_h\ge2N_m$.
+The singleton count, excluding the right retained point of each gap,
+is $S=N_h-N_m\ge H/(k+2)$.
+
+Put $m=k+1$. Since $P_md_m=d_m$, only the affine slope is lost
+in each fixed-length gap:
+\begin{equation}\label{m2sreg:slopeloss}
+E=\|(I-P)\theta\|^2\le
+N_m\eta^2F\,m(m^2-1)/12=O(H).
+\end{equation}
+Let $\gamma=(g_jf)_j$, $w=P\theta$, $p=P\gamma$ and
+$\lambda_j=\gamma_j^\top w_j$.
+We have $\lambda_j=Fg_ja_j+e_j$, where $e_j=0$ on singletons
+and is uniformly bounded on the fixed-length gaps independently
+of the amplitude. The post cumulative $S_t=\sum_{j=1}^tg_j$
+is bounded by \eqref{m2sreg:balance}, and Abel's identity gives
+\[
+\sum_{j=1}^t g_ja_j=a_tS_t-\eta\sum_{j=1}^{t-1}S_j .
+\]
+All partial $\lambda$ masses are therefore $O(t+1)$ and
+$N=\sum_j\lambda_j=O(H)$. The fixed prefix changes only the constants.
+
+Now $D=\|p\|^2$ lies between $FS\ge FH/(k+2)$ and $F(H+n_0)$.
+Set $\alpha=N/D=O(1)$ and $v=w-\alpha p$.
+Then $Pv=v$, $\sum_j\gamma_j^\top v_j=0$, and
+\begin{equation}\label{m2sreg:globalrepair}
+\|\theta-v\|^2=E+\alpha^2D=O(H).
+\end{equation}
+Each $\gamma_j^\top p_j$ is bounded by $F\sqrt m$ because
+all nonsingleton spans have fixed length. The repaired scalar weights
+$\lambda'_j=\gamma_j^\top v_j$ hence still have partial masses $O(t+1)$.
+The free-level complete Lipschitz class has the exact support formula
+\begin{equation}\label{m2sreg:support}
+h_{\mathcal Z}(\lambda')=
+r\sum_{t=-n_0+1}^{H-1}
+ \left|\sum_{j=-n_0+1}^t\lambda'_j\right|=O(H^2).
+\end{equation}
+Summation by parts proves this formula; a nonzero total mass instead
+has infinite support because the initial level is free.
+The observable range vector $v$ yields
+\begin{equation}\label{m2sreg:dual}
+G_{K,H}(\pi)\ge
+ \langle v,\theta\rangle-\tfrac12\|v\|^2-h_{\mathcal Z}(\lambda'),
+\qquad
+O_H-G_{K,H}(\pi)\le
+ \tfrac12\|\theta-v\|^2+h_{\mathcal Z}(\lambda').
+\end{equation}
+Equations~\eqref{m2sreg:globalrepair}--\eqref{m2sreg:dual}
+prove the $O(H^2)$ upper bound.
+
+\paragraph{Zero penalty: an all-calendar lower bound.}
+By monotonicity and \eqref{m2sreg:tail}, define finite
+\[
+L_z=\max\{m\ge1:\beta_{m-1}=0\}\ge k+1,\qquad
+b_+=\inf_{m>L_z}\frac{\beta_{m-1}}m>0 .
+\]
+The capacity bound gives $L_z\le\nu_R$.
+Set $\epsilon=(4L_z+2)^{-1}$ and $J_0=\lceil\epsilon H\rceil$.
+Consider any calendar reading $H$.
+
+If a positive-penalty interval ends at $t\ge J_0$, it lies entirely
+in the post affine region and has center amplitude
+$A\ge\eta(t+1)/2\ge\eta\epsilon H/2$, even if its span is long.
+For sufficiently large $H$, uniformly in the span,
+\eqref{m2sreg:affine} gives
+$\|(I-P_m)\theta_m\|^2\ge(b_+/2)mA^2$.
+Using $z=0$ in the profile therefore gives
+\begin{equation}\label{m2sreg:positivecase}
+O_H-G_{K,H}(\pi)\ge\tfrac12\|(I-P)\theta\|^2
+\ge \frac{b_+\eta^2\epsilon^2}{16}H^2 .
+\end{equation}
+
+Otherwise every interval ending at or after $J_0$ has length
+at most $L_z$ and preserves $d_m$.
+At least $(1-\epsilon)H/L_z-O(1)$ such late intervals cover
+inputs $J_0,\ldots,H$. Their center amplitudes are at least
+$\eta\epsilon H/2$ for large $H$.
+Choose the single complete healthy difference
+\[
+z_j=(r/2)g_j,\qquad \widetilde h_j=fg_jz_j=(r/2)fg_j^2 .
+\]
+Because $|g_j-g_{j-1}|\le2$, this path obeys $|\Delta z|\le r$,
+and the two paths $z/2,-z/2$ meet their individual rate bounds.
+The free prefix level makes the same choice legal there.
+For a late zero-penalty span, preservation of $d_m$ gives
+\[
+\langle P_m\theta_m,P_m\widetilde h_m\rangle
+=\frac r2FA\sum_{j=1}^m g_j^2+
+ \eta\langle P_md_q,P_m\widetilde h_m\rangle
+\ge \frac r2FA-C_0 .
+\]
+Here $C_0$ is fixed since $m\le L_z$.
+The right retained input has $g^2=1$, so $\sum g_j^2\ge1$.
+No entrywise positivity of the projection is assumed.
+The total late cross is thus at least
+\[
+\frac{rF\eta\epsilon(1-\epsilon)}{4L_z}H^2-O(H).
+\]
+All early intervals end before $J_0$.
+Contraction and Cauchy bound their cross from below by
+$-(r/2)F\sum_{\rm early}\sqrt{m\sum a_j^2}$.
+Their total input count is at most $J_0-1+n_0$, and
+$a_j\le\rho_0+\eta J_0$, so the early contribution is at least
+$-(r/2)F\eta\epsilon^2H^2-O(H)$.
+Finally $\|P\widetilde h\|^2\le r^2F(H+n_0)/4=O(H)$.
+Evaluating the profiled infimum at this legal full path and expanding
+the half square gives
+\begin{align}
+O_H-G_{K,H}(\pi)
+&\ge \tfrac12\|(I-P)\theta\|^2+
+ \langle P\theta,P\widetilde h\rangle-
+ \tfrac12\|P\widetilde h\|^2 \notag\\
+&\ge \frac{rF\eta}{2}
+ \left[\frac{\epsilon(1-\epsilon)}{2L_z}-\epsilon^2\right]H^2-O(H)
+ =\frac{rF\eta\epsilon}{8L_z}H^2-O(H).
+\label{m2sreg:zerocase}
+\end{align}
+The last equality uses $\epsilon=(4L_z+2)^{-1}$.
+All constants in both cases are independent of the calendar.
+A smaller positive constant than the minimum of the coefficients
+in \eqref{m2sreg:positivecase} and \eqref{m2sreg:zerocase}
+gives the lower bound in \eqref{m2sreg:zero}.
+Together with the profile-aware upper construction, this completes
+the two-regime theorem.
+\end{proof}
+
+The distinction concerns recoverability of the constant force score.
+A zero coefficient does not remove healthy uncertainty: with
+$r,\eta>0$ and held $g=\pm1$, its optimal deficit still has order $H^2$.
+Positive-definite noise excludes the zero-score-loss case, whereas
+a fixed lower-rank noise image can preserve that score across a gap.
+Both conclusions use the same physical input transformation for the
+fault, the complete healthy path, and the noise.
+% End of the fixed-plant section. No controller-family uniformity claim,
+% partial-observation model, or additional theoretical direction is added.
+

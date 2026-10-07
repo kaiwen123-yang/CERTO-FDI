@@ -1,0 +1,118 @@
+{
+  "H_post_slots": [
+    40,
+    60,
+    80,
+    100,
+    120,
+    160,
+    200,
+    240,
+    300,
+    400,
+    500,
+    600
+  ],
+  "H_units": "post-onset slots; elapsed physical seconds=(H+4)/4",
+  "archive_sha256": "f703091ace28d9017d0400e07984f4c34f03d5efdba14742f5a3a9f4ea94a60b",
+  "calendar_families": [
+    "stay",
+    "fixed20",
+    "fixed40",
+    "fixed76",
+    "terminal_balanced",
+    "switch_then_stay"
+  ],
+  "delta": "1/4",
+  "diagnostic": "translation-invariant signal/health/dynamic/two-sided remainder/two-sided noise budgets; iid predictions are references only",
+  "direction_nodal_class": {
+    "B": "103532719933/3125000000000",
+    "eta": "3/40000",
+    "rate_per_slot": "103532719933/250000000000000",
+    "role": "proposal only; actual path mean supports separately certified",
+    "times": "relative nodes -3,-2,-1,0 followed by retained post nodes"
+  },
+  "direction_rule": "Exact KKT certificate for nodal closest-pair residual; nearest-even round at 1e-12; restore zero moment at last nonzero entry only if exact raw moment is zero; divide by rational sqrt-upper of rounded squared norm to 1e-18; task-transform to physical direction. Zero residual is a direction-certificate failure.",
+  "error_radii": {
+    "average_postmove": "1682123399333/10000000000000000",
+    "average_source": "52369817766135667212926689367189/250000000000000000000000000000000000",
+    "point_postmove": "3399888498583189/1000000000000000000",
+    "point_source": "106681889909401270803434156502238755741426225171/25000000000000000000000000000000000000000000000000"
+  },
+  "event_budget": "delta_j=(N+1)*p_nu+[N-1500*M+(M+1)]*p_X+M*p_E, per hypothesis; N+1 is inherited conservative cap count, not an added point read",
+  "failure_ledger": [
+    "PHYSICAL_CONTRACT_FAILED",
+    "ZERO_DIRECTION",
+    "PROJECTION_CERTIFICATE_FAILED",
+    "MEAN_CERTIFICATE_MISSING_OR_FAILED",
+    "VARIANCE_CERTIFICATE_MISSING_OR_FAILED",
+    "VARIANCE_RATIO_TARGET_NOT_MET",
+    "EVENT_BUDGET_EXHAUSTED",
+    "RISK_TARGET_NOT_MET"
+  ],
+  "family_choice": "keep every endpoint candidate; select lowest H with any certified member; at fixed H largest certified power lower bound, then smallest S; do not discard duplicate calendars",
+  "fast_reads_per_slot": 250,
+  "fault_formula": "f(t)=3/10000*max(t-1,0)",
+  "fault_onset_s": "1",
+  "fault_slope_Nm_per_s": "3/10000",
+  "fixed_tail_rule": "After n held reads: if remaining<=k, read all remaining at current task; else gap k and flip. Last hold may be truncated.",
+  "full_scan_status_at_freeze": "NOT_RUN",
+  "h": "1/1000",
+  "healthy_prefix_slots": 4,
+  "interpretation": "first success only in declared grid and finite family; no continuous minimum, no minimax claim, no sequential false-alarm interpretation",
+  "k_slots": 12,
+  "means": "same comparator under each hypothesis; whole beta path support with real time gaps; two independent nuisance paths; exact sampled ramp values; source/post dynamic corrections distinct; point mean-transfer extension requires its own certificate",
+  "minimum_postarrival_steps_before_removing": 1750,
+  "move_fast_steps": 1500,
+  "noise": {
+    "encoder_variance": "(2*pi/2^17)^2/12 using inherited certified pi endpoints",
+    "raw_innovations_independent": true,
+    "transducer_variance_per_fast_read": "1/10000"
+  },
+  "omega": "40",
+  "omega_f": "200",
+  "physical_class": {
+    "beta_radius_kg": "1/50",
+    "beta_rate_kg_per_s": "1/1000",
+    "fault_radius_Nm": "3/4",
+    "fault_rate_Nm_per_s": "3/1000"
+  },
+  "point_postmove_scope": "point hold age>=1500 in inherited horizon/event; first admitted slot last sample age1749; no shortening of 1750-step re-move requirement",
+  "protocol_version": "D2-a v1 / 2026-10-07",
+  "readouts": {
+    "average250": {
+      "available_time": "(s+1)/4",
+      "design_template": "task*eta*(j-1/2)",
+      "indices": "n=250*s,...,250*s+249",
+      "weight_each": "1/250"
+    },
+    "point_last_fast_read": {
+      "available_time": "(n+1)/1000",
+      "design_template": "task*eta*j",
+      "indices": "n=250*(s+1)-1",
+      "sample_time": "n/1000"
+    }
+  },
+  "risk": {
+    "alpha_strict": "1/1000",
+    "alternative_gap": "mu1_lower-b1-threshold",
+    "miss_target": "1/10",
+    "negative_gap": "power lower bound 0 unless a valid lower-variance tail certificate is provided; no Vplus substitution",
+    "null_quantile_rational": "25/8",
+    "power_positive_gap": "1-Mills_upper(gap/sqrt_upper(V1plus))-delta1",
+    "threshold": "mu0_upper+b0+(25/8)*sqrt_upper(V0plus)",
+    "zero_direction": "no separation certificate; randomized alpha test only as a labeled fixed-detector control, no full-experiment impossibility claim"
+  },
+  "selected_joint_one_based": 4,
+  "settle_fast_steps": 1500,
+  "switch_then_stay_endpoints": "all S=20,40,...,floor(H/20)*20, inclusive H when on grid; run terminal_balanced(S), then stay + to H",
+  "terminal_balanced": {
+    "accept_block": "used+2*(n_ell+k)<=stage horizon",
+    "n_ell": "2*ceil(xi*ell/2)",
+    "spread_rule": "q,rem=divmod((H-used)//4,number_of_blocks); n_i+=2*q+2*(i<rem)",
+    "tail": "all remaining slots read at task +",
+    "within_block": "+ for n/2 reads; gap k; - for n reads; gap k; + for n/2 reads",
+    "xi_exact": "450000000000/103532719933"
+  },
+  "variance": "full innovation history; moves and settle have output weights zero but propagate state/innovations; actual direction degree-8 polynomial-Abel certificate; Vminus and Vplus; Vplus/own_certified_Vnominal<=1.01 acceptance rule"
+}

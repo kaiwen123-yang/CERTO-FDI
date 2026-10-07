@@ -1,0 +1,109 @@
+\section{Closed-Loop Implementation Interface}\label{sec:control}
+The following rigid-mechanism example supplies a physical-time transition budget and a deterministic residual-error bound. Its diagnosis interface is explicitly restricted to selected torque-residual readings. Model-based robot residuals have established momentum-based and collision-detection formulations \cite{deluca,haddadin}; the result developed here concerns when a certified static residual may be used by a predetermined self-test.
+
+\subsection{Dynamics, sensing, and the test alternative}
+Consider the numerical planar revolute chain with terminal mass $m=\bar m+\beta_m$. A load-side additive bias acts along a specified joint direction $e_f$:
+\begin{equation}
+ \begin{split}
+ M(q,m)\ddot q+c(q,\dot q,m)+g(q,m)\\
+ +\dot m A(q)\dot q=\tau_u-e_fa(t),\qquad A=J_p^TJ_p.
+ \end{split}\label{eq:plant}
+\end{equation}
+The $\dot m$ term specifies the time-dependent-Lagrangian convention. The chain has six coupled angular coordinates in one plane. It is a synthetic mechanism, rather than a model of a spatial industrial arm. Its reflected rotor inertia is $0.5$ kg m$^2$ per joint; for interpretation, $N^2J_m=0.5$ at reduction $N=100$ corresponds to $J_m=5\times10^{-5}$ kg m$^2$. No gearbox friction is included in this benchmark.
+
+A concrete realization of the specified alternative is a scheduled torque-loading test: an output-side loading fixture applies an increasing, known-direction joint torque while the mechanism visits the two poses. It is a reproducible fault surrogate for an additive load-side bias. The linear law is a chosen test alternative, not a general constitutive law for wear, bearing friction or loss of actuator effectiveness.
+
+The controller uses exact encoders and nominal computed torque:
+\begin{equation}
+ \tau_u=\bar M(q)\{\ddot q_d-K_D(\dot q-\dot q_d)-K_P(q-q_d)\}
+       +\bar c(q,\dot q)+\bar g(q),\label{eq:controller}
+\end{equation}
+with $K_P=\omega^2I$, $K_D=2\omega I$. The standard nominal error equation and its sensitivity to model error are described in \cite{lynch}. Here actuation is ideal. A simulated torque transducer downstream of the actuator and upstream of the loading fixture reads $\tau_s=\tau_u+\xi_\tau$. A separate monitor receives the selected residual, task sign and time; the transducer noise is independent of feedback. Access to exact commands or complete robot data changes this information interface, as discussed in Section~\ref{sec:scope}.
+
+Subtract nominal gravity at the measured configuration:
+\begin{equation}
+ r_\tau=\tau_s-\bar g(q)
+       =w(q)\beta_m+e_fa+\xi_\tau+e_{\rm dyn},\quad
+ w=\partial g/\partial m,\label{eq:static}
+\end{equation}
+where $e_{\rm dyn}=M\ddot q+c+\dot m A\dot q$. At rest $e_{\rm dyn}=0$; finite-time admission uses the bound below. The information supplied to this monitor defines the statistical experiment.
+
+\subsection{Mirrored gravity and the selected observation}
+For a planar chain with axial centers of mass, cumulative angles $\phi_j=\sum_{i\le j}q_i$ give a potential that is a weighted sum of $\sin\phi_j$. Reflection
+\begin{equation}
+ \mathcal Rq=(\pi-q_1,-q_2,\ldots,-q_n)
+\end{equation}
+leaves the potential unchanged and has $D\mathcal R=-I$. Thus $g(\mathcal Rq)=-g(q)$ and $w(\mathcal Rq)=-w(q)$. At the two reference poses, the faulted joint's channel $j$ has the scalar budgets
+\begin{equation}
+ b=|w_j(q_a)|b_m,\qquad r_d=|w_j(q_a)|r_m,
+ \qquad\sigma^2=(\Sigma_\tau)_{jj}.
+\end{equation}
+Fixed errors in other reflection-compatible gravity parameters likewise become a common scalar offset after sign transformation. Their magnitude must be included in a finite $b$; using $B=\infty$ is an enlarged statistical class, not a certification of unbounded physical payload.
+
+For complete-vector observations, whiten and split along $g=\Sigma_\tau^{-1/2}w(q_a)$, with $c_f=g^T\Sigma_\tau^{-1/2}e_f/\|g\|$ and $F=\|\Sigma_\tau^{-1/2}e_f\|^2$. The unconfounded contribution is $(F-c_f^2)\sum_{i\in I_\pi}a_i^2/2$. Proposition~\ref{prop:rankone} accounts for both this term and the total missing-slot coefficient $F$. Section~\ref{sec:scope} discusses the information restriction and the unconfounded energy in this example.
+
+\subsection{Certified transitions and information cost}
+The certificate covers $|\beta_m|\le.02$ kg, $|\dot\beta_m|\le.001$ kg/s, $0\le f\le.75$ N m and $|\dot f|\le.003$ N m/s. Static mismatch is absorbed into the moving equilibrium
+\begin{equation}
+ d=-M_0^{-1}(\beta_mg_p+e_ff),\qquad
+ q_e=q_d+\omega^{-2}d(q_e,\beta_m,f).
+\end{equation}
+At $\omega=40$, Appendix~\ref{app:embedding} gives an equilibrium displacement below $1.22\times10^{-3}$ rad, and, after a fixed 1.5 s hold,
+\begin{align}
+ \|\dot q\|&\le1.91\times10^{-5}\ \mathrm{rad/s},\nonumber\\
+ \|\ddot q\|&\le6.12\times10^{-4}\ \mathrm{rad/s^2},\nonumber\\
+ \|e_{\rm red}\|&\le2.031\times10^{-3}\ \mathrm{N\,m}.
+ \label{eq:extended_hold}
+\end{align}
+The same bounds close the transition state tube and command limits. With a 1.5 s move and $\delta=.25$ s, the reference calendar uses $k=12$.
+
+Appendix~\ref{app:embedding} gives, with $x=e^{-12t}$,
+\begin{equation}
+ E(t)\le E_\infty+C_1x+C_2x^2\le E_\infty+Cx,
+ \quad C=C_1+C_2.\label{eq:admission_constants}
+\end{equation}
+The exact rational coefficients have values $E_\infty\approx.002026081608$, $C_1\approx310.705171$, $C_2=7.43563476$, and $C\approx318.140806$, in N m.
+For $\varepsilon>E_\infty$, the simple envelope gives
+\begin{equation}
+ k_{\min}(\varepsilon)=\left\lceil\frac{T_{\rm move}
+ +\lambda_s^{-1}\pos{\log[C/(\varepsilon-E_\infty)]}}{\delta}\right\rceil,
+ \quad\lambda_s=12.\label{eq:k_control}
+\end{equation}
+At $\varepsilon=.002031$ N m the hold bound is $1.49875$ s, so $k_{\min}=12$. At $\varepsilon=.01$ N m it is $.88284$ s and $k_{\min}=10$. The experiments in Sections~\ref{sec:slow}--\ref{sec:full_disclosure} retain $k=12$ and the tighter polynomial-envelope radius $.002030814$ N m. The smaller target is only $0.243\%$ above $E_\infty$; halving that gap increases the hold requirement by $\log2/12\approx.0578$ s and the integer budget to 13. This sensitivity concerns the certificate, not observed mechanical fragility.
+
+A larger admission tolerance may shorten a transition, but also enlarges the uncertainty in the statistical test. This trade-off must be evaluated after recomputing the calendar. For a fixed calendar its protected power decreases with the tolerance.
+\begin{proposition}[Offline admission--calendar design]\label{prop:controller}
+Fix a controller, a known horizon $H$, a common noise variance, and a finite set of feasible exclusion budgets $\mathcal I$. For each $k\in\mathcal I$, set $t_k=k\delta-T_{\rm move}\ge0$ and fix a calendar $\pi_{H,k}$ before observing data. Assume a common admitted prefix and a verified envelope $E_\infty+Ce^{-\lambda_st}$. Define
+\begin{equation}
+ e_k=E_\infty+Ce^{-\lambda_st_k},\quad
+ v_k=s_k-\operatorname{proj}_{\K_{\pi_{H,k}}}s_k,
+\end{equation}
+and restrict tolerances to $e_k\le\varepsilon\le\varepsilon_{\max}$. For $v_k\ne0$ put
+\begin{equation}
+ \mathcal P_k(\varepsilon)=\max\!\left\{\alpha,
+ \Phi\!\left(\frac{\|v_k\|}{\sigma}
+ -\frac{2\varepsilon\|v_k\|_1}{\sigma\|v_k\|}
+ -z_{1-\alpha}\right)\right\};\label{eq:admission_objective}
+\end{equation}
+for $v_k=0$ set $\mathcal P_k=\alpha$. Then the best certified power within this calendar and fixed-direction test family is
+\begin{equation}
+ \max_{\substack{k\in\mathcal I,\ e_k\le\varepsilon\le\varepsilon_{\max}}}
+ \mathcal P_k(\varepsilon)
+ =\max_{\substack{k\in\mathcal I\,:\ e_k\le\varepsilon_{\max}}}
+ \mathcal P_k(e_k).\label{eq:admission_opt}
+\end{equation}
+The maximum with $\alpha$ allows a constant randomized test as a fallback. All choices use model quantities, not observations.
+\end{proposition}
+\begin{proof}
+Under the stated envelope-based admission rule, $(k,\varepsilon)$ is feasible when its declared tolerance satisfies $\varepsilon\ge e_k$. At a nonzero fixed direction, the nonconstant term in \eqref{eq:admission_objective} has derivative $-2\|v_k\|_1\varphi(d_k)/(\sigma\|v_k\|)<0$, where $d_k$ is its displayed normal argument and  $\varphi$ is the standard normal density. Taking the maximum with a constant preserves nonincrease. Hence the smallest feasible declared tolerance $e_k$ is optimal for each $k$; the remaining finite maximum is attained. Each selected test is level $\alpha$ because its error support is included on both sides. Deterministic selection before the experiment preserves that guarantee.\end{proof}
+The result optimizes a lower guarantee within the stated family, not the enlarged-model minimax power. Fixed-calendar power is nonincreasing in $\varepsilon$; changing $k$ creates the discrete trade-off through both observations and $v_k$. For any feasible $k$, Corollary~\ref{cor:delay} gives the ideal time correction $(2\sqrt2/5)\sqrt{k\delta R/\kappa}\sqrt{T_\Lambda}$. Different controller gains require new stability, error and effort certificates.
+
+\subsection{Error-protected statistical implementation}
+For $v=s-z^*$ and a proved error bound $\varepsilon$ under each hypothesis, a valid threshold adds $\varepsilon\|v\|_1$ to \eqref{eq:implement_test}. Its guaranteed power is
+\begin{equation}
+ \underline{\mathcal B}_\pi=
+ \Phi\!\left(\frac{\|v\|^2-2\varepsilon\|v\|_1}{\sigma\|v\|}
+ -z_{1-\alpha}\right),\qquad v\ne0.
+ \label{eq:guard_power}
+\end{equation}
+The two error sets are distinct and each pays its budget. This is the worst-power guarantee for the fixed ideal separating direction under an outer error box, not the exact minimax power of the expanded error model. When $G=0$, the two ideal mean classes intersect, so their minimax power is $\alpha$, attained by a constant randomized test; \eqref{eq:guard_power} is not evaluated at $v=0$. Nonconstant level-$\alpha$ tests may also exist. The numerical section compares this fallback and the nonzero-score guarantees. Readout variances and the $.25$ s independent sampling interval are specified model inputs; the physical calibration requirements are collected in Section~\ref{sec:scope}.

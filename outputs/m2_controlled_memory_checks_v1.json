@@ -1,0 +1,761 @@
+{
+  "scope": "Exact full-state fixed-order initialized plant with common scalar B input and SPD Q. No vector nuisance, no reset; universal proof separate.",
+  "models": [
+    {
+      "model": "zero2",
+      "dimension": 2,
+      "F": "29/4",
+      "beta_k1": "29/4",
+      "beta_k2": "29/2",
+      "sum_norm_bound": "3"
+    },
+    {
+      "model": "diagonal2",
+      "dimension": 2,
+      "F": "29/4",
+      "beta_k1": "1343/344",
+      "beta_k2": "236049/23336",
+      "sum_norm_bound": "6"
+    },
+    {
+      "model": "nonnormal2",
+      "dimension": 2,
+      "F": "29/4",
+      "beta_k1": "18007/10456",
+      "beta_k2": "3474921/953384",
+      "sum_norm_bound": "54"
+    },
+    {
+      "model": "rotation2",
+      "dimension": 2,
+      "F": "29/4",
+      "beta_k1": "8341/1474",
+      "beta_k2": "2446205/170916",
+      "sum_norm_bound": "30"
+    },
+    {
+      "model": "jordan3",
+      "dimension": 3,
+      "F": "161/25",
+      "beta_k1": "15803258653/1768906225",
+      "beta_k2": "32471794930426/1996277718675",
+      "sum_norm_bound": "35"
+    }
+  ],
+  "checks": {
+    "initialized_covariance_vs_projection": 150,
+    "full_control_neutrality": 20,
+    "beta_positive_monotone": 160,
+    "affine_center_bound": 160,
+    "global_weighted_zero": 68,
+    "projection_range": 68,
+    "dual_deficit_identity": 68,
+    "repair_energy": 413,
+    "repair_support": 413,
+    "oracle_affine_pair_identity": 68,
+    "local_iid_support": 413,
+    "singular_Q_boundary": 1
+  },
+  "finite_dual_cases": [
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 3,
+      "dual_deficit_upper": "244963/490",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 3,
+      "dual_deficit_upper": "244963/490",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 3,
+      "dual_deficit_upper": "244963/490",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 6,
+      "dual_deficit_upper": "3034299/980",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 6,
+      "dual_deficit_upper": "3034299/980",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 1,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 6,
+      "dual_deficit_upper": "3034299/980",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 2,
+      "dual_deficit_upper": "6662953/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 2,
+      "dual_deficit_upper": "6662953/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 2,
+      "dual_deficit_upper": "6662953/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 4,
+      "dual_deficit_upper": "37539659/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 4,
+      "dual_deficit_upper": "37539659/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "zero2",
+      "k": 2,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 4,
+      "dual_deficit_upper": "37539659/9800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 5,
+      "dual_deficit_upper": "137393437/337120",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 5,
+      "dual_deficit_upper": "137393437/337120",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 5,
+      "dual_deficit_upper": "140087513/337120",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 8,
+      "dual_deficit_upper": "1100830583/421400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 8,
+      "dual_deficit_upper": "1100830583/421400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 8,
+      "dual_deficit_upper": "5166389/1960",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 3,
+      "dual_deficit_upper": "69131750841/114346400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 3,
+      "dual_deficit_upper": "69424790441/114346400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 3,
+      "dual_deficit_upper": "68252632041/114346400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 5,
+      "dual_deficit_upper": "19403046783/5717320",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 5,
+      "dual_deficit_upper": "3892404323/1143464",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "diagonal2",
+      "k": 2,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 5,
+      "dual_deficit_upper": "19226122287/5717320",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 5,
+      "dual_deficit_upper": "3356928341/10246880",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 5,
+      "dual_deficit_upper": "3356928341/10246880",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 5,
+      "dual_deficit_upper": "18047870693/51234400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 10,
+      "dual_deficit_upper": "10722751441/5123440",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 10,
+      "dual_deficit_upper": "10722751441/5123440",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 10,
+      "dual_deficit_upper": "55996789969/25617200",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 3,
+      "dual_deficit_upper": "1131422088823/2335790800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 3,
+      "dual_deficit_upper": "1155524356999/2335790800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 3,
+      "dual_deficit_upper": "1093941624207/2335790800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 6,
+      "dual_deficit_upper": "2317057454863/934316320",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 6,
+      "dual_deficit_upper": "2360300487199/934316320",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 2,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 6,
+      "dual_deficit_upper": "11189838397219/4671581600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 4,
+      "dual_deficit_upper": "3853116353/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 4,
+      "dual_deficit_upper": "3853116353/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 4,
+      "dual_deficit_upper": "3881937761/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 7,
+      "dual_deficit_upper": "17730519721/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 7,
+      "dual_deficit_upper": "17730519721/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 7,
+      "dual_deficit_upper": "17823141089/7222600",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 2,
+      "dual_deficit_upper": "188267619989/279162800",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 2,
+      "dual_deficit_upper": "1694690061101/2512465200",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 2,
+      "dual_deficit_upper": "565738673503/837488400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 4,
+      "dual_deficit_upper": "3176422246621/837488400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 4,
+      "dual_deficit_upper": "3176541354701/837488400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "rotation2",
+      "k": 2,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 4,
+      "dual_deficit_upper": "3177282217117/837488400",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 3,
+      "dual_deficit_upper": "211110048021996/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 3,
+      "dual_deficit_upper": "211110048021996/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 3,
+      "dual_deficit_upper": "211017729100826/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 6,
+      "dual_deficit_upper": "1316488552691492/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 6,
+      "dual_deficit_upper": "1316488552691492/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 6,
+      "dual_deficit_upper": "1316161876617782/433382025125",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 32,
+      "profile": "zero",
+      "blocks": 2,
+      "dual_deficit_upper": "1025106839674031459/1630293470251250",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 32,
+      "profile": "linear",
+      "blocks": 2,
+      "dual_deficit_upper": "9224131501528570631/14672641232261250",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 32,
+      "profile": "alternating",
+      "blocks": 2,
+      "dual_deficit_upper": "3077150574559806877/4890880410753750",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 64,
+      "profile": "zero",
+      "blocks": 4,
+      "dual_deficit_upper": "17856831062095495507/4890880410753750",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 64,
+      "profile": "linear",
+      "blocks": 4,
+      "dual_deficit_upper": "53559273939568349021/14672641232261250",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    },
+    {
+      "model": "jordan3",
+      "k": 2,
+      "H": 64,
+      "profile": "alternating",
+      "blocks": 4,
+      "dual_deficit_upper": "17868050308813633007/4890880410753750",
+      "weighted_zero_exact": true,
+      "repair_energy": "0"
+    }
+  ],
+  "larger_parameter_normalized_sanity": [
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 256,
+      "profile": "linear",
+      "blocks": 14,
+      "dual_deficit_upper": "2723869434013907/1069846192",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "2723869434013907/1121815040622592",
+      "candidate_coefficient": "1343/860"
+    },
+    {
+      "model": "diagonal2",
+      "k": 1,
+      "H": 1024,
+      "profile": "linear",
+      "blocks": 30,
+      "dual_deficit_upper": "72253213080079467/1069846192",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "72253213080079467/35898081299922944",
+      "candidate_coefficient": "1343/860"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 256,
+      "profile": "linear",
+      "blocks": 14,
+      "dual_deficit_upper": "50220273320977475131/30042961497008",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "50220273320977475131/31502328394686660608",
+      "candidate_coefficient": "18007/26140"
+    },
+    {
+      "model": "nonnormal2",
+      "k": 1,
+      "H": 1024,
+      "profile": "linear",
+      "blocks": 30,
+      "dual_deficit_upper": "1161267262234070628243/30042961497008",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "1161267262234070628243/1008074508629973139456",
+      "candidate_coefficient": "18007/26140"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 256,
+      "profile": "linear",
+      "blocks": 14,
+      "dual_deficit_upper": "408369317199103/126015208",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "408369317199103/132136522743808",
+      "candidate_coefficient": "8341/3685"
+    },
+    {
+      "model": "rotation2",
+      "k": 1,
+      "H": 1024,
+      "profile": "linear",
+      "blocks": 30,
+      "dual_deficit_upper": "11423559102610031/126015208",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "11423559102610031/4228368727801856",
+      "candidate_coefficient": "8341/3685"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 256,
+      "profile": "linear",
+      "blocks": 14,
+      "dual_deficit_upper": "12689917648643963762610758/2878706894216250575",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "6344958824321981881305379/1509271480154849581465600",
+      "candidate_coefficient": "31606517306/8844531125"
+    },
+    {
+      "model": "jordan3",
+      "k": 1,
+      "H": 1024,
+      "profile": "linear",
+      "blocks": 30,
+      "dual_deficit_upper": "379174736718624274267376098/2878706894216250575",
+      "weighted_zero_exact": true,
+      "repair_energy": "0",
+      "normalized_upper": "189587368359312137133688049/48296687364955186606899200",
+      "candidate_coefficient": "31606517306/8844531125"
+    }
+  ],
+  "singular_Q_boundary": "Stable shift register with rank-one innovation recovers both scalar inputs at one retained vector; gap loss zero, outside SPD-Q theorem.",
+  "status": "PASS"
+}

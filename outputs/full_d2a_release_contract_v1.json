@@ -1,0 +1,246 @@
+{
+  "schema": "full-d2a-release-contract-v1",
+  "date": "2026-10-07",
+  "status": "CONTRACT_AND_LIGHT_PREFLIGHT_COMPLETE_FULL_SCIENCE_RELEASE_NOT_READY",
+  "authority": "RESEARCH_PLAN.md P5/P7 and minimum success conditions; protocol remains byte-frozen.",
+  "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+  "formal_sources": [
+    {
+      "path": "outputs/package_full_d2a_release_v1.py",
+      "sha256": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920"
+    },
+    {
+      "path": "outputs/full_d2a_release_metadata_guard_v1.py",
+      "sha256": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122"
+    },
+    {
+      "path": "work/d2a_metadata_guard.py",
+      "sha256": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122"
+    },
+    {
+      "path": "outputs/d2a_full_grid_acceptance_v1.py",
+      "sha256": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2"
+    },
+    {
+      "path": "outputs/d2a_metadata_guard_fix_v1.md",
+      "sha256": "da857c8ed4217e62f97c767f67b0470d6364f4424cdea951b905d56781e8a002"
+    },
+    {
+      "path": "outputs/d2a_metadata_guard_fix_v1.json",
+      "sha256": "b73386b8dd4f1c57f8d7301bb13edb7a44a5b77d6750f13ab91eb573acccb703"
+    },
+    {
+      "path": "outputs/d2a_protocol_v1.md",
+      "sha256": "ea3befdf916b9f630e5f151563045c6304b6fccb3fed8cb527332be0093b0c12"
+    },
+    {
+      "path": "outputs/d2a_source_map_v1.md",
+      "sha256": "3f37cb71c103b80efe67b56df5f225eed61af13c7ff907faa407a86d38f3bd63"
+    },
+    {
+      "path": "outputs/d2a_mean_risk_review_v1.md",
+      "sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924"
+    },
+    {
+      "path": "work/d2a_core.py",
+      "sha256": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9"
+    },
+    {
+      "path": "work/d2a_cert_case.py",
+      "sha256": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999"
+    },
+    {
+      "path": "work/d2a_cert_verify.py",
+      "sha256": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b"
+    },
+    {
+      "path": "work/d2a_cert_batch.py",
+      "sha256": "4ccd7329f33c893a8bb3f6cea8f0d28dff33b890c6f90fc649bc6cf4bd2e1ee3"
+    },
+    {
+      "path": "work/d2a_cert_preflight.py",
+      "sha256": "aba4de0223251574a8227062487684ca43b1c33aa3ae52bda1fed9749ae32ad4"
+    },
+    {
+      "path": "work/d2a_cert_partial_first_success.py",
+      "sha256": "fe0b6f7935106fbb81b586cbd453631fdeced85af7e09d681bda210debf9a41c"
+    },
+    {
+      "path": "work/d2a_cert_mean_review_binding.json",
+      "sha256": "4b7fbd423236f665dec8835520ba2326fb17a968fbcc0fe489499dc611b60fc9"
+    },
+    {
+      "path": "outputs/full_d2a_release_preflight_v1.json",
+      "sha256": "895473f88cf365fef887178e4846ee7800d687270b6187f9fbb567bc6d76563b"
+    },
+    {
+      "path": "outputs/full_d2a_release_recipe_precheck_v1.json",
+      "sha256": "dd9a9f68d890f12a54ad3cea88f3246ac9f03b1acd1659736e8f6521d7434305"
+    }
+  ],
+  "current_preflight": {
+    "checked_utc": "2026-10-07T09:31:22.391146+00:00",
+    "table_sha256": "a1eb054d9acf870f39966f8f2e41826adf8b4e5507a677578fd432a1001380d0",
+    "status_counts": {
+      "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+      "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 85,
+      "CERTIFIED_TARGET_PASS": 45,
+      "NOT_RUN": 196
+    },
+    "classified_400": false,
+    "not_run_rows": 196,
+    "observed_unique_science_cases": 114,
+    "observed_witness_bytes": 7728329143,
+    "observed_max_witness_bytes": 188861102,
+    "preflight_status": "NOT_READY_INCOMPLETE_OR_UNBOUND",
+    "scientific_ready": false,
+    "metadata_error_count": 0,
+    "metadata_error_examples": [],
+    "observed_payload_bytes_including_R1": 7952150362,
+    "observed_max_case_scratch_bytes": 189287596,
+    "free_disk_bytes": 157315153920,
+    "reserve_bytes": 26843545600,
+    "shared_R1_zip_bytes": 114986329,
+    "shared_R1_unpacked_bytes": 139638206,
+    "plan": "Direct stored-gzip ZIP build; actual-ZIP fresh case-by-case -S verification; cleanup only successful owned scratch case.",
+    "metadata_only_stage_V2_is_full_science_package": false,
+    "build_allowed_before_full400": false
+  },
+  "small_fixture_receipt": {
+    "status": "PASS_RECIPE_SYNTAX_AND_INCOMPLETE400_FAIL_CLOSED_FIXTURE",
+    "formal_recipe_sha256": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920",
+    "formal_guard_sha256": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+    "scope": "Syntax and early incomplete inventory build gate only; not science or future ZIP/replay acceptance.",
+    "science_started": false,
+    "R1_copied_or_extracted": false,
+    "large_hashes_read": false,
+    "live_locks_CSV_or_original_case_files_modified": false
+  },
+  "current_scientific_ready": false,
+  "full400_complete": false,
+  "full_scientific_archive_built": false,
+  "big_witness_hashing_or_science_replayed_this_task": false,
+  "required_inventory": {
+    "rows": 400,
+    "H": [
+      40,
+      60,
+      80,
+      100,
+      120,
+      160,
+      200,
+      240,
+      300,
+      400,
+      500,
+      600
+    ],
+    "readouts": [
+      "average250",
+      "point_last_fast_read"
+    ],
+    "families": [
+      "stay",
+      "fixed20",
+      "fixed40",
+      "fixed76",
+      "terminal_balanced",
+      "switch_then_stay"
+    ],
+    "switch_stage_grid": "20,40,...,H; all declared members retained; no empty or duplicate groups"
+  },
+  "per_row_chain": [
+    "exact logical key and frozen direction record/projection",
+    "physical clock/admission/three-component return status",
+    "full experiment fingerprint and canonical case/alias mapping",
+    "current CASE_RESULT/SUMMARY/projection/physical direction",
+    "audit/<CASE>_DIRECTION_CERTIFICATE.json with covariance/Abel/supersolutions",
+    "complete audit/<CASE>_ADJOINT_JET.json.gz; no metadata-only surrogate",
+    "uniform comparator mean and variance; true nonlinear remainder; per-hypothesis events and guarded risk",
+    "current full/derived stdlib receipt and artifact hash binding",
+    "referenced PRIOR_CASE/PRIOR_STDLIB/rebinding transaction; all attempts/interruption/failure records"
+  ],
+  "classification_rules": {
+    "pass_and_target_not_met": "Both require the complete canonical science payload and independent verifier; target-not-met is retained, not physical impossibility.",
+    "zero_direction": "Exact KKT/rounded-direction degeneracy and physical instance replay; no numeric risk/covariance substitution, no full-experiment zero-information claim.",
+    "unresolved_failures": "Every explicit physical/projection/mean/variance/execution failure keeps cause/history/available bytes; failure-inclusive archive may be explicitly authorized but never final scientific PASS.",
+    "aliases": "Fingerprint protocol,T_fast_steps,moves,complete observations,readout,exact direction. Preserve all logical rows and replay each unique scientific experiment once; names or H alone are insufficient."
+  },
+  "R1_bootstrap": {
+    "original_zip": "inputs/CERTO_FDI_STAGE_D1_ACTUAL_DIRECTION_20260919_R1_20260926.zip",
+    "required_sha256": "f703091ace28d9017d0400e07984f4c34f03d5efdba14742f5a3a9f4ea94a60b",
+    "zip_bytes": 114986329,
+    "expanded_bytes": 139638206,
+    "source_files": 463,
+    "strategy": "Include the exact original ZIP and bootstrap it once inside the fresh validation root. Do not copy the entire active R1 extraction now.",
+    "scope": "Original fixed-case R1 verification is inherited, not silently promoted to new D2-a cases."
+  },
+  "environment": {
+    "independent_verification": "64-bit Python>=3.11; separate -S -B -X utf8 processes; no NumPy/SciPy import",
+    "tested_generation_environment_from_runtime_README": "Python3.12.10 / NumPy2.4.5 / SciPy1.17.1 / Windows",
+    "new_download_or_install_required_this_task": false,
+    "witness_parser_RAM": "Original actual_direction.certify loads full per-case gzip JSON; disk streaming does not prove low-RAM operation."
+  },
+  "disk_recipe": {
+    "build": "Stream selected original files directly into one new Zip64 archive; gzip witnesses and original ZIP use ZIP_STORED; no full staging copy.",
+    "validate": "Actual ZIP fresh shared bootstrap plus one canonical science case at a time, complete -S verifier, save new receipts/log/hash, then native PowerShell cleanup only that successful owned scratch case. Keep failed scratch; never delete original science.",
+    "delivery": "Optional validated immutable ZIP same-volume hardlink; target must not exist; no second physical ZIP or other-drive write.",
+    "planning_model": "Current science remains resident. Additional completion bytes + one archive + shared bootstrap + maxcase scratch + reserve. Actual final payload/free space must be recomputed before build.",
+    "current_free_bytes": 157315153920,
+    "reserve_bytes": 26843545600,
+    "current_witness_bytes": 7728329143,
+    "measured_current_maxcase_scratch_bytes": 189287596,
+    "shared_bootstrap_bytes": 254624535,
+    "full_jet_estimate_bytes": 54879354838,
+    "headroom_jet_estimate_bytes": 82319032258,
+    "nominal_additional_demand_bytes": 131465321912,
+    "headroom_additional_demand_bytes": 186344676752,
+    "nominal_estimate_fits_current_free": true,
+    "headroom_estimate_fits_current_free": false,
+    "estimates_are_guaranteed_final_size": false
+  },
+  "future_final_freeze_schema": {
+    "authorization": "ROOT_FULL_D2A_FREEZE_GO",
+    "protocol_sha256": "fixed0d8b...",
+    "table_sha256": "final captured400-row table hash",
+    "sources_stopped_and_snapshots_frozen": true,
+    "os_process_quiescence_confirmed": true,
+    "science_owner_pids": "science/publisher and owned descendants; actual CIM absence checked at guarded build/replay",
+    "publication_artifacts": {
+      "revision": "explicit future current revision; not hardcodedR6/R7",
+      "source": {
+        "path": "...",
+        "sha256": "..."
+      },
+      "pdf": {
+        "path": "...",
+        "sha256": "..."
+      },
+      "compile_layout_json": {
+        "path": "...",
+        "sha256": "..."
+      },
+      "compile_layout_md": {
+        "path": "...",
+        "sha256": "..."
+      },
+      "reviews": [
+        {
+          "path": "...",
+          "sha256": "..."
+        }
+      ],
+      "figures": [
+        {
+          "path": "...",
+          "sha256": "..."
+        }
+      ]
+    },
+    "allow_failure_inclusive_archive": "explicit if unresolved classified failures remain; no final science-ready then"
+  },
+  "current_recipe_validation_scope": "Actual current small-metadata preflight plus syntax/incomplete400 guard fixture. Future archive-build and full replay branches not run or accepted.",
+  "precise_remaining_recipe_gate": "Before any future final scientific-ready, connect outputs/d2a_full_grid_acceptance_v1.py to a bounded actual-ZIP metadata view/member-presence adapter. Its current is_file witness check assumes all case directories coexist, conflicting with successful per-case scratch cleanup. Do not fabricate empty witnesses or fall back to original worktree. The current future replay branch intentionally returns scientific_ready=false pending this gate.",
+  "publication_scope": "Final source/PDF/compile-layout/review/figure bindings are explicit future inputs. V2R6 ZIP remains historical immutable; current paper revisions may advance without changing physics protocol."
+}

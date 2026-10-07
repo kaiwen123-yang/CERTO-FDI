@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-07",
+  "status": "COVERAGE_REVIEW_COMPLETED_SCAN_INCOMPLETE",
+  "scope": "Actual source review and new read-only small-metadata validator; not scientific replay or large witness hashing.",
+  "source_sha256": {
+    "outputs/d2a_protocol_v1.md": "ea3befdf916b9f630e5f151563045c6304b6fccb3fed8cb527332be0093b0c12",
+    "work/d2a_PROTOCOL_v1.json": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "work/d2a_core.py": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9",
+    "work/d2a_cert_preflight.py": "d60ca87a6d6f7329f2e82e268cfbe1a17e64975e895f7494c97a3b20a64c5c13",
+    "work/d2a_cert_batch.py": "4ccd7329f33c893a8bb3f6cea8f0d28dff33b890c6f90fc649bc6cf4bd2e1ee3",
+    "work/d2a_cert_sync_review_table.py": "d08683e1e1646465d059fd36614534af56e0c3d51c23b5f79fdccea7162928d8",
+    "outputs/d2a_partial_first_success_v1.py": "7c83403d97418d38e290762d6b6141fe21b4916c8465e706f64b9eafbce03bdc",
+    "work/d2a_cert_case.py": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999",
+    "work/d2a_cert_verify.py": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b",
+    "work/d2a_cert_verify_artifact_bindings.py": "3540b8a9f9620fb5ef39ebe181e2d5b29f018a52251b952bf76e73599ff5e8b4",
+    "work/d2a_cert_publish_live.py": "1531e119242b939603f329fde68e7e7a8cb9ec76c69cb387d6781ef4252392ef",
+    "outputs/d2a_full_grid_acceptance_v1.py": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+    "outputs/d2a_three_block_example_review_v1.json": "40685f84d52164a4e4174d7f62aa462f6ed5ed2c0c86d8a629df1e7a8166edcf"
+  },
+  "validator": {
+    "path": "outputs/d2a_full_grid_acceptance_v1.py",
+    "sha256": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+    "scope": "stdlib-only; default no writes/subprocess/science imports; each metadata file <=2MiB, total <=256MiB; gz/zip/pdf denied"
+  },
+  "current_actual_validation": {
+    "status": "INCOMPLETE_VALID_METADATA",
+    "exit_code": 2,
+    "full_grid_accepted": false,
+    "scope": "Small metadata acceptance only; no scientific witness arithmetic/hash or final ZIP acceptance.",
+    "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "table_sha256": "0d01edca0fe3fe49f6e19c19e976de95b9356578a3e88aef0246578a00306f54",
+    "expected_rows": 400,
+    "actual_rows": 400,
+    "counts": {
+      "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+      "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 79,
+      "CERTIFIED_TARGET_PASS": 41,
+      "NOT_RUN": 206
+    },
+    "coverage_errors": {
+      "missing": [],
+      "unexpected": [],
+      "duplicates": []
+    },
+    "errors": [],
+    "pending_rows": 206,
+    "unaccepted_failure_rows": 0,
+    "alias_groups_with_multiple_rows": 14,
+    "logical_rows_preserved": 400,
+    "accepted_nonzero_unique_references": 106,
+    "original_three_block_reference_eligible_rows": 170,
+    "terminal_blocks_by_H": {
+      "40": 1,
+      "60": 1,
+      "80": 2,
+      "100": 2,
+      "120": 2,
+      "160": 3,
+      "200": 4,
+      "240": 4,
+      "300": 5,
+      "400": 6,
+      "500": 7,
+      "600": 8
+    },
+    "first_certified_grid": [
+      {
+        "readout": "average250",
+        "family": "stay",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "average250",
+        "family": "fixed20",
+        "first_success_H": 100,
+        "all_grid_complete": false,
+        "physical_endpoint_seconds": "26",
+        "selected_stage_endpoint": null,
+        "predecessor_and_current_members_closed": true
+      },
+      {
+        "readout": "average250",
+        "family": "fixed40",
+        "first_success_H": 120,
+        "all_grid_complete": false,
+        "physical_endpoint_seconds": "31",
+        "selected_stage_endpoint": null,
+        "predecessor_and_current_members_closed": true
+      },
+      {
+        "readout": "average250",
+        "family": "fixed76",
+        "first_success_H": 100,
+        "all_grid_complete": false,
+        "physical_endpoint_seconds": "26",
+        "selected_stage_endpoint": null,
+        "predecessor_and_current_members_closed": true
+      },
+      {
+        "readout": "average250",
+        "family": "terminal_balanced",
+        "first_success_H": 100,
+        "all_grid_complete": false,
+        "physical_endpoint_seconds": "26",
+        "selected_stage_endpoint": null,
+        "predecessor_and_current_members_closed": true
+      },
+      {
+        "readout": "average250",
+        "family": "switch_then_stay",
+        "first_success_H": 100,
+        "all_grid_complete": false,
+        "physical_endpoint_seconds": "26",
+        "selected_stage_endpoint": 100,
+        "predecessor_and_current_members_closed": true
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "stay",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed20",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed40",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "fixed76",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "terminal_balanced",
+        "first_success_H": null,
+        "all_grid_complete": false
+      },
+      {
+        "readout": "point_last_fast_read",
+        "family": "switch_then_stay",
+        "first_success_H": null,
+        "all_grid_complete": false
+      }
+    ],
+    "small_metadata_bytes_read": 89478573,
+    "large_witness_bytes_read": 0
+  },
+  "actual_process_exit": 2,
+  "new_tiny_fixtures": {
+    "status": "PASS_TINY_FAIL_CLOSED_FIXTURES",
+    "tests": [
+      {
+        "name": "complete repeated calendar labels retained",
+        "pass": true
+      },
+      {
+        "name": "tie chooses smallest S among certified",
+        "pass": true
+      },
+      {
+        "name": "missing predecessor cannot exploit all(empty)",
+        "pass": true
+      },
+      {
+        "name": "same row count does not excuse duplicate/missing key",
+        "pass": true
+      },
+      {
+        "name": "pending earlier member blocks first success",
+        "pass": true
+      },
+      {
+        "name": "positive complete risk metadata accepted",
+        "pass": true
+      },
+      {
+        "name": "negative gap fake positive power rejected",
+        "pass": true
+      },
+      {
+        "name": "missing power is not numeric zero",
+        "pass": true
+      },
+      {
+        "name": "PFA equality is not strict pass",
+        "pass": true
+      },
+      {
+        "name": "full original cardinality",
+        "pass": true
+      },
+      {
+        "name": "physical identity aliases ignore labels but preserve rows",
+        "pass": true
+      },
+      {
+        "name": "wrong readout is not an identity alias",
+        "pass": true
+      },
+      {
+        "name": "scientific witness type blocked before read",
+        "pass": true
+      },
+      {
+        "name": "outside-workspace receipt path rejected",
+        "pass": true
+      }
+    ],
+    "science_or_big_witness_executed": false,
+    "filesystem_writes": false
+  },
+  "coverage": {
+    "H": [
+      40,
+      60,
+      80,
+      100,
+      120,
+      160,
+      200,
+      240,
+      300,
+      400,
+      500,
+      600
+    ],
+    "physical_members": 200,
+    "regular_members": 60,
+    "switch_stage_members": 140,
+    "readouts": 2,
+    "logical_rows": 400,
+    "rows_by_H": {
+      "40": 14,
+      "60": 16,
+      "80": 18,
+      "100": 20,
+      "120": 22,
+      "160": 26,
+      "200": 30,
+      "240": 34,
+      "300": 40,
+      "400": 50,
+      "500": 60,
+      "600": 70
+    },
+    "aliases_preserved": true,
+    "three_block_reference_is_not_physical_or_certificate_requirement": true
+  },
+  "source_findings": [
+    {
+      "id": "D2-COV-1",
+      "severity": "FINAL_ACCEPTANCE_GUARD",
+      "location": "outputs/d2a_partial_first_success_v1.py:24-25; sync_review_table completeness",
+      "mechanism": "all(empty) and no exact declared-key-set guard can treat a deleted predecessor/current member as complete; total400 alone can hide duplicate/missing keys.",
+      "current_effect": "Current 400-key snapshot independently matched; no false first-success found.",
+      "minimal_fix": "Validate exact expected keys+uniqueness; require nonempty expected current group and every expected member closed before selection."
+    },
+    {
+      "id": "D2-COV-2",
+      "severity": "LATENT_CLASSIFICATION",
+      "location": "work/d2a_cert_preflight.py:25-33,50-53",
+      "mechanism": "physical_rule_status initialized PASS before contract assertion; caught validation errors only mark direction/contract failure.",
+      "current_effect": "All current frozen calendar records passed independent timing/calendar checks; no incorrect physical row found.",
+      "minimal_fix": "Initialize NOT_CHECKED; assign physical PASS only after checks; on timing/contract failure set PHYSICAL_CONTRACT_FAILED separately from projection failure."
+    },
+    {
+      "id": "D2-COV-3",
+      "severity": "DIAGNOSTIC_TAXONOMY",
+      "location": "work/d2a_cert_case.py:102-108",
+      "mechanism": "target_classification only emits variance-ratio and risk-target failures; protocol EVENT_BUDGET_EXHAUSTED not separately labelled.",
+      "current_effect": "Current event budgets far below limits and target failures retained; no wrong PASS caused.",
+      "minimal_fix": "Add derived event-exhaustion diagnostic without changing frozen numerical payload or silently rewriting old CASE classification."
+    },
+    {
+      "id": "D2-COV-4",
+      "severity": "SCOPE_GUARD",
+      "location": "work/d2a_cert_verify_artifact_bindings.py:45-69",
+      "mechanism": "all-completed intentionally skips not-yet-accepted cases and can PASS a proper subset.",
+      "current_effect": "Existing scope explicitly states not full-grid; do not conflate with full400.",
+      "minimal_fix": "Combine full400 metadata gate with artifact check and match unique accepted-reference count before final full-grid acceptance."
+    }
+  ],
+  "final_required_checks": [
+    "Freeze original protocol/input hashes and exact400 tuple keyset; preserve all stage candidates, zeros, aliases and historic failures.",
+    "Every row has current classification; no NOT_RUN/pending, unbound means/variance or unreviewed unresolved execution failure promoted to PASS.",
+    "Physical timing/admission/return inherited scope and certificate/risk status separate; original>=3 reference eligibility reported separately.",
+    "Per-case full/derived receipt chain, current mean review/function digest, CASE/protocol/direction/covariance and witness bindings; exact aliases require full semantic equality.",
+    "Risk identity/strict PFA<.001/power>=.9/ratio<=1.01; both healthy/error/event budgets and negative-gap variance discipline.",
+    "First-certified-grid requires complete declared predecessor and current family sets, exact max-power/min-S tie; no continuous/sequential/global optimum claim.",
+    "After stop/freeze, actual full artifact bytes and finalactual ZIP new-extraction checks; small metadata PASS alone cannot close P5/TAC goal."
+  ],
+  "stdout_exit_policy": {
+    "full_metadata": 0,
+    "incomplete_or_changing_view": 2,
+    "invalid": 3,
+    "explicit_unaccepted_failures": 4
+  },
+  "current_full_grid_PASS": false,
+  "large_witness_bytes_read": 0,
+  "old_checks_or_science_executed": false,
+  "root_sources_modified": false
+}

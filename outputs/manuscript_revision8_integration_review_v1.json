@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-07",
+  "verdict": "ACCEPTED_FOR_DECLARED_LOCAL_INTEGRATION",
+  "blockingFindings": [],
+  "bindings": {
+    "R8": {
+      "path": "outputs/certo_fdi_control_memory_draft_v1.tex",
+      "sha256": "2245714e5b92c5e36039a688f453b477256aa57df15f97a783442ea2bacbfdc1"
+    },
+    "R7": {
+      "path": "references/manuscript_working_history/a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca.tex",
+      "sha256": "a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca"
+    },
+    "finalFragment": {
+      "path": "outputs/fixed_endpoint_horizon_corollary_v1.tex",
+      "sha256": "d60b75fb81d3bb1da1e2e507588d41cd8442cb4531b222b8cf13a24fae853287"
+    },
+    "companionJSON": {
+      "path": "outputs/fixed_endpoint_horizon_corollary_v1.json",
+      "sha256": "9b20b8c19ff51aa1402fb93cbaba43a29252f4712c88e98c29cc8a9abce3a088"
+    },
+    "candidateMD": {
+      "path": "outputs/fixed_endpoint_horizon_corollary_v1.md",
+      "sha256": "47e9f15a41e90ce71c262dce4c725ec3cc7bda41760fc865bb8d5302ce5ade0e"
+    },
+    "priorReviewMD": {
+      "path": "outputs/fixed_endpoint_horizon_corollary_review_v1.md",
+      "sha256": "de520083bc5ea064cbb9aa0abe4139dad4dadd7db9565e9274ba9e318d9bc290"
+    },
+    "priorReviewJSON": {
+      "path": "outputs/fixed_endpoint_horizon_corollary_review_v1.json",
+      "sha256": "e274b6fe172ff918aad6d9652ee4b46c6f52ddaeb103da6f52f24c6385aa803f"
+    }
+  },
+  "actualDiff": {
+    "onlyTwoInsertions": true,
+    "newLines": [
+      [
+        432,
+        501
+      ],
+      [
+        1275,
+        1457
+      ]
+    ],
+    "noDeletionOrReplacement": true,
+    "R7ByteExactRecoveryAfterRemovingInsertions": true,
+    "corollaryEqualsFinalFragment": true,
+    "appendixProofRiskScaleExampleEqualsFinalFragment": true
+  },
+  "scopeGates": {
+    "actualCalendarTestExistence": "PASS",
+    "allEarlierIntegerEndpoints": "PASS",
+    "oracleOvershootAndFixedIntegerZeroBound": "PASS",
+    "positiveCoefficientFactorAndEtaPowers": "PASS",
+    "compactCommonSPDUniformAndNearInfKnownController": "PASS",
+    "completeTwoSidedHealthyPathClass": "PASS",
+    "fixedMissAlphaLimit": "PASS",
+    "notSequentialOrARL": "PASS",
+    "notNonlinearFiniteDomainExtrapolation": "PASS",
+    "scalarCoefficientMinimumOnlyLeadingRiskConsequence": "PASS"
+  },
+  "unchangedR7": {
+    "modelAndTheorems": true,
+    "appendicesAThroughE": true,
+    "finiteNonlinearContract": true,
+    "H160ThreeBlockExample": true,
+    "H100FirstCertAndH120History": true,
+    "figuresAndCaptions": true,
+    "bibliographyAndCitations": true,
+    "evidenceMethod": "Byte-exact old source recovery, no scientific replay or numerical upgrade"
+  },
+  "static": {
+    "diffChanges": [
+      {
+        "tag": "insert",
+        "oldRange": [
+          432,
+          431
+        ],
+        "newRange": [
+          432,
+          501
+        ]
+      },
+      {
+        "tag": "insert",
+        "oldRange": [
+          1205,
+          1204
+        ],
+        "newRange": [
+          1275,
+          1457
+        ]
+      }
+    ],
+    "onlyInsertionOpcodes": true,
+    "oldR7ExactlyRecovered": true,
+    "corollaryExactAfterNewlineNormalization": true,
+    "appendixProofRiskScaleAndExampleExact": true,
+    "labels": 65,
+    "uniqueLabels": true,
+    "unresolvedRefs": [],
+    "bibKeys": 13,
+    "uniqueBib": true,
+    "unresolvedCiteKeys": [],
+    "appendixSections": [
+      "Common support, interval geometry and path duality",
+      "Positive-score-loss converse and attainment",
+      "Score-preserving quadratic deficit",
+      "Controller design proofs",
+      "Bounded task-even perturbation proof",
+      "Fixed-endpoint risk cost"
+    ],
+    "endEnvironmentErrors": [],
+    "unclosedEnvironments": [],
+    "invalidLowControls": [],
+    "tabs": 0,
+    "isolatedCR": 0
+  },
+  "compileOrLayoutPassAsserted": false,
+  "oldProofRerun": false,
+  "oldChecksRerun": false,
+  "scienceRun": false,
+  "dynamicFilesTouched": false,
+  "mainModified": false,
+  "rootClaimsModified": false,
+  "acceptanceDoesNotClose": [
+    "Current IEEE compile/layout",
+    "D2 full400",
+    "Final ZIP",
+    "Whole-goal or TAC readiness",
+    "Four fulltext gaps"
+  ],
+  "reviewMarkdownSHA256": "7c47f09d5dd5ad5426a303ed82863148e936a91f5d0144c2dea56b5905e70cd6"
+}

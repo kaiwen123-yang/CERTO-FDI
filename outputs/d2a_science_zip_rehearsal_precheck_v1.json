@@ -1,0 +1,367 @@
+{
+  "scope": "SCOPED_PAIR_SCIENCE_REHEARSAL_NOT_FINAL_RELEASE",
+  "status": "PASS_SMALL_METADATA_RESOURCE_AND_PAYLOAD_PRECHECK",
+  "scientific_ready": false,
+  "cases": [
+    {
+      "directory": "work/d2a_cert_h160_terminal_balanced_average250",
+      "case": "D2A_H160_TERMINAL_BALANCED_AVERAGE250",
+      "identity": "dfcb45fab20243d655f3467fb4b35c0d65b46e9d667c05cca2f4a6e593fe2de5",
+      "readout": "average250",
+      "original_target_status": "CERTIFIED_TARGET_PASS",
+      "case_result_sha256": "68c81b2e34e7251a7a7784fee5d004fd6b4854c5b5cee3d3647c0015beba1497",
+      "original_receipt_sha256": "f72f332ec80fca32e6aab3eece5410774ce5084ef2c8eb275c398c9d6ccf1b65",
+      "witness": "work/d2a_cert_h160_terminal_balanced_average250/audit/D2A_H160_TERMINAL_BALANCED_AVERAGE250_ADJOINT_JET.json.gz",
+      "witness_sha256": "375ad70c24a2075ec9bbae488c1c34bc433ac15b943a236b29e82607f8d3c5c5",
+      "witness_bytes": 89603357,
+      "gzip_ISIZE_mod2p32_only": 193759316,
+      "previous_verifier_seconds": 72.12484130000121,
+      "case_payload_bytes": 89825157,
+      "original_OS_readonly_all_files": false
+    },
+    {
+      "directory": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read",
+      "case": "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ",
+      "identity": "9ccd02f033bb27893c7ea2c661d954e65cc11a1e16bcb56e9c8e08a639b8f9dc",
+      "readout": "point_last_fast_read",
+      "original_target_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "case_result_sha256": "27ae219002324c5dce3990d39c87004b99c132181342fc18933ef6a1987e3c80",
+      "original_receipt_sha256": "79a61e5bc9d331bfb6d60a60ab1db34a5ebb6077cdb879bb8e401bfcaf6dd791",
+      "witness": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/audit/D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_ADJOINT_JET.json.gz",
+      "witness_sha256": "0567b8c7ee2a454b26e870803b2dca90b6a4d566f46f305ca92bcf6a35083875",
+      "witness_bytes": 91051833,
+      "gzip_ISIZE_mod2p32_only": 196322206,
+      "previous_verifier_seconds": 72.548423799999,
+      "case_payload_bytes": 91270396,
+      "original_OS_readonly_all_files": false
+    }
+  ],
+  "files": [
+    {
+      "path": "inputs/CERTO_FDI_STAGE_D1_ACTUAL_DIRECTION_20260919_R1_20260926.zip",
+      "bytes": 114986329,
+      "sha256": "f703091ace28d9017d0400e07984f4c34f03d5efdba14742f5a3a9f4ea94a60b",
+      "mtime_ns": 1790499088187211400
+    },
+    {
+      "path": "outputs/d2a_archive_coverage_gate_v1.py",
+      "bytes": 9611,
+      "sha256": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+      "mtime_ns": 1791367655592433500
+    },
+    {
+      "path": "outputs/d2a_archive_witness_view_v1.py",
+      "bytes": 6213,
+      "sha256": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+      "mtime_ns": 1791367401261167400
+    },
+    {
+      "path": "outputs/d2a_mean_risk_review_v1.md",
+      "bytes": 16075,
+      "sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+      "mtime_ns": 1791347182014009200
+    },
+    {
+      "path": "outputs/d2a_protocol_v1.md",
+      "bytes": 10575,
+      "sha256": "ea3befdf916b9f630e5f151563045c6304b6fccb3fed8cb527332be0093b0c12",
+      "mtime_ns": 1791346080625862300
+    },
+    {
+      "path": "outputs/d2a_science_zip_rehearsal_v1.py",
+      "bytes": 18626,
+      "sha256": "2d324aefaa33cb869b79c94bd57aaeb7be6c4b05ec38056118e061e07edb8186",
+      "mtime_ns": 1791368945127733200
+    },
+    {
+      "path": "outputs/d2a_source_map_v1.md",
+      "bytes": 9291,
+      "sha256": "3f37cb71c103b80efe67b56df5f225eed61af13c7ff907faa407a86d38f3bd63",
+      "mtime_ns": 1791346289178068000
+    },
+    {
+      "path": "outputs/package_full_d2a_release_v2.py",
+      "bytes": 38793,
+      "sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+      "mtime_ns": 1791368076600149100
+    },
+    {
+      "path": "references/audit_20261007/post_move_point_bound.md",
+      "bytes": 6961,
+      "sha256": "f6a84d8fd9f2a5f09c98ba0d69070d9c50fdf00a0e5c91f09dd4bb1d65ee5317",
+      "mtime_ns": 1791342603879245300
+    },
+    {
+      "path": "references/audit_20261007/post_move_point_support.json",
+      "bytes": 6101,
+      "sha256": "f66e09440723ea61ee47e9a754e211fc8fd21cbc58da16a5356ae22eee3212b8",
+      "mtime_ns": 1791342800312454300
+    },
+    {
+      "path": "references/audit_20261007/post_move_point_support.py",
+      "bytes": 5591,
+      "sha256": "c2f4af540979b9b9c5fd818c789bac9dbb01d70362e07e11d705d5ee172cb8f7",
+      "mtime_ns": 1791342799553650100
+    },
+    {
+      "path": "references/audit_20261007/r1_verification.md",
+      "bytes": 5295,
+      "sha256": "a63c8333f1a65719a3e679757665260a6fb9a5aeabd3aab0f42e2976a9fa6082",
+      "mtime_ns": 1791342539672001000
+    },
+    {
+      "path": "references/audit_20261007/r1_verification_receipt.json",
+      "bytes": 1879,
+      "sha256": "5c94d28e8c50b72f64191920722297882b1744449a74273dfb86abef7126d708",
+      "mtime_ns": 1791342540226332500
+    },
+    {
+      "path": "work/d2a_PROTOCOL_v1.json",
+      "bytes": 5481,
+      "sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+      "mtime_ns": 1791345946508040600
+    },
+    {
+      "path": "work/d2a_PROTOCOL_v1.sha256",
+      "bytes": 66,
+      "sha256": "44984f15757904ed3f317433ebc6aa4c19d4acc6637363de9de85f9c65ea6dba",
+      "mtime_ns": 1791345946510036900
+    },
+    {
+      "path": "work/d2a_cert_case.py",
+      "bytes": 20787,
+      "sha256": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999",
+      "mtime_ns": 1791354926367521600
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/ACTUAL_PROTOCOL.json",
+      "bytes": 54374,
+      "sha256": "72db2bddd6eb9793d70f0590f1d446f103fbba2b259a6bb6f21b9430915dfcec",
+      "mtime_ns": 1791350125112146300
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/CASE_RESULT.json",
+      "bytes": 111141,
+      "sha256": "68c81b2e34e7251a7a7784fee5d004fd6b4854c5b5cee3d3647c0015beba1497",
+      "mtime_ns": 1791350214165174800
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/DIRECTION.json",
+      "bytes": 11601,
+      "sha256": "6e47884b8dd20d0b6476205c07673e76982bbcf145ca480e561e8446586936bc",
+      "mtime_ns": 1791350125113649900
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/EVIDENCE_ARTIFACT_HASHES.json",
+      "bytes": 1380,
+      "sha256": "9ab1dcdb2d5119a5b73efd55f123dc8fe3de9d60064ce7ace6c9819dedac16e4",
+      "mtime_ns": 1791353224891316800
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/PROJECTION_CERTIFICATE.json",
+      "bytes": 9477,
+      "sha256": "d4a05bf34e56b3b8d3cc1541071555d5e9d4de2ec9de14833fe537af62540064",
+      "mtime_ns": 1791350125113649900
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/STDLIB_VERIFICATION_RECEIPT.json",
+      "bytes": 2749,
+      "sha256": "f72f332ec80fca32e6aab3eece5410774ce5084ef2c8eb275c398c9d6ccf1b65",
+      "mtime_ns": 1791350286503406700
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/SUMMARY.json",
+      "bytes": 677,
+      "sha256": "734c34789ac919d17f1fe38cb3d0fd3ef1e9d8b9a1b0c1206a0a448509d38537",
+      "mtime_ns": 1791350214166179500
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/audit/D2A_H160_TERMINAL_BALANCED_AVERAGE250_ADJOINT_JET.json.gz",
+      "bytes": 89603357,
+      "sha256": "375ad70c24a2075ec9bbae488c1c34bc433ac15b943a236b29e82607f8d3c5c5",
+      "mtime_ns": 1791350143002495400
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/audit/D2A_H160_TERMINAL_BALANCED_AVERAGE250_DIRECTION_CERTIFICATE.json",
+      "bytes": 25164,
+      "sha256": "3c1ab3735cd9d76acadd99b6cc0f843985a469f8cea858f7164b9fa3120fae16",
+      "mtime_ns": 1791350213810205000
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/audit/D2A_H160_TERMINAL_BALANCED_AVERAGE250_DIRECTION_VERIFY.json",
+      "bytes": 376,
+      "sha256": "55f70287e2d539f8d82d11454ef336157ef87f763eb527aaaa76104ec6b85431",
+      "mtime_ns": 1791350286050184100
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/generate_batch_stdout.log",
+      "bytes": 1671,
+      "sha256": "1b066a9a077857af660bb4d6d855d83ea6889376cee6e92bea5c313c8192fd01",
+      "mtime_ns": 1791350214167178600
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_average250/stdlib_verify_batch_stdout.log",
+      "bytes": 3190,
+      "sha256": "472fe28afc3ad853f27f9ee0813e52e43e00b3ce62ee92167c7e22a5ab0cd228",
+      "mtime_ns": 1791350286503911300
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/ACTUAL_PROTOCOL.json",
+      "bytes": 54584,
+      "sha256": "38d7d77edecf77a990d6d5205e664456e23cac36ccf57141ae4e9d96c6595a6b",
+      "mtime_ns": 1791350286820790700
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/CASE_RESULT.json",
+      "bytes": 107277,
+      "sha256": "27ae219002324c5dce3990d39c87004b99c132181342fc18933ef6a1987e3c80",
+      "mtime_ns": 1791350377098935900
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/DIRECTION.json",
+      "bytes": 11621,
+      "sha256": "8154cbcd2ec461a927e4796e2051fc47bfb62f38bb5804fe0188a5d9b38743a9",
+      "mtime_ns": 1791350286821824400
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/EVIDENCE_ARTIFACT_HASHES.json",
+      "bytes": 1410,
+      "sha256": "f0f8c36b6b2941f9e704ebc4e5a51be0e829b2d0a1a21c0650a56110cf78ca50",
+      "mtime_ns": 1791353224931362100
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/PROJECTION_CERTIFICATE.json",
+      "bytes": 9240,
+      "sha256": "a34a6102c785f454373868734e10c92ae3f80c727c4c6613d1aeec36bc9b2174",
+      "mtime_ns": 1791350286821306900
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/STDLIB_VERIFICATION_RECEIPT.json",
+      "bytes": 2776,
+      "sha256": "79a61e5bc9d331bfb6d60a60ab1db34a5ebb6077cdb879bb8e401bfcaf6dd791",
+      "mtime_ns": 1791350450239310500
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/SUMMARY.json",
+      "bytes": 733,
+      "sha256": "56865dc2f1dfad48de51a0a8d4f0537cb7c3a0304487e8b38e0b84ee6944e000",
+      "mtime_ns": 1791350377099478000
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/audit/D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_ADJOINT_JET.json.gz",
+      "bytes": 91051833,
+      "sha256": "0567b8c7ee2a454b26e870803b2dca90b6a4d566f46f305ca92bcf6a35083875",
+      "mtime_ns": 1791350304828204400
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/audit/D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_DIRECTION_CERTIFICATE.json",
+      "bytes": 25619,
+      "sha256": "fcda141ff657bba8524ff9eda5b26a108b0cad767b0ffaa5d81ae019769f8307",
+      "mtime_ns": 1791350376778936800
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/audit/D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_DIRECTION_VERIFY.json",
+      "bytes": 376,
+      "sha256": "0dd9867c47702892c53fb509169e3bd4ada27cefc98254f4cd0a690378965b4a",
+      "mtime_ns": 1791350449828069200
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/generate_batch_stdout.log",
+      "bytes": 1714,
+      "sha256": "71f97fd04ca789d3ce9c142be5f68fa7c26794cb0fa8594f957e60ff8f97fd32",
+      "mtime_ns": 1791350377100113900
+    },
+    {
+      "path": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read/stdlib_verify_batch_stdout.log",
+      "bytes": 3213,
+      "sha256": "0176dda36cd69e224aaf8f8986aaca3954d6427e53fb4def3f60547a26a17ee1",
+      "mtime_ns": 1791350450240819200
+    },
+    {
+      "path": "work/d2a_cert_mean_review_binding.json",
+      "bytes": 1495,
+      "sha256": "4b7fbd423236f665dec8835520ba2326fb17a968fbcc0fe489499dc611b60fc9",
+      "mtime_ns": 1791347676955991300
+    },
+    {
+      "path": "work/d2a_cert_preflight/h160_terminal_balanced_average250.json",
+      "bytes": 67316,
+      "sha256": "ef64194dfc9e56a02faa07eaa696f49069b80d67fec032735b3f4085450e2688",
+      "mtime_ns": 1791346646061954600
+    },
+    {
+      "path": "work/d2a_cert_preflight/h160_terminal_balanced_point_last_fast_read.json",
+      "bytes": 67109,
+      "sha256": "b2ca9e9979248ef1b24383f42d72aee2d2e12e5b365f6450babeefdb1714b7c6",
+      "mtime_ns": 1791346646081868000
+    },
+    {
+      "path": "work/d2a_cert_verify.py",
+      "bytes": 6653,
+      "sha256": "208bf51131c28a173e5594c9df4e4d4a9c216afc5e8f1d043fce618a8ee54d2b",
+      "mtime_ns": 1791352927663920300
+    },
+    {
+      "path": "work/d2a_core.py",
+      "bytes": 6891,
+      "sha256": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9",
+      "mtime_ns": 1791346289177034200
+    },
+    {
+      "path": "work/d2a_extract_r1.py",
+      "bytes": 3250,
+      "sha256": "50e88ffa2c14190e56397cebe645870a1176c15fbe613e03715eeee42ea0b473",
+      "mtime_ns": 1791345728554973600
+    },
+    {
+      "path": "work/d2a_metadata_guard.py",
+      "bytes": 8003,
+      "sha256": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+      "mtime_ns": 1791364159323454400
+    }
+  ],
+  "estimated_archive_payload_bytes": 296403944,
+  "estimated_peak_scratch_bytes": 347992083,
+  "previous_pair_verifier_seconds": 144.6732651000002,
+  "estimated_elapsed_seconds_range": [
+    180,
+    360
+  ],
+  "resource": {
+    "free_ram_bytes": 13404569600,
+    "python_processes": [
+      {
+        "ProcessId": 62844,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_batch.py"
+      },
+      {
+        "ProcessId": 10032,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_publish_live.py --watch-pid 62844"
+      },
+      {
+        "ProcessId": 47044,
+        "ParentProcessId": 62844,
+        "CommandLine": "C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_case.py --H 300 --family switch_then_stay --readout average250 --stage-endpoint 240"
+      },
+      {
+        "ProcessId": 48096,
+        "ParentProcessId": 70608,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -S -B -X utf8 outputs/d2a_science_zip_rehearsal_v1.py"
+      }
+    ],
+    "free_C_bytes": 181244502016
+  },
+  "precheck_large_payload_bytes_hashed": 0,
+  "original_OS_readonly_required_or_changed": false,
+  "source_immutability_scope": "Completed accepted hash-bound pair; original files are not OS readonly. Full input hashes and stat/tree checks before/after enforce scoped byte stability.",
+  "full400_GO_faked_or_gate_changed": false,
+  "live_csv_locks_PID_or_CASE_written": false,
+  "python": {
+    "executable": "C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "version": "3.12.10",
+    "bits": 64
+  },
+  "captured_utc": "2026-10-07T10:29:07Z"
+}

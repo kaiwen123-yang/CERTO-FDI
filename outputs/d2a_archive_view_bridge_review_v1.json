@@ -1,0 +1,444 @@
+{
+  "schema": "d2a-archive-view-bridge-independent-review-v1",
+  "date": "2026-10-07",
+  "status": "ACCEPTED_LIMITED_FROZEN_IO_COVERAGE_AND_CSV_CAP_SCOPE",
+  "scientific_ready": false,
+  "open_required_fixes": [],
+  "scope": {
+    "adapter_full_read": true,
+    "v1_contract_helper_recipe_read": true,
+    "v1_to_v2_helper_actual_diff_read": true,
+    "initial_recipe_history_read": true,
+    "coverage_recipe_history_read": true,
+    "current_recipe_full_critical_chain_read": true,
+    "coverage_gate_full_read": true,
+    "csv_cap_actual_diff_read": true,
+    "full_scientific_verifier_entrypoint_static_trace": true,
+    "whole_manuscript_or_proofs_rereviewed": false
+  },
+  "current_source_sha256": {
+    "d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+    "d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+    "d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+    "package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953"
+  },
+  "all_bound_small_sources_and_history_sha256": {
+    "outputs/d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+    "outputs/d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+    "outputs/d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+    "outputs/package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+    "outputs/d2a_archive_view_bridge_fixtures_v1.py": "5f262131a8d111cb233707428a695e5b3443565c46328e2965483d5f223b4961",
+    "outputs/d2a_archive_view_bridge_fixture_results_v1.json": "625125c7f29daf9552c33ee77f365ad7429694f7600326298a789e6bace16ee1",
+    "outputs/d2a_archive_view_bridge_v1.md": "54af455b080ba1a27d6beec5c8deef35bf24c22128bc9407a5a1a7013b2915c5",
+    "outputs/d2a_archive_view_bridge_v1.json": "8509c76ca634578e0d1fbb1f8b71f3b66350dba3f44a266105d0504bdc4ff9f8",
+    "outputs/d2a_archive_coverage_gate_fixtures_v1.py": "314030b67dac31624f74cd014d7332d4b67fd1a2e250ea28e90037061903793c",
+    "outputs/d2a_archive_coverage_gate_fixture_results_v1.json": "909a1c3a10bcfbfd141b7e00d2b3c143db5896f33c3a5b68297038076a8c9180",
+    "outputs/d2a_archive_coverage_gate_addendum_v1.md": "d732fd68ce9614d1ddea159674ebca66489aa1042b9584eea6c6c134790cdbf7",
+    "outputs/d2a_archive_coverage_gate_addendum_v1.json": "d43beb618df13c970c046e5112768015d99651739ebc7173791f9bf11703ecf2",
+    "outputs/d2a_archive_csv_cap_fixtures_v1.py": "4c5957026dc6d6ded729e4e98e8be51f0d5494f6b188c6173fc29a8a7ebdfa53",
+    "outputs/d2a_archive_csv_cap_fixture_results_v1.json": "36a2152897eaebf8af4d1e822e25d951066f7413c58cfd40f5c50bf6bd96cef2",
+    "outputs/d2a_archive_csv_cap_addendum_v1.md": "da4369a6d00897fc2af45cf381fe25df04b05fa9e51b9f58f1cdcc6422aa4476",
+    "outputs/d2a_archive_csv_cap_addendum_v1.json": "33cb7c3d6020f016af6d4fe72a0d1ab83a9f8806bfcb79e134a960fc5453d9d1",
+    "outputs/full_d2a_release_contract_v1.md": "d633636c7d145b88de4c324d0dd772addef0afac8c700dbae43ccb462834dd80",
+    "outputs/full_d2a_release_contract_v1.json": "b822b2aae5296f10a6bf82ace28629b647e3ea1ef0080e06315f354dcd40b2f6",
+    "outputs/package_full_d2a_release_v1.py": "cae0b2d25804bdb7dc9f76f86bffb82733220883156a9c46121c4e0b275ce920",
+    "outputs/d2a_full_grid_acceptance_v1.py": "679747acb45427d19977f49691f1c8a951875855f7bb01d3f8d3e2a093c296a2",
+    "outputs/full_d2a_release_metadata_guard_v1.py": "b2bedb201eaafb5e59f40b55d96040e1895503643210e92b51bdb132b3114122",
+    "references/release_recipe_history/1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307.py": "1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307",
+    "references/release_recipe_history/97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f.py": "97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f"
+  },
+  "resolved_findings": [
+    {
+      "id": "F1",
+      "severity": "required coverage fix in initial IO recipe",
+      "symptom": "manifest science case omission could turn its payload into shared hash-only material",
+      "source_recipe_sha256": "1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307",
+      "consequence": "all-file hashes did not independently prove every scientific identity received a full verifier replay",
+      "remedy": "exact manifest science/canonical inventory; actual immutable CSV/direction/CASE binding; exact fresh replay set",
+      "resolved_current_recipe_sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+      "current_recipe_lines": [
+        442,
+        446,
+        466
+      ],
+      "independent_omission_orphan_forged_identity_missing_duplicate_replay_tests_passed": true
+    },
+    {
+      "id": "F2",
+      "severity": "required availability fix in coverage recipe",
+      "symptom": "small() 4000000 bytes and immutable selector 2MiB were inconsistent with exact TABLE 16MiB contract",
+      "source_recipe_sha256": "97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f",
+      "consequence": "legal complete CSV could be rejected or omitted from required metadata view; fail-closed availability loss",
+      "remedy": "only exact TABLE path16MiB; other small2MiB; total small view256MiB; explicit oversized TABLE rejection before view mkdir",
+      "limits_bytes": {
+        "exact_TABLE": 16777216,
+        "other_small": 2097152,
+        "total_selected_view": 268435456
+      },
+      "resolved_current_recipe_sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+      "independent_actual_zip_table_above2MiB_and_selector_boundary_tests_passed": true
+    }
+  ],
+  "call_chain": [
+    {
+      "stage": "actual witness availability",
+      "source": "outputs/d2a_archive_witness_view_v1.py:107",
+      "claims": [
+        "real central member presence",
+        "manifest independently bound SHA",
+        "receipt-to-manifest SHA mapping",
+        "uncompressed size equality",
+        "namespace safety"
+      ],
+      "does_not_claim": [
+        "body SHA verified",
+        "scientific arithmetic verified"
+      ],
+      "same_size_body_corruption_presence_acceptance_is_intentional": true
+    },
+    {
+      "stage": "actual immutable small view",
+      "source": "outputs/package_full_d2a_release_v2.py:369",
+      "claims": [
+        "fresh actual ZIP extraction with full small payload SHA",
+        "separate readonly metadata root",
+        "helper metadata_gate root points to extracted original bytes",
+        "no dummy witness",
+        "no code-directed old worktree fallback"
+      ],
+      "standalone_helper_archive_flag_only_switches_witness_backend": true
+    },
+    {
+      "stage": "manifest and actual metadata coverage",
+      "sources": [
+        "outputs/d2a_archive_coverage_gate_v1.py:43",
+        "outputs/d2a_archive_coverage_gate_v1.py:101"
+      ],
+      "claims": [
+        "exact400 logical keys",
+        "science identities exactly canonical cases",
+        "case science row sets exact",
+        "actual CSV direction CASE identity and directory bound",
+        "current orphan witnesses rejected"
+      ]
+    },
+    {
+      "stage": "future complete per-case replay",
+      "source": "outputs/package_full_d2a_release_v2.py:456",
+      "ordered_operations": [
+        "exact alias check",
+        "full scratch work/d2a_cert_verify.py --case-dir scratch_case under -S",
+        "save fresh receipt and hash",
+        "append identity-bound result",
+        "cleanup only successful owned scratch case"
+      ],
+      "subprocess_failure_aborts_before_success_cleanup": true,
+      "static_verifier_ROOT_and_R1_source_from_new_script___file__": true,
+      "executed_in_this_review": false
+    },
+    {
+      "stage": "final acceptance coverage",
+      "source": "outputs/package_full_d2a_release_v2.py:463",
+      "required_gates": [
+        "every actual ZIP payload full hash",
+        "immutable metadata hashes unchanged",
+        "second metadata gate after case cleanup",
+        "fresh result set equals every canonical science case",
+        "zero unresolved failure"
+      ],
+      "pure_record_gate_does_not_execute_scientific_verifier": true,
+      "synthetic_receipt_records_not_science": true,
+      "executed_full_branch": false
+    }
+  ],
+  "filesystem_branch": {
+    "contained_resolve_is_file_semantics_preserved": true,
+    "expected_hash_or_size_not_used_to_claim_body_integrity": true,
+    "other_physical_risk_mean_alias_first_grid_logic_unchanged_in_actual_helper_diff": true,
+    "valid_completed_rows_supply_existing_bound_artifact_bytes": true
+  },
+  "independent_actual_tiny_zip_checks": {
+    "count": 45,
+    "failures": 0,
+    "runs": [
+      {
+        "script": "work/review_archive_io_bridge_v1.py",
+        "script_sha256": "254ddc15d04cddbbda7e21f24996ceb58dc3f124530cafe4aa2f94c16472845e",
+        "receipt": "work/archive_bridge_independent_review_3f66cbf5/independent_review_fixture_receipt.json",
+        "receipt_sha256": "c9de5fcb1d9b9f3edc02f236d7c7f5565411fea600bd5df97023476b309b4b08",
+        "actual_run_exit_code": 0,
+        "result": {
+          "status": "PASS_INDEPENDENT_BOUNDED_ARCHIVE_IO_AND_COVERAGE_REVIEW",
+          "tests": [
+            {
+              "name": "actual member, manifest binding and exact uncompressed size accepted",
+              "pass": true
+            },
+            {
+              "name": "Windows query separators normalize without changing archive namespace",
+              "pass": true
+            },
+            {
+              "name": "presence view never reads witness body",
+              "pass": true
+            },
+            {
+              "name": "presence scope declines payload hash and scientific arithmetic",
+              "pass": true
+            },
+            {
+              "name": "manifest entry cannot create an absent actual ZIP member",
+              "pass": true
+            },
+            {
+              "name": "real member without manifest entry is unavailable",
+              "pass": true
+            },
+            {
+              "name": "independent manifest SHA mismatch rejects",
+              "pass": true
+            },
+            {
+              "name": "receipt SHA disagreement rejects",
+              "pass": true
+            },
+            {
+              "name": "receipt size disagreement rejects",
+              "pass": true
+            },
+            {
+              "name": "actual central-directory size mismatch rejects",
+              "pass": true
+            },
+            {
+              "name": "unsafe ZIP namespace rejects: traversal",
+              "pass": true
+            },
+            {
+              "name": "unsafe ZIP namespace rejects: device",
+              "pass": true
+            },
+            {
+              "name": "unsafe ZIP namespace rejects: trailing_dot",
+              "pass": true
+            },
+            {
+              "name": "unsafe ZIP namespace rejects: drive",
+              "pass": true
+            },
+            {
+              "name": "casefold duplicate rejects",
+              "pass": true
+            },
+            {
+              "name": "symlink central member rejects",
+              "pass": true
+            },
+            {
+              "name": "unsafe witness query rejects",
+              "pass": true
+            },
+            {
+              "name": "same-size corruption is intentionally accepted only for presence",
+              "pass": true
+            },
+            {
+              "name": "separate full payload extractor rejects same-size corruption",
+              "pass": true
+            },
+            {
+              "name": "filesystem default retains original contained is_file semantics",
+              "pass": true
+            },
+            {
+              "name": "filesystem containment remains enforced",
+              "pass": true
+            },
+            {
+              "name": "complete synthetic 400 logical rows / 3 science rows / 2 cases passes inventory",
+              "pass": true
+            },
+            {
+              "name": "science omitted from canonical set fails before extraction",
+              "pass": true
+            },
+            {
+              "name": "current-case witness cannot fall into shared hash-only payloads",
+              "pass": true
+            },
+            {
+              "name": "immutable metadata derives from actual ZIP bytes and excludes witness files",
+              "pass": true
+            },
+            {
+              "name": "actual CSV/direction/CASE bytes bind complete logical inventory",
+              "pass": true
+            },
+            {
+              "name": "coherent manifest-only forged identity fails actual metadata binding",
+              "pass": true
+            },
+            {
+              "name": "separate replay write/removal does not alter immutable archive metadata",
+              "pass": true
+            },
+            {
+              "name": "complete synthetic receipt set passes coverage only",
+              "pass": true
+            },
+            {
+              "name": "missing fresh replay fails coverage despite all metadata present",
+              "pass": true
+            },
+            {
+              "name": "duplicated replay cannot replace missing canonical identity",
+              "pass": true
+            },
+            {
+              "name": "fresh replay directory must bind its canonical identity",
+              "pass": true
+            },
+            {
+              "name": "pure coverage gates do not mutate supplied manifest",
+              "pass": true
+            }
+          ],
+          "test_count": 33,
+          "failed": 0,
+          "fixture_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_bridge_independent_review_3f66cbf5",
+          "actual_coverage_zip_bytes": 450561,
+          "fixture_payload_is_science": false,
+          "science_or_R1_executed": false,
+          "real_large_witness_bytes_read": 0,
+          "live_science_files_modified": false,
+          "frozen_author_outputs_modified": false,
+          "scientific_ready": false,
+          "synthetic_receipts_are_actual_scientific_replays": false,
+          "source_sha256": {
+            "d2a_archive_witness_view_v1.py": "7f566d7251ea3077b261b496d93a7469db8d502b6523be8393d3f088b760e637",
+            "d2a_full_grid_acceptance_v2.py": "25703242972718b3a3fd6f924dacc5dd1c67b03a51518d74aa5a882412d3ab15",
+            "d2a_archive_coverage_gate_v1.py": "87a4106ef35201e3562e0c5d352a4ee84b3fbec14614ae54b48ded806759cb55",
+            "package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953"
+          }
+        }
+      },
+      {
+        "script": "work/review_archive_csv_cap_v1.py",
+        "script_sha256": "7393eb1e0ac423cec1c3c8b2e1ad316a85969bc56afe9d307d95e4b0aff837dd",
+        "receipt": "work/archive_cap_independent_review_09b1e98e/independent_review_fixture_receipt.json",
+        "receipt_sha256": "f1303f7d3ecb7c703fbd4866123c84c4e9c8643e8322943547389a94fa026b77",
+        "actual_run_exit_code": 0,
+        "result": {
+          "status": "PASS_INDEPENDENT_BOUNDED_ACTUAL_ZIP_CSV_CAP_REVIEW",
+          "test_count": 12,
+          "failed": 0,
+          "tests": [
+            {
+              "name": "actual synthetic table exceeds 2MiB and stays within exact TABLE cap",
+              "pass": true
+            },
+            {
+              "name": "actual ZIP TABLE >2MiB is selected, extracted and hash checked",
+              "pass": true
+            },
+            {
+              "name": "snapshot small permits only exact TABLE for this larger size",
+              "pass": true
+            },
+            {
+              "name": "coverage accepts actual larger TABLE and binds all synthetic rows",
+              "pass": true
+            },
+            {
+              "name": "no dummy witness enters metadata view",
+              "pass": true
+            },
+            {
+              "name": "selector accepts exact TABLE 16MiB boundary",
+              "pass": true
+            },
+            {
+              "name": "required TABLE 16MiB+1 is explicit rejection",
+              "pass": true
+            },
+            {
+              "name": "oversized TABLE rejects before creating any view",
+              "pass": true
+            },
+            {
+              "name": "oversized TABLE leaves no partial metadata root",
+              "pass": true
+            },
+            {
+              "name": "other CSV gets no TABLE exception",
+              "pass": true
+            },
+            {
+              "name": "ordinary exact 2MiB boundary remains accepted",
+              "pass": true
+            },
+            {
+              "name": "total original small view above 256MiB rejects",
+              "pass": true
+            }
+          ],
+          "actual_zip_bytes": 207408,
+          "synthetic_table_bytes": 2877316,
+          "fixture_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_cap_independent_review_09b1e98e",
+          "science_or_R1_executed": false,
+          "real_large_witness_bytes_read": 0,
+          "frozen_author_outputs_modified": false,
+          "scientific_ready": false,
+          "recipe_sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953"
+        }
+      }
+    ],
+    "synthetic_input_only": true
+  },
+  "author_historical_receipts": [
+    {
+      "receipt": "outputs/d2a_archive_view_bridge_fixture_results_v1.json",
+      "receipt_sha256": "625125c7f29daf9552c33ee77f365ad7429694f7600326298a789e6bace16ee1",
+      "checks": 30,
+      "failures": 0,
+      "bound_recipe_sha256": "1c6ecc8e5cd6323c488e3c584e74199a8a64a3c224788cd23e392b82a6ab5307",
+      "receipt_read_and_source_bound": true,
+      "whole_fixture_reexecuted_by_reviewer": false,
+      "scientific_validation": false
+    },
+    {
+      "receipt": "outputs/d2a_archive_coverage_gate_fixture_results_v1.json",
+      "receipt_sha256": "909a1c3a10bcfbfd141b7e00d2b3c143db5896f33c3a5b68297038076a8c9180",
+      "checks": 22,
+      "failures": 0,
+      "bound_recipe_sha256": "97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f",
+      "receipt_read_and_source_bound": true,
+      "whole_fixture_reexecuted_by_reviewer": false,
+      "scientific_validation": false
+    },
+    {
+      "receipt": "outputs/d2a_archive_csv_cap_fixture_results_v1.json",
+      "receipt_sha256": "36a2152897eaebf8af4d1e822e25d951066f7413c58cfd40f5c50bf6bd96cef2",
+      "checks": 26,
+      "failures": 0,
+      "bound_recipe_sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+      "receipt_read_and_source_bound": true,
+      "whole_fixture_reexecuted_by_reviewer": false,
+      "scientific_validation": false
+    }
+  ],
+  "not_executed_or_modified": {
+    "complete_scientific_archive_build": true,
+    "full400_scientific_replay": true,
+    "R1_bootstrap": true,
+    "real_large_witness_read_hash_or_decompression": true,
+    "old_matrix_or_D2_checks": true,
+    "native_compile_or_main_paper_edit": true,
+    "live_CSV_locks_PIDs_or_science_file_writes": true,
+    "author_frozen_output_writes": true,
+    "scientific_case_cleanup": true
+  },
+  "interpretation": "Accept only frozen IO/coverage/cap engineering scope. Future full branch remains unexecuted and cannot yield scientific_ready from these fixtures.",
+  "report_md": "outputs/d2a_archive_view_bridge_review_v1.md",
+  "report_md_sha256": "43a995ad62c6c9627874a5ffb6d986df8355bc2ccfaf796f7f5a44137236139d"
+}

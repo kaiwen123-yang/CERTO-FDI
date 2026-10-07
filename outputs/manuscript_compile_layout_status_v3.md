@@ -1,0 +1,9 @@
+# Revision7：三完整块代表例与当前PDF验收
+
+当前源文件SHA a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca，实际PDF SHA ec237f48280d1f1680461c729e3d8c58f46dbea86a1dc0e6752af290048843bd。
+
+主机械例按原计划“至少三个完整对称块”选择为H160，含3块、6次转移、4槽健康前缀和41秒总时间。它是声明terminal-balanced网格中最早同时满足选例条件及average证书目标的点；H100/26秒仍是该族首个有证网格点，H120数据及旧稿/V2包保留。新的两侧均值/误差/事件、完整历史Gaussian-comparator方差和风险数字均来自已冻结、独审绑定的H160 pair，没有改物理参数或重跑科学计算。显示小数是近似，不替代原精确有理证书端点。
+
+8处有限实例文字/数字替换已独立逐字复核。所有定理、证明、Figure2、49labels和13bibkeys不变。新的实际CLI编译exit0，仍11页，US Letter；根实际查看全部11页100dpi渲染，没有观察到越栏、裁切、文字/表格或图注碰撞。完整TeX日志无Overfull、Missing character及未定义引用；字体嵌入和内容边界详见同名JSON。页数不含待用户提供的真实作者信息/bios/photos。
+
+原生compiler仍有平台目录错误；使用应用已有Tectonic0.17.0，没有新安装。初始TU/ptm及Fontconfig诊断仍保留，不能称warning-free。R6源和PDF按原哈希保存，旧V2不覆盖；当前稿和完整400行/final release验收仍是不同状态。

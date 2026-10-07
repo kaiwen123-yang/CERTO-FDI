@@ -1,0 +1,261 @@
+{
+  "status": "PASS_EXACT_FINITE_CHECKS_AND_CERTIFIED_COMPACT_EXAMPLE",
+  "scope": "Known constant external input, common plant lambda1, d=q=1 and x0=0. Exact one-gap information. Homogeneous recovery is an admissibility contract, not a noisy/nonlinear return guarantee. No M1 drift-sharp claim.",
+  "recovery_ratio": "81/100",
+  "homogeneous_initial_bound_E": "1",
+  "homogeneous_tolerance_epsilon": "81/100",
+  "move_slots_fixed": 0,
+  "finite_family": [
+    {
+      "lambda": "1",
+      "closed_loop_c": "4/5",
+      "feedback_K": "1/5",
+      "move_slots": 0,
+      "settle_steps": 1,
+      "missing_k": 1,
+      "settled_error_ratio": "4/5",
+      "previous_error_ratio": "1",
+      "settle_minimal_exact": true,
+      "kappa": "1/41",
+      "kappa_display": 0.024390243902439025,
+      "physical_covariance_check": {
+        "horizon": 12,
+        "retained_left_endpoint": 2,
+        "missing_observation_indices_1based": [
+          3
+        ],
+        "full_KL_d1_q1": "6",
+        "observed_KL_d1_q1": "491/82",
+        "loss_KL_d1_q1": "1/82",
+        "dense_covariance_matches_gap_formula": true
+      }
+    },
+    {
+      "lambda": "1",
+      "closed_loop_c": "9/10",
+      "feedback_K": "1/10",
+      "move_slots": 0,
+      "settle_steps": 2,
+      "missing_k": 2,
+      "settled_error_ratio": "81/100",
+      "previous_error_ratio": "9/10",
+      "settle_minimal_exact": true,
+      "kappa": "2/91",
+      "kappa_display": 0.02197802197802198,
+      "physical_covariance_check": {
+        "horizon": 12,
+        "retained_left_endpoint": 2,
+        "missing_observation_indices_1based": [
+          3,
+          4
+        ],
+        "full_KL_d1_q1": "6",
+        "observed_KL_d1_q1": "545/91",
+        "loss_KL_d1_q1": "1/91",
+        "dense_covariance_matches_gap_formula": true
+      }
+    },
+    {
+      "lambda": "1",
+      "closed_loop_c": "19/20",
+      "feedback_K": "1/20",
+      "move_slots": 0,
+      "settle_steps": 5,
+      "missing_k": 5,
+      "settled_error_ratio": "2476099/3200000",
+      "previous_error_ratio": "130321/160000",
+      "settle_minimal_exact": true,
+      "kappa": "5064645/111045881",
+      "kappa_display": 0.04560858047494801,
+      "physical_covariance_check": {
+        "horizon": 12,
+        "retained_left_endpoint": 2,
+        "missing_observation_indices_1based": [
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "full_KL_d1_q1": "6",
+        "observed_KL_d1_q1": "1327485927/222091762",
+        "loss_KL_d1_q1": "5064645/222091762",
+        "dense_covariance_matches_gap_formula": true
+      }
+    }
+  ],
+  "finite_family_best_c": "9/10",
+  "finite_family_strict_comparisons": [
+    {
+      "other_c": "4/5",
+      "kappa_other_minus_best": "9/3731",
+      "strictly_positive": true
+    },
+    {
+      "other_c": "19/20",
+      "kappa_other_minus_best": "238790933/10105175171",
+      "strictly_positive": true
+    }
+  ],
+  "fixed_k_rational_diagnostics_count": 100,
+  "all_nonnegative_c_monotonicity_false_outside_stable_interval": {
+    "k": 1,
+    "kappa_c1": "0",
+    "kappa_c2": "1/5"
+  },
+  "compact_interval": [
+    "4/5",
+    "19/20"
+  ],
+  "compact_candidates": [
+    {
+      "label": "c_1",
+      "settle_steps_at_root": 1,
+      "missing_k": 1,
+      "controller_c_lower": "81/100",
+      "controller_c_upper": "81/100",
+      "root_equation": "c^1=81/100",
+      "root_is_rational": true,
+      "kappa_lower": "361/16561",
+      "kappa_upper": "361/16561",
+      "display_c": 0.81,
+      "display_kappa": 0.021798200591751707
+    },
+    {
+      "label": "c_2",
+      "settle_steps_at_root": 2,
+      "missing_k": 2,
+      "controller_c_lower": "9/10",
+      "controller_c_upper": "9/10",
+      "root_equation": "c^2=81/100",
+      "root_is_rational": true,
+      "kappa_lower": "2/91",
+      "kappa_upper": "2/91",
+      "display_c": 0.9,
+      "display_kappa": 0.02197802197802198
+    },
+    {
+      "label": "c_3",
+      "settle_steps_at_root": 3,
+      "missing_k": 3,
+      "controller_c_lower": "147708193170790296752165227171/158456325028528675187087900672",
+      "controller_c_upper": "1181665545366322374017321817369/1267650600228229401496703205376",
+      "root_equation": "c^3=81/100",
+      "root_is_rational": false,
+      "kappa_lower": "110913057513795606802687403446961900764213234983906994843221699448749365647747561460619441216302471321122718254113209763/4531997012690857250826157243812517649196297002674979680350826268972311204725030723935743570802857226523738337066277923297",
+      "kappa_upper": "27078383182079005567062354357776321779591212775787331593279855194080567798816123855974571794094128629562394892811123/1106444583176478821002479795851054114412346989198112772539154860423374144981287982923246700326296285891153605085533137",
+      "display_c": 0.9321697517861577,
+      "display_kappa": 0.024473329793291584
+    },
+    {
+      "label": "c_4",
+      "settle_steps_at_root": 4,
+      "missing_k": 4,
+      "controller_c_lower": "601299476100115034847393123767/633825300114114700748351602688",
+      "controller_c_upper": "1202598952200230069694786247535/1267650600228229401496703205376",
+      "root_equation": "c^4=81/100",
+      "root_is_rational": false,
+      "kappa_lower": "64583108094196994653451423504109248537020473639587926772596037772257269809205874246225368212032122047226153945280733444/2343396241220873591764755555963281532494333273089244119898841304272862996059404977965113666215685950004075143161992165441",
+      "kappa_upper": "4036444255887312165840713969127712639140710953212723451226461403149385268099825590725174295051435687194394874336471684/146462265076304599485297222247499784647526387452037587967939938050791916583698273475853566081881844264009199485891500705",
+      "display_c": 0.9486832980505138,
+      "display_kappa": 0.027559619221950354
+    },
+    {
+      "label": "closed_upper_endpoint",
+      "settle_steps_at_root": 5,
+      "missing_k": 5,
+      "controller_c_lower": "19/20",
+      "controller_c_upper": "19/20",
+      "root_equation": null,
+      "root_is_rational": true,
+      "kappa_lower": "5064645/111045881",
+      "kappa_upper": "5064645/111045881",
+      "display_c": 0.95,
+      "display_kappa": 0.04560858047494801
+    }
+  ],
+  "compact_global_optimum_c": "81/100",
+  "compact_global_optimum_kappa": "361/16561",
+  "compact_strict_comparison_certificates": [
+    {
+      "other_label": "c_2",
+      "certified_lower_margin_over_c1": "271/1507051"
+    },
+    {
+      "other_label": "c_3",
+      "certified_lower_margin_over_c1": "200780223904569576711063323468817167196272166602816076991946281471733899586611274008515136923353768774043797325442536574826/75054402527173286930931990114779104788339874661300338486290033840450445861451233819099849276066118528459630600154628687721617"
+    },
+    {
+      "other_label": "c_4",
+      "certified_lower_margin_over_c1": "223594810067261061828732268948808631791141752359998527997481270703849103732813286346332289455601345272641208806315054841883/38808985150858887553216116762307905459638653335630971869644710840062884077739805840080247426197975018017488445905752251868401"
+    },
+    {
+      "other_label": "closed_upper_endpoint",
+      "certified_lower_margin_over_c1": "43788022804/1839030835241"
+    }
+  ],
+  "near_unit_boundary": {
+    "L_display": 0.21072103131565253,
+    "limit_constant_display": 0.0007762799344371296,
+    "exact_symbolic_limit": "(-log c)*kappa(c,k(c)) -> L-2*tanh(L/2)>0, L=-log(alpha)",
+    "proof_not_inferred_from_numeric_sequence": true,
+    "rows": [
+      {
+        "c": "19/20",
+        "settle_steps": 5,
+        "missing_k": 5,
+        "kappa_display": 0.04560858047494801,
+        "minus_log_c_times_kappa_display": 0.0023394143448997994,
+        "minus_log_c_times_settle_display": 0.2564664719377529,
+        "fits_horizon12_internal_gap_at_ell2": true,
+        "boundary_diagnostic_only": true,
+        "outside_compact_design_family": false
+      },
+      {
+        "c": "99/100",
+        "settle_steps": 21,
+        "missing_k": 21,
+        "kappa_display": 0.08900841774128047,
+        "minus_log_c_times_kappa_display": 0.0008945644920886257,
+        "minus_log_c_times_settle_display": 0.21105705292353047,
+        "fits_horizon12_internal_gap_at_ell2": false,
+        "boundary_diagnostic_only": true,
+        "outside_compact_design_family": true
+      },
+      {
+        "c": "199/200",
+        "settle_steps": 43,
+        "missing_k": 43,
+        "kappa_display": 0.17740299033282836,
+        "minus_log_c_times_kappa_display": 0.0008892399086651248,
+        "minus_log_c_times_settle_display": 0.21553929841240432,
+        "fits_horizon12_internal_gap_at_ell2": false,
+        "boundary_diagnostic_only": true,
+        "outside_compact_design_family": true
+      },
+      {
+        "c": "999/1000",
+        "settle_steps": 211,
+        "missing_k": 211,
+        "kappa_display": 0.7912282432123974,
+        "minus_log_c_times_kappa_display": 0.0007916241212747175,
+        "minus_log_c_times_settle_display": 0.21110557038612576,
+        "fits_horizon12_internal_gap_at_ell2": false,
+        "boundary_diagnostic_only": true,
+        "outside_compact_design_family": true
+      },
+      {
+        "c": "4999/5000",
+        "settle_steps": 1054,
+        "missing_k": 1054,
+        "kappa_display": 3.8975624784082186,
+        "minus_log_c_times_kappa_display": 0.0007795904573261852,
+        "minus_log_c_times_settle_display": 0.21082108281106512,
+        "fits_horizon12_internal_gap_at_ell2": false,
+        "boundary_diagnostic_only": true,
+        "outside_compact_design_family": true
+      }
+    ]
+  },
+  "script_sha256": "c97c9733c5b8fcb2a9ee6d5199f654f4a1c0811d0466ac144bf2b9f69ece690d"
+}

@@ -1,0 +1,338 @@
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\title{Common-noise-image diagnosis:\\mode recovery and normalized missing-state penalty}
+\author{Research working proof, version 1}
+\date{7 October 2026}
+\begin{document}
+\maketitle
+\paragraph{Frozen contract.}
+Let
+\[
+x_j=A_Kx_{j-1}+B(a_j^h+g_jb_j^h)+G\xi_j,\qquad
+A_K=A-B_uK,\qquad \xi_j\overset{\mathrm{iid}}{\sim}N(0,I_p).
+\]
+The dimension is fixed, $A_K$ is known and strictly stable,
+$G\in\mathbb R^{d\times p}$ has full column rank, $1\le p\le d$,
+and $0\ne B\in\operatorname{range}G$.
+The known initial state is $x_{-n_0}=0$, $n_0\ge1$ fixed.
+Prefix states are all read at $g=+1$, $a_j=0$; thereafter
+$a_j=\rho_0+\eta j$, $\rho_0\ge0$, $\eta>0$.
+Each hypothesis chooses its own unrestricted-level scalar healthy path
+with rate at most $r/2$, so the difference class is
+$\mathcal Z_H=\{z:|\Delta z_j|\le r\}$, $r>0$.
+A deterministic known-horizon calendar reads full states at held tasks
+$g=\pm1$ and excludes at least $k\ge1$ slots per change.
+Missing $g_j$ are known with $|g_j|\le1$.
+The attaining construction uses concatenable known exact-$k$ moves
+in both directions. No plant, innovation or healthy level is reset.
+Fast internal states and control commands are not diagnostic data.
+No saturation or tracking-budget claim is made.
+
+Put $f=G^\dagger B$, the unique preimage, and $F=\|f\|^2>0$.
+Write $a_f=(f a_j)_j$, $H_gz=(f g_jz_j)_j$ and
+\[
+M_m=\sum_{r=0}^{m-1}A_K^rB,\quad
+W_m=\sum_{r=0}^{m-1}A_K^rGG^\top(A_K^r)^\top,\quad
+\beta_k=(k+1)F-M_{k+1}^\top W_{k+1}^\dagger M_{k+1}.
+\]
+The full-state oracle is $O_H=(F/2)\sum_{j=1}^H a_j^2$.
+We use a supremum over admissible calendars, without assuming their
+profile set is closed.
+
+\begin{theorem}[Normalized penalty characterization]\label{thm:m2s}
+For the frozen fixed-parameter contract, $\beta_k\ge0$.
+If $\beta_k>0$,
+\[
+D_H^*=\frac{\sqrt2}{5}\sqrt{F\beta_kr}\,\eta^{3/2}H^{5/2}
++o(H^{5/2}),
+\]
+attained in leading coefficient by the terminal-balanced symmetric
+construction at $\xi_*=2\beta_k\eta/(Fr)$.
+If $\beta_k=0$, then $D_H^*/H^{5/2}\to0$.
+This second assertion alone does not specify a lower exponent or a
+sharp lower-order coefficient.
+\end{theorem}
+
+\paragraph{Common Gaussian support and the actual projector.}
+The retained data have linear noise map
+$L_R=RF_{A_K}\operatorname{diag}G$ and mean $L_R\theta$,
+where $\theta=(f(a^h+gb^h))_j$.
+Every parameter mean is in $\operatorname{range}L_R$, hence all Gaussian
+supports coincide.
+For a rank-$s$ SVD $L_R=U_s\Sigma_sV_s^\top$, the supported data are
+equivalent to $\Sigma_s^{-1}U_s^\top Y$, with noise $N(0,I_s)$ and
+mean $V_s^\top\theta$.
+Thus pairwise KL is $\|V_s^\top\Delta\theta\|^2/2$.
+A pseudoinverse formula without this image condition would not suffice.
+
+The invertible triangular retained-state predictor maps the true noise
+matrix to disjoint interval matrices
+\[
+H_m=[A_K^{m-1}G,\ldots,G],\qquad H_mH_m^\top=W_m.
+\]
+It subtracts $A_K^m$ times the actual preceding retained state, not a new
+initial condition. Invertible left multiplication preserves rowspace.
+Consequently the global input projector has blocks
+$P_m=H_m^\top W_m^\dagger H_m$, and
+\begin{equation}\label{eq:experiment}
+G_H(\pi)=\tfrac12\inf_{z\in\mathcal Z_H}
+\|P(a_f-H_gz)\|^2,\qquad P^2=P=P^\top.
+\end{equation}
+Rank-adapted independent Gaussian rows can be obtained with an orthonormal
+basis $U_m$ of $\operatorname{range}W_m$:
+$(U_m^\top W_mU_m)^{-1/2}U_m^\top H_m$.
+There are $\operatorname{rank}W_m$ such rows, not $d$ independent unit rows.
+The complete record recovers all latent inputs using
+$G^\dagger(x_j-A_Kx_{j-1})$; its whole composite experiment and oracle are
+control-neutral.
+
+\paragraph{Uniform-in-span pseudoinverse bound for one fixed plant.}
+Let
+$\mathcal R_m=\operatorname{span}\{G,A_KG,\ldots,A_K^{m-1}G\}$.
+Cayley--Hamilton makes $\mathcal R_d$ invariant and
+$\mathcal R_m=\mathcal R_d$ for $m\ge d$.
+For those $m$, $W_m\succeq W_d$ and their kernels coincide.
+On $\mathcal R_d$ they are positive definite, so
+$W_m^\dagger\preceq W_d^\dagger$ there, with both zero on the orthogonal kernel.
+Hence
+\[
+\Gamma_K=\max_{1\le m\le d}\|W_m^\dagger\|<\infty,\qquad
+\sup_m\|W_m^\dagger\|\le\Gamma_K.
+\]
+One must not bound all $W_m^\dagger$ by $W_1^\dagger$ before reachability
+rank stabilization.
+Strict stability also gives $S_B=\sum_{r\ge0}\|A_K^rB\|<\infty$.
+Set $C_K=\Gamma_KS_B^2$.
+
+\begin{proposition}[Recoverability and finite noise-free capacity]\label{prop:capacity}
+Let $\nu_R$ be the first $m$ with $\mathcal R_m=\mathcal R_\infty$ and
+$r_\infty=\dim\mathcal R_\infty$.
+Then $\beta_k=0$ if and only if some $y$ satisfies
+\[
+G^\top(A_K^\top)^r y=f,\qquad r=0,\ldots,k.
+\]
+If $\beta_k=0$, then
+$k<\nu_R\le r_\infty-p+1\le d-p+1$.
+This is recovery of the constant scalar mean mode, not necessarily of
+every latent input.
+\end{proposition}
+\begin{proof}
+For $d_m=\mathbf1_m\otimes f$, $H_md_m=M_m$ and
+$\beta_{m-1}=d_m^\top(I-P_m)d_m\ge0$.
+It is zero exactly when $d_m$ belongs to $\operatorname{range}H_m^\top$,
+which is the stated finite system.
+
+Reachability rank starts at $p$, grows by at least one per step before
+stabilization, and cannot resume growth after a plateau.
+Thus $\nu_R\le r_\infty-p+1$.
+If the finite system holds, set $\zeta=(A_K^\top-I)y$.
+It annihilates $\mathcal R_k$.
+If $k\ge\nu_R$, this invariant reached space is already saturated, so
+$G^\top(A_K^\top)^r\zeta=0$ for every $r$.
+The sequence $G^\top(A_K^\top)^r y$ would then be constantly equal to
+nonzero $f$, whereas stability makes it tend to zero. This contradiction
+proves the capacity bound.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:m2s}]
+Nested state deletion shrinks the true noise-map rowspace, so
+$\beta_\ell$ is nondecreasing. Since $\|M_m\|\le S_B$ and
+$\|W_m^\dagger\|\le\Gamma_K$,
+$\beta_\ell\ge(\ell+1)F-C_K$ and $\beta_\ell/\ell\to F$.
+If $\beta_k>0$, then $b_K=\inf_{\ell\ge k}\beta_\ell/\ell>0$.
+
+\paragraph{Affine gaps and a common full-history converse.}
+For centered $h_j=j-(m+1)/2$, put $d_h=(h_jf)_j$ and
+$N_m=H_md_h$.
+The constant--slope loss coefficient is
+$L_{1,m}=-M_m^\top W_m^\dagger N_m$, bounded in absolute value by $mC_K/2$;
+the slope-square coefficient $L_{2,m}=d_h^\top(I-P_m)d_h$ is nonnegative.
+Therefore an affine interval with center amplitude $A\ge0$ loses exactly
+\[
+\beta_{m-1}A^2+2\eta A L_{1,m}+\eta^2L_{2,m}
+\ge\beta_{m-1}A^2-C_K\eta A m.
+\]
+Terminal moves without later readings are dominated by holding.
+Prefix states are read, so all non-singleton spans are post-onset.
+Their total length is at most $H$ and their amplitudes at most
+$\rho_0+\eta H$. The total negative affine cross is consequently
+$E_H=C_K\eta(\rho_0+\eta H)H=O(H^2)$, uniformly over calendars.
+
+For $\beta_k>0$, divide the late interval into complete macros
+of length $L=\lfloor H^{3/4}\rfloor$.
+Use a scalar signed rate-$r$ tent on each clipped held run, zero at its
+endpoints, on missing nodes, right-first reads, prefix, macro joins and unused tail.
+This is one full path, realized by its two halves, and $h=gz$ vanishes
+throughout every non-singleton input span.
+If $T$ is its exact sum of gap norm losses,
+\[
+2D_H(\pi)\ge F\sum(2ah-h^2)+T.
+\]
+In a macro with minimum $A$, missing slots $d$, run count $M$ and lengths $n_i$,
+tent saving is at least $C\sum n_i^2-2CL$,
+$C=r(2A-rL/2)/4>0$.
+Complete gaps within that macro give
+$T\ge\sum\beta_kA^2(M-1)-E_H$.
+Since missing amplitudes are at most twice their span-center amplitude,
+the same $T$ also obeys $T\ge(b_K/4)\sum A^2d-E_H$.
+Crossing gaps are not counted in the first bound but each missing node is
+assigned once in the second.
+
+Split this same global $T$ with fixed $\theta\in(0,1)$ and
+$W=(1-\theta)\beta_k$. For $M>0$, Cauchy and AM--GM bound the macro contribution by
+\[
+FC(L-d)^2/M+WA^2M+\theta b_KA^2d/4-WA^2-2FCL
+\ge2A\sqrt{FCW}(L-d)+\theta b_KA^2d/4-WA^2-2FCL .
+\]
+The condition $A\ge32FWr/(\theta^2b_K^2)$ absorbs $d$ uniformly.
+For $M=0,d=L$, the dead term gives the same final bound without division.
+With fixed late cutoff $\varepsilon>0$, $A=\Theta(H)$;
+all coefficient, rounding, and incomplete Riemann-block remainders are
+$O(H^{9/4})$, $\sum CL=O(H^2)$, and $E_H=O(H^2)$.
+The leading sum is
+$\sqrt{2FrW}(2/5)\eta^{3/2}(1-\varepsilon^{5/2})H^{5/2}$.
+Take the calendar infimum before $H\to\infty$, then
+$\varepsilon,\theta\downarrow0$, to obtain the asserted liminf coefficient.
+
+\paragraph{An attaining dual for every rank and for $\beta_k\ge0$.}
+For fixed $\xi>0$, symmetric blocks have even $n=2h$:
+$h$ reads at $+$, $k$ missing slots, $n$ reads at $-$,
+$k$ missing slots and $h$ reads at $+$.
+With budget $H-1$, fit base $n_\ell=2\lceil\xi\ell/2\rceil$ and evenly distribute
+remaining multiples of four slots. Observe the final one to four states.
+Then
+\[
+M=\sqrt{H/\xi}+O(1),\quad n_\ell=\xi\ell+O(1),\quad
+A_\ell=\eta\xi\ell^2+O(\ell+1).
+\]
+True state readings on both sides of an artificial join make its next input
+interval a singleton. No output covariance has been reset.
+
+On active blocks $A\ge r(k+n-1)/2$, use local levels with $c_0=(k+1)/2$:
+\[
+z_i^{+,L}=r(c_0+h-i),\quad
+z_i^-=-r[c_0+\min(i-1,n-i)],\quad
+z_i^{+,R}=r(c_0+i-1).
+\]
+Set $U_j=f(A-g_jz_j^{loc})$ on holds and $fA$ on missing inputs.
+Inactive early blocks, prefix and tail have $U=0$.
+Only uniformly finitely many blocks can be inactive.
+The baseline scalar direction is $F(g_jA-z_j^{loc})$ on holds, zero otherwise.
+It has zero mass and support
+\[
+h_\ell^0=F\left\{\frac{Ar}{2}n(n+2k)
+-4r^2\sum_{j=0}^{n/2-1}(c_0+j)^2\right\}.
+\]
+Its partial sums have the correct left-positive/right-negative signs
+and saturated local slopes; summation by parts proves this formula while
+retaining the physical gap span $k+1$.
+Local levels generate a dual, not a global primal path.
+
+Let $h_\ell=(g_jf)_j$, $p_\ell=P_\ell h_\ell$,
+$N_\ell=h_\ell^\top P_\ell U_\ell$,
+$D_\ell=\|p_\ell\|^2$, and
+$v_\ell=P_\ell U_\ell-(N_\ell/D_\ell)p_\ell$.
+Full column rank of $G$ gives singleton $P_1=I_p$.
+The $2n-2$ held singleton inputs therefore give $D_\ell\ge F(2n-2)\ge Fn$.
+The discrepancy from the zero-mass baseline lies in just two fixed spans;
+contraction bounds its scalar $L_1$ norm by $C_kFA$, $C_k=2(k+2)$.
+Thus
+\[
+|N_\ell|\le C_kFA,\quad
+h_\ell^\top v_\ell=0,\quad P_\ell v_\ell=v_\ell,\quad
+\|v_\ell-P_\ell U_\ell\|^2=N_\ell^2/D_\ell\le C_k^2FA^2/n .
+\]
+For the corrected scalar weights
+$\delta\lambda_j=h_j^\top v_j-\lambda_j^0$,
+zero mass is exact and $\|\delta\lambda\|_1\le C_k(k+3)FA$.
+The full scalar rate class has support $r\sum|Q_j|$;
+a zero-mass length-$L$ vector costs at most $r(L-1)\|\delta\lambda\|_1/2$.
+Full-path restriction and sublinearity yield
+$h_{\mathcal Z}(\lambda)\le(Fr/2)\sum A_\ell n_\ell^2+O(H^2)$.
+
+The direction is actually observable: on each interval use coefficient
+$W_m^\dagger H_mv_m$ against the true retained predictor innovation.
+Its latent noise direction is $H_m^\top W_m^\dagger H_mv_m=v_m$,
+hence its variance is $\|v_m\|^2$.
+Fenchel's inequality gives exactly
+\[
+2D_H(\pi)\le\|(I-P)a_f\|^2+\|Pa_f-v\|^2+2h_{\mathcal Z}(\lambda).
+\]
+Auxiliary errors and repairs cost $O(H^2)$:
+$\|Pa_f-v\|^2\le2\|a_f-U\|^2+2C_k^2F\sum A_\ell^2/n_\ell$.
+The two input gap centers have offsets $1/2\pm(n+k)/2$.
+Their exact oracle norm loss is
+\[
+2\beta_k(A_\ell+\eta/2)^2+\frac{\beta_k\eta^2}{2}(n_\ell+k)^2
++4\eta(A_\ell+\eta/2)L_{1,k+1}+2\eta^2L_{2,k+1}.
+\]
+Consequently
+\begin{equation}\label{eq:upper}
+D_H(\pi_H^\xi)\le\frac1{10}
+\left(\frac{2\beta_k\eta^2}{\sqrt\xi}+Fr\eta\sqrt\xi\right)H^{5/2}
++O_\xi(H^2).
+\end{equation}
+Power sums of the block scales establish this bound for $\beta_k\ge0$.
+
+For $\beta_k>0$, optimizing $\xi$ matches the converse.
+For $\beta_k=0$, $0\le D_H^*$ and every fixed $\xi>0$ gives
+$\limsup D_H^*/H^{5/2}\le Fr\eta\sqrt\xi/10$.
+Only after this $H$ limit send $\xi\downarrow0$.
+The constants may depend on $\xi$; no $\xi=0$ calendar or unrestricted
+$\xi(H)$ substitution has been used.
+\end{proof}
+
+\paragraph{A fair scaled-memory comparison.}
+Take the same plant $A=0,B_u=I_2,B=e_2$.
+Compare $K_0=0$ with
+$K_{\rm copy}=-N_\gamma$,
+$N_\gamma=\left(\begin{smallmatrix}0&\gamma\\0&0\end{smallmatrix}\right)$,
+$\gamma=1/2$.
+Both have zero poles, gain infinity norm at most $1/2$ and a common
+one-step homogeneous contraction bound $1/2$.
+For fixed external $Q_\epsilon=\operatorname{diag}(\epsilon,1)$,
+use $G=\operatorname{diag}(\sqrt\epsilon,1)$ if $\epsilon>0$ and $G=e_2$ if
+$\epsilon=0$. In every case $F=1$ and
+\[
+\beta_0(k)=k,\qquad
+\beta_{\rm copy}(1)=\frac{\epsilon}{\epsilon+\gamma^2},\qquad
+\beta_{\rm copy}(2)=\frac{\gamma^2+2\epsilon}{\epsilon+\gamma^2}.
+\]
+At $\epsilon=1/100,k=1$, the coefficient ratio is $1/\sqrt{26}$.
+At $\epsilon=0,k=1$, both inputs are recoverable despite strict norm contraction.
+For common exact two-step homogeneous extinction, take $k=2$:
+both matrices square to zero and the coefficients are $2$ and $1$.
+Gain norms do not imply a common actuator power or hard-command bound.
+
+\paragraph{Mean-mode recovery is weaker than full input recovery.}
+In three dimensions, a scaled copy of coordinate two into coordinate one,
+with $G=[e_2,e_3]$ and $B=e_2$, recovers the force score but not the preceding
+independent third-channel innovation.
+A stronger example is the 3D shift with the same $G$ and $B=e_2+e_3$.
+Its two-step noise matrix is $[e_1,e_2,e_2,e_3]$, rank three for four latent
+inputs. The constant ray is preserved, $\beta_1=0$, but $P_2\ne I_4$ and
+$L_{2,2}=1/2$.
+An order-$d$ shift with $G=B=e_d$ attains the capacity bound:
+$\beta_k=0$ for $k\le d-1$, and $\beta_k=k+1-d$ afterward.
+
+\paragraph{Evidence and remaining status.}
+The standalone Fraction checker
+\texttt{outputs/m2s\_singular\_memory\_checks\_v1.py} and its JSON report verify
+common covariance images, Moore--Penrose identities, initialized-state
+information, reachability bounds and full physical statistic realization.
+The v1 calendar profiles are antisymmetric between their two moves, so their
+repair-energy assertions all have zero magnitude; nonzero repair coverage
+requires a separate supplement and is not claimed by those counts.
+This working source needs independent review.
+Unknown noise image, signal outside that image, measurement noise, arbitrary
+vector nuisance, partial observation, hard saturation and controller-family
+uniformity without reached-space conditioning are outside this theorem.
+The overall research goal remains unfinished.
+\paragraph{Compilation status.}
+The built-in compiler returned the platform error
+\texttt{Unable to find standard directories for platform}, without source
+diagnostics. Compilation is unverified; no replacement runtime was installed.
+\end{document}

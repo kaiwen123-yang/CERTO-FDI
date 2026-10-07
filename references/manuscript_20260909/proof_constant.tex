@@ -1,0 +1,66 @@
+\section{Proof of the Constant-Amplitude Scheduling Theorem}
+\subsection{Cyclic projection}
+\begin{proof}[Periodic projection and marginal rule]
+Consider $2n$ cyclic observations with target $y=(\rho\ind_n,-\rho\ind_n)$. Consecutive edge budgets are $r$ within a plateau and $r(k+1)$ at either task change. Write $A=A_\rho$ and $e_i=e_i(n)$. The proposed positive nodes are $z_i=\rho-e_i$ and the negative nodes their negatives. They lie in $[-\rho,\rho]\subset[-B,B]$; their internal slopes have magnitude at most $r$, and their boundary jump is $2(\rho-A)\le r(k+1)$.
+
+Let $D$ be the cyclic forward-difference matrix and $c_n=\frac12\sum_{i=0}^{n-1}e_i$. Signed edge multipliers are
+\begin{equation}
+ \lambda_i=c_n+\sum_{j=0}^i(z_j-y_j),\quad i=0,\ldots,2n-1.
+\end{equation}
+The total residual is zero, so the final multiplier is $c_n$. Hence $z-y+D^T\lambda=0$. On the positive plateau the multipliers decrease through zero at its center; on the negative plateau they increase through zero. Every nonzero multiplier has the sign of the corresponding saturated slope. A flat center has zero multipliers on its unconstrained edges. Thus
+\begin{equation}
+ \lambda_i(Dz)_i=|\lambda_i|h_i
+\end{equation}
+for every edge budget $h_i$. The convex quadratic KKT conditions prove optimality and uniqueness of the nodes. The half-squared residual is $Q(n)$.
+
+Put $Q(0)=0$. Its increments are $A^2,A^2,(A-r)_+^2,(A-r)_+^2,\ldots$, so $Q$ is concave as a discrete sequence and saturates at $n_{\rm sat}=2\lceil A/r\rceil$ when $A>0$. Comparing adjacent ratios gives \eqref{eq:marginal}. With $\Delta_n=Q(n+1)-Q(n)$, the comparison numerator $B_n=(n+k)\Delta_n-Q(n)$ obeys
+\begin{equation}
+ B_{n+1}-B_n=(n+k+1)(\Delta_{n+1}-\Delta_n)\le0.
+\end{equation}
+After saturation the numerator is fixed and the denominator increases. An odd-index ratio between two even ones is their denominator-weighted average, while $Q(2)/(k+2)>Q(1)/(k+1)$ for $k,A>0$. An even maximizer therefore exists in the stated finite interval.
+\end{proof}
+
+\subsection{An upper bound for every open history}
+\begin{proof}[Global rate and finite information gap]
+Define $q_* =\max_n Q(n)/(n+k)$ and
+\begin{equation}
+ C_0=(\lceil\rho/r\rceil+1)\rho^2.
+\end{equation}
+Decompose any post-onset observation history into runs of lengths $n_1,\ldots,n_M$. On each run place the signed version of $\rho-e_i(n_j)$. Adjacent boundary values have magnitude $\rho-A$ and opposite signs differ by at most $r(k+1)$, so the actual excluded intervals allow a continuous rate-limited connection. Additional movement intervals cannot invalidate reachability. The candidate has squared residual $\sum_jQ(n_j)$.
+
+To approximate the healthy-prefix target using a feasible adversary, choose zero on the prefix and clip this candidate after onset to $[-rt,rt]$ in slot time. This is a choice for an upper-bound construction, not a healthy initial-state assumption. Maxima and minima of scalar $r$-Lipschitz functions are $r$-Lipschitz. The clipping affects at most $\lceil\rho/r\rceil+1$ observations and adds at most $C_0$ squared residual. Since at least $k(M-1)$ transition slots occur,
+\begin{equation}
+ 2\sigma^2G_H^B(\pi)
+ \le\sum_jQ(n_j)+C_0
+ \le q_*(H+k)+C_0.\label{eq:allconstupper}
+\end{equation}
+This inequality evaluates one feasible whole-history path; it does not interchange a minimum and a sum.
+
+Now repeat an optimal plateau length $n_*$. Let $Q_*=Q(n_*)$, $c_*=\frac12\sum_ie_i(n_*)$. A repeated $m$-cycle closed problem has half-squared loss $mQ_*$. The cyclic rate-constrained quadratic dual is
+\begin{equation}
+ \lambda^TDy-\tfrac12\norm{D^T\lambda}^2-\sum_ih_i|\lambda_i|.
+\end{equation}
+Remove its one final closing edge to obtain a feasible dual on the open observed history. The removed multiplier is $c_*$, the target jump is $2\rho$, and the budget is $r(k+1)=2(\rho-A)$ when $A>0$. Removing the incidence vector changes the squared norm by $-4Ac_*+2c_*^2$. The net dual change is consequently
+\begin{equation}
+ -2\rho c_*+2Ac_*-c_*^2+r(k+1)c_*=-c_*^2.
+\end{equation}
+It follows that the open post-onset objective is at least $mQ_*-c_*^2$. Adding the complete prefix can only increase this lower bound. At $H_m=2m(n_*+k)-k$,
+\begin{equation}
+ G_{H_m}^B(\pi_*)\ge(mQ_*-c_*^2)/\sigma^2.\label{eq:constlower}
+\end{equation}
+For arbitrary $H$, use $m=\lfloor(H+k)/(2(n_*+k))\rfloor$ complete pairs and observe at the current task for the remainder. Combining \eqref{eq:allconstupper} and \eqref{eq:constlower} yields
+\begin{equation}
+0\le G_H^{B,*}-G_H^B(\pi_*)\le
+\frac{2Q_*+C_0+2c_*^2}{2\sigma^2},
+\end{equation}
+where $G_H^{B,*}=\max_\pi G_H^B(\pi)$. Division by $(H+n_0)\delta$ proves Theorem~\ref{thm:constant}. If $A=0$, the same upper construction has $q_*=0$ and nonnegative information supplies the zero-rate lower bound.
+\end{proof}
+
+\begin{proof}[Small-rate holding scale]
+Before saturation, for $n=2m$,
+\begin{equation}
+ Q(n)=2\left[mA^2-Ar m(m-1)
+ +\frac{r^2m(m-1)(2m-1)}6\right].
+\end{equation}
+For $n$ of order $r^{-1/2}$, the adjacent-rate comparison equals
+$kA^2-Arn^2/2+o(1)$, uniformly on compact positive multiples of $r^{-1/2}$. Since $A\to\rho$, unimodality brackets all optimizers between $(1\pm\epsilon)\sqrt{2k\rho/r}$ for small $r$.\end{proof}

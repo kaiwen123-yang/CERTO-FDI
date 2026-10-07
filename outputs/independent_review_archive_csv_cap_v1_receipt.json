@@ -1,0 +1,63 @@
+{
+  "status": "PASS_INDEPENDENT_BOUNDED_ACTUAL_ZIP_CSV_CAP_REVIEW",
+  "test_count": 12,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "actual synthetic table exceeds 2MiB and stays within exact TABLE cap",
+      "pass": true
+    },
+    {
+      "name": "actual ZIP TABLE >2MiB is selected, extracted and hash checked",
+      "pass": true
+    },
+    {
+      "name": "snapshot small permits only exact TABLE for this larger size",
+      "pass": true
+    },
+    {
+      "name": "coverage accepts actual larger TABLE and binds all synthetic rows",
+      "pass": true
+    },
+    {
+      "name": "no dummy witness enters metadata view",
+      "pass": true
+    },
+    {
+      "name": "selector accepts exact TABLE 16MiB boundary",
+      "pass": true
+    },
+    {
+      "name": "required TABLE 16MiB+1 is explicit rejection",
+      "pass": true
+    },
+    {
+      "name": "oversized TABLE rejects before creating any view",
+      "pass": true
+    },
+    {
+      "name": "oversized TABLE leaves no partial metadata root",
+      "pass": true
+    },
+    {
+      "name": "other CSV gets no TABLE exception",
+      "pass": true
+    },
+    {
+      "name": "ordinary exact 2MiB boundary remains accepted",
+      "pass": true
+    },
+    {
+      "name": "total original small view above 256MiB rejects",
+      "pass": true
+    }
+  ],
+  "actual_zip_bytes": 207408,
+  "synthetic_table_bytes": 2877316,
+  "fixture_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_cap_independent_review_09b1e98e",
+  "science_or_R1_executed": false,
+  "real_large_witness_bytes_read": 0,
+  "frozen_author_outputs_modified": false,
+  "scientific_ready": false,
+  "recipe_sha256": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953"
+}

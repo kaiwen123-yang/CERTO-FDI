@@ -1,0 +1,18 @@
+VERIFIED DEGREE 0 max defect 5.725052135391533e-15
+VERIFIED DEGREE 1 max defect 6.484477283095324e-17
+VERIFIED DEGREE 2 max defect 6.993457050180492e-19
+VERIFIED DEGREE 3 max defect 1.2962816162687858e-20
+VERIFIED DEGREE 4 max defect 2.9117468350602406e-22
+VERIFIED DEGREE 5 max defect 4.422620312717666e-24
+VERIFIED DEGREE 6 max defect 8.869963992361992e-26
+VERIFIED DEGREE 7 max defect 5.144350796851473e-27
+VERIFIED DEGREE 8 max defect 5.653545181954728e-27
+RESULT PASS variance 0.018110298213857158 0.01813113919145405 ratio 0.99942351725238 1.0005765719952187 Es 0.874980765629011 J/S0 0.0003978566140821185
+Traceback (most recent call last):
+  File "C:\Users\ykw\Documents\ChatGPT\CEO-FDI\work\d2a_cert_verify.py", line 79, in <module>
+    if __name__=="__main__":main()
+                            ^^^^^^
+  File "C:\Users\ykw\Documents\ChatGPT\CEO-FDI\work\d2a_cert_verify.py", line 61, in main
+    assert core.serial(mean)==result["uniform_mean"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

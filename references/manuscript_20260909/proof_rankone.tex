@@ -1,0 +1,29 @@
+\section{Full-Vector Rank-One Reduction}\label{app:rankone}
+\begin{proposition}[One shared healthy direction]\label{prop:rankone}
+Assume the healthy loading is exactly $+h$ and $-h$ in the two tasks, and the complete independent Gaussian observations have the same known covariance $\Sigma\succ0$ in both tasks. Consider
+$Y_i=\epsilon_i h\beta_i+fa_i+\xi_i$, and the same deterministic calendar class as Theorem~\ref{thm:sharp}. Let $g=\Sigma^{-1/2}h\ne0$, $v=\Sigma^{-1/2}f$, $c_f=g^Tv/\|g\|$, $F=\|v\|^2$, and $r_g>0$ be the difference-path rate of $\|g\|\beta$ per slot. If $F>0$ and $c_f\ne0$, the unbounded-level optimal deficit satisfies
+\begin{equation}
+ D_H^*\sim\frac{\sqrt2}{5}\sqrt{kF r_g|c_f|}\,\eta^{3/2}H^{5/2}.\label{eq:rankone}
+\end{equation}
+A matching planned construction has $\xi=2kF\eta/(r_g|c_f|)$. If $c_f=0$, staying observes all unconfounded fault energy and has zero deficit.
+\end{proposition}
+\begin{proof}
+Multiply each complete observation by its known task sign, whiten, and split orthogonally along $g/\|g\|$. With $I_\pi$ the retained slots, this gives the exact identity
+\begin{align}
+G_H(\pi)={}&\frac{F-c_f^2}{2}\sum_{i\in I_\pi}a_i^2\nonumber\\
+&+\frac12\min_{z\in\K_\pi(\infty,r_g)}\sum_{i\in I_\pi}(c_f\epsilon_i a_i-z_i)^2.\label{eq:vector_split}
+\end{align}
+The healthy prefix remains in the scalar projection with zero target. Hence excluded slots cost $Fa_j^2/2$, whereas only the component $c_f$ can be explained by the healthy path. Changing its sign preserves the symmetric path class; assume $c_f>0$.
+
+For the converse, repeat the late-block construction in Appendix~B with minimum amplitude $A$. Use $z_i=\epsilon_i r_g\min(i,n-1-i)$ on each clipped observed run, and zero at all artificial boundaries. Put $C=r_g(2c_f A-r_gL/2)/4$. For $C\ge0$, twice the deficit on that block is bounded below by
+\begin{equation}
+ FA^2d+\frac{Ck(L-d)^2}{d+k}-2CL.
+\end{equation}
+AM--GM has leading term $\sqrt{2kF r_gc_f}\,A^{3/2}L$. The same $L=\lfloor H^{3/4}\rfloor$ partition makes all boundary and amplitude-variation terms lower order uniformly in the calendar. This yields the liminf coefficient $\sqrt2\sqrt{kF r_gc_f}\eta^{3/2}/5$ in \eqref{eq:rankone}.
+
+For the upper bound, use the symmetric local scalar witness of Appendix~B with amplitude $c_f a$, slope $c_f\eta$, and rate $r_g$. In the orthogonal subspace use the full matched direction $\epsilon_i a_i(v-c_fg/\|g\|)$, whose healthy support is zero. Their concatenation gives
+\begin{equation}
+2D_H\le\frac15\left(\frac{2kF\eta^2}{\sqrt\xi}+r_gc_f\eta\sqrt\xi\right)H^{5/2}+O(H^2).
+\end{equation}
+Minimizing this coefficient at $\xi=2kF\eta/(r_gc_f)$ matches the converse. If $c_f=0$, \eqref{eq:vector_split} has no fault in the scalar subproblem, and observing every slot attains the full-calendar oracle. The case $g=0$ is likewise unconfounded. The argument uses one shared healthy direction.
+\end{proof}

@@ -1,0 +1,387 @@
+{
+  "schema": "d2a-readout-figure-independent-evidence-review-v1",
+  "date": "2026-10-07",
+  "status": "PASS_FINITE_FIGURE_EVIDENCE_SCOPE_AFTER_CAPTION_CORRECTIONS",
+  "scope": "14-row prescribed terminal_balanced H<=200 subgrid and 12 plotted rows only; no scientific generation, large adjoint replay, full400 completion or TAC readiness certification.",
+  "source_hashes": [
+    {
+      "path": "outputs/d2a_readout_figure_data_v1.json",
+      "sha256": "8022e863c9b74179f01c3452e0028ab489aa84b7111823b8bd811aab2a816e97"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_v1.py",
+      "sha256": "a427d7ac369d0038fe4783ed745ff0f77b0545606aea723153ab2e1455a68263"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_caption_v1.md",
+      "sha256": "f6c0414ef4bbd5737e2e5253caf878d6b0801d20e933718939c8832bf8cf10d5"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_plan_v1.md",
+      "sha256": "f5998c02e58c192368b342f6f2e006987df5a044024dbc87eaa3f7ae7dd5739c"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_qa_v1.json",
+      "sha256": "d5fd3fb017c077b78b5f3876f9b87cd80721db43cb2900497d1732276273bb77"
+    },
+    {
+      "path": "outputs/d2a_readout_figure_v1.pdf",
+      "sha256": "999fa810669c21de84592649f8fc59325db5ca424303406c88bac5aef53b4767"
+    },
+    {
+      "path": "outputs/d2a_mean_risk_review_v1.md",
+      "sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924"
+    },
+    {
+      "path": "work/d2a_cert_mean_review_binding.json",
+      "sha256": "4b7fbd423236f665dec8835520ba2326fb17a968fbcc0fe489499dc611b60fc9"
+    },
+    {
+      "path": "work/freeze_d2a_readout_figure_data_v1.py",
+      "sha256": "4cd07f6ef9850f9ed6f6f00390c46864ef059ceb07d525be3770932c6fcd2fab"
+    },
+    {
+      "path": "work/d2a_core.py",
+      "sha256": "d14383c0fed9f740682c8b4671f36bb59cd295941603f96988c30336a3ead4f9"
+    },
+    {
+      "path": "work/d2a_cert_case.py",
+      "sha256": "b8bc6824a36ddfb021bbeded28a94ea8fca5833d6d170c3972f12512c6f63999"
+    }
+  ],
+  "frozen_snapshot": {
+    "snapshot_utc": "2026-10-07T07:47:40.426945+00:00",
+    "data_sha256": "8022e863c9b74179f01c3452e0028ab489aa84b7111823b8bd811aab2a816e97",
+    "source_table_sha256_at_freeze": "16f5b04e70d6246aee79a2186a6a2e197eb615fa0b5112c088302e59e6080f29",
+    "protocol_sha256": "0d8bed957fd152c256387c436de9472f878fc54018b2920bee30f04bd14033d6",
+    "live_source_table_not_rehashed": true,
+    "data_not_mutated": true
+  },
+  "coverage": {
+    "declared_horizons": [
+      40,
+      60,
+      80,
+      100,
+      120,
+      160,
+      200
+    ],
+    "readouts": [
+      "average250",
+      "point_last_fast_read"
+    ],
+    "classified_rows": 14,
+    "plotted_rows": 12,
+    "unplotted_missing_certificate_rows": 2,
+    "status_counts": {
+      "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 2,
+      "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 8,
+      "CERTIFIED_TARGET_PASS": 4
+    },
+    "full_400_scope": false
+  },
+  "rows": [
+    {
+      "H_post_slots": 40,
+      "elapsed_seconds": "11",
+      "readout": "average250",
+      "risk_status": "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE",
+      "direction_status": "ZERO_OR_ROUNDED_DEGENERATE_DIRECTION",
+      "plotted": false,
+      "risk_certificate": false,
+      "numeric_power_missing_not_zero": true,
+      "current_receipt_status": null
+    },
+    {
+      "H_post_slots": 40,
+      "elapsed_seconds": "11",
+      "readout": "point_last_fast_read",
+      "risk_status": "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE",
+      "direction_status": "ZERO_OR_ROUNDED_DEGENERATE_DIRECTION",
+      "plotted": false,
+      "risk_certificate": false,
+      "numeric_power_missing_not_zero": true,
+      "current_receipt_status": null
+    },
+    {
+      "H_post_slots": 60,
+      "elapsed_seconds": "16",
+      "readout": "average250",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 1.7057199990287414e-06,
+      "protected_gap_display_float": -0.004115598492111152,
+      "PFA_upper_display_float": 0.0009671225819235943,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "19d01dff1d7e7e3fe3a1c260392a511ff03c807f9c49fde2b7bba91dc23a8859",
+      "case_result_sha256": "75bff563f33026999be47f6acc24de66adc7370464ea973267b49d01e68475c4",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 60,
+      "elapsed_seconds": "16",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.01813115330074082,
+      "protected_gap_display_float": -0.4372159389116472,
+      "PFA_upper_display_float": 0.0009671225819235943,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "e199162e8c8cba4a6e48d20ec0e77c1a1a71c9aad28ae8b831be811433cf9c57",
+      "case_result_sha256": "40f9b992c72874d599457e4b9c13616eccc2b181f7e6564baad90ce0abab73ed",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 80,
+      "elapsed_seconds": "21",
+      "readout": "average250",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 9.145635078730428e-07,
+      "protected_gap_display_float": 0.0007461438056264394,
+      "PFA_upper_display_float": 0.0009671225853680022,
+      "power_lower_display_float": 0.6228549150686356,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "af2d4ae20dd83ea4685b1a37ae053ca9184725848d276ec3ac8de8b55fb7fa83",
+      "case_result_sha256": "746da98df71da04355c4fb32297499da134c45405b2ebac527fd5e02da18a188",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 80,
+      "elapsed_seconds": "21",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.018131297157044802,
+      "protected_gap_display_float": -0.44714552213196246,
+      "PFA_upper_display_float": 0.0009671225853680022,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "a977bac5eaea5e5cfb6a9a1be3743c3b17e5019c81d2bd17296c8afbdb26b9ac",
+      "case_result_sha256": "dfa6d7b53d7c48626bd9fb4bffe701b66b12d4b55908c73056005c0ced1cbd17",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 100,
+      "elapsed_seconds": "26",
+      "readout": "average250",
+      "risk_status": "CERTIFIED_TARGET_PASS",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 7.59383758353303e-07,
+      "protected_gap_display_float": 0.005621797984108794,
+      "PFA_upper_display_float": 0.0009671225886475152,
+      "power_lower_display_float": 0.9999999999258792,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "2ca1d48b7ae66750e0ae721e658db028cf462d793e3c136ae8d293d17221d796",
+      "case_result_sha256": "8d6ba6a408f6a4f7284d3efcdce21814cec4b9debfbc559da561cc96885012e6",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 100,
+      "elapsed_seconds": "26",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.018131327366713964,
+      "protected_gap_display_float": -0.4512104973988391,
+      "PFA_upper_display_float": 0.0009671225886475152,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "fe521d10545e2c0fc4dfbd8d5b958c54a106ef3bc75957d61bc7b74facfcbfb2",
+      "case_result_sha256": "157361af1d71ac5231884e76ead5796ac39349a3962c1d4600d55834a574712f",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 120,
+      "elapsed_seconds": "31",
+      "readout": "average250",
+      "risk_status": "CERTIFIED_TARGET_PASS",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 6.707394193949089e-07,
+      "protected_gap_display_float": 0.011132514958694141,
+      "PFA_upper_display_float": 0.0009671225919270282,
+      "power_lower_display_float": 0.9999999999793365,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "c0493af404113240b9732f78aeb7340c5f794c98de1dcb2d9679220957620649",
+      "case_result_sha256": "890db18fe5fad9f812f711b6629e6c4a91ed6f29965d3b5ead8cccdb54ce5f19",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 120,
+      "elapsed_seconds": "31",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.018131329975796643,
+      "protected_gap_display_float": -0.45331242649371334,
+      "PFA_upper_display_float": 0.0009671225919270282,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_DERIVED_REBINDING",
+      "current_receipt_sha256": "0595fac19a469bfc7d47053128714487613818bdf385fcd2539b198ad2448f7d",
+      "case_result_sha256": "4e9443cc7143d27b86f65951395e0e26c58f535cf2d565ef5f9fd94c39a31a41",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 160,
+      "elapsed_seconds": "41",
+      "readout": "average250",
+      "risk_status": "CERTIFIED_TARGET_PASS",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 6.191051393593039e-07,
+      "protected_gap_display_float": 0.029083943705120838,
+      "PFA_upper_display_float": 0.0009671225986509491,
+      "power_lower_display_float": 0.9999999999726127,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "f72f332ec80fca32e6aab3eece5410774ce5084ef2c8eb275c398c9d6ccf1b65",
+      "case_result_sha256": "68c81b2e34e7251a7a7784fee5d004fd6b4854c5b5cee3d3647c0015beba1497",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 160,
+      "elapsed_seconds": "41",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.018131330102355205,
+      "protected_gap_display_float": -0.4497141995840023,
+      "PFA_upper_display_float": 0.0009671225986509491,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "79a61e5bc9d331bfb6d60a60ab1db34a5ebb6077cdb879bb8e401bfcaf6dd791",
+      "case_result_sha256": "27ae219002324c5dce3990d39c87004b99c132181342fc18933ef6a1987e3c80",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 200,
+      "elapsed_seconds": "51",
+      "readout": "average250",
+      "risk_status": "CERTIFIED_TARGET_PASS",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 5.945277410547049e-07,
+      "protected_gap_display_float": 0.050742517431138376,
+      "PFA_upper_display_float": 0.00096712260537487,
+      "power_lower_display_float": 0.9999999999658887,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "e9fd439487ba6ede0c261ddcb533065e19a19bd94460c63ac350a7c312d73ae9",
+      "case_result_sha256": "be4a40b78b9c8b0f692ccb2977d54a4db9fb639024e94b12c5492d04e01c9a0e",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    },
+    {
+      "H_post_slots": 200,
+      "elapsed_seconds": "51",
+      "readout": "point_last_fast_read",
+      "risk_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "direction_status": "NONZERO_EXACT_KKT_DIRECTION",
+      "plotted": true,
+      "Vplus_display_float": 0.018131330088444798,
+      "protected_gap_display_float": -0.4382239493222423,
+      "PFA_upper_display_float": 0.00096712260537487,
+      "power_lower_display_float": 0.0,
+      "current_receipt_status": "PASS_STDLIB_NEW_CASE_VERIFIER",
+      "current_receipt_sha256": "02728a994acad61c7c38ef17c573a5fcb6a5119f0cda1ef8b33f1510465f9d83",
+      "case_result_sha256": "699a13014357e080947c1c02909d5f904c1f7ff349291d27dfe188dcba9d7593",
+      "mean_review_scope_consistent": true,
+      "row_to_receipt_and_evidence_ids_consistent": true
+    }
+  ],
+  "metadata_binding": {
+    "matched_small_metadata_leaves": 38,
+    "leaf_structure": "2 H40 direction records + 12*(direction/current verification receipt/evidence hash-binding file)",
+    "total_small_metadata_bytes": 659529,
+    "current_review_small_hash_check": "All38 small metadata files matched; no scientific artifact large hashes recomputed.",
+    "receipt_status_counts": {
+      "PASS_STDLIB_DERIVED_REBINDING": 6,
+      "PASS_STDLIB_NEW_CASE_VERIFIER": 6
+    },
+    "receipt_to_evidence_current_case_and_protocol_consistent": true,
+    "meaning": "Metadata and byte-binding evidence are distinct from the scientific verifier and independent mean proof."
+  },
+  "risk_interpretation": {
+    "all_plotted_PFA_below": "1/1000",
+    "power_target": "9/10",
+    "zero_point_bounds": "No positive sufficient guarantee; not actual power zero or impossibility.",
+    "zero_direction_H40": "No risk certificate; missing values are retained and omitted from numeric axes.",
+    "statistic_variance_object": "Fixed-path complete-history Gaussian comparator for the prescribed scalar statistic T.",
+    "direction_scaling": "normalize_raw rounds the residual and divides physical weights by an upper Euclidean norm; direction norm<=1.",
+    "statistic_not_sd_standardized": true,
+    "true_nonlinear_statistic": "Controlled by comparison remainder and event allowances; Vplus alone is not its unconditional variance certificate.",
+    "first_certified_average_H_in_declared_family": 100,
+    "first_H_meaning": "Earliest certified listed grid member of this horizon-indexed prescribed family; not continuous stopping time, optimal calendar/Hstar or full400 first-success result.",
+    "connectors": "Guide between grid values only; no interpolated certificate.",
+    "empirical_measurements_or_CI": false
+  },
+  "mean_scope": {
+    "bound_report_sha256": "6a9cfb8009d2b424dfd29130c3d9140478531aeb74b326e917881eb35d7fe924",
+    "template": "H0 f=0; H1 f(t)=0.0003*(t-1)+; four0.25s prefix slots",
+    "reviewed_maximum_H": 600,
+    "reviewed_template_fault_max": "9/200",
+    "figure_maximum_H": 200,
+    "figure_fault_max": "3/200",
+    "original_wide_f_3_4_coverage_claimed": false,
+    "inherited_conditions": [
+      "nonlinear remainder/event implications",
+      "common rho-P and positive convolution certificates",
+      "segment component return",
+      "deterministic paths independent of Gaussian innovations"
+    ],
+    "scope_consistent_in_all12_numeric_rows": true
+  },
+  "resolved_findings": [
+    {
+      "id": "R1",
+      "issue": "Variance object not explicit",
+      "resolution": "Current caption and y-axis identify Gaussian-comparator variance; true nonlinear statistic remainder/event obligations remain explicit."
+    },
+    {
+      "id": "R2",
+      "issue": "Raw/unnormalized could conflict with normalize_raw",
+      "resolution": "Current caption uses unstandardized prescribed statistics and distinguishes physical-direction scaling from standard-deviation standardization."
+    },
+    {
+      "id": "R3",
+      "issue": "Same calendar/first-H could imply one sequential schedule or optimal stopping",
+      "resolution": "Current caption states one declared calendar per horizon, paired readouts and first certified listed grid point for the prescribed family."
+    }
+  ],
+  "visual_review_boundary": {
+    "new_render_by_this_agent": false,
+    "independent_visual_QA_by_this_agent": false,
+    "root_color_and_grayscale_review": "Root reviewed color and grayscale initially, then reviewed updated color after terminology corrections; inherited from QA and root message, not independently claimed.",
+    "current_QA_export_after_visual_review": true
+  },
+  "not_certified": [
+    "full400 scientific scan completion",
+    "global optimality or minimum physical horizon",
+    "actual measured PFA/power",
+    "general wide fault f<=0.75 mirror containment",
+    "linear sharp theorem validated by this nonlinear example",
+    "full TAC submission readiness"
+  ],
+  "material_unresolved_evidence_findings": [],
+  "readiness_assessment": "Current revised figure can support a bounded finite nonlinear certificate comparison in the manuscript, under the stated inherited assumptions."
+}

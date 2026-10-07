@@ -1,0 +1,110 @@
+\section{Proof of the Sharp Progressive-Fault Limit}
+\subsection{A schedule-uniform converse}
+\begin{proof}[Converse in Theorem~\ref{thm:sharp}]
+For any feasible healthy path chosen to be zero on the prefix,
+\begin{equation}
+ 2\sigma^2D_H^\infty(\pi)\ge
+ \sum_{j\notin I_\pi}a_j^2+
+ \sum_{j\in I_\pi}(2\epsilon_j a_jz_j-z_j^2).\label{eq:adv}
+\end{equation}
+The inequality follows by evaluating one feasible point in the projection objective.
+
+Consider $L$ consecutive post-onset slots with minimum amplitude $A>0$. Let $d$ slots be excluded and let the clipped observed-run lengths be $n_1,\ldots,n_m$. Then $m\le d/k+1$. On every run use the zero-endpoint signed tent $z_i=\epsilon r\min(i,n-1-i)$. All pieces join to zero across block boundaries and excluded intervals. Set
+\begin{equation}
+ C=\frac r4\left(2A-\frac{rL}{2}\right).
+\end{equation}
+When $C\ge0$, tent height is at most $rL/2$, and
+$\sum_{i=0}^{n-1}\min(i,n-1-i)\ge(n^2-2n)/4$. The local contribution to \eqref{eq:adv} is at least
+\begin{align}
+ A^2d+C\sum_i n_i^2-2C(L-d)
+ &\ge A^2d+\frac{Ck(L-d)^2}{d+k}-2CL.\label{eq:macro1}
+\end{align}
+The right side remains valid when there are no observations. Put $y=d+k$ and apply AM--GM to
+\begin{equation}
+ (A^2+Ck)y+\frac{Ck(L+k)^2}{y}
+ -2Ck(L+k)-A^2k-2CL.
+\end{equation}
+Thus every calendar has a feasible local explanation giving at least
+\begin{equation}
+ \begin{split}
+ \Psi(A,L)={}&2(L+k)\sqrt{Ck(A^2+Ck)}\\
+ &-2Ck(L+k)-A^2k-2CL.
+\end{split}\label{eq:macro}
+\end{equation}
+The nonnegative part may be used, or zero when $C<0$.
+
+Fix $\epsilon\in(0,1)$ and partition the late interval $[\lceil\epsilon H\rceil,H]$ into blocks of length $L=\lfloor H^{3/4}\rfloor$. Uniformly there, $A=\Theta(H)$ and $rL/A=o(1)$, so $C=(rA/2)(1+o(1))$. The leading sum in \eqref{eq:macro} is
+\begin{equation}
+ \sqrt{2kr}\sum_{\rm blocks}A^{3/2}L.
+\end{equation}
+The accumulated $A^2k$ terms are $O(H^3/L)=O(H^{9/4})$, the $CL$ and $CkL$ terms are $O(H^2)$, and replacing $C$ by $rA/2$ incurs $O(H^{9/4})$. The last incomplete block contributes only a lower-order remainder. The Riemann sum is
+\begin{equation}
+ \sum A^{3/2}L
+ =\tfrac25\eta^{3/2}(1-\epsilon^{5/2})H^{5/2}+o(H^{5/2}).
+\end{equation}
+These bounds are uniform in the calendar because only its run-count inequality was used. Taking the infimum deficit before the limit and then letting $\epsilon\downarrow0$ gives
+\begin{equation}
+ \liminf_{H\to\infty}
+ \frac{2\sigma^2D_H^{\infty,*}}{\sqrt{kr}\eta^{3/2}H^{5/2}}
+ \ge\frac{2\sqrt2}{5}.\label{eq:sharp_lower}
+\end{equation}
+The converse remainder used here is $o(H^{5/2})$.
+\end{proof}
+
+\subsection{Symmetric local projection and affine cancellation}
+\begin{proof}[Constructive upper bound]
+For an even $n=2m$, let $L=2(n+k)$ and $c=(L+1)/2$. Local admitted times are
+\begin{equation}
+\begin{split}
+ I={}&\{1,\ldots,m\}\cup\{m+k+1,\ldots,3m+k\}\\
+ &\cup\{3m+2k+1,\ldots,L\}.
+\end{split}
+\end{equation}
+Their signs are $+,-,+$. Write $c_0=(k+1)/2$ and, in observation order, define
+\begin{align}
+ z^+_{i}&=r(c_0+m-i),&&1\le i\le m,\nonumber\\
+ z^-_{i}&=-r[c_0+\min(i-1,n-i)],&&1\le i\le n,\nonumber\\
+ z^{+,R}_{i}&=r(c_0+i-1),&&1\le i\le m.\label{eq:localz}
+\end{align}
+Let $a\ge r(k+n-1)/2$, $s_i^0=a\epsilon_i$, and $w=s^0-z$. Within a half-window the slope magnitude is $r$; across a transition the change is $2rc_0=r(k+1)$; the central edge of the negative window is flat. Thus $z$ is rate-feasible. Each level appears twice with each sign, so $\sum_iw_i=0$.
+
+Let $Q_i=\sum_{j\le i}w_j$. The left-side partial sums are nonnegative, reach zero at the center of the negative window, and become nonpositive on the reflected right side. Whenever $Q_i\ne0$, the corresponding slope of $z$ equals $-r\operatorname{sign}(Q_i)$ per unit time. Summation by parts gives
+\begin{equation}
+ h_{\K_I(\infty,r)}(w)
+ =r\sum_i(t_{i+1}-t_i)|Q_i|=w^Tz.
+\end{equation}
+Equivalently, $q_i=-Q_i$ satisfies $z-s^0+D^Tq=0$ and all edge complementarity conditions. The convex KKT conditions show that $z$ is the unique local constant-target projection. Consequently $2w^Ts^0-\norm w^2-2h_{\K_I}(w)=\norm w^2$, and direct summation proves \eqref{eq:Lc}.
+
+If the block begins at slot $x+1$, its actual target is
+\begin{equation}
+ s_i=\epsilon_i[a+\eta(t_i-c)],\qquad a=\rho_0+\eta(x+c).
+\end{equation}
+Both $w$ and $\epsilon$ are reflection-symmetric, while $t_i-c$ is antisymmetric. Hence
+\begin{equation}
+ \sum_iw_i\epsilon_i(t_i-c)=0,
+ \quad w^Ts=w^Ts^0,
+ \quad\norm s^2=2na^2+\eta^2M_2,
+\end{equation}
+where $M_2=\sum_{i\in I}(t_i-c)^2=O((n+k)^3)$. This is an exact affine cancellation; the same vector is a feasible dual certificate for the affine target.
+
+Concatenate the local dual directions, assigning zero weight to the healthy prefix, any early blocks that fail the amplitude condition, and the final unused reads. Every feasible whole-history path restricts to a feasible path on each block. Therefore \eqref{eq:support} holds even if the particular local primal optimizers cannot be joined. The elementary weak dual inequality
+\begin{equation}
+ \min_{z\in\K}\norm{s-z}^2
+ \ge2w^Ts-\norm w^2-2h_\K(w)
+\end{equation}
+then proves \eqref{eq:closedG} and
+\begin{equation}
+2\sigma^2D_H\le E_{\rm dead}+E_{\rm tail}
++\sum_\ell[L_c(a_\ell,n_\ell)+\eta^2M_{2,\ell}].\label{eq:sharpfinite}
+\end{equation}
+This concatenates dual directions and uses restriction of the global feasible class.
+
+For the terminal-balanced construction, $M=\sqrt{H/\xi}+O(1)$, $n_\ell=\xi\ell+O(1)$, and $a_\ell=\eta\xi\ell^2+O(\ell+1)$. Each block is perturbed by $O(1)$ readings, and fewer than four tail slots remain. The leading sums are
+\begin{align}
+ E_{\rm dead}&=\frac{2k\eta^2}{5\sqrt\xi}H^{5/2}+O(H^2),\nonumber\\
+ \sum_\ell L_c(a_\ell,n_\ell)&=\frac{r\eta\sqrt\xi}{5}H^{5/2}+O(H^2),\nonumber\\
+ \eta^2\sum_\ell M_{2,\ell}+E_{\rm tail}&=O(H^2).
+\end{align}
+Indeed, the first two per-block main terms are $2k\eta^2\xi^2\ell^4$ and $r\eta\xi^3\ell^4$; all other terms sum to $O(M^4)$. The finite number of early zero-weight blocks changes only the constant. Substitution in \eqref{eq:sharpfinite} proves \eqref{eq:upper}. Its coefficient is minimized at $\xi=2k\eta/r$, where it equals $2\sqrt2\sqrt{kr}\eta^{3/2}/5$. Combining with \eqref{eq:sharp_lower} proves the exact limit.
+\end{proof}
+

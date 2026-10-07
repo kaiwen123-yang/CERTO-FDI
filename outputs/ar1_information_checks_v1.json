@@ -1,0 +1,38 @@
+{
+  "scope": "Exact rational finite checks; equations use squared Mahalanobis Q, KL=Q/2. No proof of minimax sharp coefficient.",
+  "checks": {
+    "markov_vs_matrix": 2550,
+    "constant_multigap": 2550,
+    "block_identity": 2550,
+    "smooth_gap_bound": 35,
+    "jump_counterexample": 3,
+    "raw_full_class_bridge": 2550,
+    "affine_reflection": 35
+  },
+  "counterexample_rows": [
+    {
+      "horizon_and_amplitude_H": 16,
+      "gaps_J": 4,
+      "raw_quadratic_loss": "5120/3",
+      "wrong_constant_gap_loss": "1024/15",
+      "quadratic_error": "8192/5",
+      "KL_error": "4096/5"
+    },
+    {
+      "horizon_and_amplitude_H": 64,
+      "gaps_J": 8,
+      "raw_quadratic_loss": "163840/3",
+      "wrong_constant_gap_loss": "32768/15",
+      "quadratic_error": "262144/5",
+      "KL_error": "131072/5"
+    },
+    {
+      "horizon_and_amplitude_H": 256,
+      "gaps_J": 16,
+      "raw_quadratic_loss": "5242880/3",
+      "wrong_constant_gap_loss": "1048576/15",
+      "quadratic_error": "8388608/5",
+      "KL_error": "4194304/5"
+    }
+  ]
+}

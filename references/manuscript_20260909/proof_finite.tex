@@ -1,0 +1,48 @@
+\section{Proof of the Finite-Box Theorem}
+\begin{proof}
+Write $b_j=2Ba_j-B^2$ and $N_B=\lceil2B/r\rceil+1$. Choose a healthy explanation equal to zero on the prefix. After onset it moves at speed at most $r$ toward the endpoint $\epsilon B$ of the currently observed task, and holds there on arrival. At a task change it starts moving toward the new endpoint. It never has to return to zero at the final time. Interpolation during excluded slots preserves the same rate bound.
+
+For an observed point with target sign $\epsilon$, the deficiency in squared-energy saving relative to $b_j$ is
+\begin{equation}
+ b_j-(2\epsilon a_jz_j-z_j^2)
+ =2a_j(B-\epsilon z_j)-(B^2-z_j^2)\le4Ba_j.
+\end{equation}
+It is zero once the tracker reaches $\epsilon B$. Following a task change, at most $N_B$ observations can be deficient before the tracker reaches that endpoint; an intervening change restarts the count. Assign each deficient observation to its latest change. Every internal change can be paired with a disjoint complete $k$-slot movement immediately preceding the new observed run, starting at $m$. Its assigned deficiency is at most
+\begin{equation}
+ 4BN_B\{a_m+\eta(k+N_B)\}.
+\end{equation}
+On an excluded slot the oracle energy exceeds the baseline by $(a_j-B)^2$. The paired move thus supplies at least $k(a_m-B)_+^2$; unpaired excluded slots supply nonnegative excess. A change can therefore have net adverse contribution at most
+\begin{equation}
+ q_+(a_m)=\pos{4BN_B[a_m+\eta(k+N_B)]-k(a_m-B)_+^2}.
+\end{equation}
+Because $\eta>0$, $q_+(a_m)$ is nonzero at only finitely many possible start indices. Define the unwhitened constant
+\begin{equation}
+ C_1=4BN_B(\rho_0+\eta N_B)+\sum_{m\ge1}q_+(\rho_0+\eta m).
+\end{equation}
+The sum has finitely many nonzero terms. The initial approach from zero contributes the first term, and the tracker stays at its last endpoint. Simultaneously for all calendars,
+\begin{equation}
+ 2\sigma^2D_H^B(\pi)\ge\sum_{j=1}^Hb_j-C_1.\label{eq:finiteLower}
+\end{equation}
+This is a uniform full-history construction.
+
+For staying, dropping the rate constraints and the nonnegative prefix loss gives
+\begin{equation}
+ 2\sigma^2G_H^B(\mathrm{stay})\ge\sum_{j=1}^H(a_j-B)_+^2.
+\end{equation}
+Consequently its deficit is at most $\sum b_j/(2\sigma^2)+C_2$, where
+\begin{equation}
+ 2\sigma^2C_2=\sum_{j\ge1:a_j<B}(B-a_j)^2<\infty.
+\end{equation}
+Conversely, choosing the feasible constant $z=B$ throughout the prefix and subsequent stay experiment gives
+\begin{equation}
+2\sigma^2D_H^B(\mathrm{stay})\ge\sum_{j=1}^Hb_j-n_0B^2.
+\end{equation}
+The two inequalities identify its full polynomial baseline up to $O(1)$. Combining the stay upper bound with \eqref{eq:finiteLower}, and using optimality relative to staying, proves both \eqref{eq:finite} and \eqref{eq:regret}.
+\end{proof}
+
+An explicit bound in the theorem is
+\begin{equation}
+ C_B=\frac{C_1+\sum_{j\ge1:a_j<B}(B-a_j)^2}{2\sigma^2}.
+ \label{eq:explicit_CB}
+\end{equation}
+Both terms in the numerator are unwhitened squared-torque quantities. For the fast-ramp example at $\sigma=.2$ this gives about $2.97\times10^5$ nats, compared with a $14.7$-nat advantage in the tested switching family. It is a uniform existence bound, while finite-horizon designs are evaluated by the exact projection.

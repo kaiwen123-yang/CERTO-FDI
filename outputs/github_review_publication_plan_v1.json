@@ -1,0 +1,150 @@
+{
+  "schema": "github-review-publication-plan-v1",
+  "date": "2026-10-07",
+  "repo": "kaiwen123-yang/CERTO-FDI",
+  "repo_url": "https://github.com/kaiwen123-yang/CERTO-FDI",
+  "visibility": "PUBLIC",
+  "default_branch": "main",
+  "user_target_confirmed": true,
+  "goal_paused_background400_continues": true,
+  "this_agent_remote_mutations": false,
+  "this_agent_science_R1_execution_or_case_copy": false,
+  "science_ready": false,
+  "full400": false,
+  "inventory": {
+    "path": "work/github_review_publication_inventory_v1.json",
+    "sha256": "30792da4d9d45e6bda040a606741d3ca4a392450d27f58397846e256e58fdd9f",
+    "csv_sha256": "b0e0ccffd7041c805558688f76b28b04f5940c34030af5597cd1f6c66955643c",
+    "entries": 1212,
+    "Git_entries": 1205,
+    "Git_raw_bytes": 150167789,
+    "Release_archive_entries": 6
+  },
+  "time_snapshot": {
+    "rows": 400,
+    "risk_counts": {
+      "ZERO_DIRECTION_NO_SEPARATION_CERTIFICATE": 74,
+      "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET": 97,
+      "CERTIFIED_TARGET_PASS": 55,
+      "NOT_RUN": 174
+    },
+    "table_sha256": "348d384f13350151887ae92c6a14693fb6dbcedae853067cdcfd8c3919aecf47",
+    "snapshot_utc": "2026-10-07T11:11:00.612216+00:00",
+    "full400_complete": false,
+    "snapshot_root": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\github_publication_snapshot_20261007T111100Z",
+    "table_changed_after_inventory": false,
+    "background_processes_observed": [
+      {
+        "ProcessId": 62844,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_batch.py"
+      },
+      {
+        "ProcessId": 10032,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_publish_live.py --watch-pid 62844"
+      },
+      {
+        "ProcessId": 78264,
+        "ParentProcessId": 62844,
+        "CommandLine": "C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -S -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_verify.py --case-dir C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_h400_fixed20_average250"
+      },
+      {
+        "ProcessId": 69496,
+        "ParentProcessId": 75220,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -S -B -X utf8 work/github_review_publication_inventory_v1.py"
+      }
+    ],
+    "active_science_directories_excluded": [],
+    "completed_canonical_case_count": 136,
+    "completed_case_bytes": 10219451513,
+    "history_bytes": 4301212,
+    "held_case_count": 0
+  },
+  "closed_CASE_small_metadata_staging": {
+    "files": 1589,
+    "bytes": 39492842,
+    "original_ROOT_paths": true,
+    "all_ADJOINT_gzip_excluded": true,
+    "root_captured_CSV_and_receipt_with_scope_status": true
+  },
+  "cold_asset_plan": {
+    "scope": "PLAN_ONLY_NO_ASSETS_BUILT",
+    "groups": 10,
+    "max_group_payload_bytes": 1062273438,
+    "cold_payload_total_bytes": 10223752725,
+    "asset_limit_bytes": 1073741824,
+    "scientific_ready": false,
+    "remote_mutations": false
+  },
+  "stages": [
+    {
+      "stage": "01_theory_V1",
+      "asset": "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V1.zip",
+      "bytes": 780548,
+      "sha256": "55e5155cb5dc3e7cb40e5e3abfffa61fa438b197c7bc68213b27f286ede03ac3",
+      "scope": "11 finite stdlib checks, historical source, no PDF/fullD2"
+    },
+    {
+      "stage": "01_theory_V2_R6",
+      "asset": "outputs/CERTO_FDI_THEORY_CHECKPOINT_20261007_V2.zip",
+      "bytes": 1919557,
+      "sha256": "6ab32cb85ebc7befd6410974b6781d97f5285147f13f19a744d1d7cf03cbb99c",
+      "scope": "R6 source/PDF,11 finite checks,Figure2 38smallmetadata; not currentR8/full400"
+    },
+    {
+      "stage": "03_H160_actual_pair",
+      "asset": "outputs/D2A_H160_TERMINAL_PAIR_SCIENCE_REHEARSAL_V1.zip",
+      "bytes": 296443279,
+      "sha256": "c5dfadbb4c914299fa502b4549158f8b2d0adae0d1f690cd06066d45b4c39f4f",
+      "scope": "Science once per readout, documented recoveries, external recovery source required, full400false"
+    },
+    {
+      "stage": "05_R8_manuscript",
+      "source_sha256": "2245714e5b92c5e36039a688f453b477256aa57df15f97a783442ea2bacbfdc1",
+      "pdf_sha256": "e148cf867fb38deef1f91bcb8aabc5c3cf6d1c7786d9cf3b88f07c01d8aae30c",
+      "pages": 12,
+      "scope": "Actual compile/layout accepted draft; authors/full400/fourfulltext gaps pending"
+    }
+  ],
+  "ROOT_layout": [
+    "work/current standardlib+generation/runner/publisher/guard/protocol/directions/meanbinding",
+    "outputs/proofs/checks/meanreport/manuscript/reviews",
+    "references/provenance and readonly source audit",
+    "inputs/original archive metadata and verified Release download targets"
+  ],
+  "publication_tools_sha256": {
+    "github_review_publication_inventory_v1.py": "17ad434e65f235bb02c81ce4911b000c0fa1f269a53b182ec66b18c8c40fe13d",
+    "github_review_publication_prepare_v1.py": "4a0586c16c6c632747745f03441aed7537d968273a27ad0c23847b32feff2959",
+    "github_review_publication_prepare_plan_v1.json": "1bb5469fbb84d649df488b6e8887714ab8467e93955649ee585ae2412e1dd49b"
+  },
+  "official_limits_verified": {
+    "regular_git_block_above_bytes": 104857600,
+    "release_asset_must_be_under_bytes": 2147483648,
+    "release_assets_per_release_max": 1000,
+    "no_release_total_or_bandwidth_limit_per_specific_about_releases": true,
+    "docs": [
+      {
+        "title": "About large files on GitHub",
+        "url": "https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github"
+      },
+      {
+        "title": "About releases",
+        "url": "https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases"
+      }
+    ]
+  },
+  "selected_asset_limit_bytes": 1073741824,
+  "cleanup_strategy": "Root backups outside clone and verifies old refs/main before ordinary tracked-tree replacement commits; no force rewrite/delete repo/defaultbranch/globalauth",
+  "thirdparty_fulltexts_publish": false,
+  "user_original_inputs_full_archives_publish_as_hash_locked_assets": true,
+  "stage_code_or_cold_build_executed_by_this_agent": false,
+  "initial_inventory_scope_correction": {
+    "initial_pass_generic_small_gzip_hash_count": 22,
+    "compressed_bytes": 326935218,
+    "any_gt16MiB_body_or_science_executed": false,
+    "history_saved": "work/github_publication_inventory_history",
+    "current_collector_ADJOINT_gzip_body_read": false
+  },
+  "report_md_sha256": "92de9354338df89cdaa4591d5c088b156e59899f0428d1d319675877ad686a0a"
+}

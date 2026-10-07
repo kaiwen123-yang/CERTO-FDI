@@ -1,0 +1,124 @@
+{
+  "status": "PASS_REAL_ZIP_EXACT_CSV_CAP_FIXTURES",
+  "test_count": 26,
+  "tests": [
+    {
+      "name": "synthetic CSV truly exceeds2MiB and is within16MiB",
+      "pass": true
+    },
+    {
+      "name": "required CSV actually extracted and hash bound from real ZIP",
+      "pass": true
+    },
+    {
+      "name": "snapshot small() reads >2MiB exact CSV bytes",
+      "pass": true
+    },
+    {
+      "name": "actual extracted CSV Windows readonly attribute",
+      "pass": true
+    },
+    {
+      "name": "coverage actual CSV read permits this table and binds400 rows",
+      "pass": true
+    },
+    {
+      "name": "no witness is extracted into small metadata view",
+      "pass": true
+    },
+    {
+      "name": "presence still only an index and no science claim",
+      "pass": true
+    },
+    {
+      "name": "snapshot exact CSV accepts16MiB boundary",
+      "pass": true
+    },
+    {
+      "name": "snapshot exact CSV rejects16MiB+1",
+      "pass": true
+    },
+    {
+      "name": "snapshot other metadata accepts2MiB boundary",
+      "pass": true
+    },
+    {
+      "name": "snapshot other metadata rejects2MiB+1",
+      "pass": true
+    },
+    {
+      "name": "required CSV selector rejects >16MiB rather than filters",
+      "pass": true
+    },
+    {
+      "name": "extraction rejects required oversized CSV before creating view",
+      "pass": true
+    },
+    {
+      "name": "oversized required CSV leaves no partial view",
+      "pass": true
+    },
+    {
+      "name": "other >2MiB remains excluded from small selector",
+      "pass": true
+    },
+    {
+      "name": "required CSV selector accepts exact16MiB boundary",
+      "pass": true
+    },
+    {
+      "name": "total small metadata cap remains256MiB",
+      "pass": true
+    },
+    {
+      "name": "previous recipe exact bytes preserved in history",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_archive_witness_view_v1.py",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_full_grid_acceptance_v2.py",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_archive_view_bridge_fixtures_v1.py",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_archive_view_bridge_fixture_results_v1.json",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_archive_view_bridge_v1.md",
+      "pass": true
+    },
+    {
+      "name": "initial IO artifact preserved: d2a_archive_view_bridge_v1.json",
+      "pass": true
+    },
+    {
+      "name": "coverage source preserved: d2a_archive_coverage_gate_v1.py",
+      "pass": true
+    },
+    {
+      "name": "coverage source preserved: d2a_archive_coverage_gate_fixtures_v1.py",
+      "pass": true
+    }
+  ],
+  "synthetic_CSV_bytes": 2877304,
+  "actual_tiny_zip_bytes": 208103,
+  "actual_tiny_zip": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\archive_csv_cap_fixture_d45b0434\\actual_large_csv_small_zip.zip",
+  "exact_TABLE_cap_bytes": 16777216,
+  "other_small_cap_bytes": 2097152,
+  "total_cap_bytes": 268435456,
+  "scientific_ready": false,
+  "science_R1_or_active_table_executed_or_written": false,
+  "real_large_witness_bytes_read": 0,
+  "source_sha256": {
+    "package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+    "d2a_archive_csv_cap_fixtures_v1.py": "4c5957026dc6d6ded729e4e98e8be51f0d5494f6b188c6173fc29a8a7ebdfa53"
+  },
+  "previous_recipe_history": "references/release_recipe_history/97e36639d9291e72a93c84c822749f79eaa55d15af13c7bc5ff683916b5ee50f.py"
+}

@@ -1,0 +1,39 @@
+{
+  "scope": "Exact small algebra support; theorem universality follows from proofs, not this finite check.",
+  "checks": {
+    "beta_ratio_identity": 419,
+    "beta_monotone": 419,
+    "finite_tail_bstar_certificate": 419,
+    "convex_split_absorption": 15,
+    "m_positive_amgm": 2630,
+    "m_zero": 15
+  },
+  "bstar_certificates": [
+    {
+      "rho": "-4/5",
+      "tail_cutoff": 2,
+      "certified_bstar_lower": "9/2"
+    },
+    {
+      "rho": "-1/2",
+      "tail_cutoff": 2,
+      "certified_bstar_lower": "3/2"
+    },
+    {
+      "rho": "0",
+      "tail_cutoff": 2,
+      "certified_bstar_lower": "1/2"
+    },
+    {
+      "rho": "1/2",
+      "tail_cutoff": 18,
+      "certified_bstar_lower": "1/15"
+    },
+    {
+      "rho": "4/5",
+      "tail_cutoff": 162,
+      "certified_bstar_lower": "1/369"
+    }
+  ],
+  "status": "PASS"
+}

@@ -1,0 +1,241 @@
+% Fragment only. Uses the host's corollary/proof environments and amsmath.
+% Derived from source a26c945e35a8da9c598a5b94fe34f528a19025a652b335a457c4f9fa65626eca.
+% No model extension, sequential interpretation, or new detector claim.
+
+\begin{corollary}[Cost of a fixed diagnostic endpoint]
+\label{sf:fixed-endpoint-cor}
+Retain the fixed-controller experiment of Theorem~\ref{sf:two-regime}
+and the fixed-calendar risk interface of Section~\ref{sf:risk}.
+Fix a miss tolerance $\varepsilon_{\rm m}\in(0,1)$ and let
+$0<\alpha<1-\varepsilon_{\rm m}$. Write
+\begin{equation}\label{sf:endpoint-threshold}
+\Lambda_\alpha=\tfrac12
+ \bigl(z_{1-\alpha}+z_{1-\varepsilon_{\rm m}}\bigr)^2,
+\qquad z_q=\Phi^{-1}(q),
+\end{equation}
+where $\Phi$ is the standard normal distribution function. Define
+\begin{equation}\label{sf:endpoint-oracle}
+H_{\rm or}(\alpha)=\min\{H\in\mathbb N_{\ge1}:O_H\ge\Lambda_\alpha\}.
+\end{equation}
+Let $H_{\rm diag}(\alpha)$ be the smallest integer endpoint for which
+some legal deterministic calendar and a test of its declared retained states
+have uniform false-alarm probability at most $\alpha$ and uniform power at
+least $1-\varepsilon_{\rm m}$. The controller, horizon, calendar and test
+are selected before the innovations. The oracle is the ideal
+healthy-subtracted complete white record, not the composite full-record
+experiment.
+
+If $\beta_k>0$, put
+$C=(\sqrt2/5)\sqrt{F\beta_k r}\,\eta^{3/2}$. As $\alpha\downarrow0$,
+\begin{equation}\label{sf:endpoint-positive}
+\begin{aligned}
+&H_{\rm diag}-H_{\rm or}\\
+&\quad=\frac{2C}{F\eta^2}\sqrt{H_{\rm or}}+o(\sqrt{H_{\rm or}})\\
+&\quad=\frac{2\sqrt2}{5}\sqrt{\frac{\beta_k r}{F\eta}}
+   \sqrt{H_{\rm or}}\\
+&\qquad+o(\sqrt{H_{\rm or}}).
+\end{aligned}
+\end{equation}
+If $\beta_k=0$, then
+\begin{equation}\label{sf:endpoint-zero}
+0\le H_{\rm diag}-H_{\rm or}=O(1).
+\end{equation}
+No positive lower constant or $\Theta(1)$ endpoint excess is asserted.
+
+For the common-positive-definite-noise compact controller family of
+Theorem~\ref{sf:uniform}, define $H_{\rm joint}$ by also permitting the
+known controller to be selected from $\mathcal K$ before the data. If
+$C_{\inf}=\inf_{K\in\mathcal K}C(K)$, then
+\begin{equation}\label{sf:endpoint-joint}
+\begin{aligned}
+&H_{\rm joint}-H_{\rm or}\\
+&\quad=\frac{2C_{\inf}}{F\eta^2}\sqrt{H_{\rm or}}
+  +o(\sqrt{H_{\rm or}}).
+\end{aligned}
+\end{equation}
+This uses an infimum and does not assume continuity of $k(K)$ or attainment
+of a controller/calendar supremum. These are deterministic endpoint costs,
+not sequential stopping times, average run lengths, or expected stopping times.
+\end{corollary}
+
+\begin{proof}\leavevmode
+For each fixed calendar, Section~\ref{sf:risk} gives existence of the
+required test exactly when $G_{K,H}(\pi)\ge\Lambda_\alpha$.
+Taking $z=0$ in the information infimum and using projection contraction
+gives $0\le G_{K,H}(\pi)\le O_H$. Thus no endpoint below
+$H_{\rm or}$ is feasible, for either the fixed controller or the common-oracle
+joint design. We do not identify existence at a horizon with a possibly
+unattained equality $\sup_\pi G_{K,H}(\pi)=\Lambda_\alpha$.
+
+\par\smallskip\noindent\emph{Oracle increments and integer rounding.}
+Put $A_{\rm or}=F\eta^2/6$ and $B_{\rm or}=F\eta^2/2=3A_{\rm or}$.
+Summing the affine fault squares gives the exact polynomial
+\begin{equation}\label{sf:endpoint-oracle-polynomial}
+\begin{aligned}
+O_H={}&A_{\rm or}H^3
+ +\left(\frac{F\rho_0\eta}{2}+\frac{F\eta^2}{4}\right)H^2\\
+&+\left(\frac{F\rho_0^2}{2}
+ +\frac{F\rho_0\eta}{2}+\frac{F\eta^2}{12}\right)H.
+\end{aligned}
+\end{equation}
+The normal quantile in \eqref{sf:endpoint-threshold} tends to infinity,
+so $\Lambda_\alpha\to\infty$ and $n:=H_{\rm or}(\alpha)\to\infty$.
+By minimality of $n$, for sufficiently small $\alpha$,
+\begin{equation}\label{sf:endpoint-overshoot}
+\begin{aligned}
+0\le O_n-\Lambda_\alpha
+ &<O_n-O_{n-1}\\
+ &=\tfrac F2(\rho_0+\eta n)^2=O(n^2).
+\end{aligned}
+\end{equation}
+The exact cubic also implies, uniformly for nonnegative integer
+$h\le M\sqrt n$ with fixed $M<\infty$,
+\begin{equation}\label{sf:endpoint-increment}
+O_{n+h}-O_n=B_{\rm or}n^2h+O_M(n^2).
+\end{equation}
+Indeed the remainder is a fixed linear combination of
+$nh^2,h^3,nh,h^2,h$. For any fixed integer $L\ge0$ the stronger form is
+$O_{n+L}-O_n=B_{\rm or}Ln^2+O_L(n)$.
+
+\par\smallskip\noindent\emph{All earlier endpoints in the positive branch.}
+Let $G_H^*=\sup_\pi G_{K,H}(\pi)=O_H-D_{K,H}^*$ and
+$d=C/B_{\rm or}$. The already proved limit implies
+\begin{equation}\label{sf:endpoint-tail}
+e_n:=\sup_{H\ge n}
+\left|\frac{D_{K,H}^*}{H^{5/2}}-C\right|\longrightarrow0.
+\end{equation}
+Fix $\delta\in(0,d)$. For every integer
+$H=n+h\le n+\lfloor(d-\delta)\sqrt n\rfloor$, the same tail error,
+\eqref{sf:endpoint-overshoot} and \eqref{sf:endpoint-increment} give
+\begin{equation}\label{sf:endpoint-lower}
+\begin{aligned}
+G_H^*-\Lambda_\alpha
+ &\le B_{\rm or}(d-\delta)n^{5/2}+O(n^2)\\
+ &\quad -(C-e_n)n^{5/2}\ <\ 0
+\end{aligned}
+\end{equation}
+for all sufficiently large $n$. Here $C-e_n>0$ eventually, and
+$H^{5/2}\ge n^{5/2}$. This excludes every integer in that range;
+all integers below $n$ were excluded by the oracle. No monotonicity of
+$G_H^*$ has been assumed.
+
+For an upper endpoint take
+$H=n+\lceil(d+\delta)\sqrt n\rceil$ and the actual terminal-balanced
+calendar with $\xi_*=2\beta_k\eta/(Fr)$. Its proved bound is
+$D_{K,H}(\pi_H^{\xi_*})\le CH^{5/2}+M_KH^2$ for one fixed $M_K$.
+Since $H^{5/2}=n^{5/2}+O_\delta(n^2)$, it follows that
+\begin{equation}\label{sf:endpoint-upper}
+\begin{aligned}
+&G_{K,H}(\pi_H^{\xi_*})-\Lambda_\alpha\\
+&\quad\ge B_{\rm or}\delta n^{5/2}+O_\delta(n^2)>0.
+\end{aligned}
+\end{equation}
+This strict inequality provides a genuine calendar and hence a test,
+without finite-horizon supremum attainment. It also proves that the defining
+set for $H_{\rm diag}$ is nonempty. The lower and upper comparisons, followed
+by $\delta\downarrow0$, prove \eqref{sf:endpoint-positive}; the second
+coefficient there is the substitution of the given $C$.
+
+\par\smallskip\noindent\emph{The score-preserving branch.}
+The explicit profile-aware calendar in Appendix~\ref{sf:zero-proof},
+rather than an unattained supremum, supplies a fixed $M_0<\infty$ with
+$D_{K,H}(\pi_H^0)\le M_0H^2$ for all sufficiently large $H$.
+Choose a fixed positive integer $L$ such that $B_{\rm or}L>M_0$.
+At $H=n+L$,
+\begin{equation}\label{sf:endpoint-zero-upper}
+\begin{aligned}
+G_{K,n+L}(\pi_{n+L}^0)-\Lambda_\alpha
+ &\ge B_{\rm or}Ln^2-M_0(n+L)^2+O_L(n)\\
+ &=(B_{\rm or}L-M_0)n^2+O_L(n)>0.
+\end{aligned}
+\end{equation}
+Together with the oracle exclusion this proves
+$0\le H_{\rm diag}-H_{\rm or}\le L$ eventually. Integer oracle overshoot
+has order $n^2$, the same order as the zero-branch information deficit;
+it cannot be discarded to infer a positive endpoint excess.
+
+\par\smallskip\noindent\emph{Joint design.}
+The compact common-SPD proof gives a positive common gap-penalty lower bound,
+so $C_{\inf}>0$. Its uniform theorem gives
+\[
+\sup_{H\ge n,K\in\mathcal K}
+\left|H^{-5/2}D_{K,H}^*-C(K)\right|\longrightarrow0.
+\]
+Consequently $D_H^{\rm joint}/H^{5/2}\to C_{\inf}$ with one tail error,
+and the preceding all-earlier-endpoint lower comparison holds with
+$C_{\inf}$ in place of $C$.
+For any fixed $\delta>0$, choose a fixed controller $K_\delta$ with
+$C(K_\delta)<C_{\inf}+B_{\rm or}\delta/2$, possible by the definition of
+infimum. Use its explicit calendar at
+$H=n+\lceil(C_{\inf}/B_{\rm or}+\delta)\sqrt n\rceil$.
+The fixed-$K_\delta$ construction gives
+\[
+G_{K_\delta,H}(\pi_H^{\xi_{K_\delta}})-\Lambda_\alpha
+ \ge \tfrac12B_{\rm or}\delta n^{5/2}+O_\delta(n^2)>0.
+\]
+Thus a controller/calendar/test exists for the upper comparison even if
+the infimum is not attained. Letting $\delta\downarrow0$ after the risk limit
+proves \eqref{sf:endpoint-joint}.
+\end{proof}
+
+\par\smallskip\noindent\emph{Risk-scale form.}
+The relation $\Lambda_\alpha\sim\log(1/\alpha)$ can be verified directly.
+For $t>0$, write $\phi(t)=(2\pi)^{-1/2}e^{-t^2/2}$ and
+$I(t)=\int_t^\infty\phi(u)\,du$. Since
+$\int_t^\infty u\phi(u)\,du=\phi(t)$, $I(t)\le\phi(t)/t$.
+Integration by parts gives
+\[
+I(t)=\frac{\phi(t)}t-\int_t^\infty\frac{\phi(u)}{u^2}\,du
+ \ge\frac{\phi(t)}t-\frac{I(t)}{t^2}.
+\]
+Hence $t\phi(t)/(t^2+1)\le I(t)\le\phi(t)/t$.
+For $t=z_{1-\alpha}\to\infty$, logarithms yield
+$\log(1/\alpha)=t^2/2+\log t+O(1)\sim t^2/2$.
+The fixed $z_{1-\varepsilon_{\rm m}}$ changes
+$(t+z_{1-\varepsilon_{\rm m}})^2/2$ by only $O(t)$.
+Equation~\eqref{sf:endpoint-oracle-polynomial} and the overshoot bound then give
+\[
+H_{\rm or}\sim
+\left(\frac{6\log(1/\alpha)}{F\eta^2}\right)^{1/3}.
+\]
+The positive-branch excess therefore has order $(\log(1/\alpha))^{1/6}$.
+This consequence requires fixed miss tolerance and the exact linear experiment;
+it does not apply to the bounded-time nonlinear certificate domain.
+
+\par\smallskip\noindent\emph{Why a universal positive zero-branch excess fails.}
+An already admissible score-recovering plant provides an exact illustration.
+Take $A_K=\left(\begin{smallmatrix}0&1/2\\0&0\end{smallmatrix}\right)$,
+$G=B=e_2$, $n_0=1$, $\rho_0=0$, $\eta=1$, $r=1/100$ and $k=1$;
+both exact-one-slot transition profiles have $g=0$.
+Here $F=1$ and $H_2=[e_1/2,e_2]$, so $P_2=I_2$ and $\beta_1=0$.
+Use the post-input task pattern $+1,0,-1,0$ repeatedly, retaining the
+nonzero-task states. If $H$ is even, replace its final missing slot by
+holding the previous task, so $H$ is retained. All true spans have length
+at most two, and $P_\pi=I$ on the complete input record, including the prefix.
+
+Put $S_t=\sum_{j=0}^t g_j$. The prefix has $g_0=1$, and this calendar
+has $|S_t|\le3$. With $\theta_j=j$, $\gamma_j=g_j$,
+$N=\gamma^\top\theta$ and $D=\|\gamma\|^2\ge H/2$, Abel summation gives
+$|N|\le6H$. Thus $\alpha_{\rm rep}=N/D$ has $|\alpha_{\rm rep}|\le12$.
+The observable $v=\theta-\alpha_{\rm rep}\gamma$ has zero scalar healthy mass.
+For $\lambda_j=g_jv_j$, its complete partial masses obey
+$|\sum_{j=0}^t\lambda_j|\le18(t+1)$.
+The same full-path support and observable dual as in
+Appendix~\ref{sf:geometry} therefore give
+\begin{equation}\label{sf:endpoint-rounding-example}
+\begin{aligned}
+D_{K,H}(\pi)
+ &\le\frac{N^2}{2D}+r\sum_{t=0}^{H-1}18(t+1)\\
+ &\le\frac9{100}H^2+\frac{3609}{100}H.
+\end{aligned}
+\end{equation}
+For every integer $H\ge226$, this is strictly less than $H^2/4$.
+Set $\Lambda_H=O_H-H^2/4=H^3/6+H/12$ and
+$\alpha_H=1-\Phi(\sqrt{2\Lambda_H}-z_{1-\varepsilon_{\rm m}})$.
+Then $\alpha_H\downarrow0$,
+$O_{H-1}=O_H-H^2/2<\Lambda_H<O_H$, and the displayed calendar has
+$G_{K,H}(\pi)>\Lambda_H$. Hence
+$H_{\rm diag}(\alpha_H)=H_{\rm or}(\alpha_H)=H$.
+The zero-branch excess vanishes along this sequence, despite its positive
+quadratic information deficit. This rules out a universal $\Theta(1)$
+or positive-constant refinement of \eqref{sf:endpoint-zero}.

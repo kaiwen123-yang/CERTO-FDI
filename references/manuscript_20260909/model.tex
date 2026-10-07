@@ -1,0 +1,82 @@
+\section{Diagnostic Experiment}
+\subsection{Time, schedules, and uncertainty}
+The time-slot duration is $\delta>0$. A task transition excludes $k\ge1$ slots from the admissible observation model. Its duration is $\tau_m=k\delta$, whereas the interval between the last observation before an immediate transition and the first observation after it is $(k+1)\delta$. These two times are distinct.
+
+\begin{definition}[Admissible deterministic calendar]\label{def:calendar}
+After $n_0$ consecutive healthy-prefix readings at task $+$, a calendar $\pi\in\PiH$ specifies $H$ post-onset slots. At either of two tasks, each holding slot supplies one reading. A change to the other task uses at least $k$ consecutive slots with no admissible reading. The calendar, including the transition durations, is fixed before observing the data. Consecutive moves and empty round trips are allowed. A terminal move without a later reading is dominated by observing at the current task. The schedule \emph{stay} retains all prefix and post-onset observations at the initial task. A maximal contiguous sequence of readings at one task is a run.
+\end{definition}
+
+A physical observation at a task with sign $\epsilon_i\in\{+1,-1\}$ has the ideal form $\widetilde Y_i=\epsilon_i\beta^h(t_i)+a_i^h+\xi_i$. Multiplication by $\epsilon_i$ gives
+\begin{equation}
+ Y_i=\beta^h(t_i)+s_i^h+\widetilde\xi_i,
+ \quad\widetilde\xi_i\stackrel{\rm iid}{\sim}N(0,\sigma^2).
+ \label{eq:obs}
+\end{equation}
+The two hypotheses use independent choices $\beta^0,\beta^1$ from the same admissible class; equality of their realized paths is not imposed. Under $H_0$, $s^0=0$. Under $H_1$, prefix entries are zero and post-onset entries are $s_i^1=\epsilon_i a_{j_i}$, where $j_i$ is the physical slot index. In either hypothesis,
+\begin{equation}
+ |\beta^h(t)|\le b,\qquad |\dot\beta^h(t)|\le r_d
+ \quad\text{a.e.}\label{eq:health}
+\end{equation}
+Initial healthy levels are unknown and free inside their bounds. The prefix supplies zero fault target, not a zero healthy-state boundary condition. The radii are upper envelopes: underestimating $b$ or $r_d$ may invalidate uniform size control, whereas enlarging a valid healthy class can only reduce its information. The independence and covariance assumptions are separate from these mean-path bounds.
+
+Throughout, the one-sided bounds and their difference-class counterparts are
+\begin{equation}
+ B=2b,\quad R=2r_d,\quad r=R\delta,
+ \qquad a_j=\rho_0+\eta j,\quad\eta=\kappa\delta.\label{eq:units}
+\end{equation}
+Thus $r$ and $\eta$ are changes per slot; $R$ and $\kappa$ are changes per unit physical time. We assume $\rho_0\ge0$ and, in the progressive results, $\eta>0$. Direction, onset, and growth are specified design inputs. The constant-amplitude case is stated separately.
+
+\begin{lemma}[Exact calendar reduction]\label{lem:trace}
+At the strictly increasing slot indices $j_1,\ldots,j_N$ including the prefix, the difference of the two symmetric healthy classes has the exact trace
+\begin{equation}
+ \K_\pi(B,r)=\{z: |z_i|\le B,\ |z_{i+1}-z_i|\le r(j_{i+1}-j_i)\}.
+ \label{eq:K}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Integration gives the increment inequalities. Conversely, piecewise-linear interpolation of admissible nodes has slope at most $R$ in physical time and stays inside the interval. Every difference path is realizable by $z/2$ and $-z/2$.\end{proof}
+The optimal observed node vector will be unique, but its continuous extension through unobserved intervals need not be. No intermediate samples are introduced by the interpolation. Curvature constraints require velocity reachability; bounds on second differences alone are only a node-level relaxation.
+
+\subsection{Information and the two oracles}
+Let $s$ denote the stacked specified fault target, including its zero prefix. Define
+\begin{equation}
+ G_H^B(\pi)=\frac1{2\sigma^2}\min_{z\in\K_\pi(B,r)}\norm{s-z}^2.\label{eq:G}
+\end{equation}
+For $B=\infty$ the amplitude constraint is omitted. The closed finite-dimensional convex projection is still attained. The full-calendar and observed-calendar oracle informations are
+\begin{equation}
+ O_H=\frac1{2\sigma^2}\sum_{j=1}^Ha_j^2,
+ \quad O_H^{\rm obs}(\pi)=\frac1{2\sigma^2}\sum_{j\in I_\pi}a_j^2.
+\end{equation}
+Consequently,
+\begin{equation}
+0\le G_H^B(\pi)\le O_H^{\rm obs}(\pi)\le O_H,
+\quad D_H^{B,*}=O_H-\max_{\pi\in\PiH}G_H^B(\pi).\label{eq:D}
+\end{equation}
+Here $D_H^B(\pi)=O_H-G_H^B(\pi)$ denotes the deficit of a specific calendar. The finite calendar maximum exists. In particular,
+\begin{equation}
+ O_H=\frac{H\rho_0^2+\rho_0\eta H(H+1)+\eta^2H(H+1)(2H+1)/6}{2\sigma^2}.
+ \label{eq:oracle}
+\end{equation}
+
+\begin{proposition}[Fixed-calendar testing]\label{prop:testing}
+For a fixed calendar and specified target $s$, the best level-$\alpha$ worst-case power is
+\begin{equation}
+ \mathcal B_\pi(\alpha)=\Phi\bigl(\sqrt{2G_H^B(\pi)}-z_{1-\alpha}\bigr).\label{eq:power}
+\end{equation}
+\end{proposition}
+\begin{proof}
+If $s$ lies in the difference class, the mean sets share a law. Any level-$\alpha$ test has worst power at most $\alpha$, and constant randomized rejection attains it. Otherwise, let $z^*$ be the projection onto the difference class. The closest means are $\mu_0^*=z^*/2$ and $\mu_1^*=s-z^*/2$. The projection variational inequality makes $s-z^*$ a separating normal for both full mean classes. Its Gaussian threshold test is uniformly level $\alpha$ and attains the stated worst power at this pair. Neyman--Pearson for that pair gives the reverse inequality; this is the convex Gaussian testing reduction of \cite{gjn}, within the minimax uncertain-signal tradition \cite{burnashev}.\end{proof}
+This is an exact minimax statement for the specified shift family. The distance is computed by profiling, but an arbitrary generalized likelihood-ratio statistic need not have the distribution in \eqref{eq:power}.
+
+\subsection{Fault parity, calibration, and growth uncertainty}
+For a fixed calendar and a pure ramp, write $s_{\min}=\kappa_{\min}u$ with $\kappa_{\min}>0$ and let $v=s_{\min}-z^*$. The level-$\alpha$ score is
+\begin{equation}
+ v^TY>\tfrac12v^Tz^*+\sigma\|v\|z_{1-\alpha}.
+ \label{eq:implement_test}
+\end{equation}
+Its null class does not depend on $\kappa$. Since $0\in\K_\pi$, projection gives $v^Tz^*\ge0$, hence
+$\kappa_{\min}v^Tu=\|v\|^2+v^Tz^*\ge\|v\|^2$.
+The worst-case power of this \emph{fixed} test is therefore nondecreasing for $\kappa\ge\kappa_{\min}$ with the same healthy class and covariance. A nonzero fixed intercept or other template change requires checking $v^Tu\ge0$ explicitly. This statement does not equate a mistuned calendar's information with the sharp optimal coefficient.
+
+\paragraph{Healthy prefix.}
+The prefix is placed at task $+$ to fix the initial task and make its time cost explicit. A two-task prefix would consume an additional transition and could improve finite-horizon separation or calibration. It is a different initial calendar; the $H\to\infty$ leading coefficient is unchanged by a fixed amount of prefix work. A constant transformed offset is observable at either task, whereas learning unknown task-specific columns requires calibration data that the present model assumes available.

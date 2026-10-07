@@ -1,0 +1,138 @@
+{
+  "schema": "d2a-scoped-real-science-zip-rehearsal-report-v1",
+  "date": "2026-10-07",
+  "scope": "SCOPED_PAIR_SCIENCE_REHEARSAL_NOT_FINAL_RELEASE",
+  "status": "PASS_SCOPED_ACTUAL_ZIP_FRESH_R1_PAIR_AFTER_DOCUMENTED_NATIVE_CLEANUP_AND_LONGPATH_BOOKKEEPING_RECOVERY",
+  "scientific_ready": false,
+  "full400": false,
+  "actual_receipt": {
+    "path": "outputs/d2a_science_zip_rehearsal_receipt_v1.json",
+    "sha256": "7b80a9f530f40e6c89767dd6d75bb6ebd0c01b5912e29b41fd703adfda9a8832"
+  },
+  "actual_archive": {
+    "path": "outputs/D2A_H160_TERMINAL_PAIR_SCIENCE_REHEARSAL_V1.zip",
+    "sha256": "c5dfadbb4c914299fa502b4549158f8b2d0adae0d1f690cd06066d45b4c39f4f",
+    "bytes": 296443279,
+    "manifest_sha256": "3039e08106e41653dc0b0406623bad17bc674a3948137ab4c9f5849f553cbc90",
+    "payload_full_hashes_verified": 48,
+    "Readonly": true,
+    "new_cleanup_and_finalize_source_in_this_original_zip": false
+  },
+  "case_replays": [
+    {
+      "case": "D2A_H160_TERMINAL_BALANCED_AVERAGE250",
+      "identity": "dfcb45fab20243d655f3467fb4b35c0d65b46e9d667c05cca2f4a6e593fe2de5",
+      "directory": "work/d2a_cert_h160_terminal_balanced_average250",
+      "target_status": "CERTIFIED_TARGET_PASS",
+      "fresh_receipt": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_AVERAGE250_fresh_receipt.json",
+      "fresh_receipt_sha256": "2ae7eadea94432484964ecc4cdafaae5e4f3efec863dbd53fb1b158e0a6bf019",
+      "verifier_reported_seconds": 77.63468460000149,
+      "stdout": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_AVERAGE250.stdout.log",
+      "stderr": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_AVERAGE250.stderr.log",
+      "fresh_receipt_full_flags_and_artifact_binding_passed": true,
+      "science_execution_count": 1,
+      "execution_phase": "Original wrapper",
+      "cleanup_receipt": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_AVERAGE250_cleanup_recovery.json",
+      "cleanup_receipt_sha256": "e17baa05d9b9ad59f69fd00d055a57f1ed3f1d138fdca609cb224612a339cf9f"
+    },
+    {
+      "case": "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ",
+      "identity": "9ccd02f033bb27893c7ea2c661d954e65cc11a1e16bcb56e9c8e08a639b8f9dc",
+      "directory": "work/d2a_cert_h160_terminal_balanced_point_last_fast_read",
+      "target_status": "VALID_UNIFORM_CERTIFICATE_TARGET_NOT_MET",
+      "fresh_receipt": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_fresh_receipt.json",
+      "fresh_receipt_sha256": "a1d8712a0d7ebe6ec3688ba757bc6d92e315946696e3c894a2ed56bf748deada",
+      "verifier_reported_seconds": 78.91688459999932,
+      "stdout": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ.stdout.log",
+      "stderr": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ.stderr.log",
+      "fresh_receipt_full_flags_and_artifact_binding_passed": true,
+      "science_execution_count": 1,
+      "execution_phase": "Documented cleanup-recovery resume",
+      "cleanup_receipt": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_cleanup_recovery.json",
+      "cleanup_receipt_sha256": "bcf67882dabcf6f9b70d5743a4c76bff0d0e83f024208562b7636f9a41cc7a4a"
+    }
+  ],
+  "original_inputs_all47_before_after_hash_stat_tree_unchanged": true,
+  "fresh_R1_all463_files_bootstrap_and_after_hash_verified": true,
+  "success_case_scratch_cleaned": true,
+  "first_two_operational_failures_preserved": [
+    {
+      "path": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\FAILURE_SCOPED_REHEARSAL.json",
+      "sha256": "7658cafde1de4a8f100509282eb2d2ca21a68b3fc1c245ac82176b63e57e75b3"
+    },
+    {
+      "path": "C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\outputs\\d2a_pair_rehearsal_logs_e9098928\\FAILURE_SCOPED_RESUME.json",
+      "sha256": "97560868ad04d5ede27b1a4c527852bfd3ea28ff9395221aae5be6fea6251492"
+    }
+  ],
+  "science_execution_count": {
+    "average250": 1,
+    "point_last_fast_read": 1
+  },
+  "source_sha256": {
+    "d2a_science_zip_rehearsal_v1.py": "2d324aefaa33cb869b79c94bd57aaeb7be6c4b05ec38056118e061e07edb8186",
+    "d2a_science_zip_rehearsal_resume_v1.py": "eaa7875ca115baf464ae3e544545e3d297a9a3869869c08ab79d66d002d37fcf",
+    "d2a_science_zip_rehearsal_finalize_v1.py": "15bd463094278a4f90ba9cd87fa9aa2407fc883562d7d87031895618465693d5",
+    "d2a_native_owned_case_cleanup_v1.py": "f8f4bde50b121f7be975ade18d2988c66428d5463effde29a8889167efa7d070",
+    "package_full_d2a_release_v2.py": "1adc2b0e1acb326e9e63c8a852fa35d3b648abe553484b63f8cdbede8b842953",
+    "package_full_d2a_release_v3.py": "6c5512c180046c7916f8294626eef6af748d4385346442a54088572c59490dd0"
+  },
+  "additional_small_receipt_sha256": {
+    "d2a_science_zip_rehearsal_precheck_v1.json": "b8aab9da8c20ea424365da8bc2d8a209a4c6ed66af131c4d515b4c27b40eebf1",
+    "d2a_science_zip_rehearsal_cleanup_diagnostic_v1.json": "ed576e91fcd65f274f428e26b7dc4ebc276fe37107aba8722599ae6e5c151d3d",
+    "d2a_native_owned_case_cleanup_fixture_v1.json": "ae753af25096e7d102490416501d8869754d079e8eca0e5344a8e41e66d94c60",
+    "d2a_science_zip_rehearsal_longpath_diagnostic_v1.json": "739cffecb8cc744b7018794783a45b1df4440e8bd1c6675e590eeb5f0ac88741",
+    "d2a_science_zip_rehearsal_finalization_receipt_v1.json": "7b80a9f530f40e6c89767dd6d75bb6ebd0c01b5912e29b41fd703adfda9a8832"
+  },
+  "log_hashes": {
+    "D2A_H160_TERMINAL_BALANCED_AVERAGE250.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D2A_H160_TERMINAL_BALANCED_AVERAGE250.stdout.log": "7cb233b693b67af0f66e4e42db3f842231c7a8687b8a8e3d5083b5ececeb7e79",
+    "D2A_H160_TERMINAL_BALANCED_AVERAGE250_cleanup_recovery.json": "e17baa05d9b9ad59f69fd00d055a57f1ed3f1d138fdca609cb224612a339cf9f",
+    "D2A_H160_TERMINAL_BALANCED_AVERAGE250_fresh_receipt.json": "2ae7eadea94432484964ecc4cdafaae5e4f3efec863dbd53fb1b158e0a6bf019",
+    "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ.stdout.log": "648ce9b3a4acf71c6206ecbd36dc9e056730bffc8fda6b03f0a9d0bdb6c2fdd4",
+    "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_cleanup_recovery.json": "bcf67882dabcf6f9b70d5743a4c76bff0d0e83f024208562b7636f9a41cc7a4a",
+    "D2A_H160_TERMINAL_BALANCED_POINT_LAST_FAST_READ_fresh_receipt.json": "a1d8712a0d7ebe6ec3688ba757bc6d92e315946696e3c894a2ed56bf748deada",
+    "FAILURE_SCOPED_REHEARSAL.json": "7658cafde1de4a8f100509282eb2d2ca21a68b3fc1c245ac82176b63e57e75b3",
+    "FAILURE_SCOPED_RESUME.json": "97560868ad04d5ede27b1a4c527852bfd3ea28ff9395221aae5be6fea6251492",
+    "fresh_R1_bootstrap.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "fresh_R1_bootstrap.stdout.log": "66dd5837b2b14c0d6ccfea3b7685e7d91e09af41d5812da087d076dc57d0c40b",
+    "fresh_R1_bootstrap_receipt.json": "afbfbe946fc965f9727aa706d9edc82e87d7c72c4b3901adfea510f30ed90040"
+  },
+  "future_v3_scope": {
+    "status": "PREPARED_LIMITED_CLEANUP_FIX_NOT_FULL400_REPLAY_ACCEPTED",
+    "preserved_noncleanup_ASTs_after_exact_selfversion_normalization": 27,
+    "explicitfreeze_OSquiescence_coverage_caps_unchanged": true,
+    "new_native_cleanup_component_actually_tested_on_two_verified_scoped_cases": true
+  },
+  "original_OS_readonly_all_files": false,
+  "original_byte_stability_verified_for_this_capture_only": true,
+  "original_science_live_table_lock_PID_main_or_global_environment_modified": false,
+  "end_resource": {
+    "free_ram_bytes": 14745460736,
+    "python_processes": [
+      {
+        "ProcessId": 62844,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_batch.py"
+      },
+      {
+        "ProcessId": 10032,
+        "ParentProcessId": 71048,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_publish_live.py --watch-pid 62844"
+      },
+      {
+        "ProcessId": 32256,
+        "ParentProcessId": 62844,
+        "CommandLine": "C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -B -X utf8 C:\\Users\\ykw\\Documents\\ChatGPT\\CEO-FDI\\work\\d2a_cert_case.py --H 300 --family switch_then_stay --readout average250 --stage-endpoint 260"
+      },
+      {
+        "ProcessId": 40376,
+        "ParentProcessId": 57712,
+        "CommandLine": "\"C:\\Users\\ykw\\AppData\\Local\\Programs\\Python\\Python312\\python.exe\" -S -B -X utf8 outputs/d2a_science_zip_rehearsal_finalize_v1.py"
+      }
+    ],
+    "free_C_bytes": 180172361728
+  },
+  "report_md_sha256": "caab4817569539c9bd704e1d3bc6d424183a43d768cfd4405f7a94862720e997"
+}

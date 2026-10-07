@@ -1,0 +1,114 @@
+\section{Extended Operating-Range Certificate}\label{app:embedding}
+This appendix verifies the stated synthetic rigid model without changing its controller or transition duration. Let $\omega=40$, $b_m=.02$, $r_m=.001$, $f_{\max}=.75$ and $\dot f_{\max}=.003$ in the units of Section~\ref{sec:control}. The mass and bias convention is exactly \eqref{eq:plant}. Signals $\beta_m,f$ need only be absolutely continuous; their first derivatives are bounded almost everywhere, with no curvature assumption.
+
+\subsection{Global geometry and the moving reference}
+Using segment indices $s=1,\ldots,6$, for each link center or payload point let $\ell_s^{(j)}$ be its contributing segment lengths, $R_i^{(j)}=\sum_{s\ge i}\ell_s^{(j)}$, and
+\begin{equation}
+ L_{J,j}^2=\sum_i\left(\sum_{s\ge i}\ell_s^{(j)}\sqrt{s}\right)^2.
+\end{equation}
+The Cartesian Jacobian satisfies $\|J_j\|\le\|R^{(j)}\|$ and $\|D J_j(q)v\|_F\le L_{J,j}\|v\|$. Consequently $L_M=\sum_j2m_j\|R^{(j)}\|L_{J,j}$ bounds the Lipschitz constant of $M_0$. The constant rotor and link rotational terms add no derivatives. Taking row sums of the entrywise matrix $9.81\sum_{s\ge\max(i,j)}\ell_s$ bounds the payload gravity derivative. Cumulative angular speeds obey $(\sum_{i\le s}\dot q_i)^2\le s\|\dot q\|^2$. These formulas give conservative bounds
+\begin{equation}
+\begin{gathered}
+ d_0=.5,\quad \bar A=1.2908,\quad G=11.145473,\\
+ L_M=4.489123,\quad L_g=23.3478,\quad C_p=2.703999,\\
+ \bar M=2.389402,\quad C_c=2.572884.
+\end{gathered}\label{eq:geometry_caps}
+\end{equation}
+Here $M_0,M\succeq d_0I$, $\|A\|\le\bar A$, $\|g_p\|\le G$, $\|c_p\|\le C_p\|\dot q\|^2$, $\|M\|\le\bar M$, and $\|c(q,\dot q,m)\|\le C_c\|\dot q\|^2$.
+
+For $x=(\omega e,\dot e)$ use $P=\left[\begin{smallmatrix}1.5&.5\\.5&.5\end{smallmatrix}\right]$ and $A_0=\left[\begin{smallmatrix}0&1\\-1&-2\end{smallmatrix}\right]$, so $A_0^TP+PA_0=-I$. With $\mu=b_m\bar A/d_0$, the exact tracking dynamics and $\|M^{-1}\beta_m A\|\le\mu$ imply
+\begin{equation}
+ \tfrac{\mathrm d}{\mathrm dt}\sqrt{x^T(P\otimes I)x}
+ \le-\lambda_0\sqrt{x^T(P\otimes I)x}
+       +\frac{\|Pb_2\|}{\sqrt{p_-}}\bar d,
+\end{equation}
+where $b_2=(0,1)^T$, $p_-=\lambda_{\min}(P)$, $p_+=\lambda_{\max}(P)$, and
+\begin{equation}
+ \lambda_0(\omega)=\frac{\omega\{1-2\|Pb_2\|\sqrt5\,\mu\}}{2p_+}.
+ \label{eq:lambda_control}
+\end{equation}
+Indeed, the state-dependent inertia perturbation is at most $\mu\omega\sqrt5\|x\|$, since $\|\omega^2e+2\omega\dot e\|\le\omega\sqrt5\|x\|$. Its contribution is absorbed into the Lyapunov decay. Here $\|Pb_2\|=1/\sqrt2$, $p_+=1+1/\sqrt2$, so $\lambda_0(40)>9.8028$ and the rounded lower rate $9.8$ is valid. On $\|x\|\le X=.6$,
+\begin{equation}
+ \bar d=\frac{b_m(\bar A a_d+C_p(v_d+X)^2+G)+r_m\bar A(v_d+X)+f_{\max}}{d_0}.
+\end{equation}
+The quintic reference gives $v_d\le1.206414$, $a_d\le2.476528$. From $x(0)=0$ the resulting upper bound is $.598945<X$, closing a global bootstrap across every predetermined transition. Let $\mathcal M_0$ bound $|M_0|$ entrywise by the same reach-vector outer products, and let $C_{0,i}$ and $\mathcal G_{0,i}$ bound the nominal centrifugal and gravity components. Then
+\begin{equation}
+ |\tau_{u,i}|\le\|\mathcal M_{0,i:}\|_2(a_d+\omega\sqrt5X)
+ +C_{0,i}(v_d+X)^2+\mathcal G_{0,i}.
+\end{equation}
+This gives $(96.747,70.165,50.819,38.440,31.864,29.049)$ N m, below the specified limits. Thus the unsaturated calculation is self-consistent.
+
+\subsection{Equilibrium shift and rate-driven comparison}
+During a hold define
+\begin{equation}
+ d(q,\beta_m,f)=-M_0(q)^{-1}\{\beta_m g_p(q)+e_f f\}.
+\end{equation}
+Put $D_0=(b_mG+f_{\max})/d_0$, $D_1=(r_mG+\dot f_{\max})/d_0$ and
+$L_d=L_M(b_mG+f_{\max})/d_0^2+b_mL_g/d_0$. Since $L_d<\omega^2$, $q_e=q_d+d(q_e)/\omega^2$ is a contraction on the radius-$D_0/\omega^2$ ball. It has a unique solution, with
+\begin{equation}
+ \|q_e-q_d\|\le D_0/\omega^2,\qquad
+ \|\dot q_e\|\le D_1/(\omega^2-L_d).
+\end{equation}
+The exact hold dynamics are
+\begin{align}
+ \ddot q+2\omega\dot q+\omega^2(q-q_d)&=d+z,\nonumber\\
+ z=-M_0^{-1}(\beta_m A\ddot q&+\beta_m c_p+\dot\beta_m A\dot q).
+\end{align}
+Thus $\|z\|\le\mu\|\ddot q\|+d_v\|\dot q\|$, with
+$d_v=(b_mC_pX+r_m\bar A)/d_0$, and
+$\|\dot d\|\le D_1+L_d\|\dot q\|$. No derivative of $z$ is used.
+
+For $0\le\ell<\omega$, the exponentially weighted absolute gains of the critical-damping kernels are
+\begin{align}
+ g_e(\ell)&=(\omega-\ell)^{-2},\nonumber\\
+ g_v(\ell)&=\frac{-\ell+2\omega e^{-(\omega-\ell)/\omega}}{(\omega-\ell)^2},\nonumber\\
+ g_a(\ell)&=1+\frac{2\omega}{\omega-\ell}
+ +\frac{\omega^2(2e^{-2(\omega-\ell)/\omega}-1)}{(\omega-\ell)^2}.
+\end{align}
+The $1$ in $g_a$ retains the zero-time atom in the acceleration response. Define
+\begin{equation}
+ K_\ell=\begin{bmatrix}
+ \mu g_a&L_dg_v+d_vg_a\\
+ \mu g_v&L_dg_e+d_vg_v
+ \end{bmatrix}.
+\end{equation}
+For the homogeneous response, $P_0=X/\omega+D_0/\omega^2$ and $V_0=X$ bound the initial shifted position and speed. Upper bounds after multiplication by $e^{\ell t}$ are
+\begin{align}
+ h_A&=\omega^2P_0+2\omega V_0+\frac{\omega^2(V_0+\omega P_0)}{e(\omega-\ell)},\nonumber\\
+ h_V&=V_0+\frac{\omega(V_0+\omega P_0)}{e(\omega-\ell)}.
+\end{align}
+Direct outward arithmetic verifies the positive supersolutions
+\begin{align}
+ (I-K_0)\begin{bmatrix}.00061\\.000019\end{bmatrix}
+ &\ge D_1\begin{bmatrix}g_v(0)\\g_e(0)\end{bmatrix},\nonumber\\
+ (I-K_{12})\begin{bmatrix}130\\1.7\end{bmatrix}
+ &\ge\begin{bmatrix}h_A\\h_V\end{bmatrix}.
+\end{align}
+The componentwise relative margins in the first supersolution inequality are about $1.68\%$ and $2.81\%$. These are arithmetic feasibility margins, not additional model-uncertainty allowances. Both nonnegative matrices have spectral radius below one. Positive Volterra comparison, including the acceleration feedthrough, gives
+\begin{equation}
+ \|\ddot q(t)\|\le130e^{-12t}+.00061,\quad
+ \|\dot q(t)\|\le1.7e^{-12t}+.000019.\label{eq:rate_tube}
+\end{equation}
+This holds from every hold start under the global transition tube. The remaining position estimate follows directly from the equilibrium equation:
+\begin{equation}
+ \|q-q_e\|\le
+ \frac{(1+\mu)\|\ddot q\|+(2\omega+d_v)\|\dot q\|}{\omega^2-L_d}.
+\end{equation}
+At $t\ge1.5$ s this gives the bounds in Section~\ref{sec:control}. Finally, the residual error relative to the reference-pose static model is bounded by
+\begin{align}
+ \|e_{\rm red}\|\le{}&\bar M\|\ddot q\|+C_c\|\dot q\|^2\nonumber\\
+ &+r_m\bar A\|\dot q\|+b_mL_g\|q-q_d\|\nonumber\\
+ <{}&.002031\ {\rm N\,m}.
+\end{align}
+All static amplitude dependence remains in $D_0,L_d$ and the effort budget; it has not been discarded. The small persistent dynamic error is driven by bounded rates rather than by treating a static torque as arbitrary time-varying forcing. For completeness, write $A_0=.00061$, $A_1=130$, $V_0=.000019$, $V_1=1.7$, and $L=\omega^2-L_d$. Define
+\begin{align}
+ Q_0&=D_0/\omega^2+\{(1+\mu)A_0+(2\omega+d_v)V_0\}/L,\nonumber\\
+ Q_1&=\{(1+\mu)A_1+(2\omega+d_v)V_1\}/L.\nonumber
+\end{align}
+Substitution in the residual bound gives \eqref{eq:admission_constants} with
+\begin{align}
+ E_\infty&=\bar M A_0+C_cV_0^2+r_m\bar A V_0+b_mL_gQ_0,\nonumber\\
+ C_1&=\bar M A_1+2C_cV_0V_1+r_m\bar A V_1+b_mL_gQ_1,\nonumber\\
+ C_2&=C_cV_1^2.\nonumber
+\end{align}
+Since $e^{-24t}\le e^{-12t}$ for $t\ge0$, $C=C_1+C_2$ is a valid single-exponential coefficient.

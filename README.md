@@ -31,7 +31,7 @@
 
 `outputs/` 保存稿件、图、证明、可运行检查与版本回执；`references/` 保存用户研究来源及历史；`work/` 只提交冻结的可运行源、方向与已完成小 CASE 元数据。原 ROOT 相对路径保留，生成代码与标准库 verifier 没有为了发布改动数学或物理参数。
 
-`PUBLICATION_SNAPSHOT_STATUS.json` 和 `publication_snapshots/` 标明同一次捕获的 UTC、400 行分类和源 SHA。仓库内 `work/d2a_cert_review_bound_table.csv` 是这个审查快照，不是持续更新的本机活表。
+`PUBLICATION_SNAPSHOT_STATUS.json` 与 `publication_snapshots/` 保存 11:11 的历史快照（136 completed case、174 NOT_RUN）；`PUBLICATION_SNAPSHOT_STATUS_LATEST_STOP.json` 保存最终停止边界（139 completed case、171 NOT_RUN）。仓库内 `work/d2a_cert_review_bound_table.csv` 对应最终停止的 `2d6eb3...` 表，不是持续更新的本机活表。`PUBLICATION_SOURCE_MANIFEST.json` 是原 11:11 基线，后续覆盖项目另在 publication 的最终 Git manifest 与停止补充中记录。
 
 大文件在 [分阶段 Releases](https://github.com/kaiwen123-yang/CERTO-FDI/releases) 中提供：原始用户输入、R1 ZIP、V1/V2 阶段包、H160 实际预演包，以及截至最终停止时已完成算例的全部 witness/历史。每个资产有 manifest/hash；未完成算例未复制成已完成结果。下载与恢复说明见 `publication/RELEASE_ASSETS.md`。
 

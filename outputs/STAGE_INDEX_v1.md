@@ -133,3 +133,8 @@ prescribed terminal-balanced H={40,60,80,100,120,160,200}、两读出共14分类
 - V2 checkpoint：R6 source `8eaa707da6df0c477a946e596ba3bc05522f249e93f806e54288559db55e0e6e`；PDF `c8e02b022d0c875163499f5a45ff374208376702f1176da66f02bd08665b6195`；11页，不含当前R8。当前R8增加已审endpoint推论并采用R7的H160代表例；H100首网格与H120历史均保留。
 - 四项全文缺口：Esna Ashari / Nikoukhah / Campbell，*Effects of feedback on active fault detection*（2012）；Esna Ashari / Nikoukhah / Campbell，*Active Robust Fault Detection in Closed-Loop Systems: Quadratic Optimization Approach*（2012）；Cheng / Steinberg，*Trend robust two-level factorial designs*（1991）；Coster / Cheng，*Minimum Cost Trend-Free Run Orders of Fractional Factorial Designs*（1988）。身份/metadata/snippets不等于主定理覆盖排除。
 - 索引只提供入口；各stage实际source/case清单以该stage的manifest、receipt和Release资产为准。后续发布新stage必须新增冻结状态/实际验收，不能改写旧stage历史。
+
+
+## 已发布审查入口与停止边界
+
+默认分支已发布；原输入/理论、H160预演和未完成全表资产分别在实际创建的[分阶段Releases](https://github.com/kaiwen123-yang/CERTO-FDI/releases)中，大文件的上传/远端digest状态单独核验。索引原10:53科学检查点字节保存于[索引依据快照](../publication_snapshots/stage_index_basis_20261007T105314Z/research/checkpoint.json)，保持原SHA。最新用户要求结束研究、停止全部后台，未完成171行；当前ROOT表与旧11:11记录区分见[停止状态](../PUBLICATION_SNAPSHOT_STATUS_LATEST_STOP.json)。
